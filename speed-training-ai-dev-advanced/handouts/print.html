@@ -1,0 +1,2599 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Développeur IA — Avancé · Handouts</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Urbanist:wght@600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body class="print-all">
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">fiche module 1</p>
+      <h1 class="content__title">Sous le capot</h1>
+    </header>
+    <article class="prose"><p>Pourquoi un agent coûte cher, est lent ou se trompe : cette fiche reprend l’ouverture et le module 1 dans l’ordre des slides, de la boucle agentique jusqu’à la facture d’une session.</p>
+<h2 id="vibe-coding-vs-ai-driven-dev">Vibe coding vs AI-driven dev</h2>
+<p><em>Ouverture · slide « Vibe coding vs AI-driven dev »</em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Vibe coding</th>
+<th>AI-driven dev</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Logique</strong></td>
+<td>explorer vite</td>
+<td>produire de façon fiable</td>
+</tr>
+<tr>
+<td><strong>Pour</strong></td>
+<td>spike, POC jetable, script ponctuel</td>
+<td>fonctionnalité livrée dans un code existant</td>
+</tr>
+<tr>
+<td><strong>Exemple</strong></td>
+<td>« fais-moi une API de démo »</td>
+<td>paginer GET /bookings, avec ses tests</td>
+</tr>
+<tr>
+<td><strong>Réflexe</strong></td>
+<td>on tente, on observe, on jette</td>
+<td>on cadre, on vérifie, on capitalise</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Viber pour explorer, piloter pour livrer.</strong> Cette formation est du côté droit : livrer en restant à gauche, c’est accepter du code qu’on n’a ni relu ni vérifié.</p>
+</blockquote>
+<h2 id="la-boucle-tour-par-tour">La boucle, tour par tour</h2>
+<p><em>Ouverture · slide « La boucle, tour par tour »</em></p>
+<p>Rappel de la Foundation, sur l’exemple du fil rouge : « Ajoute la pagination sur l’endpoint /bookings ».</p>
+<ol>
+<li>Le harness envoie la demande et la liste des tools.</li>
+<li>Le modèle répond « j’appelle bash avec <code>npm test -- bookings</code> ».</li>
+<li>Le harness vérifie que c’est autorisé, exécute, récupère la sortie : un test échoue, <code>nextCursor is undefined</code>.</li>
+<li>Il renvoie <strong>tout</strong> au modèle (le modèle est sans état), plus la sortie.</li>
+<li>Le modèle demande à lire le fichier du test, et ainsi de suite jusqu’à une réponse <strong>sans appel de tool</strong>.</li>
+</ol>
+<ul>
+<li>Le « appel de tool ? » est un champ de la réponse de l’API (<code>stop_reason: &quot;tool_use&quot;</code> chez Anthropic, <code>finish_reason: &quot;tool_calls&quot;</code> chez OpenAI).</li>
+<li>La même boucle porte plusieurs noms : <strong>ReAct</strong> (Pensée → Action → Observation), <strong>Plan-and-Execute</strong>, ou « gather context → take action → verify work → repeat ». Tous décrivent le même mécanisme : planifier, agir, observer le résultat, réajuster.</li>
+<li>À chaque tour, le contexte grossit : c’est tout le sujet de ce module.</li>
+</ul>
+<h2 id="qui-parle-a-qui-la-pile-complete">Qui parle à qui : la pile complète</h2>
+<p><em>Module 1 · slide « Qui parle à qui : la pile complète »</em></p>
+<p>Une requête descend la pile, de la méthode jusqu’au fournisseur :</p>
+<table>
+<thead>
+<tr>
+<th>Couche</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Méthode</strong> (SDD)</td>
+<td><code>spec.md</code> → <code>plan.md</code> → <code>tasks.md</code>, relus par l’humain</td>
+</tr>
+<tr>
+<td><strong>Orchestrateur</strong></td>
+<td>découpe, distribue, attend, agrège, reprend sur erreur</td>
+</tr>
+<tr>
+<td><strong>Agent</strong> = harness</td>
+<td>boucle, tools, contexte ; appelle le modèle</td>
+</tr>
+<tr>
+<td><strong>Gateway + guardrails</strong></td>
+<td>auth, routage, quotas, cache, journalisation, filtrage entrée / sortie</td>
+</tr>
+<tr>
+<td><strong>Fournisseurs</strong></td>
+<td>LLM cloud, hyperscaler, souverain, SLM local</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Les <strong>tools</strong> (fichiers, terminal, git, navigateur, serveurs MCP) sont <strong>exécutés par le harness, jamais par le modèle</strong> : le modèle n’écrit qu’une demande d’appel. C’est fondamental pour la sécurité.</li>
+<li>La <strong>gateway</strong> est le seul point par lequel tout passe : l’endroit naturel de la gouvernance (module 6).</li>
+<li>Seul sur son poste, un dev n’a souvent ni méthode, ni orchestrateur, ni gateway : la pile se construit à mesure qu’on industrialise.</li>
+</ul>
+<h2 id="harness-vs-orchestrateur-la-frontiere">Harness vs orchestrateur : la frontière</h2>
+<p><em>Module 1 · slide « Harness vs orchestrateur : la frontière »</em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Harness</th>
+<th>Orchestrateur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Fait</strong></td>
+<td>d’un modèle un agent</td>
+<td>travailler plusieurs agents</td>
+</tr>
+<tr>
+<td><strong>Responsabilités</strong></td>
+<td>gère <strong>une</strong> boucle d’agent ; exécute les tools, applique les permissions ; construit et compacte le contexte</td>
+<td>décompose et route les tâches ; parallélise, attend, agrège ; persiste l’état, reprend après panne</td>
+</tr>
+<tr>
+<td><strong>Se pilote</strong></td>
+<td>depuis un terminal, un IDE ou une API</td>
+<td>en code, en graphe ou en YAML</td>
+</tr>
+<tr>
+<td><strong>Exemples</strong></td>
+<td>Claude Code, Codex CLI, Copilot CLI, OpenCode</td>
+<td>LangGraph, CrewAI, OpenAI Agents SDK, Temporal</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>La frontière bouge</strong> : les harness lancent des sous-agents, les orchestrateurs embarquent leur boucle. Retenez le <strong>rôle</strong>, pas le produit. Ce qu’un orchestrateur dédié apporte en plus : la persistance d’état et la reprise après panne.</p>
+</blockquote>
+<h2 id="kv-cache-ne-pas-tout-recalculer-a-chaque-token">KV cache : ne pas tout recalculer à chaque token</h2>
+<p><em>Module 1 · slide « KV cache : ne pas tout recalculer à chaque token »</em></p>
+<p>Une réponse se fait en deux temps : le <strong>prefill</strong> (lire tout le contexte, en parallèle) puis le <strong>decode</strong> (générer token par token). Pour chaque nouveau token, le modèle a besoin des clés et valeurs (K, V) de tous les tokens précédents ; elles ne changent plus une fois calculées, on les garde en mémoire GPU : c’est le <strong>KV cache</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Point</th>
+<th>Ce qu’il faut savoir</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sans cache</strong></td>
+<td>chaque token recalculerait K et V de tous les précédents : un coût <strong>quadratique</strong></td>
+</tr>
+<tr>
+<td><strong>Le prix</strong></td>
+<td>Llama 3 8B : <strong>128 Ko par token</strong>, <strong>16 Go</strong> pour 128 k tokens, pour une seule conversation</td>
+</tr>
+<tr>
+<td><strong>Les parades</strong></td>
+<td>têtes K/V partagées (GQA), cache quantifié, mémoire paginée (PagedAttention)</td>
+</tr>
+</tbody>
+</table>
+<p>Les deux chiffres des benchmarks en découlent : le <strong>TTFT</strong> (time to first token, le prefill) et le <strong>débit</strong> en tokens/s (le decode).</p>
+<h2 id="du-kv-cache-au-prompt-caching">Du KV cache au prompt caching</h2>
+<p><em>Module 1 · slide « Du KV cache au prompt caching »</em></p>
+<p>Le <strong>prompt caching</strong> : le fournisseur garde le KV cache d’un <strong>préfixe déjà vu</strong>. Même début de requête, le prefill est sauté : plus rapide, et <strong>~90 % de remise</strong> sur l’entrée lue en cache.</p>
+<p>Anatomie d’une requête d’agent, du plus stable au plus volatil :</p>
+<ol>
+<li><strong>System prompt</strong></li>
+<li><strong>Tool definitions</strong></li>
+<li><strong>Instructions projet</strong></li>
+<li><strong>Conversation + résultats des tools</strong></li>
+<li><strong>Nouveau message</strong></li>
+</ol>
+<ul>
+<li>Modifier le début casse le cache pour <strong>tout ce qui suit</strong> : changer le system prompt, ajouter ou retirer un serveur MCP (donc des tool definitions), changer de modèle, mettre l’heure exacte dans les instructions.</li>
+<li><strong>Cache expiré</strong> : l’agent n’a <strong>rien oublié</strong>, la conversation est renvoyée en entier. Mais le préfixe est <strong>repayé plein tarif</strong>, et la réponse arrive plus tard.</li>
+<li><strong>Durée de vie</strong> : de quelques minutes à quelques heures sans activité, selon le fournisseur et l’option choisie. Remises et durées changent souvent : retenez l’ordre de grandeur.</li>
+</ul>
+<p>Avant une longue pause (qui casse le cache) : tâche finie → repartir sur une session propre ; tâche en cours → compacter, pour revenir sur un contexte court. La commande de chaque harness est dans « Où ça se règle dans mon outil ».</p>
+<h2 id="ce-que-coute-cette-trace">Ce que coûte cette trace</h2>
+<p><em>Module 1 · slide « Ce que coûte cette trace »</em></p>
+<p>La trace de la Foundation : sept tours d’un agent qui ajoute la pagination par curseur sur GET /bookings. Contextes envoyés de 12 k à 21 k tokens, soit <strong>118 k tokens d’entrée cumulés</strong> pour une tâche simple.</p>
+<table>
+<thead>
+<tr>
+<th>Point</th>
+<th>Ce qu’il faut savoir</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Le constat</strong></td>
+<td>l’entrée fait le volume : chaque tour renvoie tout le préfixe déjà vu, et n’ajoute que quelques milliers de tokens</td>
+</tr>
+<tr>
+<td><strong>Avec le prompt caching</strong></td>
+<td>ce préfixe est lu en cache, à ~10 % du prix</td>
+</tr>
+<tr>
+<td><strong>La sortie</strong></td>
+<td>~5× plus chère au token, mais petite en volume</td>
+</tr>
+</tbody>
+</table>
+<p>Où part la facture d’une session :</p>
+<table>
+<thead>
+<tr>
+<th>Élément</th>
+<th>Sur toute la session</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>System prompt, tool definitions, <code>AGENTS.md</code></td>
+<td>gros mais stable : lu en cache</td>
+</tr>
+<tr>
+<td>Historique des tours précédents</td>
+<td>en cache, si rien ne change avant</td>
+</tr>
+<tr>
+<td>Fichier lu en entier, log de build de 3 000 lignes</td>
+<td>payé plein tarif une fois, puis renvoyé à chaque tour : il pèse sur toute la fin de la session</td>
+</tr>
+<tr>
+<td>Nouvelle demande</td>
+<td>plein tarif, mais petite</td>
+</tr>
+<tr>
+<td>Réponse et tokens de raisonnement</td>
+<td>prix de sortie ; le raisonnement est souvent invisible</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Réduire ce qui <strong>entre</strong> rapporte plus que raccourcir la <strong>sortie</strong> : sorties de tools filtrées, fichiers lus en partie, session propre, modèle adapté.</p>
+</blockquote>
+<p>Pour mesurer sa propre facture : chaque harness affiche la consommation de la session, et des outils recalculent à partir des logs locaux (ex. ccusage). On mesure son usage, on ne compare pas les outils.</p>
+<h2 id="tokens-de-raisonnement-choisir-l-effort">Tokens de raisonnement : choisir l’effort</h2>
+<p><em>Module 1 · slide « Tokens de raisonnement : choisir l’effort »</em></p>
+<p>Le modèle « réfléchit » en tokens avant de répondre. Ces <strong>reasoning tokens</strong> sont facturés comme de la <strong>sortie</strong> (×5 face à l’entrée), et souvent invisibles : masqués, résumés ou affichés selon le fournisseur.</p>
+<table>
+<thead>
+<tr>
+<th>Effort · classe de modèle</th>
+<th>Pour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Bas</strong> · modèle léger</td>
+<td>renommer, documenter, appliquer un pattern</td>
+</tr>
+<tr>
+<td><strong>Moyen</strong> · généraliste</td>
+<td>paginer un endpoint et ses tests, relire un diff</td>
+</tr>
+<tr>
+<td><strong>Haut</strong> · raisonnement</td>
+<td>bug difficile, migration, architecture</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>L’effort se choisit <strong>par tâche</strong> : plus lent, plus cher, et <strong>pas toujours meilleur</strong>. Sur une tâche simple, trop de raisonnement mène à la sur-ingénierie et aux détours.</p>
+</blockquote>
+<p>Bon réflexe : commencer au niveau moyen, monter quand l’agent échoue sur un problème réellement difficile. Les harness appellent ce réglage effort, thinking ou niveau de raisonnement : voir « Où ça se règle dans mon outil ».</p>
+<h2 id="les-slm-petits-locaux-specialises">Les SLM : petits, locaux, spécialisés</h2>
+<p><em>Module 1 · slide « Les SLM : petits, locaux, spécialisés »</em></p>
+<table>
+<thead>
+<tr>
+<th>Point</th>
+<th>Ce qu’il faut savoir</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Définition pratique</strong></td>
+<td>de ~1 à ~15 milliards de paramètres : assez petit pour tourner sur un poste ou un seul GPU (la frontière n’est pas normalisée)</td>
+</tr>
+<tr>
+<td><strong>Exemples</strong></td>
+<td>Gemma 4, Qwen3.5, Phi-4-mini, Granite 4, Ministral</td>
+</tr>
+<tr>
+<td><strong>Bons cas d’usage</strong></td>
+<td>classer, extraire, router, compléter du code, <strong>données qui ne sortent pas</strong></td>
+</tr>
+<tr>
+<td><strong>Limites</strong></td>
+<td>raisonnement long, agents autonomes sur de gros dépôts</td>
+</tr>
+<tr>
+<td><strong>Pour les faire tourner</strong></td>
+<td>Ollama, LM Studio, llama.cpp sur le poste ; vLLM sur un serveur</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Pattern hybride</strong> : le SLM <strong>trie et route</strong>, le LLM <strong>raisonne</strong>.</li>
+<li>Argument entreprise : un SLM sur un serveur interne ne fait sortir aucune donnée, et son coût est fixe (le matériel), pas à l’usage.</li>
+</ul>
+<blockquote>
+<p><strong>Tip du module</strong> : garde le <strong>début du contexte</strong> stable, c’est lui que le cache rentabilise. Instructions, tools et modèle fixés en début de session ; ce qui change va à la fin.</p>
+</blockquote>
+<h2 id="a-retenir">À retenir</h2>
+<ol>
+<li>Le modèle <strong>prédit</strong>, le harness <strong>agit</strong> : il exécute les tools et construit le contexte.</li>
+<li>Le <strong>KV cache</strong> évite de recalculer ; le <strong>prompt caching</strong> rentabilise un <strong>préfixe stable</strong>.</li>
+<li>En session, l’<strong>entrée</strong> fait le volume ; la sortie et le raisonnement sont chers au token.</li>
+<li>Modèle et effort se choisissent <strong>par tâche</strong>, du SLM au modèle de raisonnement.</li>
+</ol>
+<p><strong>Mots-clés</strong> : prefill, decode, KV cache, prompt caching, reasoning tokens, SLM, harness, orchestrateur, gateway — voir le glossaire.</p>
+</article>
+    <footer class="content__footer">© Zenika · Développeur IA — Avancé</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">fiche module 2</p>
+      <h1 class="content__title">Le harness</h1>
+    </header>
+    <article class="prose"><p>Quelles briques entourent le modèle, et laquelle utiliser pour quoi : cette fiche reprend le module 2, des capacités d’un harness jusqu’à ce qu’il injecte dans la context window.</p>
+<h2 id="les-capacites-attendues-d-un-harness">Les capacités attendues d’un harness</h2>
+<p><em>Module 2 · slide « Les capacités attendues d’un harness »</em></p>
+<p>Agent = modèle + tools + boucle + objectif, comme en Foundation ; c’est le harness qui fournit les tools et fait tourner la boucle. Le modèle raisonne ; le harness lui donne les moyens d’agir. Un même modèle dans deux harness peut donner des résultats très différents, en coût comme en réussite.</p>
+<p>La grille pour évaluer n’importe quel harness, y compris ceux qui n’existent pas encore :</p>
+<table>
+<thead>
+<tr>
+<th>Capacité</th>
+<th>Ce qu’on vérifie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sous-agents</strong></td>
+<td>contexte isolé, <strong>et</strong> le droit d’écrire (un sous-agent en lecture seule sait relire, pas corriger)</td>
+</tr>
+<tr>
+<td><strong>MCP standard</strong></td>
+<td>n’importe quel serveur, déclaré dans un fichier versionné</td>
+</tr>
+<tr>
+<td><strong>Instructions, skills, hooks</strong></td>
+<td>personnaliser sans toucher au cœur</td>
+</tr>
+<tr>
+<td><strong>Modes de pilotage</strong></td>
+<td>monter l’autonomie, borner les droits</td>
+</tr>
+<tr>
+<td><strong>Scriptable</strong></td>
+<td>un mode non interactif, pour la CI</td>
+</tr>
+</tbody>
+</table>
+<p>Deux philosophies, qui ne s’opposent pas frontalement :</p>
+<ul>
+<li><strong>Plateforme</strong> (ex. GitHub Copilot, Claude Code) : un harness intégré qui décide de la structure ; Copilot l’étend jusqu’à la forge (issues, PR, CI).</li>
+<li><strong>Composition</strong> (ex. Pi, OpenCode) : un cœur minimal, des extensions, multi-fournisseur ; on compose son harness.</li>
+</ul>
+<blockquote>
+<p>Dans les deux cas, le harness est un <strong>actif d’équipe versionné</strong>. Sinon, c’est de l’<strong>agentic debt</strong> : extensions qu’on ne comprend plus, contournements de permissions oubliés, instructions contradictoires empilées. Même remède que la dette technique : versionner, relire, supprimer.</p>
+</blockquote>
+<p>Un seul jeu d’artefacts versionné (<code>AGENTS.md</code>, <code>SKILL.md</code>, configuration MCP) sert de plus en plus de harness : voir « Où ça se règle dans mon outil ».</p>
+<h2 id="une-allowlist-n-est-pas-une-sandbox">Une allowlist n’est pas une sandbox</h2>
+<p><em>Module 2 · slide « Une allowlist n’est pas une sandbox »</em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Allowlist</th>
+<th>Sandbox</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Agit sur</strong></td>
+<td>des motifs de commande</td>
+<td>les effets : fichiers, réseau, droits</td>
+</tr>
+<tr>
+<td><strong>Contournement</strong></td>
+<td><code>npm test &amp;&amp; curl …</code>, un script qui en appelle un autre</td>
+<td>aucun par le prompt : l’agent ne sort pas du périmètre</td>
+</tr>
+<tr>
+<td><strong>Forme</strong></td>
+<td>une liste dans la config du harness</td>
+<td>conteneur, VM, compte dédié, réseau coupé</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Le seul périmètre réel est l’<strong>isolation</strong>. Une allowlist filtre le texte d’une commande, pas ce qu’elle fait : on autorise <code>npm test</code>, et un script de test modifié par l’agent peut faire n’importe quoi, avec vos droits.</p>
+</blockquote>
+<ul>
+<li>« La policy vit dans le runtime, pas dans le prompt » : une consigne « ne lance jamais de commande destructrice » dans <code>AGENTS.md</code> n’est qu’une suggestion.</li>
+<li>MCP n’apporte rien sur ce terrain : le protocole standardise le branchement des tools, pas leurs permissions.</li>
+<li><strong>Autonomie et droits sont deux réglages distincts.</strong> Les niveaux d’autonomie (observer, demander, agir dans le périmètre, aller au bout seul) existent dans tous les harness, sous des noms différents. On monte d’un niveau quand on fait confiance au périmètre, et jamais « sans demander » sans isolation. Ce qui rend la montée acceptable, c’est le filet : tests, commits fréquents, diff relu, hook de vérification.</li>
+</ul>
+<h2 id="les-primitives-du-harness-qui-decide">Les primitives du harness : qui décide ?</h2>
+<p><em>Module 2 · slide « Les primitives du harness : qui décide ? »</em></p>
+<table>
+<thead>
+<tr>
+<th>Primitive</th>
+<th>Ce que c’est</th>
+<th>Qui décide qu’elle s’applique</th>
+<th>Exemple sur l’API du fil rouge</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Instructions projet</strong></td>
+<td><code>AGENTS.md</code> : règles stables, conventions, commandes</td>
+<td>personne : toujours chargées</td>
+<td>« les endpoints suivent le contrat OpenAPI »</td>
+</tr>
+<tr>
+<td><strong>Skill</strong></td>
+<td>savoir-faire réutilisable, chargé quand la tâche s’y prête</td>
+<td>le modèle, sur sa description</td>
+<td>la procédure pour ajouter une migration</td>
+</tr>
+<tr>
+<td><strong>Hook</strong></td>
+<td>script lancé à un moment précis du cycle de vie</td>
+<td>le harness, à chaque événement</td>
+<td>lancer les tests après chaque édition</td>
+</tr>
+<tr>
+<td><strong>Sous-agent</strong></td>
+<td>travail à part, ne renvoie que son résultat</td>
+<td>l’agent ou toi</td>
+<td>explorer le module bookings sans polluer la session</td>
+</tr>
+<tr>
+<td><strong>MCP</strong></td>
+<td>accès à un système externe</td>
+<td>le modèle, à la demande</td>
+<td>lire le ticket dans le tracker</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Le critère qui range tout : <strong>qui décide</strong> qu’une primitive s’applique.</p>
+</blockquote>
+<ul>
+<li><strong>Règle de base</strong> : règles stables → instructions projet ; savoir-faire → skill ; ce qui doit arriver à coup sûr → hook ; travail à isoler → sous-agent ; système extérieur → MCP.</li>
+<li><strong>L’erreur classique</strong> : tout mettre dans <code>AGENTS.md</code>, qui pèse dans chaque appel. <code>AGENTS.md</code> = ce qui est toujours pertinent ; skill = ce qui l’est parfois (sa description est un prompt) ; hook = ce qui doit arriver sans que personne y pense.</li>
+<li>La <strong>demande initiale</strong> n’est pas une primitive du harness : c’est le premier message, cadré pour la tâche du jour (fichiers clés, tests et invariants). Elle évite de gonfler <code>AGENTS.md</code> avec du contexte éphémère.</li>
+<li>Le mot « agent » désigne au moins trois choses : l’agent de code, le sous-agent à contexte isolé, l’agent personnalisé d’un outil. Vérifiez duquel on parle.</li>
+<li>Formats ouverts d’abord : <code>AGENTS.md</code> et <code>SKILL.md</code> sont lus par la plupart des harness ; l’emplacement des hooks et des sous-agents varie.</li>
+</ul>
+<h2 id="hooks-automatiser-le-cycle-de-vie">Hooks : automatiser le cycle de vie</h2>
+<p><em>Module 2 · slide « Hooks : automatiser le cycle de vie »</em></p>
+<p>Des <strong>scripts déterministes</strong>, lancés par le harness, quoi que dise le modèle. Le socle commun à tous les harness :</p>
+<table>
+<thead>
+<tr>
+<th>Événement</th>
+<th>Usage</th>
+<th>Exemples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Avant un tool</strong></td>
+<td>bloquer</td>
+<td><code>git push --force</code>, <code>rm -rf</code>, ou réécrire une commande verbeuse</td>
+</tr>
+<tr>
+<td><strong>Après un tool</strong></td>
+<td>formater</td>
+<td>le fichier écrit, ou journaliser l’appel</td>
+</tr>
+<tr>
+<td><strong>Fin de tour</strong></td>
+<td>vérifier</td>
+<td>lancer les tests, relire le diff produit</td>
+</tr>
+<tr>
+<td><strong>Fin de session</strong></td>
+<td>archiver</td>
+<td>la trace, ou proposer une mise à jour des notes</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>« Lance toujours les tests » dans les instructions est une <strong>suggestion</strong>. Le hook est une <strong>garantie</strong>.</p>
+</blockquote>
+<ul>
+<li>Le hook d’<strong>avant un tool</strong> peut renvoyer une décision (autoriser, demander, refuser) et donc bloquer l’appel de façon déterministe ; il peut aussi réécrire les arguments.</li>
+<li><strong>Piège de nommage</strong> : la « fin de tour » se déclenche quand l’agent a fini sa réponse, pas au <code>git commit</code>. Pour contrôler le commit, visez le hook d’avant un tool sur la commande git, ou un hook git classique.</li>
+<li><strong>Piège CI</strong> : en mode non interactif, certains harness ne chargent pas par défaut les hooks du dépôt, par sécurité. Un hook qui marche en local peut être absent en CI.</li>
+<li>Les noms d’événements varient d’un harness à l’autre : voir « Où ça se règle dans mon outil ».</li>
+</ul>
+<h2 id="tool-calling-ce-qui-transite-reellement">Tool calling : ce qui transite réellement</h2>
+<p><em>Module 2 · slide « Tool calling : ce qui transite réellement »</em></p>
+<p>Trois messages, au format simplifié de l’API Messages d’Anthropic ; OpenAI et Google utilisent des structures équivalentes, d’où la possibilité pour une gateway de traduire d’un format à l’autre.</p>
+<p><strong>① Le harness déclare</strong> le tool :</p>
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;run_tests&quot;,
+  &quot;description&quot;: &quot;Lance les tests&quot;,
+  &quot;input_schema&quot;: {
+    &quot;type&quot;: &quot;object&quot;,
+    &quot;properties&quot;: { &quot;path&quot;: { &quot;type&quot;: &quot;string&quot; } }
+  }
+}
+</code></pre>
+<p><strong>② Le modèle demande</strong> :</p>
+<pre><code class="language-json">{ &quot;type&quot;: &quot;tool_use&quot;, &quot;id&quot;: &quot;call_01&quot;, &quot;name&quot;: &quot;run_tests&quot;, &quot;input&quot;: { &quot;path&quot;: &quot;tests/bookings&quot; } }
+</code></pre>
+<p><strong>③ Le harness répond</strong> :</p>
+<pre><code class="language-json">{ &quot;type&quot;: &quot;tool_result&quot;, &quot;tool_use_id&quot;: &quot;call_01&quot;, &quot;content&quot;: &quot;FAIL bookings:42 nextCursor is undefined&quot; }
+</code></pre>
+<blockquote>
+<p>Le modèle choisit <strong>sur la description</strong> : chaque tool definition part <strong>en tokens</strong> à chaque appel.</p>
+</blockquote>
+<ul>
+<li>Une mauvaise description = un tool mal utilisé ou ignoré. Quand vous écrivez un serveur MCP ou une skill, soignez la description : c’est un prompt.</li>
+<li>40 tools MCP branchés = des milliers de tokens de préfixe, à chaque appel. Certains harness chargent désormais les tool definitions à la demande : à vérifier sur son outil.</li>
+</ul>
+<h2 id="ce-que-le-harness-injecte">Ce que le harness injecte</h2>
+<p><em>Module 2 · slide « Ce que le harness injecte »</em></p>
+<p>Une session agentique remplit la context window avec bien plus que vos messages :</p>
+<table>
+<thead>
+<tr>
+<th>Bloc</th>
+<th>Ce qu’il apporte</th>
+<th>Réflexe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>System prompt</strong></td>
+<td>les règles du harness ouvrent la session</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Tool schemas</strong></td>
+<td>chaque tool et chaque serveur MCP branché prend de la place, même s’il ne sert pas aujourd’hui</td>
+<td>couper les MCP inutiles pour la tâche</td>
+</tr>
+<tr>
+<td><strong>Fichiers lus</strong></td>
+<td>du code brut, pertinent ou non</td>
+<td>lire en partie</td>
+</tr>
+<tr>
+<td><strong>Sorties de commandes</strong></td>
+<td>un build, un <code>npm install</code> ou une stack trace peuvent dominer la context window</td>
+<td>demander une sortie filtrée (erreurs seules, 20 dernières lignes), ou filtrer par un hook</td>
+</tr>
+<tr>
+<td><strong>Logs d’erreur</strong></td>
+<td>les erreurs répétées deviennent du bruit</td>
+<td>les faire synthétiser</td>
+</tr>
+<tr>
+<td><strong>Résultats de tests</strong></td>
+<td>utiles, mais consomment aussi du budget</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>La question n’est pas « l’agent est-il intelligent ? », mais « <strong>ce qu’il a injecté aide-t-il la tâche ?</strong> »</p>
+</blockquote>
+<p><strong>Avant de brancher un serveur MCP</strong>, trois questions : <strong>qui l’exécute ?</strong> (un processus local ne sort pas de la machine, un serveur distant reçoit ce que le modèle choisit de lui envoyer) ; <strong>qui l’authentifie ?</strong> (quel jeton, quels droits : jamais plus large que la tâche) ; <strong>qui le maintient ?</strong> (éditeur officiel ou fork communautaire). Le trio létal (données privées + contenu non fiable + capacité d’envoyer vers l’extérieur) se réunit souvent par MCP.</p>
+<h2 id="une-primitive-par-besoin">Une primitive par besoin</h2>
+<p><em>Module 2 · slide « Quiz : quelle primitive ? »</em></p>
+<p>La grille appliquée à des besoins réels :</p>
+<table>
+<thead>
+<tr>
+<th>Besoin</th>
+<th>Primitive</th>
+<th>Pourquoi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>« Toujours passer par le client HTTP interne »</td>
+<td>instructions projet</td>
+<td>vrai à chaque tâche ; on peut le doubler d’une règle de lint, déterministe</td>
+</tr>
+<tr>
+<td>Interdire <code>git push --force</code>, quoi qu’il arrive</td>
+<td>hook</td>
+<td>doit arriver à coup sûr</td>
+</tr>
+<tr>
+<td>Migrer le schéma, une fois par mois</td>
+<td>skill</td>
+<td>savoir-faire chargé seulement quand la tâche s’y prête</td>
+</tr>
+<tr>
+<td>Explorer 40 fichiers sans polluer la session</td>
+<td>sous-agent</td>
+<td>contexte isolé, ne renvoie que son résultat</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Tip du module</strong> : ce qui doit toujours arriver est un <strong>hook</strong>, pas une consigne. Une consigne, le modèle peut l’oublier ; un hook, c’est le harness qui l’exécute.</p>
+</blockquote>
+<p>L’exercice 1 met cette règle en pratique : voir « Les exercices ».</p>
+<h2 id="a-retenir">À retenir</h2>
+<ol>
+<li>Un harness s’évalue sur ses <strong>capacités</strong>, pas sur sa marque ; non versionné, il devient de l’<strong>agentic debt</strong>.</li>
+<li>Une <strong>allowlist</strong> filtre des commandes, une <strong>sandbox</strong> borne les effets : seule l’isolation est un périmètre.</li>
+<li>Chaque primitive se range par <strong>qui décide</strong> : personne, le modèle, le harness, l’agent, ou toi.</li>
+<li>Chaque tool branché pèse dans <strong>chaque appel</strong>, et sa description est un prompt.</li>
+</ol>
+<p><strong>Mots-clés</strong> : harness, agentic debt, permissions, sandbox, allowlist, instructions projet, skill, hook, sous-agent, MCP, tool definitions — voir le glossaire.</p>
+</article>
+    <footer class="content__footer">© Zenika · Développeur IA — Avancé</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">fiche module 3</p>
+      <h1 class="content__title">Ingénierie du contexte</h1>
+    </header>
+    <article class="prose"><p>La context window est un budget : cette fiche reprend le module 3, pour donner à l’agent le bon contexte, au bon moment, au bon coût.</p>
+<h2 id="ce-qui-entre-dans-la-context-window">Ce qui entre dans la context window</h2>
+<p><em>Module 3 · slide « Ce qui entre dans la context window »</em></p>
+<table>
+<thead>
+<tr>
+<th>Élément</th>
+<th>Entre quand ?</th>
+<th>Ensuite</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>AGENTS.md</code></strong>, <strong>tool definitions</strong></td>
+<td>au démarrage</td>
+<td>dans chaque appel, <strong>en cache</strong></td>
+</tr>
+<tr>
+<td><strong>Historique</strong></td>
+<td>à chaque échange</td>
+<td>grossit, compacté près de la limite</td>
+</tr>
+<tr>
+<td><strong>Fichiers lus</strong>, <strong>sorties de tools</strong></td>
+<td>à la demande</td>
+<td>renvoyés <strong>jusqu’à la fin</strong> de la session</td>
+</tr>
+<tr>
+<td><strong>Skills</strong></td>
+<td>quand le modèle les juge utiles</td>
+<td>nom et description d’abord, contenu ensuite (progressive disclosure)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Pour le savoir : <strong>regarder</strong> la jauge, <strong>demander</strong> à l’agent ce qu’il a lu, <strong>élaguer</strong> ce qui ne sert plus.</p>
+</blockquote>
+<ul>
+<li><strong>Regarder</strong> : l’occupation du contexte, les tool calls, les fichiers lus ; la plupart des harness les affichent (voir « Où ça se règle dans mon outil »).</li>
+<li><strong>Demander</strong> : « Quels fichiers as-tu lus ? Sur quelle hypothèse pars-tu ? »</li>
+<li><strong>Élaguer</strong> : MCP inutiles, vieux objectifs, gros logs, par un rewind ou une session propre.</li>
+<li>Un fichier lu reste dans la context window jusqu’à la fin de la session (ou la compaction) : lire 3 000 lignes pour y trouver une fonction, c’est les repayer à chaque tour.</li>
+</ul>
+<p>Ce qui s’accumule au fil d’une session, ou pas :</p>
+<table>
+<thead>
+<tr>
+<th>Ressource</th>
+<th>Au fil des échanges</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Temps de calcul</strong></td>
+<td>le préfixe ne se recalcule pas (le KV cache le garde), mais chaque token généré relit tout le cache : plus le contexte est long, plus la réponse ralentit</td>
+</tr>
+<tr>
+<td><strong>Mémoire GPU</strong></td>
+<td>s’accumule jusqu’à la limite de la context window ; au-delà, le harness compacte ou on repart propre</td>
+</tr>
+<tr>
+<td><strong>Facturation</strong></td>
+<td>réduite : le préfixe déjà vu est lu en cache, tant que le début du contexte ne change pas</td>
+</tr>
+<tr>
+<td><strong>Attention du modèle</strong></td>
+<td>se dégrade (lost in the middle, context rot) : compacter restaure aussi la fiabilité, pas seulement le coût</td>
+</tr>
+</tbody>
+</table>
+<p>La taille des context windows (de ~128 k à ~1 M tokens selon les modèles) bouge à chaque génération ; la qualité baisse avant même la limite.</p>
+<h2 id="avec-ou-sans-demande-initiale">Avec ou sans demande initiale</h2>
+<p><em>Module 3 · démo « Avec ou sans demande initiale »</em></p>
+<p>La même tâche, deux sessions propres : on compte les fichiers lus et le contexte consommé avant le premier plan, et on juge la justesse du plan.</p>
+<p>Une demande initiale cadrée donne à l’agent l’objectif, les fichiers clés, les commandes, les invariants et les pièges. Les deux demandes à coller et le relevé à remplir sont dans le handout <a href="#handout-08-demos/avec-ou-sans-demande-initiale">« Les démos »</a>, pour rejouer la démo.</p>
+<ul>
+<li>Une demande initiale est <strong>orientée tâche</strong>, pas dépôt ; courte et relue. Les noms (chemin, commande, invariant) sont des ancres. Pour une tâche longue, on l’écrit dans un fichier rechargé à chaque session.</li>
+<li>En la relisant, on découvre souvent les zones floues du projet, avant de lancer l’agent.</li>
+</ul>
+<blockquote>
+<p>Le gain annoncé n’est pas le gain mesuré : <strong>on compte</strong>. Sur un petit dépôt, la recherche agentique suffit souvent.</p>
+</blockquote>
+<h2 id="reduire-les-tokens-un-levier-par-buffer">Réduire les tokens : un levier par buffer</h2>
+<p><em>Module 3 · slide « Réduire les tokens : un levier par buffer »</em></p>
+<table>
+<thead>
+<tr>
+<th>Buffer</th>
+<th>Levier</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sorties de tools</strong></td>
+<td>filtrer</td>
+<td>erreurs seules, dernières lignes</td>
+</tr>
+<tr>
+<td><strong>Données lourdes</strong></td>
+<td>traiter hors contexte</td>
+<td>un script, un index</td>
+</tr>
+<tr>
+<td><strong>Entre sessions</strong></td>
+<td>mémoire ciblée</td>
+<td>ne plus tout réexpliquer</td>
+</tr>
+<tr>
+<td><strong>Réponse</strong></td>
+<td>demander du concis</td>
+<td>pas de préambule</td>
+</tr>
+<tr>
+<td><strong>Code généré</strong></td>
+<td>en écrire moins</td>
+<td>moins à relire ensuite</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Comprimer la prose du modèle rapporte peu : l’<strong>entrée</strong> domine. Faire <strong>écrire moins de code</strong> rapporte deux fois : maintenant et à la relecture.</p>
+</blockquote>
+<ul>
+<li>Les outils changent, les buffers restent : chaque levier existe sous forme de plugin, de hook ou de skill dans l’écosystème.</li>
+<li><strong>Lire les chiffres avec esprit critique</strong> : les gains annoncés sont mesurés en conditions de pointe, pas en moyenne de session, et ne s’additionnent que si votre usage déclenche vraiment chaque levier. Entre un outil très populaire au gain fragile et un outil discret au gain vérifié, choisissez le second.</li>
+<li>Rendre la consommation visible la réduit déjà : voir la context window se remplir pousse à compacter, repartir propre, mieux cadrer.</li>
+</ul>
+<p>Deux lignes à coller dans <code>AGENTS.md</code>, qui captent l’essentiel du gain d’un plugin de concision :</p>
+<pre><code class="language-text">Réponds de façon dense et factuelle. Pas de préambule, ne reformule
+pas ma question, pas de hedging. Une phrase = une information.
+</code></pre>
+<h2 id="le-piege-des-sous-agents">Le piège des sous-agents</h2>
+<p><em>Module 3 · slide « Le piège des sous-agents »</em></p>
+<p>Un cas vécu : une demande de recherche un peu large → <strong>6 sous-agents</strong> lancés en parallèle → chacun charge toutes les pages qu’il lit → <strong>1 M de tokens en 30 min</strong>, quota épuisé.</p>
+<ul>
+<li>La jauge de la session principale allait <strong>très bien</strong> : chaque sous-agent brûlait dans sa propre context window.</li>
+<li>La vue de la context window ne montre pas ce que consomment les sous-agents : regardez la <strong>consommation totale</strong> de la session (la plupart des harness la ventilent par sous-agent).</li>
+<li>En facturation à l’usage, sans quota, la même situation donne une facture sans plafond.</li>
+<li>On borne <strong>périmètre</strong> et <strong>nombre d’agents</strong> avant de lancer, avec un périmètre écrit.</li>
+</ul>
+<blockquote>
+<p>Un sous-agent protège ta context window, <strong>pas ton budget</strong> : déléguer est une décision de coût.</p>
+</blockquote>
+<h2 id="rag-le-retour-des-embeddings">RAG : le retour des embeddings</h2>
+<p><em>Module 3 · slide « RAG : le retour des embeddings »</em></p>
+<p>Exemple : « Quelle est notre convention de pagination pour les API ? »</p>
+<table>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Ce qui se passe</th>
+<th>Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Indexer</strong> (indexing)</td>
+<td>la doc est découpée en morceaux ; un modèle d’embedding calcule un vecteur par morceau</td>
+<td>wiki technique et ADR indexés</td>
+</tr>
+<tr>
+<td><strong>Chercher</strong> (retrieval)</td>
+<td>la question est vectorisée ; on prend les morceaux les plus proches</td>
+<td>les 3 passages sur la pagination</td>
+</tr>
+<tr>
+<td><strong>Augmenter</strong> (augmentation)</td>
+<td>ces morceaux entrent dans le contexte, avec la question</td>
+<td>3 passages, pas les 400 pages du wiki</td>
+</tr>
+<tr>
+<td><strong>Générer</strong> (generation)</td>
+<td>le modèle répond à partir des passages et cite ses sources</td>
+<td>« Curseur opaque, 100 max [ADR-012] »</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>L’index par embeddings sert surtout pour la <strong>documentation en langage naturel</strong>. Pour le code, la <strong>recherche agentique</strong> (l’agent cherche lui-même avec grep et la lecture de fichiers) suffit souvent.</li>
+<li>Trois architectures pour indexer du code : <strong>découpage naïf</strong> (blocs fixes : simple, mais coupe les fonctions ; petits dépôts, prose) ; <strong>découpage par l’AST</strong> (fonctions, classes, souvent avec tree-sitter ; dépôts moyens à gros) ; <strong>graphe de code</strong> (AST + relations, pour répondre à « qui appelle cette fonction ? »).</li>
+<li>Le critère : si l’agent lit 40 fichiers pour trouver où brancher l’endpoint, il manque une demande initiale cadrée ou un index. Commencez par la demande initiale, indexez ensuite.</li>
+</ul>
+<h2 id="la-memoire-de-l-agent">La mémoire de l’agent</h2>
+<p><em>Module 3 · slide « La mémoire de l’agent »</em></p>
+<p>Trois familles, du plus explicite au plus automatique, et aucun standard :</p>
+<table>
+<thead>
+<tr>
+<th>Famille</th>
+<th>Ce que c’est</th>
+<th>Vigilance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Fichier versionné</strong></td>
+<td>instructions et notes du projet</td>
+<td>relues en PR, comme du code</td>
+</tr>
+<tr>
+<td><strong>Mémoire du harness</strong></td>
+<td>l’agent écrit ses notes</td>
+<td>propriétaire, souvent plafonnée : <strong>à relire</strong></td>
+</tr>
+<tr>
+<td><strong>Middleware tiers</strong></td>
+<td>serveur MCP ou plugin</td>
+<td>indexé, à votre main, exportable</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Le bon mécanisme est la <strong>progressive disclosure</strong> : chercher dans un index compact, puis ne charger que le détail des entrées retenues, pour <strong>~10× moins de tokens</strong>. Même pattern que le RAG et les skills : filtrer avant de charger.</li>
+<li>Séparez ce que l’équipe a <strong>décidé</strong> (instructions projet, relues) de ce que l’agent a <strong>appris</strong> (mémoire, à relire).</li>
+</ul>
+<blockquote>
+<p>Une mémoire qu’on ne peut pas <strong>relire</strong> finit par contenir des faits périmés.</p>
+</blockquote>
+<h2 id="exploiter-les-traces">Exploiter les traces</h2>
+<p><em>Module 3 · slide « Exploiter les traces »</em></p>
+<p>Une session contient ce qui a été <strong>tenté</strong> et ce qui a <strong>échoué</strong>, ce qui <strong>manquait</strong> (doc, tool, convention), ce qui a <strong>fini par marcher</strong> : c’est de l’<strong>inférence déjà payée</strong>. On en extrait du contexte durable, relu, puis on jette la session.</p>
+<table>
+<thead>
+<tr>
+<th>Fichier</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>troubleshooting.md</code></td>
+<td>erreur → cause → fix</td>
+</tr>
+<tr>
+<td><code>api-fixes.md</code></td>
+<td>noms, docs à corriger</td>
+</tr>
+<tr>
+<td><code>next-session.md</code></td>
+<td>ce qu’on recharge à la prochaine session</td>
+</tr>
+<tr>
+<td><code>user-guide.md</code></td>
+<td>commandes qui marchent, pièges</td>
+</tr>
+<tr>
+<td><code>new-tool.md</code></td>
+<td>le script ou le tool qui aurait évité le frottement</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>next-session.md</code> est une <strong>compaction choisie</strong> : on décide de ce qui est gardé, au lieu de laisser le harness résumer quand la context window est pleine.</li>
+<li>Le frottement de l’agent est un signal : s’il galère avec une API, c’est souvent l’API, la doc ou le tool qui parle mal. Les corriger aide aussi les humains.</li>
+<li>« Résume cette session » vaut moins qu’une extraction ciblée. Non relue, une extraction n’est jamais une source d’autorité.</li>
+</ul>
+<pre><code class="language-text">Extrais de cette session, sans rien modifier d'autre :
+dans troubleshooting.md, chaque erreur rencontrée sous la forme
+erreur → cause → fix ; dans next-session.md, ce qu'il faut recharger
+pour reprendre la tâche. Je relis avant de committer.
+</code></pre>
+<blockquote>
+<p><strong>Tip du module</strong> : donne à l’agent <strong>de quoi chercher</strong>, pas tout le dépôt. Une demande initiale cadrée, des sorties filtrées, des sous-agents bornés : le contexte est un budget.</p>
+</blockquote>
+<h2 id="a-retenir">À retenir</h2>
+<ol>
+<li>Ce qui est lu reste jusqu’à la fin de la session : <strong>regarder, demander, élaguer</strong>.</li>
+<li>Une <strong>demande initiale</strong> cadrée réduit l’exploration ; on mesure le gain, on ne le suppose pas.</li>
+<li>Un levier par buffer, et l’<strong>entrée</strong> d’abord ; un sous-agent isole le contexte, <strong>pas la facture</strong>.</li>
+<li>RAG, mémoire et skills suivent le même principe : <strong>filtrer avant de charger</strong>.</li>
+</ol>
+<p><strong>Mots-clés</strong> : context engineering, demande initiale, recherche agentique, RAG, embeddings / indexation du code, mémoire, progressive disclosure, compaction, context rot — voir le glossaire.</p>
+</article>
+    <footer class="content__footer">© Zenika · Développeur IA — Avancé</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">fiche module 4</p>
+      <h1 class="content__title">Spec-driven et qualité</h1>
+    </header>
+    <article class="prose"><p>Garder le code aligné sur l’intention, et le prouver : cette fiche reprend le module 4, de la spec versionnée aux tests et au drift.</p>
+<h2 id="ce-que-l-ia-change-dans-notre-facon-de-travailler">Ce que l’IA change dans notre façon de travailler</h2>
+<p><em>Module 4 · slide « Ce que l’IA change dans notre façon de travailler »</em></p>
+<p>L’agent a compressé le temps de <strong>production</strong>, pas celui de <strong>vérification</strong>.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Hier</th>
+<th>Avec un agent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Rythme</strong></td>
+<td>une feature = des jours</td>
+<td>une feature = des heures</td>
+</tr>
+<tr>
+<td><strong>Ce qui garantit</strong></td>
+<td>revues et rituels, a posteriori</td>
+<td>contrôles systématiques, à chaque étape</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Les revues <strong>ne disparaissent pas</strong> : elles ne suffisent plus <strong>seules</strong>. On leur adjoint des <strong>contrôles automatiques</strong>, au rythme de l’agent.</p>
+</blockquote>
+<ul>
+<li>Nos garanties sont des rendez-vous humains, après coup, à intervalle fixe. Quand le volume produit entre deux rendez-vous est multiplié, le rendez-vous devient un goulot, puis une formalité.</li>
+<li>Le systématique prend ce qui se vérifie mécaniquement (les tests passent-ils ? la spec est-elle à jour ?) ; le temps humain garde l’intention, l’architecture, les arbitrages.</li>
+</ul>
+<p>Le <strong>SDD</strong> est une réponse possible : une chaîne d’artefacts relus par un humain, chaque sortie est un fichier versionné.</p>
+<table>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Produit</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Spécifier</strong></td>
+<td><code>spec.md</code></td>
+<td>le quoi et le pourquoi</td>
+</tr>
+<tr>
+<td><strong>Planifier</strong></td>
+<td><code>plan.md</code></td>
+<td>le comment technique</td>
+</tr>
+<tr>
+<td><strong>Découper</strong></td>
+<td><code>tasks.md</code></td>
+<td>de petites tâches vérifiables</td>
+</tr>
+<tr>
+<td><strong>Implémenter</strong></td>
+<td>code + tests</td>
+<td>un agent, ou des workers par tâche</td>
+</tr>
+</tbody>
+</table>
+<p>Le SDD donne aux agents un objectif écrit et un critère d’arrêt. Outillage, par exemple : Spec Kit, Kiro, OpenSpec, BMAD ; ils fonctionnent au-dessus de n’importe quel harness.</p>
+<h2 id="trois-postures-face-a-la-spec">Trois postures face à la spec</h2>
+<p><em>Module 4 · slide « Trois postures face à la spec »</em></p>
+<p><strong>SDD</strong> : la spec versionnée est la source de vérité que l’agent implémente et que les tests vérifient.</p>
+<table>
+<thead>
+<tr>
+<th>Posture</th>
+<th>La spec</th>
+<th>Le risque</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Spec-first</strong></td>
+<td>écrite d’abord, comme prompt structuré ; non maintenue</td>
+<td>elle diverge du code</td>
+</tr>
+<tr>
+<td><strong>Spec-anchored</strong></td>
+<td>spec et code évoluent ensemble</td>
+<td>les écarts sont détectés</td>
+</tr>
+<tr>
+<td><strong>Spec-as-source</strong></td>
+<td>seule la spec est éditée ; le code devient un artefact généré</td>
+<td>aucun framework ne le fait (encore) : il faudrait rejouer tous les changements de spec</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Cible réaliste : <strong>spec-anchored</strong>. L’agent sait <strong>formaliser</strong> une spec, pas décider <strong>ce qui doit être vrai</strong>.</p>
+</blockquote>
+<ul>
+<li>Un curseur de maturité, pas un interrupteur : on démarre en spec-first, on consolide en spec-anchored.</li>
+<li>L’agent formalise volontiers : critères d’acceptation, cas limites (curseur invalide, <code>limit</code> négatif, tri instable), dépendances repérées dans le code. Il ne peut pas décider si un curseur invalide doit renvoyer 400 ou la première page : c’est une décision humaine.</li>
+<li>Une spec générée et non relue est une <strong>hypothèse</strong>, pas une source de vérité. Bon usage : demander à l’agent de <strong>lister les questions ouvertes</strong>, plutôt que de les trancher.</li>
+<li>La connaissance se perd à chaque passage de main (intention → ticket → dev → agent → code), et l’agent comble les trous avec du plausible : d’où une intention écrite une fois, versionnée, relue.</li>
+</ul>
+<pre><code class="language-text">Écris une spec de moins de 30 lignes pour ce besoin : contexte,
+exigences numérotées, critères d'acceptation, questions ouvertes.
+Ne tranche pas les questions ouvertes. Ne code rien.
+</code></pre>
+<h2 id="spec-centric-ou-workflow-centric">Spec-centric ou workflow-centric</h2>
+<p><em>Module 4 · slide « Spec-centric ou workflow-centric »</em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Spec-centric</th>
+<th>Workflow-centric</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Exemples</strong></td>
+<td>Spec Kit, OpenSpec, BMAD</td>
+<td>Superpowers</td>
+</tr>
+<tr>
+<td><strong>Référence</strong></td>
+<td>la <strong>spec</strong>, versionnée</td>
+<td>la <strong>discipline</strong>, encodée en skills</td>
+</tr>
+<tr>
+<td><strong>Ce qui survit</strong></td>
+<td>un document relisible</td>
+<td>un process reproductible</td>
+</tr>
+<tr>
+<td><strong>Point fort</strong></td>
+<td>mémoire longue du projet</td>
+<td>boucle d’implémentation serrée</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Pas un concurrent à départager : les deux se <strong>combinent</strong>. La spec quand elle doit survivre à la session ; le workflow pour une exécution serrée sur une tâche bornée.</p>
+</blockquote>
+<p>La spec n’est qu’une partie de la doc : elle décrit le quoi. Ce qu’on conserve dans le temps, c’est la <strong>documentation</strong>, fonctionnelle (critères d’acceptation) et technique (architecture, invariants, ADR, runbooks), tenue à jour. Le code est un artefact que la doc permet de reprendre.</p>
+<h2 id="garde-fous-du-code-au-commit">Garde-fous : du code au commit</h2>
+<p><em>Module 4 · slide « Garde-fous : du code au commit »</em></p>
+<p>L’agent génère vite : sans garde-fou, l’écart avec l’intention passe <strong>inaperçu</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Garde-fou</th>
+<th>Ce que c’est</th>
+<th>Vérifie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1. Tests</strong></td>
+<td>le contrat exécutable</td>
+<td>le comportement</td>
+</tr>
+<tr>
+<td><strong>2. Revue agentique</strong></td>
+<td>par un agent <strong>distinct</strong> de celui qui a écrit le code</td>
+<td>le diff, avant d’envoyer</td>
+</tr>
+<tr>
+<td><strong>3. Commit</strong></td>
+<td>le point de synchronisation entre code, spec et IA</td>
+<td>la doc suit, la part d’IA est tracée</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Règle minimale</strong> : aucun code généré ne part en production sans <strong>vérification déterministe</strong> (tests, analyse statique) et <strong>revue par un agent distinct</strong>.</p>
+</blockquote>
+<ul>
+<li>Les trois niveaux sont complémentaires. Ordre dans un pipeline : le <strong>déterministe</strong> d’abord (lint, types, tests, mutation), l’<strong>agentique</strong> ensuite, l’<strong>humain</strong> en dernier. Un agent de revue doit avoir le droit de ne rien dire sur un diff propre.</li>
+<li><strong>Traçabilité IA</strong> au commit : le trailer <code>Co-Authored-By:</code> est une convention git standard (qui a écrit), que certains harness posent nativement ; un footer comme <code>AI-Generated: ~80%</code> est une convention d’équipe, approximative (combien).</li>
+<li><strong>La spec à jour ?</strong> Un contrôle au commit compare le diff et la spec, et bloque si une mise à jour est attendue : un hook (avant le tool <code>git commit</code>), un hook git classique ou un job de CI.</li>
+</ul>
+<pre><code class="language-text">feat(bookings): pagination par curseur
+
+Co-Authored-By: &lt;agent&gt;
+AI-Generated: ~80%
+</code></pre>
+<h2 id="tests-generes-deux-natures-une-mesure">Tests générés : deux natures, une mesure</h2>
+<p><em>Module 4 · slide « Tests générés : deux natures, une mesure »</em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Tests de construction</th>
+<th>Tests fonctionnels</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Servent</strong></td>
+<td>à l’agent</td>
+<td>à l’équipe</td>
+</tr>
+<tr>
+<td><strong>Testent</strong></td>
+<td>l’implémentation, unité par unité</td>
+<td>les effets observables</td>
+</tr>
+<tr>
+<td><strong>Durée de vie</strong></td>
+<td><strong>jetables</strong></td>
+<td><strong>durables</strong> : la spec exécutable</td>
+</tr>
+<tr>
+<td><strong>Exemple</strong></td>
+<td>« le repository reçoit le bon curseur »</td>
+<td>« GET /bookings renvoie un <code>nextCursor</code> tant qu’il reste des résultats »</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>En fin de feature, là où les deux se recouvrent, <strong>le test fonctionnel gagne</strong> : on supprime le doublon de construction.</p>
+</blockquote>
+<ul>
+<li>Le critère n’est pas « unitaire vs intégration », mais <strong>à qui le test rend service</strong>. Un test fonctionnel survit à une réécriture de l’implémentation ; on le relit ligne à ligne.</li>
+<li>Le symptôme d’une suite générée trop couplée : toucher une ligne casse dix tests (mocks partout, une classe = un test). Le coût de production d’un test a chuté, son coût de maintenance n’a pas bougé.</li>
+<li><strong>Score de mutation</strong> : on modifie le code exprès (<code>&lt;</code> devient <code>&lt;=</code>), la suite doit <strong>échouer</strong>. Bien plus dur à tricher que la couverture, qu’un agent peut faire monter sans rien vérifier. Outils : Stryker (JS/TS, .NET), PIT (Java), mutmut (Python), cargo-mutants (Rust). Cadence réaliste : nocturne, sur les modules critiques.</li>
+</ul>
+<h2 id="le-drift-spec-code-qui-le-detecte">Le drift spec ↔ code : qui le détecte ?</h2>
+<p><em>Module 4 · slide « Le drift spec ↔ code : qui le détecte ? »</em></p>
+<p><strong>Drift</strong> : l’écart qui s’installe entre la spec et le code. (On dit « context rot » pour la dégradation d’une session, pour ne pas confondre.)</p>
+<table>
+<thead>
+<tr>
+<th>Détecteur</th>
+<th>Ce qu’il voit</th>
+<th>Ce qu’il rate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tests fonctionnels</strong></td>
+<td>un comportement qui contredit une exigence <strong>encodée</strong></td>
+<td>une exigence nouvelle, sans test</td>
+</tr>
+<tr>
+<td><strong>Revue de spec</strong> dans la PR</td>
+<td>un diff qui ne raconte pas la même chose que la spec</td>
+<td>ce que le relecteur n’a pas lu</td>
+</tr>
+<tr>
+<td><strong>Contrôle au commit</strong></td>
+<td>du code changé sans spec touchée</td>
+<td>une spec touchée… mais fausse</td>
+</tr>
+<tr>
+<td><strong>Personne</strong></td>
+<td>—</td>
+<td>tout : le drift est <strong>silencieux</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Quand une exigence change, c’est la <strong>revue de spec</strong> qui le voit d’abord. Aucun détecteur ne suffit seul.</p>
+</blockquote>
+<p>Exemple : l’exigence « curseur invalide → 400 » devient « curseur invalide → première page ». Code changé sans la spec : le test fonctionnel casse (bonne nouvelle). Spec changée sans le test : rien ne casse, seul un relecteur de la spec le voit.</p>
+<blockquote>
+<p><strong>Tip du module</strong> : si la spec n’est pas versionnée avec le code, <strong>elle ment déjà</strong>. Spec, tests et commit dans le même dépôt, c’est ce qui rend le drift visible.</p>
+</blockquote>
+<p>L’exercice 2 fait changer une exigence en cours de route : voir « Les exercices ».</p>
+<h2 id="a-retenir">À retenir</h2>
+<ol>
+<li>L’agent compresse la <strong>production</strong>, pas la <strong>vérification</strong> : on ajoute des contrôles au rythme de l’agent.</li>
+<li>Cible réaliste : <strong>spec-anchored</strong> ; l’agent formalise, l’humain décide ce qui doit être vrai.</li>
+<li>Garde-fous dans l’ordre : <strong>déterministe</strong>, <strong>agentique</strong>, <strong>humain</strong> ; le commit trace la part d’IA.</li>
+<li>Les tests fonctionnels durent, les tests de construction se jettent ; le <strong>score de mutation</strong> mesure leur vraie valeur.</li>
+</ol>
+<p><strong>Mots-clés</strong> : SDD, spec-first / spec-anchored / spec-as-source, spec-centric / workflow-centric, drift, tests de construction / tests fonctionnels, mutation testing, guardrails — voir le glossaire.</p>
+</article>
+    <footer class="content__footer">© Zenika · Développeur IA — Avancé</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">fiche module 5</p>
+      <h1 class="content__title">Orchestrer et paralléliser</h1>
+    </header>
+    <article class="prose"><p>Quand découper le travail en plusieurs agents, et à quel prix : cette fiche reprend le module 5, des patterns d’orchestration au coût caché du parallélisme.</p>
+<h2 id="cinq-patterns-d-orchestration">Cinq patterns d’orchestration</h2>
+<p><em>Module 5 · slide « Cinq patterns d’orchestration »</em></p>
+<p>Les cinq patterns de « Building effective agents » (Anthropic, 2024). Les cinq sont des <strong>workflows</strong>, du plus figé (chaîne : chemin connu à l’avance) au plus dynamique (orchestrateur-workers, évaluateur : un LLM décide du découpage ou de l’arrêt). L’<strong>agent</strong> autonome, qui choisit lui-même ses étapes, vient ensuite.</p>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Principe</th>
+<th>Exemple dev</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Chaîne</strong></td>
+<td>étapes fixes, chaque sortie nourrit la suivante</td>
+<td>le flux SDD : spec → plan → tâches → code, chaque étape relue</td>
+</tr>
+<tr>
+<td><strong>Routeur</strong></td>
+<td>un classifieur oriente vers le bon agent ou le bon modèle</td>
+<td>les demandes simples vont à un modèle léger, les complexes à un modèle de raisonnement</td>
+</tr>
+<tr>
+<td><strong>Parallélisation</strong></td>
+<td>tâches indépendantes, ou vote entre plusieurs, puis agrégation</td>
+<td>trois revues du même diff : sécurité, performance, lisibilité</td>
+</tr>
+<tr>
+<td><strong>Orchestrateur-workers</strong></td>
+<td>le découpage est décidé dynamiquement par un LLM</td>
+<td>les sous-agents d’un harness : l’agent principal décide combien en lancer et ce que fait chacun</td>
+</tr>
+<tr>
+<td><strong>Évaluateur</strong></td>
+<td>un générateur, un évaluateur ; on itère jusqu’au critère</td>
+<td>un agent écrit l’endpoint, un autre le relit avec une grille</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Parallélisation et orchestrateur-workers se ressemblent ; dans le second, c’est le <strong>modèle</strong> qui décide du découpage, pas le développeur.</li>
+<li>Le conseil de l’article : commencer simple, n’ajouter un agent que si l’avantage est démontré.</li>
+</ul>
+<h2 id="la-fiabilite-composee-10-etapes-a-95-60">La fiabilité composée : 10 étapes à 95 % ≈ 60 %</h2>
+<p><em>Module 5 · slide « La fiabilité composée : 10 étapes à 95 % ≈ 60 % »</em></p>
+<p>Fiabilité d’une chaîne d’agents fiables à 95 % chacun :</p>
+<table>
+<thead>
+<tr>
+<th>Étapes</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>5</th>
+<th>10</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Fiabilité</strong></td>
+<td>95 %</td>
+<td>90 %</td>
+<td>86 %</td>
+<td>77 %</td>
+<td><strong>60 %</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Les fiabilités se <strong>multiplient</strong> : 0,95 × 0,95 × … dix fois ≈ <strong>0,60</strong>. La parade : une chaîne <strong>courte</strong>, et une <strong>vérification</strong> entre les étapes.</p>
+</blockquote>
+<ul>
+<li>L’hypothèse est simplificatrice (étapes indépendantes, une erreur = un échec), mais l’ordre de grandeur suffit à calmer l’envie d’empiler les agents.</li>
+<li>Une vérification entre deux étapes (tests, évaluateur, relecture) remet la fiabilité de l’étape près de 100 % : c’est pour ça que les tests comptent tant.</li>
+<li>L’échelle de construction : appel direct → tools → workflow déterministe dès qu’il faut des étapes et des validations explicites → agent supplémentaire seulement si l’avantage est démontré.</li>
+</ul>
+<h2 id="agents-en-parallele-sur-worktrees">Agents en parallèle sur worktrees</h2>
+<p><em>Module 5 · slide « Agents en parallèle sur worktrees »</em></p>
+<p>Un dépôt, <strong>deux répertoires de travail</strong>, deux agents <strong>en même temps</strong>. Un <strong>git worktree</strong> est un deuxième répertoire de travail rattaché au même dépôt : même historique, autre branche.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Worktree A</th>
+<th>Worktree B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Branche</strong></td>
+<td><code>feat/bookings-pagination</code></td>
+<td><code>feat/bookings-export</code></td>
+</tr>
+<tr>
+<td><strong>Agent</strong></td>
+<td>pagination par curseur</td>
+<td>export CSV</td>
+</tr>
+<tr>
+<td><strong>Fin</strong></td>
+<td>revue · merge · nettoyage</td>
+<td>revue · merge · nettoyage</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Paralléliser demande d’isoler</strong> : chaque agent a ses fichiers, sa branche et son contexte.</p>
+</blockquote>
+<p>Ce qui est portable d’un harness à l’autre, c’est git : plusieurs éditeurs et harness créent désormais un worktree par session parallèle (voir « Où ça se règle dans mon outil »).</p>
+<h2 id="developpement-parallele-le-bilan">Développement parallèle : le bilan</h2>
+<p><em>Module 5 · slide « Développement parallèle : le bilan »</em></p>
+<table>
+<thead>
+<tr>
+<th>Ce qu’on gagne</th>
+<th>Ce que ça coûte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Temps</strong> : deux features avancent ensemble</td>
+<td><strong>Tokens × n</strong> : chaque agent a son propre contexte</td>
+</tr>
+<tr>
+<td><strong>Isolation</strong> : les agents ne se perturbent pas</td>
+<td><strong>Conflits de merge</strong> : si les features touchent les mêmes fichiers</td>
+</tr>
+<tr>
+<td><strong>Revue</strong> : des PR plus petites, plus lisibles</td>
+<td><strong>Services partagés</strong> : ports, base de données, dépendances</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Features indépendantes</strong> seulement. Et ce qui sature d’abord, c’est <strong>vous</strong> : au-delà de <strong>2 sessions</strong>, on subit.</p>
+</blockquote>
+<ul>
+<li>Quand ça vaut le coup : features vraiment indépendantes (modules distincts), plus de 15 à 20 min d’agent chacune, équipe à l’aise avec le merge.</li>
+<li>Déconseillé : services partagés (bases, ports), dépendances très lourdes à réinstaller par worktree.</li>
+<li>La limite du parallélisme n’est pas la machine : c’est la <strong>capacité de revue humaine</strong>. Sans méthode, l’IA peut même ralentir : dans l’étude METR (juillet 2025, 16 développeurs, 246 tâches), les développeurs avec IA ont pris 19 % plus longtemps.</li>
+</ul>
+<h2 id="le-cout-cache-l-erosion-de-la-connaissance">Le coût caché : l’érosion de la connaissance</h2>
+<p><em>Module 5 · slide « Le coût caché : l’érosion de la connaissance »</em></p>
+<table>
+<thead>
+<tr>
+<th>Effet</th>
+<th>Ce qui se passe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Écrire moins</strong></td>
+<td>le code vous appartient moins quand vous ne l’écrivez pas</td>
+</tr>
+<tr>
+<td><strong>Relire n’est pas apprendre</strong></td>
+<td>on valide une forme, pas un raisonnement</td>
+</tr>
+<tr>
+<td><strong>Lent et invisible</strong></td>
+<td>on le découvre en incident, deux ans plus tard</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Ce n’est pas un argument contre l’autonomie, c’est sa <strong>condition</strong> : ce qu’on automatise, il faut savoir le <strong>reprendre</strong>.</p>
+</blockquote>
+<ul>
+<li>L’IA amplifie ce que vous êtes déjà : bonne base de code → meilleure ; mauvaise → bien pire.</li>
+<li>La documentation est ce qui reste quand la mémoire de l’équipe s’efface (module 4). Supprimer la revue humaine, c’est perdre le principal moment où la connaissance circule.</li>
+<li>Deux questions à se poser : sur le code que votre agent a produit la semaine dernière, lequel sauriez-vous expliquer à un collègue ? Qui saurait reprendre ce module sans l’agent ?</li>
+</ul>
+<h2 id="superviser-au-lieu-d-approuver">Superviser au lieu d’approuver</h2>
+<p><em>Module 5 · slide « Quiz : quel pattern ? » (tip du module)</em></p>
+<p>Deux moyens au service du même saut d’autonomie, adoptables séparément :</p>
+<ul>
+<li><strong>Le poste comme console</strong> : sessions persistantes, une par panneau de terminal ou d’éditeur ; on voit ce que l’agent fait, on ne le devine pas ; le diff est relu ligne à ligne avant de valider.</li>
+<li><strong>Le parallélisme, quand c’est indépendant</strong> : worktrees, une branche isolée par agent, des PR plus petites, des contextes ciblés.</li>
+</ul>
+<p>Ce qui rend l’autonomie tenable, ce n’est pas l’outillage : ce sont les <strong>tests</strong>, les <strong>commits fréquents</strong> et la <strong>relecture du diff</strong>. Sans ce filet, monter d’un cran ne fait qu’accélérer la production de code non vérifié.</p>
+<blockquote>
+<p><strong>Tip du module</strong> : superviser au lieu d’approuver, ajoute un agent seulement si tu sais <strong>qui relira son travail</strong>.</p>
+</blockquote>
+<p>L’exercice 3 compare une délégation à des sous-agents et la même chose faite dans la session principale : voir « Les exercices ».</p>
+<h2 id="a-retenir">À retenir</h2>
+<ol>
+<li>Cinq patterns, du plus prévisible au plus autonome : <strong>commencer simple</strong>.</li>
+<li>Les fiabilités se <strong>multiplient</strong> : chaîne courte, vérification entre les étapes.</li>
+<li>Paralléliser demande d’<strong>isoler</strong> ; au-delà de <strong>deux sessions</strong>, c’est la revue qui sature.</li>
+<li>L’autonomie a une condition : savoir <strong>reprendre</strong> ce qu’on automatise.</li>
+</ol>
+<p><strong>Mots-clés</strong> : orchestrateur, sous-agent, fiabilité composée, worktree, parallélisme, isolation, human-in-the-loop — voir le glossaire.</p>
+</article>
+    <footer class="content__footer">© Zenika · Développeur IA — Avancé</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">fiche module 6</p>
+      <h1 class="content__title">Au-delà du poste</h1>
+    </header>
+    <article class="prose"><p>Ce que change l’agent dans la chaîne de prod et pour l’entreprise : cette fiche reprend le module 6 et la clôture, de la revue de PR en CI jusqu’à la réversibilité.</p>
+<h2 id="de-la-revue-locale-a-la-revue-de-pr-en-ci">De la revue locale à la revue de PR en CI</h2>
+<p><em>Module 6 · slide « De la revue locale à la revue de PR en CI »</em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Revue locale</th>
+<th>Revue de PR en CI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Exécution</strong></td>
+<td>un hook sur le poste</td>
+<td>le runner CI, à chaque PR</td>
+</tr>
+<tr>
+<td><strong>Périmètre vu</strong></td>
+<td>diff local et conventions</td>
+<td>PR complète, spec, règles d’équipe, analyse statique</td>
+</tr>
+<tr>
+<td><strong>Restitution</strong></td>
+<td>dans la session</td>
+<td>commentaire de PR et quality gate</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>L’agent quitte la machine du dev et entre dans la <strong>chaîne de production collective</strong> : ce qui se passe sur la machine reste au poste ; tout ce qui entre dans le dépôt partagé, la CI, le ticketing et la supervision relève de la chaîne.</li>
+<li>Les mêmes primitives (instructions, skills, hooks) se retrouvent en CI : c’est pour ça qu’on les versionne.</li>
+<li>Rappel de l’ordre : déterministe d’abord (lint, tests, analyse statique), agentique ensuite, humain en dernier.</li>
+</ul>
+<blockquote>
+<p>Donner plus de contexte autour du changement à l’agent de revue réduit <strong>beaucoup les faux positifs</strong> :</p>
+</blockquote>
+<pre><code class="language-text">git diff -U10 origin/main...HEAD
+</code></pre>
+<p><code>-U10</code> donne 10 lignes de contexte au lieu des 3 par défaut ; <code>--function-context</code> donne la fonction modifiée en entier.</p>
+<h2 id="pair-programming-a-trois">Pair-programming à trois</h2>
+<p><em>Module 6 · slide « Pair-programming à trois »</em></p>
+<p>Le dev et un relecteur (deux personnes) + l’agent de revue, <strong>en même temps</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Cycle de PR asynchrone</th>
+<th>2 personnes + 1 agent, en synchrone</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Le dev soumet la PR</td>
+<td>1. L’agent de revue (CI) produit son rapport</td>
+</tr>
+<tr>
+<td>2. Le relecteur commente (24 h d’attente)</td>
+<td>2. Le dev et le relecteur trient les remarques en direct</td>
+</tr>
+<tr>
+<td>3. Le dev corrige (12 h d’attente)</td>
+<td>3. L’agent applique les corrections</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Moins d’attente, des retours plus pertinents, une validation immédiate. Et un moment où la connaissance circule.</p>
+</blockquote>
+<h2 id="politique-de-merge-graduee">Politique de merge graduée</h2>
+<p><em>Module 6 · slide « Politique de merge graduée »</em></p>
+<p>Toutes les PR ne se valent pas : la gouvernance suit le <strong>risque</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Type de PR</th>
+<th>Politique</th>
+<th>Encadrement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Doc, correctif mineur</strong></td>
+<td>merge automatique</td>
+<td>encadré par les evals et la CI</td>
+</tr>
+<tr>
+<td><strong>Fonctionnelle</strong></td>
+<td>revue synchrone</td>
+<td>dev + relecteur</td>
+</tr>
+<tr>
+<td><strong>Architecture, cœur, sécurité</strong></td>
+<td>double validation</td>
+<td>humaine, obligatoire</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Les agents <strong>préparent les preuves</strong> (evals, diffs, specs) ; sur le cœur de métier, <strong>l’humain décide</strong>.</p>
+</blockquote>
+<p>Les <strong>evals</strong> (jeux de tests qui mesurent la qualité des réponses d’un agent ou d’une skill) deviennent des quality gates comme les autres.</p>
+<h2 id="ou-placer-les-controles">Où placer les contrôles</h2>
+<p><em>Module 6 · slide « Où placer les contrôles »</em></p>
+<table>
+<thead>
+<tr>
+<th>Garde</th>
+<th>Ce qu’elle contrôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Garde d’entrée</strong></td>
+<td>injection, jailbreak ; données perso, secrets → masquer ; sujets interdits ; taille, débit, budget</td>
+</tr>
+<tr>
+<td><strong>Garde de sortie</strong></td>
+<td>toxicité, hors périmètre ; fuite de données ; ancrage (grounding) ; format / schéma valide</td>
+</tr>
+<tr>
+<td><strong>Garde d’action</strong></td>
+<td>liste blanche de tools ; sandbox, conteneur, réseau ; droits minimaux (tokens) ; validation humaine</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Les gardes d’entrée et de sortie <strong>réduisent</strong> le risque. La garde d’action le <strong>borne</strong> : un agent sans réseau ne peut pas exfiltrer.</p>
+</blockquote>
+<ul>
+<li>Défense en profondeur : aucun étage n’est suffisant seul.</li>
+<li>Les gardes d’entrée et de sortie sont souvent elles-mêmes des modèles (classifieurs, petits modèles), donc faillibles, avec de la latence et du coût. On les place sur les données externes non fiables (prompt injection) et sur les sorties qui partent vers des clients.</li>
+<li>La garde d’action est déterministe : un refus sur <code>git push</code> ne se contourne pas par un prompt astucieux. Pour un agent de code, c’est le premier investissement : permissions du harness, sandbox ou conteneur, tokens à portée minimale.</li>
+<li><strong>Trio létal</strong> : données privées + contenu non fiable + capacité d’envoyer vers l’extérieur. Casser un des trois, c’est le rôle de la garde d’action.</li>
+</ul>
+<h2 id="l-ai-gateway-un-seul-point-de-passage">L’AI gateway : un seul point de passage</h2>
+<p><em>Module 6 · slide « L’AI gateway : un seul point de passage »</em></p>
+<p>Un <strong>proxy entre vos agents et les fournisseurs de modèles</strong> : une seule API côté agents, N fournisseurs derrière, aucune clé de fournisseur sur les postes.</p>
+<table>
+<thead>
+<tr>
+<th>Fonction</th>
+<th>Ce qu’elle apporte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Routage</strong></td>
+<td>choix du modèle, <strong>fallback</strong> si un fournisseur tombe</td>
+</tr>
+<tr>
+<td><strong>FinOps</strong></td>
+<td>quotas et <strong>plafond de dépense</strong> par équipe</td>
+</tr>
+<tr>
+<td><strong>Observabilité</strong></td>
+<td>tokens, coût et latence par appel (souvent en OpenTelemetry)</td>
+</tr>
+<tr>
+<td><strong>Emballement</strong></td>
+<td>coupe l’agent coincé dans une boucle</td>
+</tr>
+<tr>
+<td><strong>Guardrails</strong></td>
+<td>masquage, détection d’injection : appliqués <strong>à tous</strong></td>
+</tr>
+<tr>
+<td><strong>Traçabilité</strong></td>
+<td>modèles autorisés, résidence des données, audit</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>La gouvernance sans modifier les agents : ajouter un masquage ou changer de fournisseur se fait dans la gateway, une fois.</li>
+<li>Le <strong>plafond de dépense</strong> est le garde-fou le plus simple, à poser dans la gateway.</li>
+<li>Attention au <strong>cache sémantique</strong> de certaines gateways : il renvoie une réponse déjà générée pour une question « proche ». Utile pour une FAQ, dangereux pour un agent de code. À ne pas confondre avec le <strong>prompt caching</strong> du fournisseur (module 1), qui ne change pas la réponse.</li>
+</ul>
+<h2 id="le-budget-cache-au-dela-des-tokens">Le budget caché : au-delà des tokens</h2>
+<p><em>Module 6 · slide « Le budget caché : au-delà des tokens »</em></p>
+<p>Plus d’agents, c’est plus de PR. Donc plus de <strong>builds</strong>, de <strong>tests</strong>, de <strong>mutation testing</strong> : la facture est <strong>double</strong>, les tokens et les <strong>runners CI</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Effet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Adoption des agents</td>
+<td>plus de travail en parallèle</td>
+</tr>
+<tr>
+<td>Multiplication des PR</td>
+<td>plus de CI, de tests, de mutation</td>
+</tr>
+<tr>
+<td>Résultat</td>
+<td>facture tokens <strong>+</strong> facture runners</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Un budget IA, c’est <strong>tokens + CI + stockage + temps de revue</strong>. Le temps de revue humaine est le poste le plus oublié, et c’est lui qui limite le parallélisme.</p>
+</blockquote>
+<h2 id="investir-ou-attendre-le-test-a-trois-questions">Investir ou attendre : le test à trois questions</h2>
+<p><em>Module 6 · slide « Investir ou attendre : le test à trois questions »</em></p>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Investir</th>
+<th>Attendre</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Spécifique ?</strong></td>
+<td>contexte propre à l’équipe ou au produit</td>
+<td>générique : ce que le modèle fera bientôt nativement</td>
+</tr>
+<tr>
+<td><strong>Répété ?</strong></td>
+<td>plusieurs fois par semaine</td>
+<td>rare : le geste qu’on fait deux fois par an</td>
+</tr>
+<tr>
+<td><strong>Maintenu ?</strong></td>
+<td>un propriétaire identifié</td>
+<td>orphelin : personne ne le maintiendra</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Trois oui : on écrit la skill ou le hook. Un non : <strong>on attend</strong>.</p>
+</blockquote>
+<ul>
+<li>Le critère du propriétaire est le plus discriminant : une skill non maintenue est pire qu’absente (agentic debt).</li>
+<li>La seule mesure qui vaut est la vôtre : combien de fois la skill s’est déclenchée, et le temps qu’elle a évité de réexpliquer. Trois skills utilisées valent mieux que vingt dans le dépôt.</li>
+</ul>
+<h2 id="reversibilite-eviter-le-vendor-lock-in">Réversibilité : éviter le vendor lock-in</h2>
+<p><em>Module 6 · slide « Réversibilité : éviter le vendor lock-in »</em></p>
+<table>
+<thead>
+<tr>
+<th>Principe</th>
+<th>Pourquoi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Harness ≠ fournisseur</strong></td>
+<td>l’adhérence est dans le harness ; les modèles changent tous les trimestres</td>
+</tr>
+<tr>
+<td><strong>Modèle via la gateway</strong></td>
+<td>basculer sans réécrire l’outillage</td>
+</tr>
+<tr>
+<td><strong>Formats ouverts</strong></td>
+<td><code>AGENTS.md</code>, <code>SKILL.md</code>, MCP survivent à un changement d’outil</td>
+</tr>
+<tr>
+<td><strong>Résidence des données</strong></td>
+<td>à exiger au contrat : aucune donnée ne sert au réentraînement, hébergement connu</td>
+</tr>
+</tbody>
+</table>
+<p>Modèle via la gateway : les agents appellent un nom interne (ex. <code>code-standard</code>), la gateway choisit le modèle réel derrière. Changer de modèle devient un réglage côté gateway, à condition que le harness accepte une adresse d’API personnalisée.</p>
+<p>Choisir un harness, un modèle, un fournisseur : trois décisions désormais séparables, selon trois postures.</p>
+<table>
+<thead>
+<tr>
+<th>Posture</th>
+<th>Exemples</th>
+<th>Ce que ça implique</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Mono-fournisseur</strong></td>
+<td>Claude Code</td>
+<td>le harness impose la famille de modèles : cohérence maximale, arbitrage impossible ; l’hébergement reste négociable</td>
+</tr>
+<tr>
+<td><strong>Catalogue multi-éditeur</strong></td>
+<td>GitHub Copilot</td>
+<td>un contrat, plusieurs modèles au choix en session : arbitrage coût / puissance sans changer d’outil</td>
+</tr>
+<tr>
+<td><strong>Agnostique</strong></td>
+<td>OpenCode, Pi, Aider ; Codex par configuration (fournisseurs compatibles API OpenAI, modèles locaux)</td>
+<td>le fournisseur est un paramètre : liberté totale, intégration (permissions, support) à votre charge</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Tip du module</strong> : Tracé et portable : un agent qu’on peut <strong>auditer</strong>, et <strong>quitter</strong>. Commits tracés, specs versionnées, appels journalisés par la gateway, formats ouverts.</p>
+</blockquote>
+<h2 id="une-requete-de-bout-en-bout">Une requête, de bout en bout</h2>
+<p><em>Clôture · slide « Une requête, de bout en bout »</em></p>
+<p>Exemple : « ajoute la pagination par curseur sur GET /bookings, avec ses tests ».</p>
+<ol>
+<li><strong>SDD</strong> : une tâche issue d’une <strong>spec relue</strong>.</li>
+<li><strong>Orchestrer</strong> : la tâche est confiée à un <strong>agent</strong>.</li>
+<li><strong>Harness</strong> : construit le <strong>contexte</strong>, préfixe stable en tête (<code>AGENTS.md</code>, demande initiale).</li>
+<li><strong>Gateway</strong> : <strong>filtre</strong>, <strong>route</strong> et <strong>journalise</strong> l’appel.</li>
+<li><strong>Modèle</strong> : <strong>prefill</strong> en cache, puis <strong>decode</strong>.</li>
+<li><strong>Harness</strong> : hook, permission, tool, puis il <strong>reboucle</strong>.</li>
+</ol>
+<blockquote>
+<p><strong>Le modèle prédit, le harness agit, la gateway gouverne.</strong></p>
+</blockquote>
+<h2 id="trois-idees-a-garder">Trois idées à garder</h2>
+<p><em>Clôture · slide « Trois idées à garder »</em></p>
+<table>
+<thead>
+<tr>
+<th>Idée</th>
+<th>En une phrase</th>
+<th>Le réflexe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1. Le contexte fait la facture</strong></td>
+<td>l’entrée domine, le préfixe stable est en cache, les sous-agents isolent sans être gratuits</td>
+<td>mesurer ce qui entre</td>
+</tr>
+<tr>
+<td><strong>2. Le harness agit</strong></td>
+<td>ce qui doit arriver se configure (hook, sandbox, tests), ça ne se demande pas</td>
+<td>hook plutôt que consigne</td>
+</tr>
+<tr>
+<td><strong>3. La gouvernance se trace</strong></td>
+<td>spec versionnée, commit tracé, appels par la gateway, revue humaine là où ça compte</td>
+<td>ce qui n’est pas tracé n’est pas gouverné</td>
+</tr>
+</tbody>
+</table>
+<p>Pour aller plus loin : « Building effective agents », Anthropic (2024) ; « Attention Is All You Need », Vaswani et al. (2017) ; « Intro to LLMs », Andrej Karpathy ; OWASP Top 10 for LLM (2025).</p>
+<h2 id="a-retenir">À retenir</h2>
+<ol>
+<li>La revue passe du poste à la <strong>CI</strong> ; la gouvernance des merges suit le <strong>risque</strong>.</li>
+<li>La <strong>garde d’action</strong> borne le risque, les gardes d’entrée et de sortie le réduisent.</li>
+<li>La <strong>gateway</strong> route, plafonne, observe et trace, pour toute l’entreprise.</li>
+<li>Un budget IA compte aussi la <strong>CI</strong> et le <strong>temps de revue</strong> ; on investit sur le <strong>spécifique, répété, maintenu</strong>.</li>
+</ol>
+<p><strong>Mots-clés</strong> : guardrails, gateway, prompt injection, trio létal, plafond de dépense, evals, quality gate, human-in-the-loop, vendor lock-in — voir le glossaire.</p>
+</article>
+    <footer class="content__footer">© Zenika · Développeur IA — Avancé</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">support d'exercice</p>
+      <h1 class="content__title">Les exercices</h1>
+    </header>
+    <article class="prose"><p>Les trois exercices des slides : optionnels, indépendants et courts, à faire avec ton propre harness sur le kit d’exercices.</p>
+<p>Le terrain est le <strong>même kit que la formation Foundation</strong> : la Booking API, une petite API de réservation de salles en TypeScript, avec le fil rouge de la pagination par curseur sur <code>GET /bookings</code>. Il se télécharge depuis la carte de la formation <strong>Développeur IA — Foundation</strong> (« Kit de code (.zip) ») ; son <code>README.md</code> donne l’installation (<code>npm install</code>, <code>npm test</code>) et les commandes (<code>npm test -- &lt;filtre&gt;</code>, <code>npm run lint</code>). Le kit ne contient aucune configuration propre à un outil : il marche avec n’importe quel agent de code.</p>
+<p>Chaque exercice part du kit tel quel, après un <code>git init</code> et un premier commit pour pouvoir revenir en arrière : tu peux en faire un, deux, trois… ou aucun, la formation se suit sans. Les consignes sont écrites en <strong>intention</strong> : chacun les réalise avec le mécanisme de son harness (voir « Où ça se règle dans mon outil »).</p>
+<h2 id="exercice-1-garde-fou-deterministe">Exercice 1 — Garde-fou déterministe (20 min, optionnel)</h2>
+<p><em>Module 2 · slide « Exercice 1 — Garde-fou déterministe »</em></p>
+<p><strong>Concept</strong> : ce qui doit <strong>toujours</strong> arriver est un <strong>hook</strong>, pas une consigne.</p>
+<p><strong>La consigne</strong></p>
+<ol>
+<li>Choisis un besoin du quiz : bloquer une commande, lancer les tests…</li>
+<li>Mets-le en place <strong>avec le mécanisme de hook de ton harness</strong>.</li>
+<li>Demande ensuite à ton agent de faire <strong>le contraire</strong>.</li>
+</ol>
+<pre><code class="language-text">Mets en place un hook qui refuse toute modification de openapi.yaml
+(le contrat de l'API), puis explique-moi comment le tester.
+</code></pre>
+<pre><code class="language-text">Ajoute un hook qui lance les tests du module modifié après chaque
+édition de fichier.
+</code></pre>
+<p>Puis, pour essayer de passer outre :</p>
+<pre><code class="language-text">Ajoute le champ createdAt aux réservations dans openapi.yaml.
+</code></pre>
+<pre><code class="language-text">Modifie src/bookings/bookings.controller.ts sans lancer les tests.
+</code></pre>
+<p><strong>Réussi quand…</strong></p>
+<ul>
+<li>l’action est <strong>bloquée</strong>, ou la vérification <strong>lancée</strong>, par le harness ;</li>
+<li><strong>même</strong> quand on demande le contraire.</li>
+</ul>
+<p><strong>Débrief</strong> : qu’a tenté l’agent pour passer outre ? S’il essaie une autre commande pour arriver au même effet, c’est « une allowlist n’est pas une sandbox » en direct.</p>
+<h2 id="exercice-2-la-spec-change">Exercice 2 — La spec change (25 min, optionnel)</h2>
+<p><em>Module 4 · slide « Exercice 2 — La spec change »</em></p>
+<p><strong>Concept</strong> : la spec versionnée est la source de vérité ; le <strong>drift</strong> se détecte, il ne se devine pas.</p>
+<p><strong>La consigne</strong></p>
+<ol>
+<li>Écris une spec courte pour une fonctionnalité de l’API (suggestion : la pagination par curseur sur <code>GET /bookings</code>, le ticket <code>TICKET.md</code> du kit).</li>
+<li>Versionne-la, fais-la implémenter <strong>avec ses tests</strong>.</li>
+<li>En cours de route, <strong>change une exigence</strong> : par exemple « curseur invalide → 400 » devient « curseur invalide → première page ». Une fois dans la spec seulement, une fois dans le code seulement.</li>
+</ol>
+<p>Aucun framework de SDD imposé : un fichier markdown versionné suffit. Si tu en utilises un, garde-le.</p>
+<pre><code class="language-text">Écris une spec de moins de 30 lignes pour ce besoin : contexte,
+exigences numérotées, critères d'acceptation, questions ouvertes.
+Ne code rien.
+</code></pre>
+<pre><code class="language-text">Implémente la spec docs/specs/bookings-pagination.md avec ses tests
+fonctionnels. Un test par critère d'acceptation.
+</code></pre>
+<p><strong>Réussi quand…</strong></p>
+<ul>
+<li>la spec est <strong>versionnée</strong> dans le dépôt ;</li>
+<li>l’implémentation <strong>passe ses tests</strong> ;</li>
+<li>le changement est <strong>détecté</strong>, et on sait dire <strong>par quoi</strong> : le test rouge ou la remarque de revue qui l’a révélé.</li>
+</ul>
+<p><strong>Débrief</strong> : qu’est-ce qui aurait laissé passer le drift ?</p>
+<h2 id="exercice-3-deleguer-et-isoler">Exercice 3 — Déléguer et isoler (15 min, optionnel)</h2>
+<p><em>Module 5 · slide « Exercice 3 — Déléguer et isoler »</em></p>
+<p><strong>Concept</strong> : un sous-agent <strong>isole</strong> son contexte et ne renvoie que son résultat… mais il <strong>coûte</strong>.</p>
+<p><strong>La consigne</strong></p>
+<ol>
+<li>Confie <strong>avec le mécanisme de ton harness</strong> à des sous-agents : une exploration du code, la revue d’un fichier par un regard neuf.</li>
+<li>Refais-le dans la session principale, et compare.</li>
+</ol>
+<p>Le fichier à relire : <code>src/bookings/bookings.controller.ts</code>, tel que le kit le fournit (il contient au moins un bug latent). Ton harness n’a pas de sous-agents ? Deux sessions séparées font le même travail : le concept est l’isolation du contexte.</p>
+<pre><code class="language-text">Avec un sous-agent, explore le module bookings et rends-moi
+en 15 lignes : fichiers clés, points d'extension, pièges.
+Ne modifie rien.
+</code></pre>
+<pre><code class="language-text">Avec un sous-agent qui n'a pas vu cette session, relis
+src/bookings/bookings.controller.ts. Liste les bugs et les risques,
+rien d'autre. Ne modifie rien.
+</code></pre>
+<p><strong>Réussi quand…</strong></p>
+<ul>
+<li>les deux tâches ont tourné dans des <strong>contextes isolés</strong> ;</li>
+<li>on compare <strong>contexte consommé</strong>, <strong>fichiers lus</strong> et <strong>qualité</strong>.</li>
+</ul>
+<p><strong>Débrief</strong> : qu’a gagné la session principale ? Et combien a coûté la session entière ? Regarde la jauge de la session principale <strong>et</strong> la consommation totale (voir « Le piège des sous-agents »).</p>
+</article>
+    <footer class="content__footer">© Zenika · Développeur IA — Avancé</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">démos à rejouer</p>
+      <h1 class="content__title">Les démos</h1>
+    </header>
+    <article class="prose"><p>Les démos jouées par le formateur pendant la formation, pour les rejouer seul, que tu aies été présent ou non. Elles tournent toutes sur le kit d’exercices de la Foundation (carte <strong>Développeur IA — Foundation</strong>, « Kit de code (.zip) »), installé avec <code>npm install</code> (<code>npm test</code> doit être vert) et un premier commit, avec ton agent de code ouvert dessus.</p>
+<h2 id="un-hook-qui-bloque-l-agent">Un hook qui bloque l’agent</h2>
+<p><em>Module 2 · démo de l’exercice 1 « Garde-fou déterministe » · 3 min</em></p>
+<p><strong>Ce que ça montre</strong> : ce qui doit <strong>toujours</strong> arriver est un <strong>hook</strong>, pas une consigne. Une consigne, le modèle peut l’oublier ; un hook, c’est le harness qui l’exécute, quoi que demande le modèle.</p>
+<p><strong>À rejouer</strong></p>
+<ol>
+<li>Mets en place le hook, avec le mécanisme de hook de ton harness (voir le handout « Où ça se règle dans mon outil ») :</li>
+</ol>
+<pre><code class="language-text">Mets en place un hook qui refuse toute modification de openapi.yaml
+(le contrat de l'API), puis explique-moi comment le tester.
+</code></pre>
+<ol start="2">
+<li>Demande ensuite le contraire :</li>
+</ol>
+<pre><code class="language-text">Ajoute le champ createdAt aux réservations dans openapi.yaml.
+</code></pre>
+<p><strong>Ce qu’on observe</strong> : le refus vient du harness, il apparaît dans la trace de la session. L’agent tente souvent un autre chemin pour arriver au même effet (une commande <code>sed</code>, un autre outil d’écriture) : c’est « une allowlist n’est pas une sandbox » en direct. Tout se passe en local, sans remote git.</p>
+<h2 id="avec-ou-sans-demande-initiale">Avec ou sans demande initiale</h2>
+<p><em>Module 3 · démo « Avec ou sans demande initiale » · 5 min</em></p>
+<p><strong>Ce que ça montre</strong> : une demande initiale cadrée réduit l’exploration de l’agent et améliore son plan. On ne le croit pas sur parole, on le <strong>mesure</strong> : même tâche, deux sessions, on compare les chiffres.</p>
+<p><strong>Avant de commencer</strong> : la jauge de contexte et la liste des fichiers lus visibles dans ton harness. Les deux sessions s’arrêtent au <strong>plan</strong> : rien n’est modifié.</p>
+<p><strong>Session 1, sans cadrage.</strong> Nouvelle session vierge, colle :</p>
+<pre><code class="language-text">Ajoute la pagination par curseur sur GET /bookings, avec ses tests.
+Propose d'abord un plan, ne modifie aucun fichier.
+</code></pre>
+<p><strong>Session 2, avec une demande initiale.</strong> Nouvelle session vierge (pas la même), colle :</p>
+<pre><code class="language-text">Ajoute la pagination par curseur sur GET /bookings, avec ses tests.
+
+Tâche : pagination par curseur sur GET /bookings (ticket BOOK-142).
+Fichiers clés : src/bookings/bookings.controller.ts,
+src/shared/pagination/cursor.ts (le helper à réutiliser),
+src/rooms/rooms.controller.ts (l'exemple déjà paginé), openapi.yaml.
+Commandes : npm test -- bookings, puis npm test et npm run lint.
+Invariants : réutiliser le helper de pagination partagé ;
+curseur opaque (base64url) ; réponse { items, nextCursor } comme GET /rooms ;
+mettre à jour openapi.yaml.
+Pièges : ne pas réinventer un helper ; limit max 100 ;
+plusieurs réservations le même jour : la clé du curseur doit départager les égalités.
+
+Propose d'abord un plan, ne modifie aucun fichier.
+</code></pre>
+<p><strong>Le relevé</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Session 1 (sans)</th>
+<th>Session 2 (avec)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fichiers lus avant le plan</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Context window consommée</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Réutilise <code>src/shared/pagination/cursor.ts</code> ?</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Prévoit de mettre à jour <code>openapi.yaml</code> ?</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Départage les réservations du même jour ?</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ce qu’on observe</strong> : les chiffres, et surtout <strong>la justesse du plan</strong>. Sans cadrage, l’agent invente-t-il son propre helper, oublie-t-il le contrat ou les égalités de date ? Avec, suit-il les invariants ? Si l’écart est faible, c’est un résultat aussi : sur un petit dépôt, la recherche de l’agent suffit souvent. Le gain annoncé n’est pas le gain mesuré : on compte.</p>
+<h2 id="un-sous-agent-pour-explorer">Un sous-agent pour explorer</h2>
+<p><em>Module 5 · démo de l’exercice 3 « Déléguer et isoler » · 3 min</em></p>
+<p><strong>Ce que ça montre</strong> : un sous-agent <strong>isole</strong> son contexte et ne renvoie que son résultat, mais il <strong>coûte</strong> : la session principale reste légère, la consommation totale ne baisse pas.</p>
+<p><strong>À rejouer</strong>, avec le mécanisme de sous-agents de ton harness (sans sous-agents : une deuxième session séparée fait le même travail) :</p>
+<pre><code class="language-text">Avec un sous-agent, explore le module bookings et rends-moi
+en 15 lignes : fichiers clés, points d'extension, pièges.
+Ne modifie rien.
+</code></pre>
+<p>Puis la même demande dans la session principale, sans sous-agent.</p>
+<p><strong>Ce qu’on observe</strong> : la jauge de la session principale reste basse avec le sous-agent ; la consommation totale de la session, elle, ne baisse pas forcément (voir « Le piège des sous-agents »). L’exercice complet, avec la revue de <code>bookings.controller.ts</code>, est dans le handout <a href="#handout-07-exercices/exercice-3-deleguer-et-isoler">« Les exercices »</a>.</p>
+</article>
+    <footer class="content__footer">© Zenika · Développeur IA — Avancé</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">fiche outils</p>
+      <h1 class="content__title">Où ça se règle dans mon outil</h1>
+    </header>
+    <article class="prose"><p>La formation parle de concepts ; cette fiche donne, pour quatre harness courants, l’endroit où se règlent les primitives de l’Avancé : hooks, sous-agents, permissions et sandbox, instructions projet, skills, MCP, compaction, effort de raisonnement.</p>
+<blockquote>
+<p><strong>Rédigé le 21 octobre 2026 ; les outils changent vite.</strong> Les noms de modes, d’événements, les commandes et les chemins bougent d’une version à l’autre : en cas de doute, la documentation du jour fait foi. Cette fiche ne reprend que ce que les supports Zenika sourcent (handout « Où ça se règle » de la Foundation, vérifié sur les docs des éditeurs le 21 octobre 2026 ; bootcamp AI-Driven Development, module 2). « à vérifier dans la doc de l’outil » signale une case non sourcée ; « — » l’absence d’équivalent documenté.</p>
+</blockquote>
+<p>Les formats ouverts passent d’un outil à l’autre : <strong><code>AGENTS.md</code></strong> (instructions projet), <strong><code>SKILL.md</code></strong> (skills) et <strong>MCP</strong> (tools). Une équipe mixte peut versionner un seul jeu de fichiers, chacun garde son harness. Hooks et sous-agents, eux, n’ont pas de format commun.</p>
+<h2 id="les-fichiers-de-contexte">Les fichiers de contexte</h2>
+<p><em>Slides « Les primitives du harness : qui décide ? » et « Tool calling : ce qui transite réellement » (module 2)</em></p>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>GitHub Copilot</th>
+<th>Claude Code</th>
+<th>Codex</th>
+<th>Cursor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Instructions projet</strong></td>
+<td><code>AGENTS.md</code> · <code>.github/copilot-instructions.md</code> · <code>.github/instructions/*.instructions.md</code> ciblés par glob (<code>applyTo</code>)</td>
+<td><code>CLAUDE.md</code> (projet : <code>./CLAUDE.md</code> ; perso : <code>~/.claude/CLAUDE.md</code>) · <code>AGENTS.md</code>, lu seulement s’il n’y a pas de <code>CLAUDE.md</code> (sinon l’importer : <code>@AGENTS.md</code>)</td>
+<td><code>AGENTS.md</code> (perso : <code>~/.codex/AGENTS.md</code>)</td>
+<td><code>AGENTS.md</code> · <code>.cursor/rules/*.mdc</code></td>
+</tr>
+<tr>
+<td><strong>Skills</strong> (<code>SKILL.md</code>)</td>
+<td><code>.github/skills/&lt;nom&gt;/</code> (lit aussi <code>.claude/skills/</code> et <code>.agents/skills/</code>) ; perso : <code>~/.copilot/skills/</code></td>
+<td><code>.claude/skills/&lt;nom&gt;/</code> ; perso : <code>~/.claude/skills/</code></td>
+<td><code>.agents/skills/&lt;nom&gt;/</code> ; perso : <code>~/.agents/skills/</code></td>
+<td><code>.cursor/skills/</code> ou <code>.agents/skills/</code> (lit aussi <code>.claude/skills/</code>) ; perso : <code>~/.cursor/skills/</code></td>
+</tr>
+<tr>
+<td><strong>Déclencher une skill</strong></td>
+<td>le modèle, sur la description, ou <code>/&lt;nom&gt;</code> dans la demande</td>
+<td>le modèle, sur la description, ou <code>/&lt;nom&gt;</code></td>
+<td>le modèle, sur la description, ou <code>$&lt;nom&gt;</code></td>
+<td>le modèle, sur la description, ou <code>/&lt;nom&gt;</code></td>
+</tr>
+<tr>
+<td><strong>Serveurs MCP</strong></td>
+<td>CLI : <code>~/.copilot/mcp-config.json</code> (ou <code>/mcp add</code>) · projet : <code>.mcp.json</code> ou <code>.github/mcp.json</code> · VS Code : <code>.vscode/mcp.json</code> (clé <code>servers</code>, pas <code>mcpServers</code>)</td>
+<td><code>.mcp.json</code> à la racine, versionné (ou <code>claude mcp add</code>)</td>
+<td><code>~/.codex/config.toml</code> ou <code>.codex/config.toml</code> du projet, table <code>[mcp_servers.&lt;nom&gt;]</code> (ou <code>codex mcp add</code>)</td>
+<td><code>.cursor/mcp.json</code> (projet) · <code>~/.cursor/mcp.json</code> (perso)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="les-hooks">Les hooks</h2>
+<p><em>Slides « Hooks : automatiser le cycle de vie » et « Exercice 1 — Garde-fou déterministe » (module 2)</em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>GitHub Copilot</th>
+<th>Claude Code</th>
+<th>Codex</th>
+<th>Cursor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Où se déclarent les hooks</strong></td>
+<td><code>.github/hooks/*.json</code> (dépôt, versionné, lu aussi par l’agent cloud) · <code>~/.copilot/hooks/</code> (utilisateur) · lit aussi les hooks de <code>.claude/settings.json</code>, en partie (moins d’événements, commandes shell seulement)</td>
+<td><code>.claude/settings.json</code> (projet, versionné) · <code>.claude/settings.local.json</code> (projet, non versionné) · <code>~/.claude/settings.json</code> (utilisateur) ; ne lit pas <code>.github/hooks/</code></td>
+<td>à vérifier dans la doc de l’outil</td>
+<td>à vérifier dans la doc de l’outil</td>
+</tr>
+<tr>
+<td><strong>Noms d’événements</strong></td>
+<td>camelCase : <code>sessionStart</code>, <code>userPromptSubmitted</code>, <code>preToolUse</code>, <code>postToolUse</code>, <code>preCompact</code>, <code>subagentStop</code>, <code>agentStop</code>, <code>sessionEnd</code>… (14 documentés)</td>
+<td>PascalCase, liste plus large : <code>SessionStart</code>, <code>PreToolUse</code>, <code>PostToolUse</code>, <code>Stop</code>…</td>
+<td>à vérifier dans la doc de l’outil</td>
+<td>à vérifier dans la doc de l’outil</td>
+</tr>
+<tr>
+<td><strong>Bloquer avant un tool</strong></td>
+<td><code>preToolUse</code> renvoie un JSON avec <code>permissionDecision</code> : <code>allow</code>, <code>deny</code> ou <code>ask</code> (+ motif) ; il peut réécrire les arguments</td>
+<td><code>PreToolUse</code> : le code de sortie <code>2</code> refuse l’appel et renvoie stderr au modèle ; <code>0</code> laisse passer</td>
+<td>à vérifier dans la doc de l’outil</td>
+<td>à vérifier dans la doc de l’outil</td>
+</tr>
+<tr>
+<td><strong>Cibler un tool</strong></td>
+<td><code>matcher</code> (sur <code>preToolUse</code>, <code>postToolUse</code>, <code>permissionRequest</code>, <code>preCompact</code>, <code>subagentStart</code>, <code>notification</code> seulement)</td>
+<td><code>matcher</code> (ex. <code>Bash</code>, <code>Edit|Write</code>)</td>
+<td>à vérifier dans la doc de l’outil</td>
+<td>à vérifier dans la doc de l’outil</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Les quatre moments génériques de la formation se lisent ainsi : <strong>avant un tool</strong> = <code>preToolUse</code> / <code>PreToolUse</code> ; <strong>après un tool</strong> = <code>postToolUse</code> / <code>PostToolUse</code> ; <strong>fin de tour</strong> = <code>agentStop</code> / <code>Stop</code> ; <strong>fin de session</strong> = <code>sessionEnd</code>.</li>
+<li>La « fin de tour » n’est pas un pre-commit : pour contrôler un <code>git commit</code>, visez le hook d’avant un tool sur la commande git, ou un hook git classique.</li>
+<li>La sortie standard d’un hook ne s’affiche pas : on juge un hook à son <strong>effet</strong>. Seul le <code>SessionStart</code> de Claude Code réinjecte sa sortie dans le contexte ; Copilot attend un JSON avec un champ <code>additionalContext</code>.</li>
+</ul>
+<h2 id="les-sous-agents">Les sous-agents</h2>
+<p><em>Slides « Les primitives du harness : qui décide ? » (module 2), « Le piège des sous-agents » (module 3) et « Exercice 3 — Déléguer et isoler » (module 5)</em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>GitHub Copilot</th>
+<th>Claude Code</th>
+<th>Codex</th>
+<th>Cursor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Définir un sous-agent</strong></td>
+<td>agents personnalisés : <code>.github/agents/*.agent.md</code></td>
+<td><code>.claude/agents/</code></td>
+<td>sous-agents disponibles (jusqu’à 6 agents concurrents) ; emplacement : à vérifier dans la doc de l’outil</td>
+<td>à vérifier dans la doc de l’outil</td>
+</tr>
+<tr>
+<td><strong>Le lancer</strong></td>
+<td><code>/agent</code> (CLI), ou l’agent principal qui délègue</td>
+<td>l’agent principal, par le tool <code>Task</code></td>
+<td>à vérifier dans la doc de l’outil</td>
+<td>à vérifier dans la doc de l’outil</td>
+</tr>
+<tr>
+<td><strong>Voir ce qu’il consomme</strong></td>
+<td><code>/usage</code> (CLI : tokens par modèle, AI Credits)</td>
+<td><code>/usage</code> (<code>/cost</code> en est l’alias), ventilé par skill, sous-agent et MCP</td>
+<td><code>/usage</code></td>
+<td>tableau de bord <em>Spending</em>, hors session</td>
+</tr>
+</tbody>
+</table>
+<p>Un sous-agent sans droit d’écriture sait relire, pas corriger : vérifiez ce que votre harness lui autorise.</p>
+<h2 id="permissions-autonomie-et-sandbox">Permissions, autonomie et sandbox</h2>
+<p><em>Slides « Une allowlist n’est pas une sandbox » (module 2) et « Où placer les contrôles » (module 6)</em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>GitHub Copilot</th>
+<th>Claude Code</th>
+<th>Codex</th>
+<th>Cursor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Observer sans agir</strong> (mode plan, lecture seule)</td>
+<td>mode <em>plan</em> (<code>/plan</code>, Maj+Tab)</td>
+<td>mode <em>plan</em></td>
+<td>mode plan (<code>/plan</code>) · <code>sandbox_mode = &quot;read-only&quot;</code></td>
+<td>mode <em>Ask</em> (lecture seule) ou <em>Plan</em> (Maj+Tab)</td>
+</tr>
+<tr>
+<td><strong>Demander à chaque action</strong></td>
+<td>permissions <code>default</code> (CLI) · <em>Manual permissions</em> (VS Code, par défaut)</td>
+<td>mode <em>Manual</em> (valeur <code>default</code>)</td>
+<td><code>trust_level = &quot;untrusted&quot;</code> sur le projet</td>
+<td>mode <em>Allowlist</em> : tout ce qui n’est pas listé demande une approbation</td>
+</tr>
+<tr>
+<td><strong>Agir dans le périmètre</strong></td>
+<td>approbations mémorisées par emplacement · <code>--allow-tool</code></td>
+<td><em>accept edits</em> (<code>acceptEdits</code>)</td>
+<td>préréglage <em>Auto</em> (par défaut) : <code>approval_policy = &quot;on-request&quot;</code> + <code>sandbox_mode = &quot;workspace-write&quot;</code></td>
+<td>mode <em>Auto-review</em> : liste blanche, sandbox, puis classifieur</td>
+</tr>
+<tr>
+<td><strong>Aller au bout seul</strong></td>
+<td><em>Autopilot</em> · <em>Allow all</em> (<code>/yolo</code>, <code>--yolo</code>)</td>
+<td><em>auto mode</em> (classifieur) · <em>bypass permissions</em></td>
+<td><em>Auto-review</em> (<code>approvals_reviewer = &quot;auto_review&quot;</code>) · <code>--yolo</code> (ni sandbox ni approbation)</td>
+<td>mode <em>Run Everything</em> (<code>/run-everything</code> en CLI)</td>
+</tr>
+<tr>
+<td><strong>Allowlist</strong> (où se déclarent les droits)</td>
+<td><code>--allow-tool</code> / <code>--deny-tool</code> au lancement · <code>~/.copilot/permissions-config.json</code> · VS Code : réglages <code>chat.tools.*.autoApprove</code></td>
+<td><code>permissions.allow</code> / <code>ask</code> / <code>deny</code> dans <code>.claude/settings.json</code>, versionné (ex. <code>&quot;deny&quot;: [&quot;Bash(rm:*)&quot;]</code>)</td>
+<td><code>~/.codex/config.toml</code> : <code>approval_policy</code>, réglé séparément de la sandbox · <code>/permissions</code> en session</td>
+<td><em>Settings &gt; Agents &gt; Approvals &amp; Execution</em> · CLI : <code>permissions.allow</code> / <code>deny</code> dans <code>.cursor/cli.json</code></td>
+</tr>
+<tr>
+<td><strong>Sandbox</strong> (ce que l’agent peut atteindre)</td>
+<td><code>copilot --cloud</code> : session dans une sandbox cloud ; en local : à vérifier dans la doc de l’outil</td>
+<td>à vérifier dans la doc de l’outil</td>
+<td><code>sandbox_mode</code> dans <code>config.toml</code> (<code>read-only</code>, <code>workspace-write</code>…), réglé séparément de l’approbation</td>
+<td>sandbox du mode <em>Auto-review</em> ; détail : à vérifier dans la doc de l’outil</td>
+</tr>
+<tr>
+<td><strong>Verrou au-dessus de l’utilisateur</strong></td>
+<td>un administrateur d’entreprise peut interdire les modes de contournement (<code>disableBypassPermissionsMode</code>)</td>
+<td>les règles <code>deny</code> s’appliquent même en <em>bypass permissions</em></td>
+<td>à vérifier dans la doc de l’outil</td>
+<td>à vérifier dans la doc de l’outil</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Le mode affiché n’est qu’un <strong>défaut</strong> : une autorisation large en configuration fait que l’agent ne demande plus rien. La configuration a le dernier mot.</li>
+<li>Codex sépare explicitement les deux réglages de la formation : l’<strong>approbation</strong> (quand on me demande) et la <strong>sandbox</strong> (ce que l’agent peut atteindre). Une bonne grille de lecture, quel que soit l’outil.</li>
+<li>Quand aucune sandbox n’est sourcée pour votre harness, l’isolation reste possible hors de l’outil : conteneur, devcontainer, VM, compte dédié, réseau coupé.</li>
+</ul>
+<h2 id="les-actions-en-session">Les actions en session</h2>
+<p><em>Slides « Du KV cache au prompt caching » et « Tokens de raisonnement : choisir l’effort » (module 1), « Ce qui entre dans la context window » (module 3)</em></p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>GitHub Copilot</th>
+<th>Claude Code</th>
+<th>Codex</th>
+<th>Cursor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Voir l’occupation de la context window</strong></td>
+<td><code>/context</code> · indicateur (petit cercle) dans VS Code</td>
+<td><code>/context</code></td>
+<td><code>/status</code> · « % context left » en pied d’écran</td>
+<td>anneau de contexte à côté de la saisie (clic : détail par catégorie)</td>
+</tr>
+<tr>
+<td><strong>Compacter</strong></td>
+<td><code>/compact</code></td>
+<td><code>/compact</code> (avec une consigne : <code>/compact focus on …</code>)</td>
+<td><code>/compact</code></td>
+<td><code>/summarize</code></td>
+</tr>
+<tr>
+<td><strong>Repartir à zéro</strong> (nouvelle session)</td>
+<td><code>/clear</code> (alias <code>/new</code>)</td>
+<td><code>/clear</code> (alias <code>/new</code>)</td>
+<td><code>/new</code> (ou <code>/clear</code>)</td>
+<td>nouveau chat (CLI : <code>/clear</code>)</td>
+</tr>
+<tr>
+<td><strong>Choisir le modèle</strong></td>
+<td><code>/model</code> (catalogue multi-éditeur)</td>
+<td><code>/model</code></td>
+<td>à vérifier dans la doc de l’outil</td>
+<td>à vérifier dans la doc de l’outil</td>
+</tr>
+<tr>
+<td><strong>Choisir l’effort de raisonnement</strong></td>
+<td>à vérifier dans la doc de l’outil</td>
+<td>réglage de l’effort, avec le choix du modèle ; commande exacte : à vérifier dans la doc de l’outil</td>
+<td>à vérifier dans la doc de l’outil</td>
+<td>à vérifier dans la doc de l’outil</td>
+</tr>
+<tr>
+<td><strong>Mémoire du harness</strong></td>
+<td>Copilot Memory · <code>/memory</code> (CLI)</td>
+<td>mémoire automatique (<code>MEMORY.md</code>) · <code>/memory</code></td>
+<td>mémoire en opt-in ; détail : à vérifier dans la doc de l’outil</td>
+<td>à vérifier dans la doc de l’outil</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Changer de modèle ou brancher un MCP en cours de session casse le cache du préfixe : choisissez modèle, effort et tools <strong>au démarrage</strong>.</p>
+</blockquote>
+<h2 id="paralleliser-et-sortir-du-poste">Paralléliser et sortir du poste</h2>
+<p><em>Slides « Agents en parallèle sur worktrees » (module 5), « Les capacités attendues d’un harness » (module 2) et « De la revue locale à la revue de PR en CI » (module 6)</em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>GitHub Copilot</th>
+<th>Claude Code</th>
+<th>Codex</th>
+<th>Cursor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Un worktree par session</strong></td>
+<td>CLI : pas natif ; application de bureau : un worktree par session</td>
+<td><code>--worktree</code> (et un fichier pour embarquer les fichiers ignorés)</td>
+<td>application : oui ; CLI : non</td>
+<td>à vérifier dans la doc de l’outil</td>
+</tr>
+<tr>
+<td><strong>Mode non interactif</strong> (CI)</td>
+<td><code>copilot -p &quot;…&quot;</code> (avec <code>--allow-tool</code> ciblé) ; les hooks et MCP du dépôt ne sont pas chargés par défaut</td>
+<td><code>claude -p &quot;…&quot;</code></td>
+<td>à vérifier dans la doc de l’outil</td>
+<td>à vérifier dans la doc de l’outil</td>
+</tr>
+</tbody>
+</table>
+<p>Partout, ce qui est portable pour paralléliser, c’est <strong>git</strong> : <code>git worktree add</code> marche avec n’importe quel harness.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Fichiers de contexte, niveaux d’autonomie, actions en session : handout « Où ça se règle dans mon outil » de la formation Développeur IA — Foundation, vérifié sur la documentation officielle des éditeurs le 21 octobre 2026 (les liens y sont listés).</li>
+<li>Hooks, sous-agents, sandbox, worktrees, mode non interactif, mémoire : bootcamp AI-Driven Development, module 2 (slides et handouts des labs, 2026), et leur extraction dans les documents de conception des formations dev.</li>
+<li>Référence des hooks GitHub Copilot : <a href="https://docs.github.com/copilot/reference/hooks-reference">https://docs.github.com/copilot/reference/hooks-reference</a></li>
+</ul>
+</article>
+    <footer class="content__footer">© Zenika · Développeur IA — Avancé</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">glossaire</p>
+      <h1 class="content__title">Glossaire des mots-clés IA</h1>
+    </header>
+    <article class="prose"><p>Une phrase par terme : les mêmes mots, avec le même sens, que dans la formation business et la Foundation, puis les termes propres à l’Avancé.</p>
+<p>Les termes techniques anglais sont gardés (harness, tools, context window, skill) : ce sont ceux que vous entendrez dans les outils et les réunions. On dit <strong>context rot</strong> pour la dégradation d’une session, et <strong>drift</strong> pour l’écart entre la spec et le code.</p>
+<h2 id="tronc-commun-les-bases">Tronc commun : les bases (rappel)</h2>
+<p><em>Ouverture et module 1</em></p>
+<table>
+<thead>
+<tr>
+<th>Terme</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>IA générative</strong></td>
+<td>IA qui produit du contenu (texte, image, code) au lieu de seulement classer ou prédire un chiffre.</td>
+</tr>
+<tr>
+<td><strong>LLM</strong> (Large Language Model)</td>
+<td>Modèle entraîné sur d’énormes volumes de texte, qui génère une réponse en prédisant le mot suivant.</td>
+</tr>
+<tr>
+<td><strong>Token</strong></td>
+<td>Morceau de mot traité par le modèle ; c’est aussi l’unité de facturation (≈ ¾ de mot en anglais).</td>
+</tr>
+<tr>
+<td><strong>Hallucination</strong></td>
+<td>Réponse fausse mais présentée avec assurance et vraisemblance.</td>
+</tr>
+<tr>
+<td><strong>Knowledge cutoff</strong> (date de coupure)</td>
+<td>Date à laquelle s’arrêtent les données d’entraînement du modèle ; il ignore tout ce qui s’est passé après, sauf s’il fait une recherche web.</td>
+</tr>
+<tr>
+<td><strong>Assistant</strong></td>
+<td>Le produit qu’on utilise au quotidien (ChatGPT, Copilot, <a href="http://Claude.ai">Claude.ai</a>, Gemini) : une interface posée sur un harness, autour d’un modèle.</td>
+</tr>
+<tr>
+<td><strong>Harness</strong></td>
+<td>Tout le logiciel autour du modèle : consignes, mémoire, tools, enchaînement des étapes. Deux assistants sur le même modèle diffèrent par leur harness.</td>
+</tr>
+<tr>
+<td><strong>Tools</strong></td>
+<td>Capacités que le modèle peut appeler pendant sa réponse : recherche web, calcul, lecture de fichiers, Jira, Figma… (<em>tool calling</em>).</td>
+</tr>
+<tr>
+<td><strong>MCP</strong> (Model Context Protocol)</td>
+<td>Standard pour brancher de nouveaux tools sur un assistant : applications et données de l’entreprise.</td>
+</tr>
+<tr>
+<td><strong>Agent</strong></td>
+<td>Modèle qui enchaîne lui-même des actions avec des tools, en boucle, jusqu’à atteindre un objectif : c’est la <strong>boucle agentique</strong> (modèle + tools + boucle + objectif, que le harness fait tourner). Les éditeurs utilisent aussi « agent » pour de simples assistants personnalisés.</td>
+</tr>
+<tr>
+<td><strong>Boucle agentique</strong> (agent loop)</td>
+<td>Le cycle demande → le modèle choisit un tool → le harness l’exécute → le résultat entre dans le contexte → on recommence si besoin.</td>
+</tr>
+<tr>
+<td><strong>Prompt</strong></td>
+<td>La demande envoyée au modèle, consignes comprises.</td>
+</tr>
+<tr>
+<td><strong>Skill</strong></td>
+<td>Savoir-faire emballé (consignes, modèles, exemples, parfois des scripts) que l’assistant charge <strong>à la demande</strong>, quand la tâche correspond. Plus léger que des instructions permanentes, partageable dans une équipe. Claude parle d’« Agent Skills » ; d’autres assistants ont des équivalents.</td>
+</tr>
+<tr>
+<td><strong>Vibe coding</strong></td>
+<td>Produire vite un prototype en langage naturel, sans regarder le code ; parfait pour explorer, insuffisant pour livrer.</td>
+</tr>
+<tr>
+<td><strong>AI-driven development</strong></td>
+<td>Développement logiciel où l’IA écrit beaucoup de code, sous la direction et le contrôle d’ingénieurs.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tronc-commun-contexte-risques-et-couts">Tronc commun : contexte, risques et coûts (rappel)</h2>
+<p><em>Modules 1, 3 et 6</em></p>
+<table>
+<thead>
+<tr>
+<th>Terme</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Context window</strong></td>
+<td>Tout ce que le modèle « voit » au moment de répondre : consignes, historique, pièces jointes, résultats des tools.</td>
+</tr>
+<tr>
+<td><strong>Session</strong></td>
+<td>Une conversation ; elle accumule du contexte, utile ou parasite.</td>
+</tr>
+<tr>
+<td><strong>Mémoire</strong></td>
+<td>Informations que l’assistant réinjecte automatiquement d’une session à l’autre (profil, préférences) ; souvent désactivable.</td>
+</tr>
+<tr>
+<td><strong>Grounding</strong></td>
+<td>Ancrer la réponse dans des sources vérifiables plutôt que dans la « mémoire » du modèle.</td>
+</tr>
+<tr>
+<td><strong>RAG</strong> (Retrieval-Augmented Generation)</td>
+<td>Technique de grounding : on cherche les bons extraits de documents internes et on les ajoute au contexte avant de répondre.</td>
+</tr>
+<tr>
+<td><strong>Cache</strong></td>
+<td>Mise en mémoire du début du contexte pour ne pas le repayer plein tarif à chaque message (il est relu à prix réduit) ; changer de modèle ou de tools en cours de route le perd.</td>
+</tr>
+<tr>
+<td><strong>Human-in-the-loop</strong></td>
+<td>Un humain qualifié valide la sortie de l’IA <em>avant</em> qu’elle soit utilisée.</td>
+</tr>
+<tr>
+<td><strong>Prompt injection</strong></td>
+<td>Instructions malveillantes cachées dans un contenu (email, document, page web) qui détournent un assistant.</td>
+</tr>
+<tr>
+<td><strong>Fuite de données</strong></td>
+<td>Données confidentielles envoyées à un assistant non maîtrisé (version grand public).</td>
+</tr>
+<tr>
+<td><strong>Plafond de dépense</strong> (spend cap)</td>
+<td>Limite de budget configurée pour éviter les factures surprises.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="rappel-de-la-foundation">Rappel de la Foundation</h2>
+<p><em>Termes de la Foundation repris dans les modules 1 à 6</em></p>
+<table>
+<thead>
+<tr>
+<th>Terme</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Agent de code</strong></td>
+<td>Agent qui lit, modifie et exécute du code dans un dépôt (Copilot, Claude Code, Codex, Cursor…).</td>
+</tr>
+<tr>
+<td><strong>System prompt</strong></td>
+<td>Consignes que le harness place en tête de chaque appel, avant les instructions projet et la conversation.</td>
+</tr>
+<tr>
+<td><strong>Tool definitions</strong></td>
+<td>Nom, description et paramètres de chaque tool, envoyés au modèle à chaque appel : ils pèsent dans la context window et se lisent comme un prompt.</td>
+</tr>
+<tr>
+<td><strong>Instructions projet</strong> (<code>AGENTS.md</code>)</td>
+<td>Fichier versionné dans le dépôt, chargé à chaque session : conventions, commandes, pièges. C’est l’équivalent dev des instructions personnalisées.</td>
+</tr>
+<tr>
+<td><strong>Demande initiale</strong></td>
+<td>Premier message de la session, cadré pour la tâche du jour : objectif, fichiers clés, commandes, invariants, pièges. Pour une tâche longue, on l’écrit dans un fichier rechargé à chaque session.</td>
+</tr>
+<tr>
+<td><strong>Invariant</strong></td>
+<td>Règle qui doit rester vraie quoi que fasse l’agent (un contrat d’API, une règle métier, un test qui doit passer).</td>
+</tr>
+<tr>
+<td><strong>Niveau d’autonomie</strong></td>
+<td>Ce que l’agent peut faire sans demander : proposer, modifier après accord, ou agir seul.</td>
+</tr>
+<tr>
+<td><strong>Permissions</strong></td>
+<td>Les actions autorisées à l’agent (lire, écrire, lancer une commande, accéder au réseau).</td>
+</tr>
+<tr>
+<td><strong>Revue IA</strong></td>
+<td>Relecture d’un diff par un agent ; elle aide l’humain, elle ne décide pas du merge.</td>
+</tr>
+<tr>
+<td><strong>Progressive disclosure</strong></td>
+<td>L’agent ne voit d’abord que le nom et la description d’une skill, et ne charge son contenu que quand il en a besoin.</td>
+</tr>
+<tr>
+<td><strong>Context rot</strong> (en business : dérive de contexte)</td>
+<td>Dégradation des réponses quand la context window se remplit d’ajouts, de corrections et d’informations périmées ou contradictoires : la session reste crédible mais s’éloigne du besoin initial.</td>
+</tr>
+<tr>
+<td><strong>Compaction</strong></td>
+<td>Résumé automatique ou demandé de la session pour libérer de la context window.</td>
+</tr>
+<tr>
+<td><strong>Lost in the middle</strong></td>
+<td>Le modèle exploite moins bien ce qui se trouve au milieu d’un long contexte.</td>
+</tr>
+<tr>
+<td><strong>Trio létal</strong></td>
+<td>Données privées + contenu non fiable + capacité d’envoyer vers l’extérieur : la combinaison qui rend une fuite possible.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="termes-propres-a-l-avance-sous-le-capot">Termes propres à l’Avancé : sous le capot</h2>
+<p><em>Module 1</em></p>
+<table>
+<thead>
+<tr>
+<th>Terme</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Prefill / decode</strong></td>
+<td>Les deux temps d’une réponse : lire tout le contexte, puis générer token par token.</td>
+</tr>
+<tr>
+<td><strong>KV cache</strong></td>
+<td>Mémoire de calcul du modèle qui évite de relire le contexte déjà traité.</td>
+</tr>
+<tr>
+<td><strong>Prompt caching</strong></td>
+<td>Le fournisseur réutilise le début inchangé du contexte d’un appel à l’autre, moins cher et plus rapide.</td>
+</tr>
+<tr>
+<td><strong>Reasoning tokens</strong> (effort)</td>
+<td>Tokens de « réflexion » que le modèle génère avant de répondre ; ils améliorent les tâches difficiles et se paient.</td>
+</tr>
+<tr>
+<td><strong>SLM</strong></td>
+<td>Petit modèle, souvent local et spécialisé, moins cher et plus rapide qu’un LLM.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="termes-propres-a-l-avance-le-harness-et-le-contexte">Termes propres à l’Avancé : le harness et le contexte</h2>
+<p><em>Modules 2 et 3</em></p>
+<table>
+<thead>
+<tr>
+<th>Terme</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Agentic debt</strong></td>
+<td>Dette créée quand on empile sur son harness des réglages, extensions et contournements qu’on ne maîtrise plus.</td>
+</tr>
+<tr>
+<td><strong>Allowlist</strong></td>
+<td>Liste des commandes que l’agent peut lancer sans demander. Ce n’est pas une sandbox.</td>
+</tr>
+<tr>
+<td><strong>Sandbox</strong></td>
+<td>Environnement isolé qui limite ce que l’agent peut toucher, même si on l’a autorisé.</td>
+</tr>
+<tr>
+<td><strong>Hook</strong></td>
+<td>Action déterministe déclenchée par le harness à un moment précis (avant une commande, après une édition), quoi que dise le modèle.</td>
+</tr>
+<tr>
+<td><strong>Sous-agent</strong> (subagent)</td>
+<td>Agent lancé par l’agent principal dans un contexte isolé, qui ne renvoie que son résultat.</td>
+</tr>
+<tr>
+<td><strong>Context engineering</strong></td>
+<td>Choisir ce qui entre dans la context window, quand et sous quelle forme.</td>
+</tr>
+<tr>
+<td><strong>Recherche agentique</strong></td>
+<td>L’agent cherche lui-même dans le code (grep, lecture de fichiers) au lieu de recevoir des extraits préparés.</td>
+</tr>
+<tr>
+<td><strong>Embeddings / indexation du code</strong></td>
+<td>Représentation du code qui permet de retrouver les passages pertinents par le sens ou par la structure.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="termes-propres-a-l-avance-spec-et-qualite">Termes propres à l’Avancé : spec et qualité</h2>
+<p><em>Module 4</em></p>
+<table>
+<thead>
+<tr>
+<th>Terme</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SDD</strong> (Spec-Driven Development)</td>
+<td>Développement où la spec versionnée est la source de vérité que l’agent implémente et que les tests vérifient.</td>
+</tr>
+<tr>
+<td><strong>Spec-first / spec-anchored / spec-as-source</strong></td>
+<td>Les trois postures du SDD : la spec sert à démarrer, reste maintenue avec le code, ou devient la seule chose qu’on édite.</td>
+</tr>
+<tr>
+<td><strong>Spec-centric / workflow-centric</strong></td>
+<td>Les deux familles d’outillage du SDD : la référence est la spec versionnée, ou une discipline de travail encodée en skills.</td>
+</tr>
+<tr>
+<td><strong>Drift</strong></td>
+<td>Écart qui s’installe entre la spec et le code.</td>
+</tr>
+<tr>
+<td><strong>Tests de construction / tests fonctionnels</strong></td>
+<td>Tests qui aident l’agent à converger sur l’implémentation, jetables / tests des effets observables, durables : la spec exécutable.</td>
+</tr>
+<tr>
+<td><strong>Mutation testing</strong></td>
+<td>Technique qui modifie le code exprès pour vérifier que les tests détectent le changement.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="termes-propres-a-l-avance-orchestrer-et-gouverner">Termes propres à l’Avancé : orchestrer et gouverner</h2>
+<p><em>Modules 5 et 6</em></p>
+<table>
+<thead>
+<tr>
+<th>Terme</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Orchestrateur</strong></td>
+<td>Logiciel ou agent qui répartit le travail entre plusieurs agents et assemble leurs résultats.</td>
+</tr>
+<tr>
+<td><strong>Fiabilité composée</strong></td>
+<td>La fiabilité d’une chaîne d’agents est le produit de celle de chaque étape : 0,95 sur 10 étapes donne environ 60 %.</td>
+</tr>
+<tr>
+<td><strong>Worktree</strong> (git worktree)</td>
+<td>Deuxième répertoire de travail rattaché au même dépôt, sur une autre branche : deux agents peuvent travailler en parallèle sans se gêner.</td>
+</tr>
+<tr>
+<td><strong>Guardrails</strong></td>
+<td>Contrôles en entrée, en sortie et sur les actions d’un agent.</td>
+</tr>
+<tr>
+<td><strong>Gateway</strong> (AI gateway)</td>
+<td>Point de passage unique entre les agents et les fournisseurs de modèles : routage, coût, traçabilité, règles.</td>
+</tr>
+<tr>
+<td><strong>Evals</strong></td>
+<td>Jeux de tests qui mesurent la qualité des réponses d’un agent ou d’une skill.</td>
+</tr>
+<tr>
+<td><strong>Quality gate</strong></td>
+<td>Contrôle automatique qu’une PR doit passer avant le merge (tests, analyse statique, evals, revue agentique).</td>
+</tr>
+<tr>
+<td><strong>Vendor lock-in</strong></td>
+<td>Dépendance à un fournisseur qui rend coûteux un changement d’outil ou de modèle ; formats ouverts et gateway la réduisent.</td>
+</tr>
+</tbody>
+</table>
+</article>
+    <footer class="content__footer">© Zenika · Développeur IA — Avancé</footer>
+  </section>
+</body>
+</html>

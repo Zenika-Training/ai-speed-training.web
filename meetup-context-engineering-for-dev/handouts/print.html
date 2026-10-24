@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Context Engineering — reprendre le contrôle des agents de code · Handouts</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Urbanist:wght@600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body class="print-all">
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">support d'exercice</p>
+      <h1 class="content__title">Les activités de l'atelier</h1>
+    </header>
+    <article class="prose"><p>Les consignes et les prompts de départ des quatre activités. Faites-les avec l’agent de code ou l’assistant que vous utilisez d’habitude, sur votre propre dépôt quand c’est demandé.</p>
+<h2 id="activite-1-regenerate">Activité 1 — Regenerate (10 min)</h2>
+<p><strong>But</strong> : sentir que la sortie est une distribution, et que quelques mots la déplacent.</p>
+<ol>
+<li>Écrivez une demande de code courte, volontairement <strong>floue</strong>.</li>
+<li>Relancez-la <strong>5 fois</strong>. Notez ce qui reste stable.</li>
+<li>Changez <strong>3 mots</strong> au maximum : langage, contrainte, format.</li>
+<li>Ajoutez un <strong>intrus</strong> (<code>Fortnite</code>, <code>Victor Hugo</code>, un bout de poésie) et comparez.</li>
+</ol>
+<pre><code class="language-text">Écris une fonction qui valide un email.
+</code></pre>
+<p>puis :</p>
+<pre><code class="language-text">En TypeScript, sans regex, avec tests :
+écris une fonction qui valide un email.
+</code></pre>
+<p>Autres points de départ : « Écris un script qui renomme des fichiers » (+ « en Bash, idempotent, avec --dry-run ») ; « Propose un schéma de table pour des réservations » (+ « PostgreSQL, avec index »).</p>
+<blockquote>
+<p>Cherchez les mots qui <strong>resserrent</strong> la sortie et ceux qui la <strong>contaminent</strong>.</p>
+</blockquote>
+<h2 id="activite-2-formaliser">Activité 2 — Formaliser (25 min)</h2>
+<p><strong>But</strong> : passer par une structure intermédiaire validée avant de générer un artefact, puis consolider le prompt.</p>
+<ol>
+<li>Choisissez un domaine : métier ou ludique (inventaire, backlog, plantes, jeux).</li>
+<li>Faites produire une <strong>structure intermédiaire</strong> (YAML, types, JSON Schema, OpenAPI), sans code.</li>
+<li><strong>Corrigez-la</strong>, puis faites générer l’artefact : page HTML single-file, CLI, mini-doc.</li>
+<li>Écrivez le <strong>prompt consolidé</strong> et testez-le sur un second domaine, dans une <strong>session vierge</strong>.</li>
+</ol>
+<pre><code class="language-text">Propose une structure YAML minimale pour &lt;domaine&gt;.
+Ne génère pas encore de code.
+</code></pre>
+<p>puis, une fois la structure corrigée :</p>
+<pre><code class="language-text">Structure validée. Génère une page HTML single-file,
+sans dépendance, avec un filtre sur chaque champ.
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Critère de réussite</th>
+<th>Vérifié ?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Le prompt final contient la structure intermédiaire, les règles de sortie et un exemple du format attendu</td>
+<td></td>
+</tr>
+<tr>
+<td>Il marche dans une session vierge, sans l’historique de mise au point</td>
+<td></td>
+</tr>
+<tr>
+<td>Il donne une qualité comparable sur deux domaines</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="activite-3-cartographier">Activité 3 — Cartographier (25 min)</h2>
+<p><strong>But</strong> : préparer une context window dense pour une tâche réelle, et mesurer l’effet.</p>
+<ol>
+<li><strong>Cibler</strong> une tâche réelle de votre dépôt : ajouter un endpoint, réduire une duplication, écrire des tests.</li>
+<li><strong>Générer</strong> une carte orientée tâche.</li>
+<li><strong>Relire et corriger</strong> : vérifier chaque nom, retirer le bruit.</li>
+<li><strong>Tester</strong> : nouvelle session, carte chargée, même tâche.</li>
+</ol>
+<pre><code class="language-text">Je dois &lt;tâche&gt;. Avant de coder, écris une carte de cette tâche
+en moins de 40 lignes : fichiers clés, commandes pour vérifier,
+conventions à suivre, invariants, pièges connus.
+Ne modifie aucun fichier.
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Critère de réussite</th>
+<th>Vérifié ?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>La carte tient sur un écran et chaque chemin cité existe</td>
+<td></td>
+</tr>
+<tr>
+<td>Au moins une correction humaine visible</td>
+<td></td>
+</tr>
+<tr>
+<td>Dans la nouvelle session, l’agent lit moins de fichiers avant de proposer un plan</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="activite-4-extraire">Activité 4 — Extraire (20 min)</h2>
+<p><strong>But</strong> : transformer une session qui a galéré en contexte durable et relu.</p>
+<ol>
+<li><strong>Identifier</strong> les frottements : tool mal appelé, API mal comprise, doc manquante, erreur répétée.</li>
+<li><strong>Extraire</strong> un seul output ciblé.</li>
+<li><strong>Relire</strong> : élaguer, corriger, densifier.</li>
+</ol>
+<pre><code class="language-text">Extrais de cette session un troubleshooting :
+pour chaque erreur rencontrée, une ligne « erreur → cause → fix ».
+Garde seulement ce qui a été vérifié.
+Si une cause est supposée, écris-le. N'invente rien.
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Fichier</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>user-guide.md</code></td>
+<td>comment utiliser l’outil, commandes qui marchent, pièges</td>
+</tr>
+<tr>
+<td><code>troubleshooting.md</code></td>
+<td>erreur → cause → fix</td>
+</tr>
+<tr>
+<td><code>api-improvements.md</code></td>
+<td>signatures, noms, messages d’erreur, docs à corriger</td>
+</tr>
+<tr>
+<td><code>new-tool.md</code></td>
+<td>le script ou le tool qui aurait évité le frottement</td>
+</tr>
+<tr>
+<td><code>next-session.md</code></td>
+<td>ce qu’on recharge dans une session propre</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Une extraction <strong>non relue</strong> n’est jamais une source d’autorité.</p>
+</blockquote>
+<h2 id="ou-ranger-ce-que-vous-avez-produit">Où ranger ce que vous avez produit</h2>
+<table>
+<thead>
+<tr>
+<th>Contexte</th>
+<th>Contenu</th>
+<th>Chargé</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Instructions projet (<code>AGENTS.md</code>)</td>
+<td>conventions, commandes, pièges du dépôt</td>
+<td>à chaque session</td>
+</tr>
+<tr>
+<td>Carte de tâche</td>
+<td>fichiers clés, invariants, plan d’une tâche</td>
+<td>pour cette tâche</td>
+</tr>
+<tr>
+<td>Skill</td>
+<td>prompt consolidé, exemples, scripts</td>
+<td>à la demande</td>
+</tr>
+</tbody>
+</table>
+</article>
+    <footer class="content__footer">© Zenika · Context Engineering — reprendre le contrôle des agents de code</footer>
+  </section>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sous le capot : LLM, agents, harnais et orchestrateurs · Handouts</title>
+  <meta name="training-title" content="Sous le capot : LLM, agents, harnais et orchestrateurs" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Urbanist:wght@600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <header class="brand">
+        <a class="brand__home" href="../../" aria-label="Toutes les formations">
+          <img class="brand__logo" src="./logo.svg" alt="Zenika" />
+        </a>
+        <p class="brand__eyebrow">Formation IA · profils techniques</p>
+        <p class="brand__title">Sous le capot : LLM, agents, harnais et orchestrateurs</p>
+        <a class="brand__slides" href="../">Voir les slides</a>
+      </header>
+
+      <div class="search">
+        <label class="search__label" for="handout-search">Rechercher dans les handouts</label>
+        <input id="handout-search" class="search__input" type="search" placeholder="Un mot, un concept…" />
+      </div>
+
+      <nav id="handout-menu" class="menu" aria-label="Handouts"></nav>
+    </aside>
+
+    <main class="content">
+      <header class="content__header">
+        <div class="content__heading">
+          <p id="handout-kind" class="content__kind"></p>
+          <h1 id="handout-title" class="content__title"></h1>
+        </div>
+        <div class="content__actions">
+          <div class="split" id="page-actions">
+            <button id="page-copy" class="split__main" type="button">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M5 15V6a2 2 0 0 1 2-2h8" /></svg>
+              <span id="page-copy-label">Copier la page</span>
+            </button>
+            <button id="page-menu-toggle" class="split__toggle" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="page-menu" aria-label="Autres actions sur la page">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+            <ul id="page-menu" class="split__menu" role="menu" aria-labelledby="page-menu-toggle" hidden>
+              <li role="none">
+                <a id="page-markdown" class="split__item" role="menuitem" href="#" target="_blank" rel="noopener">
+                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5M9 13h6M9 17h4" /></svg>
+                  <span><strong>Voir en markdown</strong><small>Le texte brut de cette page</small></span>
+                </a>
+              </li>
+              <li role="none">
+                <button class="split__item" role="menuitem" type="button" data-chat="chatgpt">
+                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.8 7L4 20l1.1-4.6A8 8 0 1 1 21 12z" /></svg>
+                  <span><strong>Ouvrir dans ChatGPT</strong><small>Poser vos questions sur cette page</small></span>
+                </button>
+              </li>
+              <li role="none">
+                <button class="split__item" role="menuitem" type="button" data-chat="claude">
+                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4" /></svg>
+                  <span><strong>Ouvrir dans Claude</strong><small>Poser vos questions sur cette page</small></span>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <button id="handout-print" class="button" type="button">Imprimer / PDF</button>
+        </div>
+      </header>
+      <p id="page-toast" class="toast" role="status" aria-live="polite" hidden></p>
+      <article id="handout-content" class="prose"></article>
+      <footer class="content__footer">© Zenika · Sous le capot : LLM, agents, harnais et orchestrateurs</footer>
+    </main>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

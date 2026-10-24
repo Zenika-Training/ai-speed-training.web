@@ -1,0 +1,1060 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Travailler avec l'IA — les bons réflexes et les mots-clés · Handouts</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Urbanist:wght@600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body class="print-all">
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">fiche module 1</p>
+      <h1 class="content__title">Comprendre la machine</h1>
+    </header>
+    <article class="prose"><p>L’IA ne devine pas : elle prolonge ce qu’on lui donne. Cette fiche explique ce qu’un LLM fait vraiment, et ce qu’il ne sait pas faire.</p>
+<h2 id="avant-tout-sortie-subie-ou-sortie-pilotee">Avant tout : sortie subie ou sortie pilotée ?</h2>
+<p>Une scène classique : on demande « Rédige une user story pour améliorer la réservation », puis on corrige quatre fois (« c’est pour le mobile », « tu as oublié les premium », « plus court »…). Vingt minutes plus tard, le résultat est flou et personne ne sait expliquer ses choix.</p>
+<p>Chaque correction révélait une information qu’on pouvait donner <strong>dès le départ</strong> :</p>
+<table>
+<thead>
+<tr>
+<th>Ce qu’on a dit</th>
+<th>Ce qu’il fallait donner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>« rédige une user story »</td>
+<td>un <strong>objectif</strong> explicite</td>
+</tr>
+<tr>
+<td>« c’est pour le mobile »</td>
+<td>la <strong>cible</strong> et le <strong>canal</strong></td>
+</tr>
+<tr>
+<td>« tu as oublié les premium »</td>
+<td>le <strong>contexte</strong> métier</td>
+</tr>
+<tr>
+<td>« plus court »</td>
+<td>le <strong>format</strong> et les <strong>critères</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Deux façons de travailler avec l’IA, toutes deux utiles :</p>
+<ul>
+<li><strong>Explorer</strong> (<em>vibe coding</em> chez les développeurs) : on tente, on observe, on jette. Idéal pour trouver des idées ou esquisser un brouillon.</li>
+<li><strong>Livrer</strong> (<em>AI-driven development</em>) : on cadre, on contrôle, on capitalise. Indispensable pour un livrable réutilisable et partagé.</li>
+</ul>
+<p><strong>Viber pour explorer, piloter pour livrer.</strong></p>
+<h2 id="un-llm-predit-la-suite">Un LLM prédit la suite</h2>
+<p>Un <strong>LLM</strong> (<em>Large Language Model</em>) est entraîné sur d’énormes volumes de texte. Il produit sa réponse <strong>token après token</strong> : à chaque pas, il choisit un des morceaux les plus probables, avec une part de hasard.</p>
+<p>Conséquence : il produit du <strong>plausible</strong>, pas du <strong>vrai</strong>.</p>
+<p>Un <strong>token</strong> est un morceau de mot. Les mots courants tiennent en un token, les mots rares sont découpés (« anticonstitutionnellement » = 5 tokens). Le français consomme plus de tokens que l’anglais pour dire la même chose. Plus de tokens, c’est plus cher, plus lent, et plus de place prise dans la mémoire de travail du modèle.</p>
+<h2 id="la-reponse-varie-et-chaque-mot-compte">La réponse varie, et chaque mot compte</h2>
+<ul>
+<li>Relancer la même demande donne des réponses <strong>différentes</strong> : une réponse est une <strong>proposition</strong>, pas une vérité.</li>
+<li>Plus la demande est floue, plus les réponses divergent.</li>
+<li>Quelques mots (« mobile », « premium », « critères d’acceptation », « en 5 points ») agissent comme des <strong>signaux</strong> et peuvent changer toute la structure de la réponse.</li>
+</ul>
+<p>Quand la sortie bouge beaucoup, la bonne question n’est pas « quel modèle ? » mais « <strong>qu’est-ce que je n’ai pas cadré ?</strong> ».</p>
+<h2 id="le-modele-n-a-pas-de-memoire">Le modèle n’a pas de mémoire</h2>
+<p>À chaque message, l’assistant <strong>renvoie toute la conversation</strong> au modèle. Ce que vous avez dit plus tôt continue donc de peser sur la suite, et une nouvelle conversation repart de zéro.</p>
+<h2 id="modele-assistant-harness-tools">Modèle, assistant, harness, tools</h2>
+<ul>
+<li>Le <strong>modèle</strong> (GPT, Claude, Gemini…) est le moteur.</li>
+<li>L’<strong>assistant</strong> (ChatGPT, Copilot, <a href="http://Claude.ai">Claude.ai</a>…) est le produit que vous utilisez. Tout le logiciel autour du modèle s’appelle le <strong>harness</strong> : consignes, mémoire, interface.</li>
+<li>Deux assistants sur le même modèle peuvent donner des résultats différents. Les noms changent tous les trimestres ; les notions restent.</li>
+</ul>
+<p>Seul, un modèle a des limites : il ignore ce qui s’est passé après son entraînement (<strong>knowledge cutoff</strong>), calcule mal et n’a accès à aucun système de l’entreprise. L’assistant lui branche des <strong>tools</strong> qui compensent : recherche web, calcul, connecteurs <strong>MCP</strong> vers Jira, SharePoint…</p>
+<h2 id="la-boucle-agentique">La boucle agentique</h2>
+<p>Exemple : « Résume les tickets Jira ouverts sur la réservation. »</p>
+<ol>
+<li><strong>Demande</strong> : vous écrivez votre demande.</li>
+<li><strong>Décision</strong> : le modèle choisit d’appeler un tool.</li>
+<li><strong>Exécution</strong> : le harness appelle Jira, avec vos droits d’accès.</li>
+<li><strong>Résultat</strong> : les tickets entrent dans le contexte.</li>
+<li><strong>Réponse</strong> : le modèle rédige la synthèse.</li>
+</ol>
+<p>Les étapes 2 à 4 se répètent tant que le modèle a besoin d’informations. Avoir des tools ne suffit pas : <strong>modèle + tools + boucle + objectif = agent</strong>, et c’est le harness qui fait tourner la boucle.</p>
+<h2 id="ce-que-l-ia-ne-fait-pas">Ce que l’IA ne fait pas (encore)</h2>
+<table>
+<thead>
+<tr>
+<th>Limite</th>
+<th>Exemple</th>
+<th>Réflexe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Elle hallucine</strong> : une réponse fausse, assurée et plausible</td>
+<td>des avocats ont cité en justice des jurisprudences inventées par l’IA</td>
+<td>vérifier les faits et les sources</td>
+</tr>
+<tr>
+<td><strong>Elle amplifie vos données</strong> : données sales → réponses sales</td>
+<td>un export de réservations sans les annulations donne une analyse trop optimiste</td>
+<td>regarder ce qu’on lui donne</td>
+</tr>
+<tr>
+<td><strong>Elle ne remplace pas l’humain</strong> : confiance, négociation, empathie</td>
+<td>elle prépare l’argumentaire d’une négociation, elle ne la mène pas</td>
+<td>garder l’humain au contact</td>
+</tr>
+</tbody>
+</table>
+<h2 id="a-retenir">À retenir</h2>
+<ol>
+<li>Une réponse est une proposition : <strong>relancez</strong> avant de faire confiance.</li>
+<li>Quand la sortie varie, cherchez ce que vous n’avez <strong>pas cadré</strong>.</li>
+<li>Le modèle relit toute la conversation à chaque message : ce qui y traîne compte.</li>
+<li>Un agent, c’est un modèle qui enchaîne lui-même des tools, en boucle.</li>
+</ol>
+<p><strong>Mots-clés</strong> : LLM, token, knowledge cutoff, assistant, harness, tools, MCP, agent, boucle agentique, hallucination — voir le glossaire.</p>
+</article>
+    <footer class="content__footer">© Zenika · Travailler avec l'IA — les bons réflexes et les mots-clés</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">fiche module 2</p>
+      <h1 class="content__title">Bien demander</h1>
+    </header>
+    <article class="prose"><p>D’une demande floue à une sortie exploitable : quoi donner à l’IA, dans quel ordre, et comment réutiliser ce qui marche.</p>
+<h2 id="les-4-ingredients-d-une-bonne-demande">Les 4 ingrédients d’une bonne demande</h2>
+<table>
+<thead>
+<tr>
+<th>Ingrédient</th>
+<th>La question</th>
+<th>Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Rôle / contexte</strong></td>
+<td>Quel rôle l’IA doit jouer, sur quel sujet se concentrer ?</td>
+<td>« Tu es PO d’un site de réservation hôtelière. »</td>
+</tr>
+<tr>
+<td><strong>Sortie attendue</strong></td>
+<td>Quel format, quelle structure, quelle longueur ?</td>
+<td>« Une user story + 3 critères d’acceptation. »</td>
+</tr>
+<tr>
+<td><strong>Règles</strong></td>
+<td>Qu’est-ce qui est précis, mesurable, non négociable ?</td>
+<td>« Cible : clients sur mobile. »</td>
+</tr>
+<tr>
+<td><strong>À éviter</strong></td>
+<td>Qu’est-ce qu’elle ne doit pas faire ou inclure ?</td>
+<td>« N’invente pas de chiffres. »</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Montrer un exemple</strong> du format attendu vaut mieux qu’une longue description : c’est le <strong>few-shot</strong>.</p>
+<p>Modèle à copier :</p>
+<pre><code class="language-text">Tu es [rôle], tu travailles sur [sujet].
+Produis [livrable], au format [structure, longueur].
+Règles : [cible, contraintes, éléments obligatoires].
+À éviter : [ce qu'il ne faut pas inventer ou inclure].
+Exemple du format attendu : [un exemple court].
+</code></pre>
+<h2 id="clarifier-avant-de-produire">Clarifier avant de produire</h2>
+<ol>
+<li><strong>Besoin flou</strong> : le besoin tel qu’on l’exprime à l’oral (« améliorer la réservation »).</li>
+<li><strong>Brief structuré</strong> : l’IA propose une structure (objectif, cible, contraintes, format), <strong>vous la corrigez et la validez</strong>.</li>
+<li><strong>Livrable</strong> : produit à partir du brief validé, pas du besoin flou.</li>
+</ol>
+<p>La sortie d’une étape devient le <strong>contexte</strong> de la suivante. On ne demande pas tout d’un coup : on demande d’abord une structure vérifiable.</p>
+<pre><code class="language-text">On veut réduire les abandons de réservation sur mobile.
+Propose-moi d'abord un brief : objectif, cible, contraintes,
+format attendu. Ne rédige pas encore la user story.
+</code></pre>
+<h2 id="rewind-plutot-qu-empiler">Rewind plutôt qu’empiler</h2>
+<p>Quand une réponse part mal, la tentation est d’enchaîner les corrections (« non, pas comme ça… »). Chaque correction reste dans la conversation et le contexte devient de plus en plus confus.</p>
+<p>Le bon réflexe : <strong>revenir à la demande de départ</strong> (bouton « Modifier » de votre message), la corriger, et relancer. Une mauvaise sortie est une <strong>information sur l’entrée</strong>, pas un texte à corriger.</p>
+<h2 id="un-bon-brief-devient-un-actif">Un bon brief devient un actif</h2>
+<p>Un brief qui marche sur <strong>deux sujets différents</strong> est réutilisable. Trois façons de le capitaliser :</p>
+<ol>
+<li><strong>Instructions personnalisées</strong> : toujours chargées (ton, langue, profil).</li>
+<li><strong>Assistant personnalisé</strong> : un espace dédié (GPT, Projet Claude, agent Copilot).</li>
+<li><strong>Skill</strong> : chargé <strong>à la demande</strong>, quand la tâche correspond (consignes, modèles, exemples).</li>
+</ol>
+<p>Exemple d’assistant « User stories » :</p>
+<pre><code class="language-text">Tu es PO de l'équipe Réservation.
+Pour chaque besoin que je te donne :
+1. Propose d'abord un brief : objectif, cible, contraintes, format.
+2. Attends ma validation.
+3. Rédige la user story + 3 critères d'acceptation.
+Ton clair, sans jargon. N'invente ni chiffres ni dépendances.
+</code></pre>
+<p>Attention au vocabulaire : les éditeurs appellent souvent ces assistants personnalisés des « agents ». Au sens strict, un agent est un modèle qui enchaîne lui-même des tools en boucle (voir la fiche 1).</p>
+<h2 id="a-retenir">À retenir</h2>
+<ol>
+<li>Écrivez votre demande avec les <strong>4 ingrédients</strong>, et montrez un exemple.</li>
+<li>Demandez une <strong>structure</strong>, validez-la, puis demandez le livrable.</li>
+<li>Une réponse ratée : <strong>rewind</strong>, pas une correction de plus.</li>
+<li>Ce qui marche deux fois devient un <strong>assistant</strong> ou un <strong>skill</strong> d’équipe.</li>
+</ol>
+<p><strong>Mots-clés</strong> : prompt, brief structuré, few-shot, rewind, instructions personnalisées, assistant personnalisé, skill — voir le glossaire.</p>
+</article>
+    <footer class="content__footer">© Zenika · Travailler avec l'IA — les bons réflexes et les mots-clés</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">fiche module 3</p>
+      <h1 class="content__title">Maîtriser le contexte</h1>
+    </header>
+    <article class="prose"><p>Ce que le modèle « voit » au moment de répondre, comment garder une session propre, et comment lui apporter le contexte de l’entreprise.</p>
+<h2 id="la-context-window">La context window</h2>
+<p>La <strong>context window</strong>, c’est <strong>tout</strong> ce que le modèle voit quand il répond :</p>
+<ul>
+<li>les <strong>consignes</strong> de l’assistant ;</li>
+<li>la <strong>mémoire</strong> (ce que l’assistant sait de vous) ;</li>
+<li>les <strong>pièces jointes</strong> ;</li>
+<li>la <strong>conversation</strong> : vos messages, ses réponses, vos corrections ;</li>
+<li>les <strong>résultats des tools</strong> (recherche web, fichiers lus, données d’un connecteur) ;</li>
+<li>l’<strong>espace libre</strong> restant. Quand il rétrécit, les réponses se dégradent et le coût monte.</li>
+</ul>
+<h2 id="la-memoire-des-assistants">La mémoire des assistants</h2>
+<p>Le modèle ne retient rien… mais l’<strong>assistant</strong> peut recopier des informations sur vous dans <strong>chaque</strong> conversation. Exemple : « Je suis PO, je travaille sur le parcours de réservation », dit une fois, est relu à chaque conversation.</p>
+<ul>
+<li>Elle influence les réponses <strong>sans qu’on la voie</strong> : une information périmée continue de peser.</li>
+<li>Deux collègues, même prompt, mémoires différentes : réponses différentes.</li>
+<li>Consultez-la, corrigez-la ou désactivez-la dans les <strong>réglages</strong> de votre assistant.</li>
+</ul>
+<h2 id="plus-n-est-pas-mieux">Plus n’est pas mieux</h2>
+<table>
+<thead>
+<tr>
+<th>Session</th>
+<th>Ce qu’elle contient</th>
+<th>Effet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Simple</strong></td>
+<td>objectif, contraintes, un exemple</td>
+<td>réponse ciblée</td>
+</tr>
+<tr>
+<td><strong>Chargée</strong></td>
+<td>historique long, documents, essais successifs</td>
+<td>dérive douce</td>
+</tr>
+<tr>
+<td><strong>Polluée</strong></td>
+<td>infos périmées, erreurs, contradictions</td>
+<td>réponses crédibles mais fausses</td>
+</tr>
+<tr>
+<td><strong>Préparée</strong></td>
+<td>repères choisis, demande claire</td>
+<td>moins d’exploration inutile</td>
+</tr>
+</tbody>
+</table>
+<p>La bonne question : <strong>tout ce qui reste ici aide-t-il encore la tâche du jour ?</strong></p>
+<h2 id="garder-une-session-propre">Garder une session propre</h2>
+<ol>
+<li><strong>Avant : cadrer.</strong> Une courte note de cadrage : objectif, documents utiles, règles, points de contrôle. L’IA peut la proposer ; vous arbitrez.</li>
+<li><strong>Pendant : redémarrer.</strong> Une tâche = une session. Si ça dérive, on ne corrige pas par-dessus : on repart avec la note de cadrage.</li>
+<li><strong>Après : extraire.</strong> Avant de fermer, on garde ce qui a de la valeur.</li>
+</ol>
+<p>La règle : réponse ratée dès le début → <strong>rewind</strong> ; session longue qui dérive → <strong>nouvelle session</strong> + note de cadrage.</p>
+<h2 id="capitaliser-de-la-session-aux-artefacts">Capitaliser : de la session aux artefacts</h2>
+<p>Un <strong>artefact</strong> est un livrable qui vit <strong>en dehors de la conversation</strong> : on le relit, on le partage, on le réinjecte. Plutôt que « résume cette session », demandez une <strong>extraction ciblée</strong> :</p>
+<table>
+<thead>
+<tr>
+<th>Fichier</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>decisions.md</code></td>
+<td>arbitrages pris, sujets tranchés</td>
+</tr>
+<tr>
+<td><code>risques.md</code></td>
+<td>zones sensibles, dépendances</td>
+</tr>
+<tr>
+<td><code>actions.md</code></td>
+<td>prochaines étapes, responsables</td>
+</tr>
+<tr>
+<td><code>brief-suivant.md</code></td>
+<td>ce qu’on réinjecte la prochaine fois</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-text">Extrais de cette conversation, en 3 listes courtes :
+- les décisions prises,
+- les risques identifiés,
+- les prochaines actions (qui, quoi).
+N'invente rien : si une liste est vide, dis-le.
+</code></pre>
+<p>Une extraction <strong>non relue</strong> n’est jamais une source d’autorité.</p>
+<h2 id="apporter-le-contexte-de-l-entreprise">Apporter le contexte de l’entreprise</h2>
+<p>Le modèle ne connaît pas votre entreprise : ni vos CGV, ni vos process, ni vos données. Deux façons de le lui apporter :</p>
+<p><strong>RAG : vos documents.</strong> Le RAG (<em>Retrieval-Augmented Generation</em>) ancre les réponses dans vos sources ; on parle de <strong>grounding</strong>. Exemple : « Quelles sont les conditions d’annulation du tarif Flex ? »</p>
+<ol>
+<li><strong>Préparer</strong> : les documents internes sont indexés à l’avance, avec leurs droits d’accès.</li>
+<li><strong>Chercher</strong> : un tool trouve les passages pertinents (par le sens, pas seulement les mots).</li>
+<li><strong>Ajouter</strong> : ces passages, et eux seuls, entrent dans la context window.</li>
+<li><strong>Répondre</strong> : le modèle répond à partir des passages et cite ses sources.</li>
+</ol>
+<p>Vigilance : des documents périmés donnent des réponses périmées… mais sourcées, donc convaincantes.</p>
+<p><strong>Tools / MCP : vos applications.</strong> Ils apportent des données fraîches et des actions (lire, créer, envoyer). Exemple : « Liste les réservations annulées hier et ouvre un ticket Jira. » Vigilance : l’agent agit avec <strong>vos</strong> accès.</p>
+<p>Dans les deux cas, l’IA ne <strong>sait</strong> rien de plus : on lui <strong>donne</strong> le bon contexte, au bon moment.</p>
+<h2 id="a-retenir">À retenir</h2>
+<ol>
+<li>Le modèle ne voit que sa context window : choisissez ce qui y entre.</li>
+<li>Une tâche = une session ; si ça dérive, repartez avec une note de cadrage.</li>
+<li>Avant de fermer, extrayez décisions, risques et actions, et relisez-les.</li>
+<li>Avec un RAG, demandez toujours les sources et vérifiez-les.</li>
+</ol>
+<p><strong>Mots-clés</strong> : context window, mémoire, session, note de cadrage, artefact, RAG, grounding, MCP — voir le glossaire.</p>
+</article>
+    <footer class="content__footer">© Zenika · Travailler avec l'IA — les bons réflexes et les mots-clés</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">fiche module 4</p>
+      <h1 class="content__title">L'IA dans la discovery produit</h1>
+    </header>
+    <article class="prose"><p>Aller plus vite vers la preuve, sans sauter la preuve : où l’IA accélère le travail produit, et ce qui reste humain.</p>
+<h2 id="mode-projet-ou-mode-produit">Mode projet ou mode produit ?</h2>
+<table>
+<thead>
+<tr>
+<th>Mode projet</th>
+<th>Mode produit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Un comité décide de tout refaire.</td>
+<td>On mesure 38 % d’abandons au paiement mobile.</td>
+</tr>
+<tr>
+<td>9 mois de développement : on livre le plan.</td>
+<td>6 interviews et un prototype en 2 semaines : on teste l’hypothèse.</td>
+</tr>
+<tr>
+<td>Au lancement, les abandons ne baissent pas.</td>
+<td>Le test montre que le paiement en 1 clic marche.</td>
+</tr>
+<tr>
+<td>On découvre trop tard que le problème était le paiement.</td>
+<td>On construit ce qui a fait ses preuves.</td>
+</tr>
+</tbody>
+</table>
+<p>L’IA rend le <strong>mode produit</strong> beaucoup moins cher : interviewer, synthétiser, prototyper prend des heures, et non plus des mois.</p>
+<h2 id="interroger-sur-des-faits-pas-des-opinions">Interroger sur des faits, pas des opinions</h2>
+<p>Les clients prédisent mal leur propre comportement. Posez des questions sur ce qu’ils ont <strong>fait</strong>, pas sur ce qu’ils <strong>pensent</strong> qu’ils feraient.</p>
+<table>
+<thead>
+<tr>
+<th>À éviter</th>
+<th>À la place</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Opinion</strong> : « Quelles fonctionnalités voudriez-vous ? »</td>
+<td><strong>Fait vécu</strong> : « Racontez-moi la dernière fois que vous avez réservé. »</td>
+</tr>
+<tr>
+<td><strong>Hypothèse</strong> : « Utiliseriez-vous ceci si on le construisait ? »</td>
+<td><strong>Chronologie</strong> : « Reprenez depuis le début : que faisiez-vous juste avant ? »</td>
+</tr>
+<tr>
+<td><strong>Question orientée</strong> : « Ce n’est pas frustrant quand le paiement échoue ? »</td>
+<td><strong>Creuser l’histoire</strong> : « Pourquoi avez-vous fait comme ça ? »</td>
+</tr>
+</tbody>
+</table>
+<h2 id="du-terrain-au-prd">Du terrain au PRD</h2>
+<table>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Ce que c’est</th>
+<th>L’IA aide à</th>
+<th>Reste humain</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Interviews</strong></td>
+<td>5 à 8 utilisateurs racontent des situations réelles</td>
+<td>transcrire, regrouper les thèmes</td>
+<td>parler à de vrais clients</td>
+</tr>
+<tr>
+<td><strong>Experience map</strong></td>
+<td>le parcours de bout en bout : étapes, ressentis, irritants</td>
+<td>structurer la carte, repérer les irritants</td>
+<td>choisir l’irritant à traiter</td>
+</tr>
+<tr>
+<td><strong>PRD</strong></td>
+<td>une page : quoi construire, pourquoi, comment mesurer</td>
+<td>rédiger un premier jet</td>
+<td>arbitrer objectif et périmètre</td>
+</tr>
+<tr>
+<td><strong>Prototype</strong></td>
+<td>une maquette cliquable pour tester avant de développer</td>
+<td>générer une maquette en quelques heures</td>
+<td>observer de vrais utilisateurs</td>
+</tr>
+</tbody>
+</table>
+<h2 id="le-prd-c-est-quoi">Le PRD, c’est quoi ?</h2>
+<p>Le <strong>PRD</strong> (<em>Product Requirements Document</em>) est le contrat de l’équipe produit : <strong>une page</strong>, pas un cahier des charges. Il est écrit par le PO ou le PM avec le designer et le tech lead, après la discovery et avant de construire. Il dit <strong>quoi</strong> construire, <strong>pourquoi</strong>, et comment on mesure le succès ; le <em>comment</em> technique reste à l’équipe.</p>
+<p>Modèle en 6 rubriques, avec l’exemple du parcours de réservation :</p>
+<table>
+<thead>
+<tr>
+<th>Rubrique</th>
+<th>Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Problème</strong></td>
+<td>38 % des réservations mobiles abandonnées au paiement.</td>
+</tr>
+<tr>
+<td><strong>Objectif</strong></td>
+<td>Passer de 38 % à 30 % d’abandons en 3 mois.</td>
+</tr>
+<tr>
+<td><strong>User story</strong></td>
+<td>En tant que client mobile, je veux payer en 1 clic pour finir ma réservation sans ressaisie.</td>
+</tr>
+<tr>
+<td><strong>Périmètre</strong></td>
+<td>Paiement mobile. Hors périmètre : desktop.</td>
+</tr>
+<tr>
+<td><strong>Hypothèse</strong></td>
+<td>La ressaisie de la carte bloque.</td>
+</tr>
+<tr>
+<td><strong>Critère de succès</strong></td>
+<td>Moins de 30 % d’abandons, 4 semaines de suite.</td>
+</tr>
+</tbody>
+</table>
+<p>L’IA rédige un premier jet à partir des interviews ; l’équipe <strong>arbitre</strong> le problème, l’objectif et le périmètre. Relisez toujours ce qu’elle a inventé : un chiffre qui n’est pas dans vos sources doit être marqué « à mesurer ».</p>
+<h2 id="prototyper-lo-fi-d-abord">Prototyper : lo-fi d’abord</h2>
+<p>La <strong>fidélité</strong> (« fi ») mesure à quel point la maquette ressemble au produit final.</p>
+<table>
+<thead>
+<tr>
+<th>Niveau</th>
+<th>À quoi ça ressemble</th>
+<th>Temps</th>
+<th>Sert à</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Lo-fi</strong></td>
+<td>un croquis, des boîtes grises</td>
+<td>quelques minutes</td>
+<td>explorer, aligner l’équipe</td>
+</tr>
+<tr>
+<td><strong>Mid-fi</strong></td>
+<td>la structure et les vrais libellés, sans couleurs</td>
+<td>quelques heures</td>
+<td>valider le parcours</td>
+</tr>
+<tr>
+<td><strong>Hi-fi</strong></td>
+<td>presque le vrai produit, cliquable</td>
+<td>quelques jours (quelques heures avec l’IA)</td>
+<td>tester avec des utilisateurs</td>
+</tr>
+</tbody>
+</table>
+<p>Trop beau trop tôt = changements chers trop tard. Avec l’IA, demandez explicitement une maquette « en niveaux de gris, sans couleurs » pour rester lo-fi au début.</p>
+<h2 id="un-prototype-n-est-pas-un-produit">Un prototype n’est pas un produit</h2>
+<p>« Il est génial ce prototype… on le met en prod la semaine prochaine ? » Non :</p>
+<table>
+<thead>
+<tr>
+<th>Prototype</th>
+<th>Produit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Données fictives, sans droits d’accès</td>
+<td>Données réelles : qui voit quoi, pas de fuite</td>
+</tr>
+<tr>
+<td>Une démo, une personne</td>
+<td>Des milliers d’utilisateurs, retour arrière possible</td>
+</tr>
+<tr>
+<td>En cas d’erreur, on recharge la page</td>
+<td>Accès contrôlés, erreurs détectées et suivies</td>
+</tr>
+<tr>
+<td>On régénère</td>
+<td>Une équipe le fait évoluer dans la durée</td>
+</tr>
+</tbody>
+</table>
+<p>Avant toute démo, annoncez que c’est une <strong>maquette</strong>.</p>
+<h2 id="tester-apprendre-recommencer">Tester, apprendre, recommencer</h2>
+<p>Le <strong>user testing</strong> consiste à observer de vrais utilisateurs, pas à leur demander ce qu’ils veulent :</p>
+<ul>
+<li><strong>Avant</strong> : une question à laquelle répondre, 2 à 4 tâches réalistes, les bonnes personnes.</li>
+<li><strong>Pendant</strong> : observer sans aider ; noter hésitations, clics ratés, abandons.</li>
+<li><strong>Après</strong> : synthétiser à plusieurs, corriger, retester.</li>
+</ul>
+<p>C’est une boucle : prototyper → tester → apprendre → nouvelle question. Exemple : le paiement en 1 clic marche… sauf avec une carte d’entreprise. C’est la <strong>continuous discovery</strong> : la discovery ne s’arrête pas au lancement.</p>
+<h2 id="a-retenir">À retenir</h2>
+<ol>
+<li>Interrogez sur des <strong>faits vécus</strong>, jamais sur des intentions.</li>
+<li>Le PRD tient en <strong>une page</strong> : problème, objectif mesurable, périmètre, critère de succès.</li>
+<li>Prototypez <strong>lo-fi</strong> d’abord, et testez avec de vrais utilisateurs.</li>
+<li>Utilisez l’IA pour aller plus vite vers la preuve, pas pour sauter la preuve.</li>
+</ol>
+<p><strong>Mots-clés</strong> : product discovery, MVP, user interview, experience map, PRD, prototype lo-fi / hi-fi, user testing, continuous discovery — voir le glossaire.</p>
+</article>
+    <footer class="content__footer">© Zenika · Travailler avec l'IA — les bons réflexes et les mots-clés</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">fiche module 5</p>
+      <h1 class="content__title">Risques, gouvernance et coûts</h1>
+    </header>
+    <article class="prose"><p>Ce qui peut mal tourner, les deux règles qui couvrent l’essentiel, et ce qui fait monter la facture.</p>
+<h2 id="5-risques-5-garde-fous">5 risques, 5 garde-fous</h2>
+<table>
+<thead>
+<tr>
+<th>Risque</th>
+<th>En une phrase</th>
+<th>Exemple</th>
+<th>Garde-fou</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Hallucination</strong></td>
+<td>une réponse fausse mais convaincante</td>
+<td>des avocats sanctionnés pour avoir cité une jurisprudence inventée</td>
+<td>relecture, grounding (sources vérifiables)</td>
+</tr>
+<tr>
+<td><strong>Prompt injection</strong></td>
+<td>un contenu piégé (document, email, page web) détourne l’agent</td>
+<td>des données exfiltrées via un document partagé</td>
+<td>accès de l’agent limités</td>
+</tr>
+<tr>
+<td><strong>Fuite de données</strong></td>
+<td>des informations sensibles sortent de l’entreprise</td>
+<td>des secrets industriels collés dans un chatbot grand public</td>
+<td>versions entreprise des assistants</td>
+</tr>
+<tr>
+<td><strong>Biais</strong></td>
+<td>des stéréotypes reproduits, parfois amplifiés</td>
+<td>des biais régionaux mesurés dans les réponses de LLM testés</td>
+<td>relire ce qui est sensible</td>
+</tr>
+<tr>
+<td><strong>Coûts</strong></td>
+<td>une consommation qui s’emballe</td>
+<td>des clés d’accès volées, des factures à 5 chiffres</td>
+<td>plafonds de dépense, suivi</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-regles-d-or">2 règles d’or</h2>
+<p><strong>1. Données sensibles : uniquement dans les versions entreprise.</strong> Rien de confidentiel dans un assistant grand public : clients, contrats, données personnelles, code. Les versions entreprise s’engagent par contrat à ne pas entraîner les modèles sur vos données. Les données personnelles restent soumises au RGPD : base légale, information des personnes, avis du DPO.
+<em>Le test : l’enverriez-vous par email à un inconnu ?</em></p>
+<p><strong>2. Un humain valide avant d’agir.</strong> Obligatoire pour ce qui est irréversible, réglementé ou visible par un client. Cette validation est prévue dans le process, pas optionnelle, et faite par quelqu’un qui connaît le métier.
+<em>Le test : qui signe si c’est faux ?</em></p>
+<p>Ces deux règles traitent la <strong>fuite</strong> d’un côté et l’<strong>erreur</strong> de l’autre. La seconde s’appelle le <strong>human-in-the-loop</strong>. Plus vous branchez de documents et de tools sur un assistant, plus elles comptent : un agent agit avec vos droits.</p>
+<p>Côté réglementation, l’AI Act européen impose depuis février 2025 que les personnes qui utilisent l’IA dans l’entreprise y soient formées (article 4), et le RGPD s’applique à toute donnée personnelle confiée à un assistant.</p>
+<h2 id="couts-le-token-se-paie">Coûts : le token se paie</h2>
+<ul>
+<li>Les modèles se paient au <strong>token</strong>, en entrée comme en sortie.</li>
+<li>L’historique est <strong>renvoyé à chaque message</strong> : une longue conversation coûte de plus en plus cher.</li>
+<li>En abonnement, la limite prend la forme de quotas ; à l’usage (API, agents), elle prend la forme d’une facture. Dans les deux cas, une consommation élevée traduit souvent un <strong>usage non optimisé</strong>.</li>
+</ul>
+<p>5 réflexes pour consommer moins :</p>
+<ol>
+<li><strong>1 tâche = 1 session</strong> : moins d’historique renvoyé.</li>
+<li><strong>Être précis</strong> : une demande vague déclenche des recherches inutiles.</li>
+<li><strong>Couper les connecteurs (MCP) inutiles</strong> : chacun pèse dans le contexte.</li>
+<li><strong>Garder le même modèle</strong> pendant une session : sinon le <strong>cache</strong> (le début du contexte déjà traité) est perdu.</li>
+<li><strong>Demander des réponses concises</strong> : moins de tokens en sortie.</li>
+</ol>
+<h2 id="a-retenir">À retenir</h2>
+<ol>
+<li>Rien de confidentiel hors des <strong>versions entreprise</strong>.</li>
+<li>Un <strong>humain qualifié valide</strong> ce qui est irréversible, réglementé ou visible par un client.</li>
+<li>Les sources se <strong>vérifient</strong> ; les accès des agents se <strong>limitent</strong>.</li>
+<li>Sessions courtes et demandes précises : c’est meilleur pour la qualité <strong>et</strong> pour la facture.</li>
+</ol>
+<p><strong>Mots-clés</strong> : hallucination, prompt injection, fuite de données, biais, grounding, human-in-the-loop, token, cache — voir le glossaire.</p>
+</article>
+    <footer class="content__footer">© Zenika · Travailler avec l'IA — les bons réflexes et les mots-clés</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">supports d'exercices</p>
+      <h1 class="content__title">Les exercices de la journée</h1>
+    </header>
+    <article class="prose"><p>Les consignes et les prompts de départ des exercices en salle. Faites-les dans l’assistant que vous utilisez habituellement (version entreprise), sur un sujet de votre métier si vous le pouvez.</p>
+<h2 id="exercice-1-regenerate">Exercice 1 — Regenerate (4 min)</h2>
+<p><strong>But</strong> : sentir que la réponse varie, et que quelques mots changent tout.</p>
+<ol>
+<li>Écrivez une demande métier courte, volontairement <strong>floue</strong>.</li>
+<li>Relancez-la <strong>3 fois</strong>. Notez ce qui reste stable.</li>
+<li>Ajoutez <strong>une seule</strong> contrainte : cible, délai, canal ou format.</li>
+<li>Relancez. Qu’est-ce qui a le plus bougé : le ton, la structure, ou carrément l’objectif ?</li>
+</ol>
+<pre><code class="language-text">Rédige une user story pour réduire les abandons de réservation.
+</code></pre>
+<p>puis :</p>
+<pre><code class="language-text">Rédige une user story pour réduire les abandons de réservation
+sur mobile.
+</code></pre>
+<p>Autres points de départ : « Prépare une synthèse d’atelier pour une équipe produit » (+ « en 5 puces, pour un comité de direction ») ; « Rédige un email pour annoncer un changement de logiciel » (+ « pour des équipes terrain, en 120 mots max »).</p>
+<h2 id="exercice-2-du-flou-au-brief">Exercice 2 — Du flou au brief (15 min)</h2>
+<p><strong>But</strong> : faire produire une structure, la corriger, puis seulement demander le livrable.</p>
+<ol>
+<li>Partez d’un besoin métier <strong>flou</strong> de votre quotidien.</li>
+<li>Demandez à l’IA un <strong>brief structuré</strong>, pas le livrable.</li>
+<li>Corrigez <strong>2 ou 3 champs</strong>.</li>
+<li>Demandez le <strong>livrable</strong> : user story, synthèse, plan d’action.</li>
+</ol>
+<pre><code class="language-text">On veut réduire les abandons de réservation sur mobile.
+Propose-moi d'abord un brief : objectif, cible, contraintes,
+format attendu. Ne rédige pas encore la user story.
+</code></pre>
+<p>puis, une fois le brief corrigé :</p>
+<pre><code class="language-text">Brief validé. Rédige maintenant la user story
+avec 3 critères d'acceptation.
+</code></pre>
+<p><strong>Pour le débrief</strong> : montrez le brief, pas le rendu. Qu’est-ce qu’il vous a forcé à clarifier ?</p>
+<h2 id="exercice-3-extraire">Exercice 3 — Extraire (10 min)</h2>
+<p><strong>But</strong> : transformer une session en artefact réutilisable.</p>
+<ol>
+<li>Prenez une conversation un peu <strong>longue</strong> : celle de l’exercice précédent, ou n’importe quelle conversation récente (préparation de réunion, rédaction d’un mail…).</li>
+<li>Demandez une <strong>extraction ciblée</strong>, pas un résumé.</li>
+<li><strong>Relisez</strong> et corrigez : qu’est-ce qui manquait, qu’est-ce qui est faux ?</li>
+<li>Gardez le résultat : c’est votre premier <strong>artefact</strong>.</li>
+</ol>
+<pre><code class="language-text">Extrais de cette conversation, en 3 listes courtes :
+- les décisions prises,
+- les risques identifiés,
+- les prochaines actions (qui, quoi).
+N'invente rien : si une liste est vide, dis-le.
+</code></pre>
+<p><strong>Pour le débrief</strong> : l’extraction a-t-elle retrouvé l’essentiel ? Qu’avez-vous dû corriger ?</p>
+<h2 id="exercice-4-de-l-interview-au-prd">Exercice 4 — De l’interview au PRD (10 min)</h2>
+<p>Le support est dans le handout <strong>« Exercice : de l’interview au PRD »</strong>.</p>
+</article>
+    <footer class="content__footer">© Zenika · Travailler avec l'IA — les bons réflexes et les mots-clés</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">support d'exercice</p>
+      <h1 class="content__title">Exercice : de l'interview au PRD</h1>
+    </header>
+    <article class="prose"><p>Interview fictive, menée dans le cadre de la discovery « abandons de réservation sur mobile ». Utilisez ce compte-rendu pour faire générer un PRD en 6 rubriques (problème, objectif, user story, périmètre, hypothèses, critères de succès), puis relisez-le.</p>
+<p><strong>Participante</strong> : Claire, 41 ans, cheffe de projet dans une entreprise de BTP. Voyage 2 à 3 fois par mois pour le travail, réserve presque toujours depuis son téléphone.</p>
+<p><strong>Contexte</strong> : entretien de 30 minutes en visio, mené par la PO et le designer de l’équipe Réservation.</p>
+<hr>
+<p><strong>« Racontez-moi la dernière fois que vous avez réservé un hôtel. »</strong></p>
+<blockquote>
+<p>« Mardi dernier, dans le train. Je devais être à Lyon le lendemain pour un chantier. J’ai trouvé l’hôtel en deux minutes, ça c’est bien. Par contre au paiement… il a fallu ressaisir toute ma carte, alors que je réserve chez vous depuis des années. Dans le train, avec le réseau qui saute, la validation de la banque a expiré. J’ai dû tout recommencer. »</p>
+</blockquote>
+<p><strong>« Et ensuite, qu’avez-vous fait ? »</strong></p>
+<blockquote>
+<p>« J’ai abandonné, honnêtement. J’ai réservé le soir depuis mon ordinateur à l’hôtel… enfin, chez moi. Mais le tarif avait augmenté de 15 euros. »</p>
+</blockquote>
+<p><strong>« Pourquoi pas tout de suite sur l’ordinateur ? »</strong></p>
+<blockquote>
+<p>« Parce que je n’en ai pas dans le train. Et puis, je voulais régler ça tout de suite, sinon j’oublie. »</p>
+</blockquote>
+<p><strong>« Y a-t-il autre chose qui vous a gênée ? »</strong></p>
+<blockquote>
+<p>« Au moment de payer, je ne savais plus si le tarif était annulable. Mes déplacements bougent souvent. C’était écrit quelque part plus haut, mais je n’avais pas envie de remonter. Ah, et je ne comprends jamais où mettre mon numéro de carte de fidélité. »</p>
+</blockquote>
+<p><strong>« Si vous pouviez changer une chose ? »</strong></p>
+<blockquote>
+<p>« Payer avec la carte que vous avez déjà. Comme sur les sites de e-commerce. »</p>
+</blockquote>
+<hr>
+<p><strong>Notes de l’équipe</strong></p>
+<ul>
+<li>Elle a utilisé le mot « recommencer » trois fois.</li>
+<li>Elle n’a pas parlé du prix, sauf pour les 15 euros perdus.</li>
+<li>Elle réserve pour son entreprise mais paie avec sa carte personnelle, puis se fait rembourser.</li>
+</ul>
+</article>
+    <footer class="content__footer">© Zenika · Travailler avec l'IA — les bons réflexes et les mots-clés</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">démos à rejouer</p>
+      <h1 class="content__title">Les démos</h1>
+    </header>
+    <article class="prose"><p>Les démos jouées par le formateur pendant la formation, pour les rejouer seul dans votre assistant, que vous ayez été présent ou non. Chaque démo dure quelques minutes et ne demande qu’un assistant de chat.</p>
+<h2 id="le-texte-decoupe-en-tokens">Le texte découpé en tokens</h2>
+<p><em>Module 1 · slide « Le texte découpé en tokens » · 1 min, optionnelle</em></p>
+<p><strong>Ce que ça montre</strong> : le modèle ne lit pas des mots mais des <strong>tokens</strong>. Les mots courants tiennent en un token, les mots rares sont découpés, et le français consomme plus de tokens que l’anglais.</p>
+<p><strong>À rejouer</strong></p>
+<ol>
+<li>Ouvrez un visualiseur de tokens en ligne (par exemple le <em>tokenizer</em> d’OpenAI).</li>
+<li>Tapez un mot de votre métier, un nom de produit interne par exemple, et regardez en combien de morceaux il est découpé.</li>
+<li>Tapez la même phrase en français puis en anglais, et comparez le nombre de tokens.</li>
+</ol>
+<p><strong>Ce qu’on observe</strong> : un mot rare ou un nom interne est découpé en plusieurs morceaux, et la phrase française compte plus de tokens que l’anglaise. Plus de tokens, c’est plus cher, plus lent, et plus de place prise dans la context window.</p>
+<h2 id="la-souris-mange">La souris mange…</h2>
+<p><em>Module 1 · démo « La souris mange… » · 3 min</em></p>
+<p><strong>Ce que ça montre</strong> : le modèle choisit la suite <strong>la plus probable</strong>, pas la plus vraie. Relancer change la forme, rarement l’idée ; un seul mot ajouté déplace toute la suite.</p>
+<p><strong>À rejouer</strong></p>
+<ol>
+<li>Avant de lancer, devinez vous-même la réponse.</li>
+<li>Dans une conversation vide, collez :</li>
+</ol>
+<pre><code class="language-text">La souris mange …
+Complète la phrase en une ligne.
+</code></pre>
+<ol start="3">
+<li>Relancez 2 ou 3 fois (bouton « regénérer ») : notez ce qui change et ce qui reste.</li>
+<li>Ajoutez <strong>un seul mot</strong> et relancez : « La souris <strong>d’ordinateur</strong> mange… », puis « La souris <strong>de laboratoire</strong> mange… ».</li>
+<li>Comparez les réponses côte à côte.</li>
+</ol>
+<p><strong>Ce qu’on observe</strong> : la première réponse est celle que presque tout le monde devine, parce que c’est la suite la plus fréquente dans les textes, pas parce qu’elle est vraie (une souris mange surtout des graines). Les relances changent la formulation, pas l’idée. Le mot ajouté, lui, change toute la réponse : chaque mot de votre demande pèse.</p>
+<h2 id="clarifier-avant-de-produire">Clarifier avant de produire</h2>
+<p><em>Module 2 · slide « Clarifier avant de produire » · 2 min, optionnelle</em></p>
+<p><strong>Ce que ça montre</strong> : on demande d’abord une <strong>structure</strong> (le brief), on la corrige, <em>puis</em> le livrable. Le brief validé devient le contexte de l’étape suivante.</p>
+<p><strong>À rejouer</strong></p>
+<ol>
+<li>Demandez un brief plutôt que le livrable :</li>
+</ol>
+<pre><code class="language-text">On veut réduire les abandons de réservation sur mobile.
+Propose-moi d'abord un brief : objectif, cible, contraintes,
+format attendu, points de vigilance. Ne rédige pas encore
+la user story.
+</code></pre>
+<ol start="2">
+<li>Comparez avec ce brief de référence, puis corrigez le vôtre :</li>
+</ol>
+<pre><code class="language-text">objectif: réduire les abandons sur mobile
+public_cible: clients qui réservent depuis leur téléphone
+contrainte: amélioration visible avant la prochaine release
+format_attendu: user story avec critères d'acceptation
+points_de_vigilance:
+  - ne pas inventer de dépendance technique
+  - rester compréhensible par l'équipe produit
+</code></pre>
+<ol start="3">
+<li>Une fois le brief corrigé, demandez le livrable : « Brief validé. Rédige maintenant la user story avec 3 critères d’acceptation. »</li>
+</ol>
+<p><strong>Ce qu’on observe</strong> : le brief fait apparaître ce que l’IA aurait inventé (une cible, un délai, une contrainte technique). Le livrable produit à partir du brief corrigé est plus juste que celui produit directement depuis le besoin flou.</p>
+</article>
+    <footer class="content__footer">© Zenika · Travailler avec l'IA — les bons réflexes et les mots-clés</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">fiche mémo</p>
+      <h1 class="content__title">Cheat sheet : 7 réflexes pour lundi matin</h1>
+    </header>
+    <article class="prose"><p>Une page à garder sous la main.</p>
+<h2 id="les-7-reflexes">Les 7 réflexes</h2>
+<ol>
+<li><strong>Relancer</strong> avant de faire confiance : une réponse est une proposition.</li>
+<li>Écrire sa demande avec les <strong>4 ingrédients</strong> (rôle, sortie attendue, règles, à éviter)… et transformer ce qui marche en <strong>skill</strong> ou assistant d’équipe.</li>
+<li>Faire produire une <strong>structure</strong>, la valider, puis demander le livrable, <strong>avec un exemple</strong> du format attendu.</li>
+<li><strong>Repartir proprement</strong> quand la session dérive : rewind si ça part mal dès le début, nouvelle session et note de cadrage si une longue session dérive.</li>
+<li><strong>Extraire</strong> décisions, risques et actions avant de fermer, et relire l’extraction.</li>
+<li>En discovery : <strong>interviewer sur des faits</strong>, prototyper <strong>lo-fi</strong>, <strong>tester</strong> avec de vrais utilisateurs.</li>
+<li><strong>Pas de données sensibles</strong> hors des versions entreprise des assistants, et un <strong>humain qui valide</strong> avant d’agir.</li>
+</ol>
+<h2 id="la-boucle">La boucle</h2>
+<p><strong>Tester</strong> (relancer, comparer) → <strong>Structurer</strong> (4 ingrédients, brief validé) → <strong>Cadrer le contexte</strong> (note de cadrage, bons documents, session propre) → <strong>Capitaliser</strong> (artefacts) → on repart sur une base propre.</p>
+<p>À chaque étape : <strong>choisir ce qu’on donne</strong> au modèle, <strong>relire avec un œil humain</strong>.</p>
+<h2 id="les-questions-a-se-poser">Les questions à se poser</h2>
+<ul>
+<li>La sortie varie beaucoup ? → <em>Qu’est-ce que je n’ai pas cadré ?</em></li>
+<li>La session s’allonge ? → <em>Tout ce qui reste ici aide-t-il encore la tâche du jour ?</em></li>
+<li>L’IA cite un chiffre ? → <em>D’où vient-il ? Est-il dans mes sources ?</em></li>
+<li>Je colle un document ? → <em>L’enverrais-je par email à un inconnu ?</em></li>
+<li>L’IA va agir à ma place ? → <em>Qui signe si c’est faux ?</em></li>
+</ul>
+<h2 id="le-modele-de-demande">Le modèle de demande</h2>
+<pre><code class="language-text">Tu es [rôle], tu travailles sur [sujet].
+Produis [livrable], au format [structure, longueur].
+Règles : [cible, contraintes, éléments obligatoires].
+À éviter : [ce qu'il ne faut pas inventer ou inclure].
+Exemple du format attendu : [un exemple court].
+</code></pre>
+</article>
+    <footer class="content__footer">© Zenika · Travailler avec l'IA — les bons réflexes et les mots-clés</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">glossaire</p>
+      <h1 class="content__title">Glossaire des mots-clés IA</h1>
+    </header>
+    <article class="prose"><p>Une phrase par terme, sans jargon. Les termes techniques anglais sont gardés : ce sont ceux que vous entendrez dans les outils et les réunions.</p>
+<h2 id="les-bases">Les bases (module 1)</h2>
+<table>
+<thead>
+<tr>
+<th>Terme</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>IA générative</strong></td>
+<td>IA qui produit du contenu (texte, image, code) au lieu de seulement classer ou prédire un chiffre.</td>
+</tr>
+<tr>
+<td><strong>LLM</strong> (Large Language Model)</td>
+<td>Modèle entraîné sur d’énormes volumes de texte, qui génère une réponse en prédisant le mot suivant.</td>
+</tr>
+<tr>
+<td><strong>Token</strong></td>
+<td>Morceau de mot traité par le modèle ; c’est aussi l’unité de facturation (≈ ¾ de mot en anglais).</td>
+</tr>
+<tr>
+<td><strong>Hallucination</strong></td>
+<td>Réponse fausse mais présentée avec assurance et vraisemblance.</td>
+</tr>
+<tr>
+<td><strong>Knowledge cutoff</strong> (date de coupure)</td>
+<td>Date à laquelle s’arrêtent les données d’entraînement du modèle ; il ignore tout ce qui s’est passé après, sauf s’il fait une recherche web.</td>
+</tr>
+<tr>
+<td><strong>Multimodal</strong> (LMM)</td>
+<td>Modèle qui comprend aussi images, audio, documents, pas seulement du texte.</td>
+</tr>
+<tr>
+<td><strong>Assistant</strong></td>
+<td>Le produit qu’on utilise au quotidien (ChatGPT, Copilot, <a href="http://Claude.ai">Claude.ai</a>, Gemini) : une interface posée sur un harness, autour d’un modèle.</td>
+</tr>
+<tr>
+<td><strong>Harness</strong></td>
+<td>Tout le logiciel autour du modèle : consignes, mémoire, tools, enchaînement des étapes. Deux assistants sur le même modèle diffèrent par leur harness.</td>
+</tr>
+<tr>
+<td><strong>Tools</strong></td>
+<td>Capacités que le modèle peut appeler pendant sa réponse : recherche web, calcul, lecture de fichiers, Jira, Figma… (<em>tool calling</em>).</td>
+</tr>
+<tr>
+<td><strong>MCP</strong> (Model Context Protocol)</td>
+<td>Standard pour brancher de nouveaux tools sur un assistant : applications et données de l’entreprise.</td>
+</tr>
+<tr>
+<td><strong>Agent</strong></td>
+<td>Modèle qui enchaîne lui-même des actions avec des tools, en boucle, jusqu’à atteindre un objectif : c’est la <strong>boucle agentique</strong> (modèle + tools + boucle + objectif, que le harness fait tourner). Les éditeurs utilisent aussi « agent » pour de simples assistants personnalisés.</td>
+</tr>
+<tr>
+<td><strong>Boucle agentique</strong> (agent loop)</td>
+<td>Le cycle demande → le modèle choisit un tool → le harness l’exécute → le résultat entre dans le contexte → on recommence si besoin.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="bien-demander">Bien demander (module 2)</h2>
+<table>
+<thead>
+<tr>
+<th>Terme</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Prompt</strong></td>
+<td>La demande envoyée au modèle, consignes comprises.</td>
+</tr>
+<tr>
+<td><strong>Brief structuré</strong></td>
+<td>Demande découpée en champs explicites : objectif, cible, contraintes, format attendu, critères.</td>
+</tr>
+<tr>
+<td><strong>Few-shot</strong></td>
+<td>Donner un ou plusieurs exemples du résultat attendu dans la demande.</td>
+</tr>
+<tr>
+<td><strong>Format de sortie</strong></td>
+<td>La forme imposée à la réponse : tableau, liste en 5 points, user story, JSON…</td>
+</tr>
+<tr>
+<td><strong>Rewind</strong></td>
+<td>Revenir corriger la demande de départ plutôt qu’empiler des corrections dans la conversation.</td>
+</tr>
+<tr>
+<td><strong>Instructions personnalisées / assistant personnalisé</strong></td>
+<td>Consignes enregistrées une fois et réappliquées : toujours (instructions personnalisées) ou dans un espace dédié (GPT, Projet Claude, agent Copilot).</td>
+</tr>
+<tr>
+<td><strong>Skill</strong></td>
+<td>Savoir-faire emballé (consignes, modèles, exemples, parfois des scripts) que l’assistant charge <strong>à la demande</strong>, quand la tâche correspond. Plus léger que des instructions permanentes, partageable dans une équipe. Claude parle d’« Agent Skills » ; d’autres assistants ont des équivalents.</td>
+</tr>
+<tr>
+<td><strong>Vibe coding</strong></td>
+<td>Produire vite un prototype en langage naturel, sans regarder le code ; parfait pour explorer, insuffisant pour livrer.</td>
+</tr>
+<tr>
+<td><strong>AI-driven development</strong></td>
+<td>Développement logiciel où l’IA écrit beaucoup de code, sous la direction et le contrôle d’ingénieurs.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="le-contexte">Le contexte (module 3)</h2>
+<table>
+<thead>
+<tr>
+<th>Terme</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Context window</strong></td>
+<td>Tout ce que le modèle « voit » au moment de répondre : consignes, historique, pièces jointes, résultats des tools.</td>
+</tr>
+<tr>
+<td><strong>Session</strong></td>
+<td>Une conversation ; elle accumule du contexte, utile ou parasite.</td>
+</tr>
+<tr>
+<td><strong>Mémoire</strong></td>
+<td>Informations que l’assistant réinjecte automatiquement d’une session à l’autre (profil, préférences) ; souvent désactivable.</td>
+</tr>
+<tr>
+<td><strong>Dérive de contexte</strong> (côté dev : context rot)</td>
+<td>Session qui se dégrade quand la context window se remplit d’ajouts, de corrections et d’informations périmées ou contradictoires : elle reste crédible mais s’éloigne du besoin initial.</td>
+</tr>
+<tr>
+<td><strong>Artefact</strong></td>
+<td>Livrable produit avec l’IA qui vit en dehors de la conversation (note, synthèse, <code>decisions.md</code>…) : on le relit, on le partage, on le réinjecte. Les assistants en ont souvent une vue dédiée (Artifacts dans Claude, Canvas dans ChatGPT ou Copilot).</td>
+</tr>
+<tr>
+<td><strong>Note de cadrage</strong></td>
+<td>Court document préparé avant une tâche : objectif, sources utiles, règles, points de contrôle.</td>
+</tr>
+<tr>
+<td><strong>Grounding</strong></td>
+<td>Ancrer la réponse dans des sources vérifiables plutôt que dans la « mémoire » du modèle.</td>
+</tr>
+<tr>
+<td><strong>RAG</strong> (Retrieval-Augmented Generation)</td>
+<td>Technique de grounding : on cherche les bons extraits de documents internes et on les ajoute au contexte avant de répondre.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="discovery-produit">Discovery produit (module 4)</h2>
+<table>
+<thead>
+<tr>
+<th>Terme</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Product discovery</strong></td>
+<td>Phase où l’on cherche <em>quoi</em> construire, en testant les hypothèses avant d’investir.</td>
+</tr>
+<tr>
+<td><strong>Continuous discovery</strong></td>
+<td>Faire de la discovery en continu, pas seulement en début de projet.</td>
+</tr>
+<tr>
+<td><strong>User interview</strong></td>
+<td>Entretien sur un comportement passé réel, pas sur une opinion ou une intention.</td>
+</tr>
+<tr>
+<td><strong>Experience map</strong></td>
+<td>Visualisation du parcours complet d’une personne pour atteindre un objectif, avec ses irritants.</td>
+</tr>
+<tr>
+<td><strong>JTBD</strong> (Job To Be Done)</td>
+<td>Le « travail » qu’un utilisateur cherche à accomplir, indépendamment de la solution.</td>
+</tr>
+<tr>
+<td><strong>MVP</strong></td>
+<td>Plus petite version qui permet de tester l’hypothèse la plus risquée.</td>
+</tr>
+<tr>
+<td><strong>PRD</strong> (Product Requirements Document)</td>
+<td>Une page, écrite par le PO/PM avec designer et tech lead, qui dit quoi construire, pourquoi, et comment on mesure le succès. Ce n’est pas une spec technique : le <em>comment</em> reste à l’équipe.</td>
+</tr>
+<tr>
+<td><strong>Prototype lo-fi / mid-fi / hi-fi</strong></td>
+<td>« fi » = <em>fidelity</em>, la ressemblance avec le produit final. Lo-fi : un croquis en boîtes grises ; mid-fi : la structure et les vrais libellés, sans couleurs ; hi-fi : presque le vrai produit, cliquable. On commence lo-fi.</td>
+</tr>
+<tr>
+<td><strong>User testing</strong></td>
+<td>Observer de vrais utilisateurs manipuler un prototype pour voir où ils bloquent.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="risques-et-couts">Risques et coûts (module 5)</h2>
+<table>
+<thead>
+<tr>
+<th>Terme</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Human-in-the-loop</strong></td>
+<td>Un humain qualifié valide la sortie de l’IA <em>avant</em> qu’elle soit utilisée.</td>
+</tr>
+<tr>
+<td><strong>Prompt injection</strong></td>
+<td>Instructions malveillantes cachées dans un contenu (email, document, page web) qui détournent un assistant.</td>
+</tr>
+<tr>
+<td><strong>Fuite de données</strong></td>
+<td>Données confidentielles envoyées à un assistant non maîtrisé (version grand public).</td>
+</tr>
+<tr>
+<td><strong>Biais</strong></td>
+<td>Tendance du modèle à reproduire ou amplifier des déséquilibres présents dans ses données.</td>
+</tr>
+<tr>
+<td><strong>Cache</strong></td>
+<td>Mise en mémoire du début du contexte pour ne pas le repayer plein tarif à chaque message (il est relu à prix réduit) ; changer de modèle ou de tools en cours de route le perd.</td>
+</tr>
+<tr>
+<td><strong>Plafond de dépense</strong> (spend cap)</td>
+<td>Limite de budget configurée pour éviter les factures surprises.</td>
+</tr>
+</tbody>
+</table>
+</article>
+    <footer class="content__footer">© Zenika · Travailler avec l'IA — les bons réflexes et les mots-clés</footer>
+  </section>
+</body>
+</html>

@@ -1,0 +1,1688 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Développeur IA — Foundation · Handouts</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Urbanist:wght@600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body class="print-all">
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">fiche module 1</p>
+      <h1 class="content__title">Comprendre la machine</h1>
+    </header>
+    <article class="prose"><p>L’agent ne devine pas : il prolonge ce qu’on lui donne. Cette fiche reprend l’ouverture et le module 1 dans l’ordre des slides : ce que fait vraiment un LLM, et ce qu’est un agent de code.</p>
+<h2 id="vibe-coding-vs-ai-driven-dev">Vibe coding vs AI-driven dev</h2>
+<p><em>Ouverture · slide « Vibe coding vs AI-driven dev »</em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Vibe coding</th>
+<th>AI-driven dev</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Logique</strong></td>
+<td>explorer vite</td>
+<td>produire de façon fiable</td>
+</tr>
+<tr>
+<td><strong>Marche bien pour</strong></td>
+<td>spike, prototype, script jetable</td>
+<td>code livré, relu, maintenu</td>
+</tr>
+<tr>
+<td><strong>Réflexe</strong></td>
+<td>on tente, on observe, on jette</td>
+<td>on cadre, on contrôle, on capitalise</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Les deux sont utiles : <strong>viber pour explorer, piloter pour livrer</strong>.</p>
+</blockquote>
+<h2 id="sortie-subie-ou-sortie-pilotee">Sortie subie ou sortie pilotée ?</h2>
+<p><em>Ouverture · slide « Sortie subie ou sortie pilotée ? »</em></p>
+<p>Une scène familière : « Ajoute la pagination sur l’endpoint /bookings. » L’agent part sur de l’offset avec un helper maison ; on répond « on utilise des curseurs » ; il invente son propre format de page ; on rappelle les tests ; il écrit des tests qui mockent tout. Quatre allers-retours : une <strong>sortie subie</strong>.</p>
+<p>Chaque relance révélait une information disponible <strong>dès le départ</strong> :</p>
+<table>
+<thead>
+<tr>
+<th>Ce qu’on a dit</th>
+<th>Ce qu’il fallait donner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>« ajoute la pagination »</td>
+<td>un <strong>objectif</strong> et un <strong>critère de fin</strong></td>
+</tr>
+<tr>
+<td>« on utilise des curseurs »</td>
+<td>les <strong>conventions</strong> du projet</td>
+</tr>
+<tr>
+<td>« le format de page commun »</td>
+<td>les <strong>invariants</strong></td>
+</tr>
+<tr>
+<td>« les tests »</td>
+<td>les <strong>commandes de vérification</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Pas de prompt magique : on construit l’entrée pour une <strong>sortie pilotée</strong>.</p>
+</blockquote>
+<h2 id="six-notions-une-phrase-chacune">Six notions, une phrase chacune</h2>
+<p><em>Module 1 · slide « Six notions, une phrase chacune »</em></p>
+<table>
+<thead>
+<tr>
+<th>Notion</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>LLM</strong></td>
+<td>Le moteur : un réseau de neurones qui <strong>prédit le token suivant</strong>, à partir de tout ce qu’on lui envoie.</td>
+</tr>
+<tr>
+<td><strong>Token</strong></td>
+<td>L’unité de compte : un morceau de mot ou de code. Le modèle lit, écrit, <strong>limite et facture</strong> en tokens.</td>
+</tr>
+<tr>
+<td><strong>Context window</strong></td>
+<td>Tout ce que le modèle voit : le texte envoyé à chaque appel. <strong>Ce qui n’y est pas n’existe pas.</strong></td>
+</tr>
+<tr>
+<td><strong>Harness</strong></td>
+<td>Tout sauf le modèle : le logiciel qui l’entoure (boucle, tools, contexte, permissions).</td>
+</tr>
+<tr>
+<td><strong>Tools</strong></td>
+<td>Les mains : lire un fichier, lancer une commande, chercher. Le modèle les <strong>demande</strong>, le harness les exécute.</td>
+</tr>
+<tr>
+<td><strong>Agent</strong></td>
+<td>Le modèle qui agit : placé dans une <strong>boucle</strong> avec des tools et un objectif, il choisit lui-même la prochaine action.</td>
+</tr>
+</tbody>
+</table>
+<p>Un même produit couvre plusieurs cases : Claude Code ou Copilot sont des harness, et deviennent des agents une fois lancés avec un modèle et une tâche. On classe des rôles, pas des marques.</p>
+<h2 id="le-texte-decoupe-en-tokens">Le texte découpé en tokens</h2>
+<p><em>Module 1 · slide « Le texte découpé en tokens »</em></p>
+<p>Le modèle ne lit pas des mots, mais des tokens. Découpage réel avec le tokenizer o200k_base (GPT-4o, GPT-5) ; les autres modèles découpent un peu différemment, l’ordre de grandeur reste le même.</p>
+<table>
+<thead>
+<tr>
+<th>Texte</th>
+<th>Tokens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>« Ajoute la pagination sur l’endpoint /bookings. » (6 mots)</td>
+<td><strong>12</strong></td>
+</tr>
+<tr>
+<td>« Add pagination to the /bookings endpoint. » (6 mots)</td>
+<td><strong>9</strong></td>
+</tr>
+<tr>
+<td>« anticonstitutionnellement » (1 mot)</td>
+<td><strong>5</strong></td>
+</tr>
+<tr>
+<td><code>return res.status(404).json({ error: &quot;Not found&quot; });</code></td>
+<td><strong>15</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Les mots <strong>courants</strong> tiennent en un token, les mots <strong>rares</strong> et les identifiants sont découpés.</li>
+<li>Le <strong>français</strong> consomme plus de tokens que l’anglais pour dire la même chose.</li>
+<li>Un fichier de 2 000 lignes lu par l’agent, c’est des dizaines de milliers de tokens dans la context window.</li>
+</ul>
+<blockquote>
+<p>Plus de tokens = <strong>plus cher</strong>, <strong>plus lent</strong>, et <strong>plus de place</strong> prise dans la context window.</p>
+</blockquote>
+<h2 id="plausible-vrai">Plausible ≠ vrai</h2>
+<p><em>Module 1 · slide « Choisir le token suivant : plausible ≠ vrai » et démo « La souris mange… »</em></p>
+<p>Après <code>return res.status(</code>, le modèle tire le token suivant parmi les candidats <strong>les plus probables</strong> : 200, 404, 201… Le bon code de retour dépend du contrat de l’API ; s’il n’est pas dans le contexte, le modèle écrit le plus fréquent dans ses données d’entraînement.</p>
+<ul>
+<li><strong>Une part de hasard</strong> : relancer donne une autre réponse. Une réponse est un tirage, pas un calcul.</li>
+<li><strong>Chaque mot pèse</strong> : <code>curseur</code>, <code>OpenAPI</code>, <code>avec tests</code> déplacent toute la suite.</li>
+</ul>
+<blockquote>
+<p>Un LLM produit du <strong>plausible</strong>, pas du <strong>vrai</strong>. Sans la bonne information dans le contexte, l’hallucination est le fonctionnement normal.</p>
+</blockquote>
+<p>Quand la sortie bouge beaucoup, la bonne question n’est pas « quel modèle ? » mais « <strong>qu’est-ce que je n’ai pas cadré ?</strong> ».</p>
+<h2 id="le-modele-n-a-pas-de-memoire">Le modèle n’a pas de mémoire</h2>
+<p><em>Module 1 · slide « Le modèle n’a pas de mémoire »</em></p>
+<p>À chaque appel, le harness renvoie <strong>toute la session</strong> au modèle.</p>
+<ul>
+<li>Une erreur du tour 2 est <strong>relue à chaque tour</strong> suivant.</li>
+<li>La « mémoire » du harness (fichiers d’instructions, notes gardées) est du texte <strong>relu à chaque session</strong> : une info périmée continue de peser.</li>
+<li>Une <strong>nouvelle session</strong> repart de zéro : c’est un outil, pas un échec.</li>
+</ul>
+<h2 id="chatbot-workflow-ou-agent">Chatbot, workflow ou agent ?</h2>
+<p><em>Module 1 · slide « Chatbot, workflow ou agent ? »</em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Chatbot</th>
+<th>Workflow LLM</th>
+<th>Agent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Qui décide de l’étape suivante ?</strong></td>
+<td>l’humain</td>
+<td>le <strong>code</strong> (chemin écrit à l’avance)</td>
+<td>le <strong>modèle</strong></td>
+</tr>
+<tr>
+<td><strong>Tools</strong></td>
+<td>aucun ou peu</td>
+<td>appelés à des étapes fixes</td>
+<td>choisis à chaque tour</td>
+</tr>
+<tr>
+<td><strong>Prévisibilité / coût</strong></td>
+<td>élevée / faible</td>
+<td>élevée / faible</td>
+<td>faible / variable</td>
+</tr>
+<tr>
+<td><strong>Exemple</strong></td>
+<td>« Explique-moi cette regex »</td>
+<td>résumer chaque PR à l’ouverture</td>
+<td>« Ajoute la pagination à /bookings, avec ses tests »</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Commencer par <strong>la solution la plus simple</strong> qui marche. Un workflow prévisible bat souvent un agent autonome.</p>
+</blockquote>
+<h2 id="modele-harness">Modèle ≠ harness</h2>
+<p><em>Module 1 · slide « Modèle ≠ assistant (le harness) »</em></p>
+<ul>
+<li>Le <strong>modèle</strong> est le moteur ; le <strong>harness</strong> lui donne les moyens d’agir : boucle de tools, contexte, permissions, traces.</li>
+<li><strong>Même modèle, deux harness</strong> : des résultats très différents. Le harness pèse autant que le choix du modèle.</li>
+</ul>
+<blockquote>
+<p>Les noms changent tous les trimestres. Les notions restent.</p>
+</blockquote>
+<h2 id="la-boucle-agentique">La boucle agentique</h2>
+<p><em>Module 1 · slide « La boucle agentique »</em></p>
+<p><strong>Agent = modèle + tools + boucle + objectif.</strong> Le modèle n’exécute rien : il écrit une <strong>demande d’action</strong>, le harness l’exécute.</p>
+<ol>
+<li>Le harness envoie la demande et la liste des tools.</li>
+<li>Le modèle répond « j’appelle bash avec <code>npm test</code> ».</li>
+<li>Le harness vérifie que c’est autorisé, exécute, récupère la sortie.</li>
+<li>Il renvoie <strong>tout</strong> au modèle, plus la sortie.</li>
+<li>On recommence jusqu’à une réponse <strong>sans appel de tool</strong>.</li>
+</ol>
+<p>C’est dans le harness, pas dans le modèle, qu’on met les permissions, la sandbox et la confirmation humaine. Le meilleur critère d’arrêt est observable : « les tests de /bookings passent ».</p>
+<h2 id="une-trace-commentee">Une trace commentée</h2>
+<p><em>Module 1 · slide « Une trace d’agent, commentée »</em></p>
+<p>Trace simplifiée et représentative ; les chiffres sont des ordres de grandeur.</p>
+<table>
+<thead>
+<tr>
+<th>Tour</th>
+<th>Le modèle demande</th>
+<th>Le harness renvoie</th>
+<th>Contexte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>grep: &quot;bookings&quot;</code></td>
+<td>6 fichiers</td>
+<td>12 k</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>read_file: bookings.controller.ts</code></td>
+<td>20 lignes</td>
+<td>14 k</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>read_file: shared/pagination/cursor.ts</code></td>
+<td>100 lignes</td>
+<td>15 k</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>edit: bookings.controller.ts</code> + test</td>
+<td>diff appliqué, après accord</td>
+<td>17 k</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>bash: npm test -- bookings</code></td>
+<td>échec : <code>nextCursor is undefined</code></td>
+<td>19 k</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>edit: bookings.controller.ts</code></td>
+<td>diff appliqué</td>
+<td>20 k</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>bash: npm test -- bookings</code></td>
+<td>succès : <code>12 passed</code></td>
+<td>21 k</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>L’agent commence par <strong>chercher et lire</strong> : il découvre le code comme nous.</li>
+<li>Au tour 4, le harness demande l’<strong>accord</strong> avant d’écrire, selon ses permissions.</li>
+<li>Au tour 5, c’est l’<strong>échec du test</strong> qui ramène l’agent dans le droit chemin : les tests sont son filet.</li>
+<li>La colonne « contexte » grossit à chaque tour, et à chaque tour on renvoie tout.</li>
+</ul>
+<blockquote>
+<p>Le code généré est une <strong>proposition plausible</strong>, pas une vérité.</p>
+</blockquote>
+<p>La vue d’ensemble de l’agent de code (context window, tools, permissions) ouvre le module 2 : voir le handout « Cadrer avant de coder ».</p>
+<h2 id="a-retenir">À retenir</h2>
+<ol>
+<li>Le modèle <strong>prédit</strong>, le harness <strong>agit</strong>.</li>
+<li>Ce qui sort de la boucle est <strong>plausible</strong> ; c’est le contexte (et les tests) qui le rendent juste.</li>
+<li>Le modèle relit toute la session à chaque appel : ce qui y traîne compte.</li>
+<li>Un agent, c’est un modèle qui choisit lui-même ses tools, en boucle, jusqu’à un objectif.</li>
+</ol>
+<p><strong>Mots-clés</strong> : LLM, token, context window, harness, tools, agent, boucle agentique, hallucination, permissions — voir le glossaire.</p>
+</article>
+    <footer class="content__footer">© Zenika · Développeur IA — Foundation</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">fiche module 2</p>
+      <h1 class="content__title">Cadrer avant de coder</h1>
+    </header>
+    <article class="prose"><p>L’agent ne sait que ce qu’on lui donne : cette fiche reprend le module 2 dans l’ordre des slides, et dit quoi lui donner avant qu’il touche au code.</p>
+<h2 id="la-context-window-d-un-agent-de-code">La context window d’un agent de code</h2>
+<p><em>Module 2 · slide « La context window d’un agent de code »</em></p>
+<p>C’est <strong>tout</strong> ce que le modèle voit quand il répond :</p>
+<table>
+<thead>
+<tr>
+<th>Bloc</th>
+<th>Ce qu’il contient</th>
+<th>Chargé</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>System prompt</strong></td>
+<td>les consignes du harness : rôle, règles de sécurité, format des réponses</td>
+<td>à chaque appel</td>
+</tr>
+<tr>
+<td><strong>Tool definitions</strong></td>
+<td>la description de chaque tool exposé (lire, écrire, lancer une commande, MCP)</td>
+<td>à chaque appel, avant même le premier message</td>
+</tr>
+<tr>
+<td><strong>Instructions projet</strong></td>
+<td>le fichier d’instructions du dépôt et les skills chargées : conventions, commandes, pièges</td>
+<td>à chaque session (les skills, à la demande)</td>
+</tr>
+<tr>
+<td><strong>Conversation</strong></td>
+<td>vos messages, les réponses, les corrections et les décisions</td>
+<td>renvoyée à chaque appel</td>
+</tr>
+<tr>
+<td><strong>Tool calls + résultats</strong></td>
+<td>fichiers lus, sorties de commandes, logs d’erreur, résultats de tests</td>
+<td>le bloc qui grossit le plus vite</td>
+</tr>
+<tr>
+<td><strong>Espace libre</strong></td>
+<td>la place qui reste avant la compaction</td>
+<td>quand elle rétrécit, la qualité baisse et le coût monte</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Chaque tool exposé, chaque fichier lu, chaque sortie de commande <strong>consomme du budget</strong>.</p>
+</blockquote>
+<p>Une demande ciblée donne exactement ce dont l’agent a besoin, ni plus ni moins. À éviter : « Ajoute la pagination à l’API » en collant tout le dépôt. À la place : l’objectif, les fichiers clés, l’invariant et la commande de vérification.</p>
+<h2 id="vue-d-ensemble-l-agent-de-code">Vue d’ensemble : l’agent de code</h2>
+<p><em>Module 2 · slide « Vue d’ensemble : l’agent de code »</em></p>
+<p>Le trajet d’une demande, du haut vers le bas :</p>
+<ol>
+<li><strong>Toi</strong> : tu demandes, tu valides aux points clés, tu relis le diff.</li>
+<li><strong>Le harness</strong> assemble la context window (les blocs ci-dessus) et l’envoie au LLM à chaque appel.</li>
+<li><strong>Le LLM</strong> prédit la suite : soit il répond, soit il écrit une <strong>demande d’action</strong> (« lis bookings.controller.ts », « lance npm test »).</li>
+<li><strong>Le harness</strong> vérifie les <strong>permissions</strong>, exécute le tool et remet la sortie dans la context window.</li>
+<li>La boucle tourne jusqu’à l’objectif.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Tools, exécutés par le harness</th>
+<th>Pour…</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Fichiers</strong></td>
+<td>lire la code base, morceau par morceau</td>
+</tr>
+<tr>
+<td><strong>Terminal</strong></td>
+<td>tests, git</td>
+</tr>
+<tr>
+<td><strong>Serveurs MCP</strong></td>
+<td>tickets, base, documentation</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Le LLM est au centre, mais il ne touche à rien : tout ce qu’il « sait » vient de la context window, tout ce qu’il « fait » passe par les tools et les permissions.</p>
+</blockquote>
+<h2 id="instructions-projet">Instructions projet (<code>AGENTS.md</code>)</h2>
+<p><em>Module 2 · slide « Instructions projet (<a href="http://AGENTS.md">AGENTS.md</a>) »</em></p>
+<p>Un fichier <strong>versionné</strong> à la racine, <strong>chargé à chaque session</strong> : conventions, commandes, pièges. <strong>Court</strong>, avec des règles <strong>vérifiables</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Vague</th>
+<th>Concret</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>« Formate proprement »</td>
+<td>« Indentation 2 espaces »</td>
+</tr>
+<tr>
+<td>« Teste tes changements »</td>
+<td>« npm test avant chaque commit »</td>
+</tr>
+<tr>
+<td>« Range le code »</td>
+<td>« Handlers dans src/api/handlers/ »</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Court</strong> : quelques centaines de lignes au plus ; au-delà, l’adhérence chute. Chaque ligne est relue à chaque appel : elle doit mériter sa place.</li>
+<li>C’est du <strong>contexte</strong>, pas une configuration imposée : l’agent essaie de le suivre. Des règles spécifiques et non contradictoires sont mieux respectées.</li>
+<li><code>AGENTS.md</code> est un format ouvert, lu par la plupart des harness ; certains ont leur propre nom de fichier (voir « Où ça se règle dans mon outil »).</li>
+</ul>
+<h3 id="le-generer-puis-le-relire">Le générer, puis le relire</h3>
+<ol>
+<li><strong>L’agent analyse le dépôt et propose</strong> un premier jet.</li>
+<li><strong>Relire</strong> : les concepts métier sont-ils bien identifiés ? les invariants captés ? quelque chose d’halluciné ?</li>
+<li><strong>Élaguer</strong> ce qui se déduit du code : l’arborescence et la stack, l’agent les retrouve tout seul.</li>
+<li><strong>Ajouter les pièges connus</strong> : votre expertise.</li>
+</ol>
+<blockquote>
+<p>La génération donne un <strong>point de départ</strong>. Votre expertise <strong>comble les trous</strong>, surtout les pièges.</p>
+</blockquote>
+<h2 id="une-demande-initiale-bien-cadree">Une demande initiale bien cadrée</h2>
+<p><em>Module 2 · slide « Une demande initiale bien cadrée »</em></p>
+<ul>
+<li>Le <strong>premier message</strong> de la session : il oriente <strong>toute la suite</strong>.</li>
+<li><strong>Court et relu</strong> : objectif, fichiers, invariants, vérification.</li>
+<li>Les noms sont des <strong>ancres</strong> : un chemin, une commande, un invariant orientent l’attention vers tout un bloc de code.</li>
+<li>Les <strong>invariants</strong> réduisent les sorties plausibles mais mauvaises.</li>
+</ul>
+<pre><code class="language-text">Pagine GET /bookings par curseur.
+Pars de bookings.controller.ts et de shared/pagination.
+Fais évoluer le contrat OpenAPI, garde le schéma Page.
+Fini quand npm test -- bookings passe.
+</code></pre>
+<p>Dans un code inconnu, on ne sait pas l’écrire seul : l’agent explore et propose les fichiers, commandes et pièges, le dev corrige. Pour une <strong>tâche longue</strong>, on écrit la demande dans un <strong>fichier</strong>, rechargé à chaque session : fichiers clés, commandes, invariants, pièges connus.</p>
+<h2 id="planifier-avant-de-coder">Planifier avant de coder</h2>
+<p><em>Module 2 · slide « Planifier avant de coder »</em></p>
+<p>L’erreur n° 1 : se jeter <strong>directement dans la génération</strong>. Le <strong>mode plan</strong> des harness explore et propose, sans modifier de fichier.</p>
+<table>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Ce qui se passe</th>
+<th>Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. <strong>Besoin flou</strong></td>
+<td>le ticket tel qu’on le formule en une phrase</td>
+<td>« Pagine /bookings. »</td>
+</tr>
+<tr>
+<td>2. <strong>Plan relu</strong></td>
+<td>l’agent propose la demande cadrée et les étapes ; vous les corrigez et les validez</td>
+<td>4 étapes vérifiables, réponse <code>{ items, nextCursor }</code>, contrat OpenAPI mis à jour, schéma Page inchangé</td>
+</tr>
+<tr>
+<td>3. <strong>Code</strong></td>
+<td>généré à partir du plan validé, pas du besoin flou</td>
+<td>controller + tests, une étape à la fois</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Un bon plan : définir le problème, découper en <strong>étapes vérifiables</strong> (pour chacune, on sait dire « c’est fait » : un test qui passe, un fichier qui existe), identifier les contraintes (contrat d’API, sécurité, performance).</li>
+<li>Corriger un plan coûte quelques secondes ; corriger le code produit à partir d’un mauvais plan coûte une session.</li>
+</ul>
+<blockquote>
+<p>On demande d’abord un <strong>plan</strong>, on le corrige, <em>puis</em> le code : la sortie d’une étape devient le <strong>contexte</strong> de la suivante.</p>
+</blockquote>
+<h2 id="niveaux-d-autonomie">Niveaux d’autonomie</h2>
+<p><em>Module 2 · slide « Modes de pilotage : monter l’autonomie »</em></p>
+<p>Tous les harness proposent les <strong>mêmes niveaux d’autonomie</strong>, sous des noms différents : mode plan, demander, accepter les éditions, tout autoriser…</p>
+<table>
+<thead>
+<tr>
+<th>Niveau d’autonomie</th>
+<th>L’agent…</th>
+<th>Pour…</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Observer sans agir</strong></td>
+<td>lit, cherche, propose un plan</td>
+<td>explorer un code inconnu</td>
+</tr>
+<tr>
+<td><strong>Demander à chaque action</strong></td>
+<td>attend ton accord à chaque édition</td>
+<td>apprendre à lire ce qu’il propose</td>
+</tr>
+<tr>
+<td><strong>Agir dans le périmètre</strong></td>
+<td>modifie les fichiers, demande pour le reste</td>
+<td>dérouler un plan validé</td>
+</tr>
+<tr>
+<td><strong>Aller au bout seul</strong></td>
+<td>enchaîne sans rien demander</td>
+<td>un environnement isolé et jetable</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Un agent qu’on interrompt à chaque commande coûte plus cher qu’il ne rapporte. À l’inverse, monter l’autonomie sans borner les droits expose à tout ce qu’il peut toucher.</li>
+<li>Progression saine : approbation systématique au début, puis on lit le diff plutôt que chaque commande, et jamais « aller au bout seul » sans isolation (conteneur, VM).</li>
+<li>Autonomie et périmètre de droits sont <strong>deux réglages distincts</strong>.</li>
+</ul>
+<blockquote>
+<p>On monte d’un niveau quand on fait confiance au <strong>périmètre</strong>, avec un <strong>filet</strong> : tests, commits fréquents, diff relu.</p>
+</blockquote>
+<h2 id="a-retenir">À retenir</h2>
+<ol>
+<li><strong>Instructions projet</strong> : chaque session, courtes, vérifiables.</li>
+<li><strong>Demande initiale</strong> : la tâche du jour, avec objectif, fichiers, invariants, vérification.</li>
+<li><strong>Plan</strong> : des étapes vérifiables, relues avant le code.</li>
+<li><strong>Autonomie</strong> : réglée par niveaux, avec un filet.</li>
+</ol>
+<p><strong>Mots-clés</strong> : context window, system prompt, tool definitions, instructions projet, demande initiale, invariant, plan d’exécution, autorégression, niveau d’autonomie, permissions, human-in-the-loop — voir le glossaire.</p>
+</article>
+    <footer class="content__footer">© Zenika · Développeur IA — Foundation</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">fiche module 3</p>
+      <h1 class="content__title">Produire et vérifier</h1>
+    </header>
+    <article class="prose"><p>Avancer par petits pas sans perdre la maîtrise du code : la boucle de production, la relecture et les tests.</p>
+<h2 id="feature-par-feature-la-boucle">Feature par feature : la boucle</h2>
+<p><em>Module 3 · slide « Feature par feature : la boucle »</em></p>
+<table>
+<thead>
+<tr>
+<th>Préparer</th>
+<th>Livrer, puis feature suivante</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Lire le ticket</td>
+<td>4. Implémenter une étape</td>
+</tr>
+<tr>
+<td>2. Faire comprendre le code</td>
+<td>5. Tester et relire</td>
+</tr>
+<tr>
+<td>3. Demande et plan validés</td>
+<td>6. Commit : une étape = un commit (vert et relu, sinon retour à 4)</td>
+</tr>
+<tr>
+<td></td>
+<td>7. Étape suivante du plan</td>
+</tr>
+<tr>
+<td></td>
+<td>8. Mettre à jour la doc projet</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Une étape = un commit</strong> : chaque commit est un point de retour propre. Si une étape tourne mal, on revient au commit précédent au lieu de corriger par-dessus.</li>
+<li><strong>Étape 8</strong> : ce qu’on a appris (un piège, une commande) remonte dans les instructions projet ou dans une skill.</li>
+</ul>
+<h2 id="rewind-plutot-qu-empiler">Rewind plutôt qu’empiler</h2>
+<p><em>Module 3 · slide « Rewind plutôt qu’empiler »</em></p>
+<table>
+<thead>
+<tr>
+<th>Empiler</th>
+<th>Rewind</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Prompt flou</td>
+<td>Prompt flou</td>
+</tr>
+<tr>
+<td>Code faux</td>
+<td>Code faux</td>
+</tr>
+<tr>
+<td>« Non, pas comme ça… » : on corrige par-dessus</td>
+<td>On édite l’entrée : on revient en arrière</td>
+</tr>
+<tr>
+<td>Context window plus sale</td>
+<td>Nouvelle trajectoire propre</td>
+</tr>
+</tbody>
+</table>
+<p>Empiler, c’est garder la réponse fausse <strong>et</strong> la correction dans tous les envois suivants. En pratique : éditer son message et relancer, ou revenir à un point antérieur de la session (certains harness restaurent aussi les fichiers). Sinon : revenir au dernier commit et ouvrir une nouvelle session avec le prompt corrigé.</p>
+<blockquote>
+<p>Traitez une mauvaise sortie comme un <strong>message du compilateur</strong> : on corrige l’entrée, on relance.</p>
+</blockquote>
+<h2 id="relire-le-code-genere">Relire le code généré</h2>
+<p><em>Module 3 · slide « Relire le code généré »</em></p>
+<p>Le code de l’agent se relit comme celui d’un <strong>contributeur inconnu</strong>. La grille, à cocher sur chaque diff :</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Axe</th>
+<th>La question</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>☐</td>
+<td><strong>Correction</strong></td>
+<td>Résout-il vraiment le problème du ticket ?</td>
+</tr>
+<tr>
+<td>☐</td>
+<td><strong>Cas limites</strong></td>
+<td>Liste vide, <code>null</code>, dernière page, grandes valeurs ?</td>
+</tr>
+<tr>
+<td>☐</td>
+<td><strong>Sécurité</strong></td>
+<td>Entrées validées, autorisations correctes ?</td>
+</tr>
+<tr>
+<td>☐</td>
+<td><strong>Performance</strong></td>
+<td>Requêtes N+1, boucles, fuites mémoire ?</td>
+</tr>
+<tr>
+<td>☐</td>
+<td><strong>Lisibilité</strong></td>
+<td>Compréhensible dans 6 mois, sans sur-ingénierie ?</td>
+</tr>
+<tr>
+<td>☐</td>
+<td><strong>Dépendances</strong></td>
+<td>Les imports et les API <strong>existent-ils vraiment</strong> ?</td>
+</tr>
+</tbody>
+</table>
+<p>Faites aussi relire l’agent par lui-même, de préférence dans une session neuve :</p>
+<pre><code class="language-text">Relis le diff que tu viens de produire :
+cas limites, sécurité, perf.
+</code></pre>
+<blockquote>
+<p>Le vrai danger : l’<strong>incompétence cachée</strong>, du code qui a l’air bon. L’agent peut se relire, mais c’est <strong>vous</strong> qui décidez.</p>
+</blockquote>
+<h2 id="deux-natures-de-tests-deux-publics">Deux natures de tests, deux publics</h2>
+<p><em>Module 3 · slide « Deux natures de tests, deux publics »</em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Tests de construction</strong></th>
+<th><strong>Tests fonctionnels</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>À qui ils servent</strong></td>
+<td>à <strong>l’agent</strong>, pour se contrôler pendant qu’il code</td>
+<td>à <strong>l’équipe</strong>, pour savoir ce que fait le produit</td>
+</tr>
+<tr>
+<td><strong>Ce qu’ils testent</strong></td>
+<td>l’implémentation, unité par unité</td>
+<td>le <strong>comportement observable</strong> de l’API</td>
+</tr>
+<tr>
+<td><strong>Durée de vie</strong></td>
+<td>jetables</td>
+<td>durables : ils <em>sont</em> la spec exécutable</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Un test fonctionnel est un contrat : « GET /bookings renvoie un nextCursor tant qu’il reste des résultats ». C’est celui-là qu’on relit ligne à ligne.</li>
+<li><strong>Faux succès</strong> : un agent peut affaiblir ou supprimer un test pour le faire passer. On relit les tests comme le code.</li>
+<li>Le coût de production d’un test a chuté, le coût de maintenance n’a pas bougé.</li>
+</ul>
+<blockquote>
+<p><strong>En fin de feature</strong>, là où les deux se recouvrent, <strong>le test fonctionnel gagne</strong> : on supprime le doublon.</p>
+</blockquote>
+<h2 id="brownfield-comprendre-et-figer-avant-de-modifier">Brownfield : comprendre et figer avant de modifier</h2>
+<p><em>Module 3 · slide « Brownfield : comprendre et figer avant de modifier »</em></p>
+<p><strong>Pas tout le code d’un coup</strong> : 500 000 lignes ≈ des millions de tokens, ça ne rentre pas. L’agent <strong>navigue</strong> (recherche, lecture ciblée) ; on attaque <strong>par morceaux</strong> : un module, un endpoint.</p>
+<p><strong>Faire comprendre</strong> : demander à l’agent d’expliquer le flux de GET /bookings, de la route à la base, avant de le modifier. Si l’explication est fausse, le code le serait aussi.</p>
+<p><strong>Figer le comportement actuel</strong> avec des tests de caractérisation :</p>
+<pre><code class="language-text">Avant de toucher à BookingsController,
+écris des tests qui capturent le
+comportement ACTUEL de GET /bookings,
+même s'il est faux.
+</code></pre>
+<p>Ces tests détectent le <strong>changement</strong>, pas la correction : forme de la réponse, tri, filtres. Si la pagination casse le tri, un test le dit. Un test de caractérisation qui fige un bug est signalé comme tel.</p>
+<blockquote>
+<p><strong>Faire comprendre avant de faire modifier</strong> : une explication relue vaut mieux qu’un diff incompris.</p>
+</blockquote>
+<h2 id="revue-ia-donner-le-contexte-du-diff">Revue IA : donner le contexte du diff</h2>
+<p><em>Module 3 · slide « Revue IA : donner le contexte du diff »</em></p>
+<table>
+<thead>
+<tr>
+<th>Donner à l’agent relecteur</th>
+<th>Pourquoi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Le diff complet</strong>, avec du contexte autour</td>
+<td>voir la fonction entière, pas trois lignes</td>
+</tr>
+<tr>
+<td><strong>Le ticket</strong>, la demande initiale, le plan</td>
+<td>juger le code sur l’intention</td>
+</tr>
+<tr>
+<td><strong>Les conventions</strong> (instructions projet)</td>
+<td>relever les écarts propres à l’équipe</td>
+</tr>
+<tr>
+<td><strong>La grille</strong> « Relire le code généré »</td>
+<td>chercher les défauts, pas complimenter</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Plus de lignes de contexte autour du changement réduit les faux positifs : par exemple <code>git diff -U10</code> au lieu des 3 lignes par défaut.</li>
+<li>Une <strong>session neuve</strong> fait un meilleur relecteur que celle qui a écrit le code : elle n’a pas son historique de décisions.</li>
+</ul>
+<blockquote>
+<p>La revue IA <strong>aide</strong> l’humain, elle ne <strong>décide</strong> pas : c’est un humain qui valide avant le merge.</p>
+</blockquote>
+<h2 id="a-retenir">À retenir</h2>
+<ol>
+<li>Petits pas, <strong>un commit par étape</strong>.</li>
+<li><strong>Rewind</strong> plutôt qu’empiler.</li>
+<li>Des <strong>tests</strong> comme filet et comme spec, relus comme le code.</li>
+<li>Une <strong>relecture humaine</strong> avant le merge.</li>
+</ol>
+<p><strong>Mots-clés</strong> : rewind, autorégression, brownfield / greenfield, tests de caractérisation, revue IA, hallucination, human-in-the-loop — voir le glossaire.</p>
+</article>
+    <footer class="content__footer">© Zenika · Développeur IA — Foundation</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">fiche module 4</p>
+      <h1 class="content__title">Étendre l'agent</h1>
+    </header>
+    <article class="prose"><p>Brancher l’agent sur le reste du SI, et capitaliser ce qui marche, sans alourdir chaque appel.</p>
+<h2 id="apporter-le-contexte-de-l-entreprise">Apporter le contexte de l’entreprise</h2>
+<p><em>Module 4 · slide « Apporter le contexte de l’entreprise »</em></p>
+<p>Deux façons de donner à l’agent ce que <strong>le dépôt ne contient pas</strong> :</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>RAG : vos documents</strong></th>
+<th><strong>Tools / MCP : vos applications</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Apporte</strong></td>
+<td>de la connaissance : ADR, docs d’architecture, wiki, conventions d’API</td>
+<td>des données vivantes et la capacité d’agir : tickets, base, CI, navigateur</td>
+</tr>
+<tr>
+<td><strong>Exemple</strong></td>
+<td>« Quelle est notre convention de pagination ? »</td>
+<td>« Lis le ticket BOOK-142, puis lance les tests e2e dans le navigateur. »</td>
+</tr>
+<tr>
+<td><strong>Vigilance</strong></td>
+<td>des documents à jour, sinon des réponses périmées… mais sourcées</td>
+<td>des droits limités : l’agent agit avec vos accès</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>RAG</strong> : les documents sont indexés à l’avance ; un tool trouve les passages pertinents ; seuls ces passages entrent dans la context window ; le modèle s’appuie dessus et cite ses sources. Pour le code, la recherche dans le dépôt joue déjà ce rôle ; le RAG sert pour ce qui n’est pas dans le dépôt.</li>
+<li><strong>MCP</strong> (Model Context Protocol) : la prise standard des tools, l’« USB-C » des agents. Un serveur écrit une fois marche dans tous les harness compatibles, en local ou à distance. MCP n’apporte aucune « intelligence » : c’est de la plomberie standardisée.</li>
+<li>Le modèle choisit un tool sur sa <strong>description</strong> : nom, description et paramètres de chaque tool sont envoyés à chaque appel. Une mauvaise description = un tool mal utilisé ou ignoré.</li>
+</ul>
+<blockquote>
+<p>Dans les deux cas, l’agent ne <strong>sait</strong> rien de plus : on lui <strong>donne</strong> le bon contexte, au bon moment.</p>
+</blockquote>
+<h2 id="mcp-ce-que-vous-exposez-en-branchant-un-serveur">MCP : ce que vous exposez en branchant un serveur</h2>
+<p><em>Module 4 · slide « MCP : ce que vous exposez en branchant un serveur »</em></p>
+<p>Brancher un serveur, c’est laisser le modèle <strong>décider seul</strong> quelles données partent chez un tiers. Trois questions avant chaque branchement :</p>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Ce qu’on vérifie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Qui l’exécute ?</strong> Local ou distant</td>
+<td>Le local reste sur la machine. Le distant reçoit ce que le modèle lui envoie.</td>
+</tr>
+<tr>
+<td><strong>Qui l’authentifie ?</strong> Quel jeton, quels droits</td>
+<td>Lecture, écriture, suppression : jamais plus large que la tâche.</td>
+</tr>
+<tr>
+<td><strong>Qui le maintient ?</strong> Officiel ou fork</td>
+<td>Un serveur non maintenu est un risque ouvert.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Et ce qu’il coûte</strong> : chaque serveur ajoute ses tool definitions à <strong>chaque</strong> appel, avant même le premier message. N’activez que ceux que vous utilisez <strong>vraiment</strong> pour ce projet. Une commande en ligne déjà installée, documentée dans une skill, coûte souvent moins de contexte qu’un serveur MCP complet.</p>
+<h2 id="une-bonne-consigne-devient-une-skill">Une bonne consigne devient une skill</h2>
+<p><em>Module 4 · slide « Une bonne consigne devient une skill »</em></p>
+<p>Un <strong>savoir-faire emballé</strong> :</p>
+<ul>
+<li>un <strong>dossier</strong> : un <code>SKILL.md</code>, plus des scripts, références et gabarits ;</li>
+<li>chargée <strong>à la demande</strong>, quand la tâche correspond : la <strong>progressive disclosure</strong> (l’agent ne voit d’abord que le nom et la description) ;</li>
+<li>la <strong>description</strong> dit quoi et quand : c’est elle qui déclenche ;</li>
+<li>testée en <strong>session vierge</strong> : une autre session la suit sans coaching.</li>
+</ul>
+<p>Exemple, la skill « tests-api » :</p>
+<pre><code class="language-text">tests-api/SKILL.md
+
+name: tests-api
+description: Écrire ou compléter les tests
+  d'un endpoint. À utiliser dès qu'on
+  ajoute ou modifie une route.
+
+- Un test par cas limite : liste vide,
+  dernière page, curseur invalide.
+- Données via tests/factories.
+- Base de test réelle, pas de mock.
+</code></pre>
+<ul>
+<li>On n’y met que ce que l’agent <strong>ne peut pas déduire</strong> ; quelques centaines de lignes au plus ; pas de chemins propres à un OS, de versions figées ni d’informations périmées.</li>
+<li>Un <strong>script</strong> embarqué donne le même résultat à chaque fois, là où la même logique en prose est réinterprétée ; et il n’entre pas dans la context window tant que l’agent ne l’ouvre pas.</li>
+<li>Si la skill ne se déclenche pas en session vierge, c’est presque toujours la <strong>description</strong> qu’il faut réécrire.</li>
+</ul>
+<blockquote>
+<p>Une skill ne pèse dans la context window <strong>que quand elle sert</strong>.</p>
+</blockquote>
+<h2 id="ou-ranger-le-contexte-durable">Où ranger le contexte durable ?</h2>
+<p><em>Module 4 · slide « Quiz : où ranger le contexte durable ? »</em></p>
+<p>La règle qui tranche : <strong>à quelle fréquence</strong> le contenu doit-il être chargé ?</p>
+<table>
+<thead>
+<tr>
+<th>Où</th>
+<th>Chargé</th>
+<th>Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Instructions projet</strong></td>
+<td>à chaque session</td>
+<td>« Les tests se lancent avec npm test, jamais sur la base de prod » ; « TypeScript strict, handlers dans src/api/handlers »</td>
+</tr>
+<tr>
+<td><strong>Demande initiale</strong></td>
+<td>pour une tâche</td>
+<td>« Pour ce ticket : garder le schéma Page de /rooms »</td>
+</tr>
+<tr>
+<td><strong>Skill</strong></td>
+<td>à la demande, quand la tâche correspond</td>
+<td>« Comment écrire un test d’API selon nos conventions » ; « La procédure de migration de schéma, avec son script »</td>
+</tr>
+<tr>
+<td><strong>Note de reprise</strong></td>
+<td>pour reprendre une session interrompue</td>
+<td>« Étapes 1 à 3 faites, l’étape 4 bloque sur le curseur »</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Piège : « jamais sur la base de prod » pourrait sembler une skill ; elle doit valoir à chaque session, donc instructions projet.</li>
+<li>Tous ces fichiers sont <strong>versionnés et relus comme du code</strong> : ils entrent dans la context window de toute l’équipe.</li>
+</ul>
+<blockquote>
+<p>Plus c’est <strong>chargé souvent</strong>, plus c’est <strong>court</strong> : à chaque session, pour une tâche, à la demande.</p>
+</blockquote>
+<h2 id="a-retenir">À retenir</h2>
+<ol>
+<li>Tools et MCP branchent l’agent sur le SI, mais chaque branchement <strong>expose</strong> quelque chose et <strong>pèse</strong> dans chaque appel.</li>
+<li>Une skill est un savoir-faire <strong>chargé à la demande</strong> ; sa description la déclenche.</li>
+<li>Une consigne que tu répètes <strong>trois fois</strong> mérite une skill, testée en session vierge.</li>
+</ol>
+<p><strong>Mots-clés</strong> : RAG, grounding, tools, MCP, tool definitions, skill, progressive disclosure, instructions projet, demande initiale — voir le glossaire.</p>
+</article>
+    <footer class="content__footer">© Zenika · Développeur IA — Foundation</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">fiche module 5</p>
+      <h1 class="content__title">Garder la main</h1>
+    </header>
+    <article class="prose"><p>Ce qui peut mal tourner avec un agent de code, dans l’ordre des slides du module 5 : une context window polluée, des coûts qui s’emballent, des données qui fuient.</p>
+<h2 id="plus-n-est-pas-mieux">Plus n’est pas mieux</h2>
+<p><em>Module 5 · slide « Plus n’est pas mieux »</em></p>
+<p>Quatre états de la context window :</p>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>État</th>
+<th>Pourquoi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>« Explique-moi cette regex », dans un chat neuf</td>
+<td><strong>simple</strong></td>
+<td>attention concentrée</td>
+</tr>
+<tr>
+<td>L’agent a lu 14 fichiers et lancé 3 fois les tests</td>
+<td><strong>chargée</strong></td>
+<td>les tools dominent la demande</td>
+</tr>
+<tr>
+<td>Tour 40, objectif changé deux fois, log de 3 000 lignes</td>
+<td><strong>polluée</strong></td>
+<td>crédible mais faux : c’est le <strong>context rot</strong></td>
+</tr>
+<tr>
+<td>Session neuve, demande cadrée, plan validé</td>
+<td><strong>préparée</strong></td>
+<td>moins d’exploration à l’aveugle</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Lost in the middle</strong> : début et fin sont mieux lus que le milieu. L’essentiel en tête (objectif, invariants, instructions projet).</li>
+<li><strong>Compaction</strong> : quand l’espace libre se réduit, le harness résume la session, et on ne choisit pas ce qui est gardé.</li>
+<li><strong>Session polluée</strong> : corriger par-dessus aggrave. On extrait ce qui a de la valeur (une note de reprise), on ouvre une session neuve, on recharge la demande initiale et la note.</li>
+<li><strong>Ouvrir la context window</strong> : regarder l’occupation du contexte et les tool calls ; demander « Quels fichiers as-tu lus ? Sur quelle hypothèse pars-tu ? » ; élaguer ce qui ne sert plus.</li>
+</ul>
+<blockquote>
+<p>La bonne question : <strong>tout ce qui reste ici aide-t-il encore la tâche du jour ?</strong> Sinon, une <strong>session neuve</strong>.</p>
+</blockquote>
+<h2 id="couts-le-token-se-paie">Coûts : le token se paie</h2>
+<p><em>Module 5 · slide « Coûts : le token se paie »</em></p>
+<p>À chaque tour, le harness renvoie tout le contexte : dans la trace du module 1, 7 tours de 12 k à 21 k tokens, soit <strong>118 k tokens d’entrée cumulés</strong> pour une tâche simple (chiffres illustratifs). Le <strong>cache</strong> du fournisseur sert le début inchangé du contexte à moindre coût ; changer de modèle ou de MCP en cours de route l’invalide.</p>
+<p><strong>5 réflexes</strong></p>
+<ol>
+<li><strong>1 tâche = 1 session</strong> : moins d’historique renvoyé.</li>
+<li><strong>Être précis</strong> : une demande cadrée, moins d’exploration.</li>
+<li><strong>Couper les MCP inutiles</strong> : chacun pèse dans le contexte.</li>
+<li><strong>Garder le même modèle</strong> : sinon le <strong>cache</strong> est perdu.</li>
+<li><strong>Demander du concis</strong> : moins de tokens en sortie.</li>
+</ol>
+<blockquote>
+<p>Le token se paie, en <strong>entrée</strong> comme en <strong>sortie</strong> : le préfixe déjà vu est <strong>renvoyé à chaque tour</strong>.</p>
+</blockquote>
+<h2 id="5-risques-5-garde-fous">5 risques, 5 garde-fous</h2>
+<p><em>Module 5 · slide « 5 risques, 5 garde-fous »</em></p>
+<table>
+<thead>
+<tr>
+<th>Risque</th>
+<th>Ce qui arrive</th>
+<th>Exemple réel</th>
+<th>Garde-fou</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Hallucination</strong></td>
+<td>une API ou un paquet inventés, mais plausibles</td>
+<td>un paquet inventé par l’IA, publié ensuite par un tiers</td>
+<td>tests, typage, relecture</td>
+</tr>
+<tr>
+<td><strong>Prompt injection</strong></td>
+<td>un contenu piégé détourne l’agent</td>
+<td>une issue publique qui fait fuiter un dépôt privé</td>
+<td>accès de l’agent limités</td>
+</tr>
+<tr>
+<td><strong>Fuite de données</strong></td>
+<td>code, secrets ou données sortent de l’entreprise</td>
+<td>du code propriétaire collé dans un chatbot</td>
+<td>outils validés, pas de secret</td>
+</tr>
+<tr>
+<td><strong>Action destructrice</strong></td>
+<td>l’agent supprime ou écrase ce qu’il ne fallait pas</td>
+<td>une base de production effacée par un agent</td>
+<td>sandbox, humain qui valide</td>
+</tr>
+<tr>
+<td><strong>Coûts</strong></td>
+<td>une consommation qui s’emballe</td>
+<td>des clés volées, des factures à 5 chiffres</td>
+<td>plafonds, suivi</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Prompt injection</strong> : pour le modèle, tout est du texte, donnée et consigne se confondent. L’instruction peut être cachée dans un README, une issue, une page web, une réponse MCP. Aucun garde-fou ne bloque 100 % des injections : l’architecture (permissions, isolation) borne le risque.</li>
+<li><strong>Faux succès</strong> : « tous les tests passent »… après avoir supprimé le test. On relit le diff et les tests.</li>
+<li><strong>Secrets</strong> : jamais de <code>.env</code>, de jeton ou de mot de passe dans le contexte. Ce qui entre dans la context window part chez le fournisseur du modèle.</li>
+<li><strong>Dépendances</strong> : vérifier qu’un paquet existe <strong>et</strong> qu’il est le bon.</li>
+</ul>
+<h2 id="le-trio-letal">Le trio létal</h2>
+<p><em>Module 5 · slide « 5 risques, 5 garde-fous » (encadré)</em></p>
+<p><strong>Données privées</strong> + <strong>contenu non fiable</strong> + <strong>sortie vers l’extérieur</strong> = exfiltration possible. L’issue piégée coche les trois cases : un agent qui lit les issues publiques, accède au dépôt privé et peut commenter.</p>
+<blockquote>
+<p><strong>Casser au moins une branche</strong> : pas d’accès au privé, ou pas de droit d’écrire vers l’extérieur.</p>
+</blockquote>
+<p>Une consigne « ne lance jamais de commande destructrice » dans les instructions projet n’est qu’une suggestion : la règle vit dans le <strong>harness</strong> (permissions, isolation), pas dans le prompt.</p>
+<h2 id="2-regles-d-or">2 règles d’or</h2>
+<p><em>Module 5 · slide « 2 règles d’or »</em></p>
+<table>
+<thead>
+<tr>
+<th>Règle</th>
+<th>Ce qu’elle couvre</th>
+<th>Le test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1. Code et données sensibles : outils validés</strong></td>
+<td>Rien de confidentiel hors des harness et modèles validés par l’entreprise : code client, données de prod, secrets (<code>.env</code>, jetons).</td>
+<td>L’enverriez-vous par email à un inconnu ?</td>
+</tr>
+<tr>
+<td><strong>2. Un humain valide avant le merge</strong></td>
+<td>Obligatoire pour ce qui est irréversible : merge, déploiement, migration, push forcé. Le code généré est le vôtre.</td>
+<td>Qui signe si c’est faux ?</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Shadow AI</strong> : un abonnement personnel n’a pas les garanties d’un compte entreprise (rétention, entraînement sur les données, localisation).</li>
+<li>En mission chez un client, ce sont <strong>les règles du client</strong> qui s’appliquent : vérifier avant la première session.</li>
+<li>La mention « co-écrit avec l’IA » dans un commit ne transfère aucune responsabilité.</li>
+</ul>
+<blockquote>
+<p>Ces deux règles couvrent l’essentiel des risques : la <strong>fuite</strong> d’un côté, l’<strong>erreur</strong> de l’autre. C’est le <strong>human-in-the-loop</strong>.</p>
+</blockquote>
+<h2 id="a-retenir">À retenir</h2>
+<ol>
+<li><strong>Une tâche, une session.</strong> Jamais de secret dans le contexte.</li>
+<li>Plus n’est pas mieux : <strong>ouvrir la context window</strong>, élaguer.</li>
+<li>Trio létal : <strong>casser une branche</strong>.</li>
+<li>Le token se paie ; les règles de l’entreprise s’appliquent.</li>
+</ol>
+<p><strong>Mots-clés</strong> : context rot, lost in the middle, compaction, cache, plafond de dépense, prompt injection, fuite de données, trio létal, shadow AI, human-in-the-loop — voir le glossaire.</p>
+</article>
+    <footer class="content__footer">© Zenika · Développeur IA — Foundation</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">support d'exercice</p>
+      <h1 class="content__title">Les exercices</h1>
+    </header>
+    <article class="prose"><p>Les trois exercices des slides : optionnels, indépendants et courts, à faire avec ton propre harness sur le kit d’exercices.</p>
+<p>Le kit se télécharge depuis la page de la formation (« Kit de code (.zip) »). Chaque exercice part du kit tel quel : tu peux en faire un, deux, trois… ou aucun, la formation se suit sans. Les consignes sont écrites en <strong>intention</strong> : chacun les réalise avec le mécanisme de son harness (voir « Où ça se règle dans mon outil »).</p>
+<h2 id="exercice-1-du-ticket-au-plan">Exercice 1 — Du ticket au plan (15 min, optionnel)</h2>
+<p><em>Module 2 · slide « Exercice 1 — Du ticket au plan »</em></p>
+<p><strong>Concept</strong> : cadrer avant de coder.</p>
+<p><strong>Demande à ton agent…</strong></p>
+<ol>
+<li><strong>sans rien modifier</strong>, de proposer la <strong>demande initiale</strong> et un <strong>plan</strong> pour <code>TICKET.md</code> ;</li>
+<li>… puis <strong>corrige-les</strong>.</li>
+</ol>
+<pre><code class="language-text">Lis TICKET.md. Sans rien modifier, propose la demande initiale
+(fichiers clés, commandes, invariants, pièges) et un plan
+en étapes vérifiables.
+</code></pre>
+<p><strong>Réussi quand…</strong></p>
+<ul>
+<li><strong>aucun fichier</strong> n’a été modifié ;</li>
+<li>au moins <strong>une correction</strong> vient de toi.</li>
+</ul>
+<h2 id="exercice-2-petits-pas-tests-revue">Exercice 2 — Petits pas, tests, revue (20 min, optionnel)</h2>
+<p><em>Module 3 · slide « Exercice 2 — Petits pas, tests, revue »</em></p>
+<p><strong>Concept</strong> : produire et vérifier.</p>
+<p><strong>Demande à ton agent…</strong></p>
+<ol>
+<li>d’implémenter <strong>une étape</strong> du plan, <strong>avec ses tests</strong> ;</li>
+<li>… puis <strong>relis le diff</strong> avec la grille « Relire le code généré », et fais-le relire par l’agent.</li>
+</ol>
+<p>Pas de plan ? Pars de <code>docs/plan-de-secours.md</code>.</p>
+<pre><code class="language-text">Fais uniquement l'étape 1 du plan, avec ses tests.
+</code></pre>
+<p><strong>Réussi quand…</strong></p>
+<ul>
+<li>les <strong>tests passent</strong> ;</li>
+<li>tu as repéré <strong>un défaut</strong> de l’agent.</li>
+</ul>
+<h2 id="exercice-3-ma-premiere-skill">Exercice 3 — Ma première skill (10 min, optionnel)</h2>
+<p><em>Module 4 · slide « Exercice 3 — Ma première skill »</em></p>
+<p><strong>Concept</strong> : capitaliser.</p>
+<p><strong>Demande à ton agent…</strong></p>
+<ol>
+<li>d’écrire en <strong><code>SKILL.md</code></strong> une consigne que tu répètes ;</li>
+<li>… puis teste-la en <strong>session vierge</strong>.</li>
+</ol>
+<p>Pas d’idée ? « Nos tests utilisent <code>tests/factories</code>, sans mock. » Modèle : la skill « tests-api » du handout « Étendre l’agent ».</p>
+<pre><code class="language-text">Écris en SKILL.md cette consigne : [la consigne].
+Nom, description (quand l'utiliser), consignes.
+</code></pre>
+<p><strong>Réussi quand…</strong></p>
+<ul>
+<li>la skill <strong>se déclenche</strong> en session vierge.</li>
+</ul>
+</article>
+    <footer class="content__footer">© Zenika · Développeur IA — Foundation</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">démos à rejouer</p>
+      <h1 class="content__title">Les démos</h1>
+    </header>
+    <article class="prose"><p>Les démos jouées par le formateur pendant la formation, pour les rejouer seul, que tu aies été présent ou non. Les deux premières demandent un assistant de chat, la troisième un agent de code et le kit d’exercices (installation dans son <code>README.md</code>).</p>
+<h2 id="le-texte-decoupe-en-tokens">Le texte découpé en tokens</h2>
+<p><em>Module 1 · slide « Le texte découpé en tokens » · 1 min, optionnelle</em></p>
+<p><strong>Ce que ça montre</strong> : le modèle ne lit pas des mots mais des <strong>tokens</strong>. Les mots courants tiennent en un token ; les mots rares et les identifiants sont découpés ; le français consomme plus que l’anglais.</p>
+<p><strong>À rejouer</strong></p>
+<ol>
+<li>Ouvre un visualiseur de tokens en ligne (par exemple le <em>tokenizer</em> d’OpenAI).</li>
+<li>Tape un nom de classe ou de table de ton projet, et regarde en combien de morceaux il est découpé.</li>
+<li>Tape la même demande en français puis en anglais, puis une ligne de code, et compare les nombres de tokens.</li>
+</ol>
+<p><strong>Ce qu’on observe</strong> : les identifiants et le code sont découpés finement, et l’indentation compte aussi. Un fichier de 2 000 lignes lu par l’agent, ce sont des dizaines de milliers de tokens dans la context window : on facture et on limite en tokens, pas en lignes.</p>
+<h2 id="la-souris-mange">La souris mange…</h2>
+<p><em>Module 1 · démo « La souris mange… » · 3 min</em></p>
+<p><strong>Ce que ça montre</strong> : le modèle choisit la suite <strong>la plus probable</strong>, pas la plus vraie. Relancer change la forme, rarement l’idée ; un seul mot ajouté déplace toute la suite.</p>
+<p><strong>À rejouer</strong></p>
+<ol>
+<li>Avant de lancer, devine toi-même la réponse.</li>
+<li>Dans une conversation vide, colle :</li>
+</ol>
+<pre><code class="language-text">La souris mange …
+Complète la phrase en une ligne.
+</code></pre>
+<ol start="3">
+<li>Relance 2 ou 3 fois (regenerate) : note ce qui change et ce qui reste.</li>
+<li>Ajoute <strong>un seul mot</strong> et relance : « La souris <strong>d’ordinateur</strong> mange… », puis « La souris <strong>de laboratoire</strong> mange… ».</li>
+<li>Compare les réponses côte à côte.</li>
+</ol>
+<p><strong>Ce qu’on observe</strong> : la première réponse est celle que presque tout le monde devine, parce que c’est la suite la plus fréquente dans les textes, pas parce qu’elle est vraie (une souris mange surtout des graines). Les relances changent la formulation, pas l’idée. Le mot ajouté change toute la réponse. Même chose pour le code : après <code>res.status(</code>, le modèle écrit le code de retour le plus fréquent, pas celui de ton contrat d’API.</p>
+<p><strong>Pour aller plus loin (3 min)</strong> : rendre la variance visible.</p>
+<ol>
+<li>Demande « Écris une phrase sur une souris. » et relance 3 à 5 fois.</li>
+<li>Change très peu de mots : ajoute « concise », puis « minimal ».</li>
+<li>Ajoute un intrus : « Victor Hugo », « Fortnite », un bout de C++.</li>
+</ol>
+<p>Le même prompt donne plusieurs trajectoires, et l’intrus contamine la sortie. Dans un dépôt, un nom de fichier, un commentaire obsolète ou une vieille stack trace orientent le code produit de la même façon.</p>
+<h2 id="une-trace-d-agent-commentee">Une trace d’agent, commentée</h2>
+<p><em>Module 1 · slide « Une trace d’agent, commentée » · 3 min, optionnelle</em></p>
+<p><strong>Ce que ça montre</strong> : un agent découvre le code comme nous (il cherche, il lit), demande l’accord avant d’écrire, et ce sont les tests qui le remettent dans le droit chemin. À chaque tour, tout le contexte est renvoyé.</p>
+<p><strong>À rejouer</strong>, sur le kit installé (<code>npm install</code>, <code>npm test</code> vert), avec l’affichage des appels de tools activé dans ton harness :</p>
+<pre><code class="language-text">Ajoute la pagination par curseur sur GET /bookings, avec ses tests.
+</code></pre>
+<p><strong>Ce qu’on observe</strong>, tour par tour :</p>
+<ul>
+<li>ce que l’agent cherche et lit avant d’écrire la moindre ligne ;</li>
+<li>le moment où le harness demande ton accord pour modifier un fichier ;</li>
+<li>ce qui se passe quand un test échoue ;</li>
+<li>la jauge de contexte, qui grossit à chaque tour.</li>
+</ul>
+<p>Compare avec la trace de la slide (7 tours, de 12 k à 21 k tokens) : l’ordre des étapes est souvent proche, les chiffres varient. Pour revenir à l’état initial du kit ensuite, si tu as fait un premier commit : <code>git restore .</code> (ou <code>git stash</code>).</p>
+<h2 id="les-exercices-montres-en-demo">Les exercices, montrés en démo</h2>
+<p>Si le temps manque, le formateur montre un exercice en démo au lieu de le faire faire. Le déroulé est celui de l’exercice, dans le handout « Les exercices » :</p>
+<ul>
+<li><a href="#handout-06-exercices/exercice-1-du-ticket-au-plan">Exercice 1 — Du ticket au plan</a> : l’agent en mode plan sur le ticket du kit, et ce que son plan rate ;</li>
+<li><a href="#handout-06-exercices/exercice-2-petits-pas-tests-revue">Exercice 2 — Petits pas, tests, revue</a> : une seule étape du plan, ses tests, la relecture du diff, le commit ;</li>
+<li><a href="#handout-06-exercices/exercice-3-ma-premiere-skill">Exercice 3 — Ma première skill</a> : la skill « tests-api », et la preuve qu’elle se déclenche en session vierge.</li>
+</ul>
+</article>
+    <footer class="content__footer">© Zenika · Développeur IA — Foundation</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">fiche outils</p>
+      <h1 class="content__title">Où ça se règle dans mon outil</h1>
+    </header>
+    <article class="prose"><p>La formation parle de concepts ; cette fiche donne, pour quatre harness courants, l’endroit où chaque concept se règle.</p>
+<blockquote>
+<p><strong>Vérifié sur la documentation officielle des éditeurs le 21 octobre 2026 ; les outils changent vite.</strong> Les noms de modes, les commandes et les chemins bougent d’une version à l’autre : en cas de doute, la documentation du jour fait foi. « — » signale l’absence d’équivalent documenté.</p>
+</blockquote>
+<p>Les formats ouverts passent d’un outil à l’autre : <strong><code>AGENTS.md</code></strong> (instructions projet), <strong><code>SKILL.md</code></strong> (skills) et <strong>MCP</strong> (tools). Une équipe mixte peut versionner un seul jeu de fichiers, chacun garde son harness.</p>
+<h2 id="les-fichiers-de-contexte">Les fichiers de contexte</h2>
+<p><em>Slides « Instructions projet (<a href="http://AGENTS.md">AGENTS.md</a>) » (module 2), « MCP : ce que vous exposez en branchant un serveur » et « Une bonne consigne devient une skill » (module 4)</em></p>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>GitHub Copilot</th>
+<th>Claude Code</th>
+<th>Codex</th>
+<th>Cursor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Instructions projet</strong></td>
+<td><code>AGENTS.md</code> · <code>.github/copilot-instructions.md</code> · <code>.github/instructions/*.instructions.md</code> ciblés par glob (<code>applyTo</code>)</td>
+<td><code>CLAUDE.md</code> (projet : <code>./CLAUDE.md</code> ; perso : <code>~/.claude/CLAUDE.md</code>) · <code>AGENTS.md</code>, lu seulement s’il n’y a pas de <code>CLAUDE.md</code> (sinon l’importer : <code>@AGENTS.md</code>)</td>
+<td><code>AGENTS.md</code> (perso : <code>~/.codex/AGENTS.md</code>)</td>
+<td><code>AGENTS.md</code> · <code>.cursor/rules/*.mdc</code></td>
+</tr>
+<tr>
+<td><strong>Générer un premier jet</strong></td>
+<td><code>/init</code> (CLI) : écrit <code>.github/copilot-instructions.md</code></td>
+<td><code>/init</code></td>
+<td><code>/init</code> : écrit un <code>AGENTS.md</code></td>
+<td><code>/create-rule</code> : écrit une règle dans <code>.cursor/rules</code></td>
+</tr>
+<tr>
+<td><strong>Skills</strong> (<code>SKILL.md</code>)</td>
+<td><code>.github/skills/&lt;nom&gt;/</code> (lit aussi <code>.claude/skills/</code> et <code>.agents/skills/</code>) ; perso : <code>~/.copilot/skills/</code></td>
+<td><code>.claude/skills/&lt;nom&gt;/</code> ; perso : <code>~/.claude/skills/</code></td>
+<td><code>.agents/skills/&lt;nom&gt;/</code> ; perso : <code>~/.agents/skills/</code></td>
+<td><code>.cursor/skills/</code> ou <code>.agents/skills/</code> (lit aussi <code>.claude/skills/</code>) ; perso : <code>~/.cursor/skills/</code></td>
+</tr>
+<tr>
+<td><strong>Déclencher une skill</strong></td>
+<td>le modèle, sur la description, ou <code>/&lt;nom&gt;</code> dans la demande</td>
+<td>le modèle, sur la description, ou <code>/&lt;nom&gt;</code></td>
+<td>le modèle, sur la description, ou <code>$&lt;nom&gt;</code></td>
+<td>le modèle, sur la description, ou <code>/&lt;nom&gt;</code></td>
+</tr>
+<tr>
+<td><strong>Serveurs MCP</strong></td>
+<td>CLI : <code>~/.copilot/mcp-config.json</code> (ou <code>/mcp add</code>) · projet : <code>.mcp.json</code> ou <code>.github/mcp.json</code> · VS Code : <code>.vscode/mcp.json</code> (clé <code>servers</code>, pas <code>mcpServers</code>)</td>
+<td><code>.mcp.json</code> à la racine, versionné (ou <code>claude mcp add</code>)</td>
+<td><code>~/.codex/config.toml</code> ou <code>.codex/config.toml</code> du projet, table <code>[mcp_servers.&lt;nom&gt;]</code> (ou <code>codex mcp add</code>)</td>
+<td><code>.cursor/mcp.json</code> (projet) · <code>~/.cursor/mcp.json</code> (perso)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="les-niveaux-d-autonomie">Les niveaux d’autonomie</h2>
+<p><em>Slides « Planifier avant de coder » et « Modes de pilotage : monter l’autonomie » (module 2)</em></p>
+<table>
+<thead>
+<tr>
+<th>Niveau d’autonomie</th>
+<th>GitHub Copilot</th>
+<th>Claude Code</th>
+<th>Codex</th>
+<th>Cursor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Observer sans agir</strong> (mode plan, lecture seule)</td>
+<td>mode <em>plan</em> (<code>/plan</code>, Maj+Tab)</td>
+<td>mode <em>plan</em></td>
+<td>mode plan (<code>/plan</code>) · <code>sandbox_mode = &quot;read-only&quot;</code></td>
+<td>mode <em>Ask</em> (lecture seule) ou <em>Plan</em> (Maj+Tab)</td>
+</tr>
+<tr>
+<td><strong>Demander à chaque action</strong></td>
+<td>permissions <code>default</code> (CLI) · <em>Manual permissions</em> (VS Code, par défaut)</td>
+<td>mode <em>Manual</em> (valeur <code>default</code>)</td>
+<td><code>trust_level = &quot;untrusted&quot;</code> sur le projet (<code>approval_policy = &quot;untrusted&quot;</code> est retiré)</td>
+<td>mode <em>Allowlist</em> : tout ce qui n’est pas listé demande une approbation</td>
+</tr>
+<tr>
+<td><strong>Agir dans le périmètre</strong></td>
+<td>approbations mémorisées par emplacement (« ne plus demander dans ce dépôt ») · <code>--allow-tool</code></td>
+<td><em>accept edits</em> (<code>acceptEdits</code>)</td>
+<td>préréglage <em>Auto</em> (par défaut) : <code>approval_policy = &quot;on-request&quot;</code> + <code>sandbox_mode = &quot;workspace-write&quot;</code></td>
+<td>mode <em>Auto-review</em> : liste blanche, sandbox, puis classifieur</td>
+</tr>
+<tr>
+<td><strong>Aller au bout seul</strong></td>
+<td><em>Autopilot</em> · <em>Allow all</em> (<code>/yolo</code>, <code>--yolo</code>) · <em>assisted</em> (un LLM juge chaque demande)</td>
+<td><em>auto mode</em> (classifieur, mode de départ par défaut depuis la v2.1.283) · <em>bypass permissions</em></td>
+<td><em>Auto-review</em> (<code>approvals_reviewer = &quot;auto_review&quot;</code>) · <code>--yolo</code> (ni sandbox ni approbation)</td>
+<td>mode <em>Run Everything</em> (<code>/run-everything</code> en CLI)</td>
+</tr>
+<tr>
+<td><strong>Où se déclarent les droits</strong></td>
+<td><code>--allow-tool</code> / <code>--deny-tool</code> au lancement · approbations mémorisées dans <code>~/.copilot/permissions-config.json</code> · VS Code : réglages <code>chat.tools.*.autoApprove</code></td>
+<td><code>permissions.allow</code> / <code>ask</code> / <code>deny</code> dans <code>.claude/settings.json</code>, versionné</td>
+<td><code>~/.codex/config.toml</code> : <code>approval_policy</code> et <code>sandbox_mode</code>, réglés séparément · <code>/permissions</code> en session</td>
+<td><em>Settings &gt; Agents &gt; Approvals &amp; Execution</em> · <code>.cursor/permissions.json</code> (consignes de l’Auto-review) · CLI : <code>permissions.allow</code> / <code>deny</code> dans <code>.cursor/cli.json</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Le mode affiché n’est qu’un <strong>défaut</strong> : une autorisation large en configuration fait que l’agent ne demande plus rien. La configuration a le dernier mot.</li>
+<li>« Aller au bout seul » n’est raisonnable que dans un environnement isolé et jetable (conteneur, VM).</li>
+</ul>
+<h2 id="les-actions-en-session">Les actions en session</h2>
+<p><em>Slides « Rewind plutôt qu’empiler » (module 3), « Plus n’est pas mieux » et « Coûts : le token se paie » (module 5)</em></p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>GitHub Copilot</th>
+<th>Claude Code</th>
+<th>Codex</th>
+<th>Cursor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Revenir en arrière</strong> (rewind, checkpoints)</td>
+<td>VS Code : <em>Restore Checkpoint</em> sur une demande · CLI : <code>/rewind</code> (ou <code>/undo</code>), conversation seule ou conversation + fichiers</td>
+<td><code>/rewind</code> ou Échap deux fois : revient à un message, restaure le code, la conversation ou les deux</td>
+<td>Échap deux fois : édite un message précédent et repart de là ; fichiers : git</td>
+<td><em>Restore Checkpoint</em> dans le chat (fichiers) · CLI : <code>/rewind</code></td>
+</tr>
+<tr>
+<td><strong>Voir l’occupation de la context window</strong></td>
+<td><code>/context</code> · indicateur (petit cercle) dans VS Code</td>
+<td><code>/context</code></td>
+<td><code>/status</code> · « % context left » en pied d’écran</td>
+<td>anneau de contexte à côté de la saisie (clic : détail par catégorie)</td>
+</tr>
+<tr>
+<td><strong>Voir la dépense</strong></td>
+<td><code>/usage</code> (CLI : tokens par modèle, AI Credits)</td>
+<td><code>/usage</code> (<code>/cost</code> en est l’alias)</td>
+<td><code>/usage</code></td>
+<td>tableau de bord <em>Spending</em>, hors session</td>
+</tr>
+<tr>
+<td><strong>Compacter · repartir à zéro</strong></td>
+<td><code>/compact</code> · <code>/clear</code> (alias <code>/new</code>)</td>
+<td><code>/compact</code> · <code>/clear</code> (alias <code>/new</code>)</td>
+<td><code>/compact</code> · <code>/new</code> (ou <code>/clear</code>)</td>
+<td><code>/summarize</code> · nouveau chat (CLI : <code>/clear</code>)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Partout, le filet universel reste le même : <strong>revenir au dernier commit</strong> et ouvrir une <strong>session neuve</strong> avec la demande corrigée.</p>
+</blockquote>
+<h2 id="sources">Sources</h2>
+<p>Documentation officielle des éditeurs, consultée le 21 octobre 2026.</p>
+<ul>
+<li><strong>GitHub Copilot</strong>
+<ul>
+<li>Instructions projet : <a href="https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions">https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions</a></li>
+<li>Skills : <a href="https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-skills">https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-skills</a></li>
+<li>CLI (commandes, modes, MCP) : <a href="https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference">https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference</a></li>
+<li>Permissions CLI : <a href="https://docs.github.com/en/copilot/how-tos/copilot-cli/use-copilot-cli/allowing-tools">https://docs.github.com/en/copilot/how-tos/copilot-cli/use-copilot-cli/allowing-tools</a></li>
+<li>Context window : <a href="https://docs.github.com/en/copilot/concepts/prompting-and-context/context-management">https://docs.github.com/en/copilot/concepts/prompting-and-context/context-management</a></li>
+<li>VS Code, approbations : <a href="https://code.visualstudio.com/docs/agents/run/approvals">https://code.visualstudio.com/docs/agents/run/approvals</a></li>
+<li>VS Code, checkpoints : <a href="https://code.visualstudio.com/docs/agents/run/review-code-edits">https://code.visualstudio.com/docs/agents/run/review-code-edits</a></li>
+<li>VS Code, MCP : <a href="https://code.visualstudio.com/docs/agent-customization/mcp-servers">https://code.visualstudio.com/docs/agent-customization/mcp-servers</a></li>
+</ul>
+</li>
+<li><strong>Claude Code</strong>
+<ul>
+<li>Instructions projet (<code>CLAUDE.md</code>, <code>AGENTS.md</code>) : <a href="https://code.claude.com/docs/en/memory">https://code.claude.com/docs/en/memory</a></li>
+<li>Skills : <a href="https://code.claude.com/docs/en/skills">https://code.claude.com/docs/en/skills</a></li>
+<li>Modes de permission : <a href="https://code.claude.com/docs/en/permission-modes">https://code.claude.com/docs/en/permission-modes</a></li>
+<li>Permissions : <a href="https://code.claude.com/docs/en/permissions">https://code.claude.com/docs/en/permissions</a></li>
+<li>MCP : <a href="https://code.claude.com/docs/en/mcp">https://code.claude.com/docs/en/mcp</a></li>
+<li>Checkpoints : <a href="https://code.claude.com/docs/en/checkpointing">https://code.claude.com/docs/en/checkpointing</a></li>
+<li>Commandes : <a href="https://code.claude.com/docs/en/commands">https://code.claude.com/docs/en/commands</a></li>
+</ul>
+</li>
+<li><strong>Codex</strong> (les liens <a href="http://developers.openai.com/codex">developers.openai.com/codex</a> redirigent vers <a href="http://learn.chatgpt.com">learn.chatgpt.com</a>)
+<ul>
+<li><code>AGENTS.md</code> : <a href="https://developers.openai.com/codex/guides/agents-md">https://developers.openai.com/codex/guides/agents-md</a></li>
+<li>Skills : <a href="https://developers.openai.com/codex/skills">https://developers.openai.com/codex/skills</a></li>
+<li>Approbations et sandbox : <a href="https://developers.openai.com/codex/agent-approvals-security">https://developers.openai.com/codex/agent-approvals-security</a></li>
+<li>MCP : <a href="https://developers.openai.com/codex/mcp">https://developers.openai.com/codex/mcp</a></li>
+<li>Commandes : <a href="https://developers.openai.com/codex/cli/slash-commands">https://developers.openai.com/codex/cli/slash-commands</a></li>
+</ul>
+</li>
+<li><strong>Cursor</strong>
+<ul>
+<li>Règles et <code>AGENTS.md</code> : <a href="https://cursor.com/docs/rules">https://cursor.com/docs/rules</a></li>
+<li>Skills : <a href="https://cursor.com/docs/skills">https://cursor.com/docs/skills</a></li>
+<li>MCP : <a href="https://cursor.com/docs/mcp">https://cursor.com/docs/mcp</a></li>
+<li>Modes d’exécution : <a href="https://cursor.com/docs/agent/security/run-modes">https://cursor.com/docs/agent/security/run-modes</a></li>
+<li>Mode Ask : <a href="https://cursor.com/help/ai-features/ask-mode">https://cursor.com/help/ai-features/ask-mode</a></li>
+<li>Mode Plan : <a href="https://cursor.com/docs/agent/plan-mode">https://cursor.com/docs/agent/plan-mode</a></li>
+<li>Checkpoints : <a href="https://cursor.com/docs/agent/overview">https://cursor.com/docs/agent/overview</a></li>
+<li>Context window : <a href="https://cursor.com/docs/agent/prompting">https://cursor.com/docs/agent/prompting</a></li>
+<li>CLI (commandes, permissions) : <a href="https://cursor.com/docs/cli/reference/slash-commands">https://cursor.com/docs/cli/reference/slash-commands</a></li>
+<li>Dépense : <a href="https://cursor.com/help/models-and-usage/usage-limits">https://cursor.com/help/models-and-usage/usage-limits</a></li>
+</ul>
+</li>
+</ul>
+</article>
+    <footer class="content__footer">© Zenika · Développeur IA — Foundation</footer>
+  </section>
+  <section class="content">
+    <header class="content__header">
+      <p class="content__kind">glossaire</p>
+      <h1 class="content__title">Glossaire des mots-clés IA</h1>
+    </header>
+    <article class="prose"><p>Une phrase par terme : les mêmes mots, avec le même sens, que dans la formation business, puis les termes propres aux développeurs.</p>
+<p>Les termes techniques anglais sont gardés (harness, tools, context window, skill) : ce sont ceux que vous entendrez dans les outils et les réunions.</p>
+<h2 id="tronc-commun-les-bases">Tronc commun : les bases</h2>
+<p><em>Ouverture et module 1</em></p>
+<table>
+<thead>
+<tr>
+<th>Terme</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>LLM</strong> (Large Language Model)</td>
+<td>Modèle entraîné sur d’énormes volumes de texte, qui génère une réponse en prédisant le mot suivant.</td>
+</tr>
+<tr>
+<td><strong>Token</strong></td>
+<td>Morceau de mot traité par le modèle ; c’est aussi l’unité de facturation (≈ ¾ de mot en anglais).</td>
+</tr>
+<tr>
+<td><strong>Hallucination</strong></td>
+<td>Réponse fausse mais présentée avec assurance et vraisemblance.</td>
+</tr>
+<tr>
+<td><strong>Knowledge cutoff</strong> (date de coupure)</td>
+<td>Date à laquelle s’arrêtent les données d’entraînement du modèle ; il ignore tout ce qui s’est passé après, sauf s’il fait une recherche web.</td>
+</tr>
+<tr>
+<td><strong>Assistant</strong></td>
+<td>Le produit qu’on utilise au quotidien (ChatGPT, Copilot, <a href="http://Claude.ai">Claude.ai</a>, Gemini) : une interface posée sur un harness, autour d’un modèle.</td>
+</tr>
+<tr>
+<td><strong>Harness</strong></td>
+<td>Tout le logiciel autour du modèle : consignes, mémoire, tools, enchaînement des étapes. Deux assistants sur le même modèle diffèrent par leur harness.</td>
+</tr>
+<tr>
+<td><strong>Tools</strong></td>
+<td>Capacités que le modèle peut appeler pendant sa réponse : recherche web, calcul, lecture de fichiers, Jira, Figma… (<em>tool calling</em>).</td>
+</tr>
+<tr>
+<td><strong>MCP</strong> (Model Context Protocol)</td>
+<td>Standard pour brancher de nouveaux tools sur un assistant : applications et données de l’entreprise.</td>
+</tr>
+<tr>
+<td><strong>Agent</strong></td>
+<td>Modèle qui enchaîne lui-même des actions avec des tools, en boucle, jusqu’à atteindre un objectif : c’est la <strong>boucle agentique</strong> (modèle + tools + boucle + objectif, que le harness fait tourner). Les éditeurs utilisent aussi « agent » pour de simples assistants personnalisés.</td>
+</tr>
+<tr>
+<td><strong>Boucle agentique</strong> (agent loop)</td>
+<td>Le cycle demande → le modèle choisit un tool → le harness l’exécute → le résultat entre dans le contexte → on recommence si besoin.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tronc-commun-demander-et-capitaliser">Tronc commun : demander et capitaliser</h2>
+<p><em>Ouverture, modules 2 à 4</em></p>
+<table>
+<thead>
+<tr>
+<th>Terme</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Prompt</strong></td>
+<td>La demande envoyée au modèle, consignes comprises.</td>
+</tr>
+<tr>
+<td><strong>Rewind</strong></td>
+<td>Revenir corriger la demande de départ plutôt qu’empiler des corrections dans la conversation.</td>
+</tr>
+<tr>
+<td><strong>Instructions personnalisées / assistant personnalisé</strong></td>
+<td>Consignes enregistrées une fois et réappliquées : toujours (instructions personnalisées) ou dans un espace dédié (GPT, Projet Claude, agent Copilot).</td>
+</tr>
+<tr>
+<td><strong>Skill</strong></td>
+<td>Savoir-faire emballé (consignes, modèles, exemples, parfois des scripts) que l’assistant charge <strong>à la demande</strong>, quand la tâche correspond. Plus léger que des instructions permanentes, partageable dans une équipe. Claude parle d’« Agent Skills » ; d’autres assistants ont des équivalents.</td>
+</tr>
+<tr>
+<td><strong>Vibe coding</strong></td>
+<td>Produire vite un prototype en langage naturel, sans regarder le code ; parfait pour explorer, insuffisant pour livrer.</td>
+</tr>
+<tr>
+<td><strong>AI-driven development</strong></td>
+<td>Développement logiciel où l’IA écrit beaucoup de code, sous la direction et le contrôle d’ingénieurs.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tronc-commun-le-contexte">Tronc commun : le contexte</h2>
+<p><em>Modules 1, 4 et 5</em></p>
+<table>
+<thead>
+<tr>
+<th>Terme</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Context window</strong></td>
+<td>Tout ce que le modèle « voit » au moment de répondre : consignes, historique, pièces jointes, résultats des tools.</td>
+</tr>
+<tr>
+<td><strong>Session</strong></td>
+<td>Une conversation ; elle accumule du contexte, utile ou parasite.</td>
+</tr>
+<tr>
+<td><strong>Mémoire</strong></td>
+<td>Informations que l’assistant réinjecte automatiquement d’une session à l’autre (profil, préférences) ; souvent désactivable.</td>
+</tr>
+<tr>
+<td><strong>Grounding</strong></td>
+<td>Ancrer la réponse dans des sources vérifiables plutôt que dans la « mémoire » du modèle.</td>
+</tr>
+<tr>
+<td><strong>RAG</strong> (Retrieval-Augmented Generation)</td>
+<td>Technique de grounding : on cherche les bons extraits de documents internes et on les ajoute au contexte avant de répondre.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tronc-commun-risques-et-couts">Tronc commun : risques et coûts</h2>
+<p><em>Module 5</em></p>
+<table>
+<thead>
+<tr>
+<th>Terme</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Human-in-the-loop</strong></td>
+<td>Un humain qualifié valide la sortie de l’IA <em>avant</em> qu’elle soit utilisée.</td>
+</tr>
+<tr>
+<td><strong>Prompt injection</strong></td>
+<td>Instructions malveillantes cachées dans un contenu (email, document, page web) qui détournent un assistant.</td>
+</tr>
+<tr>
+<td><strong>Fuite de données</strong></td>
+<td>Données confidentielles envoyées à un assistant non maîtrisé (version grand public).</td>
+</tr>
+<tr>
+<td><strong>Cache</strong></td>
+<td>Mise en mémoire du début du contexte pour ne pas le repayer plein tarif à chaque message (il est relu à prix réduit) ; changer de modèle ou de tools en cours de route le perd.</td>
+</tr>
+<tr>
+<td><strong>Plafond de dépense</strong> (spend cap)</td>
+<td>Limite de budget configurée pour éviter les factures surprises.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="termes-propres-aux-developpeurs-la-machine">Termes propres aux développeurs : la machine</h2>
+<p><em>Modules 1 et 2</em></p>
+<table>
+<thead>
+<tr>
+<th>Terme</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Agent de code</strong></td>
+<td>Agent qui lit, modifie et exécute du code dans un dépôt (Copilot, Claude Code, Codex, Cursor…).</td>
+</tr>
+<tr>
+<td><strong>Non-déterminisme</strong></td>
+<td>La même demande peut donner des sorties différentes : une réponse est un tirage, pas un calcul.</td>
+</tr>
+<tr>
+<td><strong>Autorégression</strong></td>
+<td>Le modèle génère token par token, chaque token produit devenant l’entrée du suivant : ce qu’il a écrit oriente ce qu’il écrira.</td>
+</tr>
+<tr>
+<td><strong>System prompt</strong></td>
+<td>Consignes que le harness place en tête de chaque appel, avant les instructions projet et la conversation.</td>
+</tr>
+<tr>
+<td><strong>Tool definitions</strong></td>
+<td>Nom, description et paramètres de chaque tool, envoyés au modèle à chaque appel : ils pèsent dans la context window et se lisent comme un prompt.</td>
+</tr>
+<tr>
+<td><strong>Permissions</strong></td>
+<td>Les actions autorisées à l’agent (lire, écrire, lancer une commande, accéder au réseau).</td>
+</tr>
+</tbody>
+</table>
+<h2 id="termes-propres-aux-developpeurs-cadrer-produire-capitaliser">Termes propres aux développeurs : cadrer, produire, capitaliser</h2>
+<p><em>Modules 2 à 4</em></p>
+<table>
+<thead>
+<tr>
+<th>Terme</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Instructions projet</strong> (<code>AGENTS.md</code>)</td>
+<td>Fichier versionné dans le dépôt, chargé à chaque session : conventions, commandes, pièges. C’est l’équivalent dev des instructions personnalisées.</td>
+</tr>
+<tr>
+<td><strong>Demande initiale</strong></td>
+<td>Premier message de la session, cadré pour la tâche du jour : objectif, fichiers clés, commandes, invariants, pièges. Pour une tâche longue, on l’écrit dans un fichier rechargé à chaque session.</td>
+</tr>
+<tr>
+<td><strong>Invariant</strong></td>
+<td>Règle qui doit rester vraie quoi que fasse l’agent (un contrat d’API, une règle métier, un test qui doit passer).</td>
+</tr>
+<tr>
+<td><strong>Plan d’exécution</strong></td>
+<td>Liste d’étapes vérifiables que l’agent propose avant de coder, et que le dev corrige avant de le laisser faire.</td>
+</tr>
+<tr>
+<td><strong>Niveau d’autonomie</strong></td>
+<td>Ce que l’agent peut faire sans demander : proposer, modifier après accord, ou agir seul.</td>
+</tr>
+<tr>
+<td><strong>Revue IA</strong></td>
+<td>Relecture d’un diff par un agent ; elle aide l’humain, elle ne décide pas du merge.</td>
+</tr>
+<tr>
+<td><strong>Brownfield / greenfield</strong></td>
+<td>Code existant à faire évoluer / projet partant de zéro.</td>
+</tr>
+<tr>
+<td><strong>Progressive disclosure</strong></td>
+<td>L’agent ne voit d’abord que le nom et la description d’une skill, et ne charge son contenu que quand il en a besoin.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="termes-propres-aux-developpeurs-garder-la-main">Termes propres aux développeurs : garder la main</h2>
+<p><em>Module 5</em></p>
+<table>
+<thead>
+<tr>
+<th>Terme</th>
+<th>En une phrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Context rot</strong> (en business : dérive de contexte)</td>
+<td>Dégradation des réponses quand la context window se remplit d’ajouts, de corrections et d’informations périmées ou contradictoires : la session reste crédible mais s’éloigne du besoin initial.</td>
+</tr>
+<tr>
+<td><strong>Compaction</strong></td>
+<td>Résumé automatique ou demandé de la session pour libérer de la context window.</td>
+</tr>
+<tr>
+<td><strong>Lost in the middle</strong></td>
+<td>Le modèle exploite moins bien ce qui se trouve au milieu d’un long contexte.</td>
+</tr>
+<tr>
+<td><strong>Trio létal</strong></td>
+<td>Données privées + contenu non fiable + capacité d’envoyer vers l’extérieur : la combinaison qui rend une fuite possible.</td>
+</tr>
+<tr>
+<td><strong>Shadow AI</strong></td>
+<td>Usage d’outils d’IA non validés par l’entreprise.</td>
+</tr>
+</tbody>
+</table>
+</article>
+    <footer class="content__footer">© Zenika · Développeur IA — Foundation</footer>
+  </section>
+</body>
+</html>
