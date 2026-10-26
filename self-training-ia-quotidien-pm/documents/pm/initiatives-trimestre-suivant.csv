@@ -1,0 +1,11 @@
+id;initiative;taille_fictive;valeur_attendue;depend_de;engagement
+I1;Généraliser le départ express à LIL-07 et NTE-02;2 sprints;Moins d'attente au comptoir le matin dans deux hôtels de plus;I9 (correction exigée avant toute extension), direction des opérations (application Étages à ouvrir pour LIL-07 et NTE-02), urne à installer à NTE-02;—
+I2;LAN-101 Demander un départ tardif depuis l'application;non estimé (à spécifier);Tenir la promesse faite aux hôtels pilotes;—;Promis aux hôtels pour la fin du trimestre en cours : non tenu
+I3;LAN-107 File des demandes du jour pour la réception;0,5 sprint;Une réception mieux organisée le matin;—;Demandé par la direction des opérations
+I4;Facture de société en libre-service;1 sprint;Moins de factures refaites à la réception;équipe Amarre (connecteur PMS v2);—
+I5;Clé mobile;4 sprints ou plus;Arrivée sans passage au comptoir;Système de serrures des hôtels : aucun connecteur à ce jour;—
+I6;LAN-109 Migrer la carte de chambre vers Lueur 3.3;0,5 sprint;Rester à jour du design system;Publication de Lueur 3.3;—
+I7;LAN-110 Exporter les verbatims du questionnaire après séjour;0,5 sprint;Analyser les retours plus vite;—;—
+I8;Corriger LAN-119 (facture non reçue après le départ);1 sprint;Moins d'incidents sur la facture (14 en 90 jours, fictif);équipe Amarre (connecteur PMS v2);—
+I9;LAN-120 Sécurité de la vue réception;0,5 sprint;Correction exigée avant toute extension à de nouveaux hôtels;—;Échéance : 45 jours
+R1;Arrêter l'ancien écran web « Départ »;0,5 sprint;Moins de maintenance (2 % des usages, fictif);—;Prévenir les clients qui l'utilisent encore

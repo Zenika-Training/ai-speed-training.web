@@ -1,0 +1,10 @@
+# Context Engineering — reprendre le contrôle des agents de code
+
+> Sentir le non-déterminisme, formaliser avant de coder, composer la context window d'un agent de code et extraire de ses sessions un contexte durable, quel que soit l'outil.
+
+## Table of Contents
+
+### Handouts
+
+- [Handout — Les activités de l'atelier](/ai-speed-training.web/meetup-context-engineering-for-dev/handouts/handout-01-activites.md)
+

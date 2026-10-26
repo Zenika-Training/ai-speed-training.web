@@ -1,0 +1,9 @@
+element;type;groupe_proprietaire;criticite;depend_de;incidents_90_jours;dernier_incident
+Lanterne — application mobile;Application;équipe Lanterne;Moyenne;Service Lanterne;3;Écran d'accueil lent à l'ouverture
+Lanterne — vue réception;Application;équipe Lanterne;Moyenne;Service Lanterne;1;Liste des demandes non rafraîchie
+Service Lanterne (lanterne-sejour-api);Service;équipe Lanterne;Moyenne;Connecteur PMS v2, Service Paiement, Service Notifications;4;Délai de réponse du module pms
+Connecteur PMS v2;Interface;équipe Amarre;Haute;PMS des hôtels;6;Statut de chambre mis à jour avec retard
+Service Paiement (pré-autorisation, encaissement);Service;équipe Gouvernail;Haute;Prestataire de paiement (externe);2;Pré-autorisation refusée par le prestataire
+Service Notifications;Service;équipe Lanterne;Basse;—;0;—
+Application Étages;Application;direction des opérations (support : équipe Amarre);Moyenne;Connecteur PMS v2;2;Chambres libérées non affichées
+Stockage des documents clients;Stockage;équipe Escale;Haute;—;0;—

@@ -1,0 +1,14 @@
+# Initiation : concepts LLM et agentique
+
+> Comprendre ce qu'est un LLM et un agent avant de coder avec : tokens, context window, embeddings, RAG, prompt structuré, MCP et skills, puis prise en main de Claude (chat, Projects, Cowork, Claude Code) en quatre labs.
+
+## Table of Contents
+
+### Handouts
+
+- [Handout — Mémo du module 0](/ai-speed-training.web/bootcamp-ai-driven-dev-m0-initiation/handouts/handout-01-memo.md)
+- [Handout — Lab 1 : prompting professionnel](/ai-speed-training.web/bootcamp-ai-driven-dev-m0-initiation/handouts/handout-02-lab-1-prompting.md)
+- [Handout — Lab 2 : automatiser une tâche récurrente](/ai-speed-training.web/bootcamp-ai-driven-dev-m0-initiation/handouts/handout-03-lab-2-tache-recurrente.md)
+- [Handout — Lab 3 : prendre en main Cowork](/ai-speed-training.web/bootcamp-ai-driven-dev-m0-initiation/handouts/handout-04-lab-3-cowork.md)
+- [Handout — Lab 4 : prendre en main Claude Code](/ai-speed-training.web/bootcamp-ai-driven-dev-m0-initiation/handouts/handout-05-lab-4-claude-code.md)
+

@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cheat sheet IA — sous le capot · Zenika</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Urbanist:wght@600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* Zenika cheat sheet — A4 recto-verso. Same tokens as the Slidev theme and the handouts viewer. */
+    @page { size: A4; margin: 0; }
+
+    :root {
+      color-scheme: light;
+      --zk-magenta: #c41e62;
+      --zk-red: #e1203f;
+      --zk-gradient: linear-gradient(90deg, var(--zk-magenta) 0%, var(--zk-red) 100%);
+      --zk-ink: #303030;
+      --zk-text: #595959;
+      --zk-line: #e3e3e3;
+      --zk-surface: #f7f7f7;
+      --zk-info: #ecf0f6;
+      --zk-info-border: #b9c6dc;
+      --zk-pink: #fbeaf0;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      background: #d9d9d9;
+      color: var(--zk-text);
+      font-family: 'Nunito', ui-sans-serif, system-ui, sans-serif;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Screen toolbar --------------------------------------------------- */
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding: 10px 16px;
+      background: var(--zk-ink);
+    }
+
+    .toolbar button {
+      padding: 7px 18px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--zk-gradient);
+      color: #fff;
+      font: 700 14px 'Nunito', sans-serif;
+      cursor: pointer;
+    }
+
+    .toolbar span {
+      align-self: center;
+      color: #fff;
+      font-size: 13px;
+      opacity: .8;
+    }
+
+    /* A4 sheet ------------------------------------------------------------ */
+
+    .sheet {
+      width: 210mm;
+      height: 297mm;
+      margin: 16px auto;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      box-shadow: 0 4px 18px rgb(0 0 0 / .18);
+      font-size: 9.6pt;
+      line-height: 1.45;
+    }
+
+    .head {
+      display: flex;
+      align-items: center;
+      gap: 6mm;
+      padding: 5.5mm 9mm 5mm;
+      background: var(--zk-gradient);
+      color: #fff;
+    }
+
+    .head img { height: 7mm; }
+
+    .head__titles { flex: 1; }
+
+    .head__eyebrow {
+      font: 700 6.6pt 'Urbanist', sans-serif;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      opacity: .9;
+    }
+
+    .head h1 {
+      margin: .3mm 0 0;
+      font-size: 15pt;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .head__motto {
+      max-width: 62mm;
+      font-size: 7.4pt;
+      font-style: italic;
+      text-align: right;
+    }
+
+    .body {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6mm 6mm;
+      padding: 7mm 11mm 2mm;
+    }
+
+    /* the two columns take the free height and spread their blocks over it */
+    .body--recto { grid-template-rows: 1fr auto; }
+    .body--verso { grid-template-rows: auto 1fr auto; }
+
+    .col {
+      display: flex;
+      flex-direction: column;
+      gap: 5mm;
+    }
+
+    /* blocks of a column are cards that share the free height */
+    .col > .block {
+      flex: 1 1 auto;
+      padding: 4mm 4.5mm;
+      border: 1px solid var(--zk-line);
+      border-top: 3px solid var(--zk-magenta);
+      border-radius: 2mm;
+      background: #fff;
+    }
+
+    .col > .block h2 { border-bottom: 0; padding-bottom: 0; }
+
+    .span-2 { grid-column: 1 / -1; }
+
+
+    .foot {
+      display: flex;
+      justify-content: space-between;
+      padding: 3mm 11mm 5mm;
+      color: #8a8a8a;
+      font-size: 6.2pt;
+    }
+
+    /* Blocks -------------------------------------------------------------- */
+
+    .block h2 {
+      display: flex;
+      align-items: center;
+      gap: 2mm;
+      margin: 0 0 2.6mm;
+      padding-bottom: 1.6mm;
+      border-bottom: 1.4px solid var(--zk-magenta);
+      color: var(--zk-ink);
+      font-size: 11.5pt;
+      font-weight: 800;
+      line-height: 1.15;
+    }
+
+    .block h2 img { width: 6mm; height: 6mm; }
+
+    .block h2 small {
+      margin-left: auto;
+      color: var(--zk-magenta);
+      font: 700 6pt 'Urbanist', sans-serif;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    h3 {
+      margin: 1.8mm 0 .8mm;
+      color: var(--zk-ink);
+      font-size: 7.8pt;
+      font-weight: 800;
+    }
+
+    p { margin: 0 0 2mm; }
+
+    p:last-child { margin-bottom: 0; }
+
+    .note { color: var(--zk-text); font-size: 8.8pt; }
+
+    strong { color: var(--zk-ink); }
+
+    .hl { color: var(--zk-magenta); font-weight: 700; }
+
+    ul, ol { margin: 0; padding-left: 4mm; }
+
+    li { margin: 1.2mm 0; }
+
+    li::marker { color: var(--zk-magenta); font-weight: 700; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9pt;
+    }
+
+    th {
+      padding: 1.4mm 2.2mm;
+      background: var(--zk-gradient);
+      color: #fff;
+      font-size: 8.4pt;
+      text-align: left;
+    }
+
+    td {
+      padding: 1.6mm 2.2mm;
+      border-bottom: 1px solid var(--zk-line);
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td { background: #fafafa; }
+
+    pre {
+      margin: 0 0 2mm;
+      padding: 2.6mm 3.2mm;
+      border-left: 2px solid var(--zk-magenta);
+      border-radius: 1.2mm;
+      background: var(--zk-surface);
+      color: var(--zk-ink);
+      font: 8pt/1.55 'Fira Code', ui-monospace, monospace;
+      white-space: pre-wrap;
+    }
+
+    pre b { color: var(--zk-magenta); font-weight: 500; }
+
+    /* Flow of steps (agent loop, brief workflow) */
+    .flow {
+      display: flex;
+      align-items: stretch;
+      gap: 1.4mm;
+      margin: 2.4mm 0;
+    }
+
+    .flow > div {
+      flex: 1;
+      padding: 2mm 1.6mm;
+      border: 1px solid var(--zk-line);
+      border-radius: 1.4mm;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .flow > div b {
+      color: var(--zk-magenta);
+      font-size: 8.4pt;
+    }
+
+    .flow > div.loop { border: 1px dashed var(--zk-magenta); background: var(--zk-pink); }
+
+    .flow > i {
+      align-self: center;
+      color: var(--zk-magenta);
+      font-style: normal;
+      font-weight: 800;
+    }
+
+    /* Two small cards side by side */
+    .pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3mm;
+    }
+
+    .pair > div {
+      padding: 2.4mm 3mm;
+      border-radius: 1.4mm;
+      background: var(--zk-surface);
+    }
+
+    .pair > div b { display: block; margin-bottom: .6mm; color: var(--zk-magenta); }
+
+    /* Ready-to-use prompts, 2 × 2 */
+    .prompts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3mm 6mm;
+    }
+
+    .prompts b { display: block; margin-bottom: 1mm; color: var(--zk-ink); }
+
+    .prompts pre { margin: 0; }
+
+    /* Golden rules */
+    .rules { display: flex; flex-direction: column; gap: 3mm; }
+
+    .rules > div {
+      padding: 2.6mm 3.2mm;
+      border-left: 2px solid var(--zk-magenta);
+      border-radius: 1.4mm;
+      background: var(--zk-pink);
+    }
+
+    .rules b { display: block; color: var(--zk-ink); }
+
+    .rules em { color: var(--zk-magenta); }
+
+    /* Numbered reflexes, one row */
+    .reflexes {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4mm;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: reflex;
+    }
+
+    .reflexes li {
+      margin: 0;
+      padding: 2.6mm 2.6mm 2.4mm;
+      border-radius: 1.4mm;
+      background: var(--zk-surface);
+      font-size: 8.8pt;
+      line-height: 1.35;
+      counter-increment: reflex;
+    }
+
+    .reflexes li::before {
+      content: counter(reflex);
+      display: block;
+      width: 5.4mm;
+      height: 5.4mm;
+      margin-bottom: 1.4mm;
+      border-radius: 50%;
+      background: var(--zk-gradient);
+      color: #fff;
+      font-size: 8.4pt;
+      font-weight: 800;
+      line-height: 5.4mm;
+      text-align: center;
+    }
+
+    .keywords {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2mm 6mm;
+    }
+
+    .keywords b { color: var(--zk-magenta); }
+
+    /* Under the hood additions ------------------------------------------- */
+
+    .keywords--2 { grid-template-columns: 1fr 1fr; gap: 1.6mm 4mm; }
+
+    .reflexes--6 { grid-template-columns: repeat(6, 1fr); gap: 3mm; }
+
+    .flow--small { gap: 1mm; }
+
+    .flow--small > div { padding: 1.6mm 1mm; }
+
+    .flow--small > div b { font-size: 7.8pt; }
+
+    /* the full stack, one band per layer */
+    .stack { display: flex; flex-direction: column; gap: 1.2mm; margin-bottom: 2mm; }
+
+    .stack > div {
+      padding: 1.3mm 3mm;
+      border-radius: 1.2mm;
+      background: var(--zk-surface);
+      font-size: 8.8pt;
+    }
+
+    .stack b { color: var(--zk-ink); }
+
+    .stack__agents { border: 1px dashed var(--zk-info-border); background: var(--zk-info) !important; }
+
+    .stack__agents span { float: right; color: var(--zk-magenta); font-weight: 700; }
+
+    .stack__gw { background: var(--zk-gradient) !important; color: #fff; }
+
+    .stack__gw b { color: #fff; }
+
+    .block table td:first-child { white-space: nowrap; }
+
+    code {
+      padding: 0 .8mm;
+      border-radius: .8mm;
+      background: var(--zk-pink);
+      color: var(--zk-magenta);
+      font: 7.8pt 'Fira Code', ui-monospace, monospace;
+    }
+
+    /* gateway: keywords next to the config snippet */
+    .gw { display: grid; grid-template-columns: 1.15fr 1fr; gap: 6mm; align-items: center; }
+
+    .gw pre { margin: 0; }
+
+    .rules + .note { margin-top: 2.4mm; }
+
+    /* Print ----------------------------------------------------------------- */
+
+    @media print {
+      html, body { background: #fff; }
+      .toolbar { display: none; }
+      .sheet { margin: 0; box-shadow: none; break-after: page; }
+      .sheet:last-child { break-after: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <button type="button" onclick="window.print()">Imprimer / PDF</button>
+    <span>A4 recto-verso · marges à « aucune » dans la boîte d'impression</span>
+  </div>
+
+  <!-- ================================================================ RECTO -->
+  <section class="sheet">
+    <header class="head">
+      <img src="assets/zenika/logo.svg" alt="Zenika">
+      <div class="head__titles">
+        <div class="head__eyebrow">Cheat sheet IA · sous le capot · 1/2</div>
+        <h1>Ce qui se passe dans le modèle</h1>
+      </div>
+      <div class="head__motto">Le modèle prédit, le harness agit, la gateway gouverne.</div>
+    </header>
+
+    <div class="body body--recto">
+      <div class="col">
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/location/map.png" alt="">Six notions</h2>
+          <div class="keywords keywords--2">
+            <div><b>LLM</b> le moteur : prédit le token suivant</div>
+            <div><b>SLM</b> le petit moteur : 1 à ~15&nbsp;Md de paramètres</div>
+            <div><b>Agent</b> modèle + outils + boucle + objectif</div>
+            <div><b>Harness</b> tout le code qui n'est pas le modèle</div>
+            <div><b>Orchestrateur</b> coordonne plusieurs agents</div>
+            <div><b>SDD</b> la spec écrite, source de vérité</div>
+          </div>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/programming/hierarchy.png" alt="">La pile complète</h2>
+          <div class="stack">
+            <div>Méthode <b>SDD</b> : spec → plan → tâches</div>
+            <div><b>Orchestrateur</b> : découpe, distribue, agrège</div>
+            <div class="stack__agents"><b>Agents</b> = harness + appel au modèle <span>⇄ outils, MCP</span></div>
+            <div class="stack__gw"><b>Gateway + guardrails</b> : auth, routage, quotas, logs</div>
+            <div>Fournisseurs : cloud, hyperscaler, souverain, <b>SLM local</b></div>
+          </div>
+          <p class="note">Les outils sont exécutés par le <strong>harness</strong>, jamais par le modèle.</p>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/essentials/signpost.png" alt="">Chatbot, workflow ou agent ?</h2>
+          <table>
+            <tr><th>Qui décide de l'étape suivante ?</th><th>Coût</th></tr>
+            <tr><td><strong>Chatbot</strong> : l'humain</td><td>prévisible</td></tr>
+            <tr><td><strong>Workflow</strong> : le code, chemin écrit à l'avance</td><td>prévisible</td></tr>
+            <tr><td><strong>Agent</strong> : le modèle, à chaque tour</td><td>variable</td></tr>
+          </table>
+          <p class="note">Commencer par <span class="hl">la solution la plus simple</span> qui marche.</p>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/devices/cpu.png" alt="">Le trajet d'une phrase</h2>
+          <div class="flow flow--small">
+            <div><b>Texte</b></div><i>›</i>
+            <div><b>Tokens</b></div><i>›</i>
+            <div><b>Embed&shy;dings</b></div><i>›</i>
+            <div class="loop"><b>Couches ×N</b></div><i>›</i>
+            <div><b>Logits</b></div><i>›</i>
+            <div><b>Tirage</b></div>
+          </div>
+          <ul>
+            <li><strong>Un token à la fois</strong> : 500 tokens de réponse = 500 passes.</li>
+            <li><strong>Attention</strong> : les tokens se lisent entre eux ; <strong>MLP</strong> : les connaissances.</li>
+            <li><strong>Température</strong> basse = favori ; <strong>top-p</strong> = tirage parmi les plus probables.</li>
+            <li>Il produit du <span class="hl">plausible</span>, pas du vrai.</li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/programming/data.png" alt="">Contexte et KV cache</h2>
+          <ul>
+            <li><strong>Sans état</strong> : à chaque tour, le harness renvoie <strong>tout</strong> le contexte.</li>
+            <li><strong>Plus long ≠ mieux</strong> : <em>lost in the middle</em>, <em>context rot</em>.</li>
+          </ul>
+          <div class="pair">
+            <div><b>Prefill</b>lit le prompt en parallèle → temps avant le 1<sup>er</sup> token</div>
+            <div><b>Decode</b>un token par passe, réutilise le cache → tokens/s</div>
+          </div>
+          <p class="note"><strong>Prompt caching</strong> : préfixe déjà vu facturé jusqu'à ~90&nbsp;% moins cher. <span class="hl">Gardez le début stable.</span></p>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/design/size.png" alt="">Rendre un modèle plus léger</h2>
+          <ul>
+            <li><strong>Quantification</strong> : un 8B passe de 16&nbsp;Go (FP16) à ~5&nbsp;Go (4 bits).</li>
+            <li><strong>Distillation</strong> : un petit élève imite un grand professeur.</li>
+            <li><strong>MoE</strong> : DeepSeek-V3, 671&nbsp;Md au total, 37&nbsp;Md actifs par token.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="block span-2">
+        <h2><img src="assets/zenika/library/icons/gradient/essentials/verify.png" alt="">6 réflexes de développeur</h2>
+        <ol class="reflexes reflexes--6">
+          <li>Compter en <strong>tokens</strong> : coût, limites, latence.</li>
+          <li>Demander des <strong>sorties courtes</strong> et des diffs.</li>
+          <li>Mettre l'info utile <strong>dans le contexte</strong>.</li>
+          <li>Garder le <strong>préfixe stable</strong> en session.</li>
+          <li><strong>Vérifier</strong> : tests, typage, revue.</li>
+          <li><strong>SLM</strong> pour trier, <strong>LLM</strong> pour raisonner.</li>
+        </ol>
+      </div>
+    </div>
+
+    <footer class="foot">
+      <span>Sous le capot : LLM, agents, harness et orchestrateurs · Zenika</span>
+      <span>Au verso : agents, harness, orchestration, guardrails et gateways</span>
+    </footer>
+  </section>
+
+  <!-- ================================================================ VERSO -->
+  <section class="sheet">
+    <header class="head">
+      <img src="assets/zenika/logo.svg" alt="Zenika">
+      <div class="head__titles">
+        <div class="head__eyebrow">Cheat sheet IA · sous le capot · 2/2</div>
+        <h1>Agents, harness et sécurité</h1>
+      </div>
+      <div class="head__motto">Le modèle n'exécute rien : il écrit une demande d'action.</div>
+    </header>
+
+    <div class="body body--verso">
+      <div class="block span-2">
+        <h2><img src="assets/zenika/library/icons/gradient/arrows/repeat.png" alt="">La boucle d'un agent<small>un tour = un appel modèle</small></h2>
+        <div class="flow">
+          <div><b>Demande</b></div><i>›</i>
+          <div class="loop"><b>Contexte assemblé</b></div><i>›</i>
+          <div class="loop"><b>Appel au modèle</b></div><i>›</i>
+          <div class="loop"><b>Outil ? → permission</b></div><i>›</i>
+          <div class="loop"><b>Exécution, résultat ajouté</b></div><i>›</i>
+          <div><b>Réponse finale</b></div>
+        </div>
+        <p class="note">Les étapes en pointillé se répètent : 5 à 20 tours pour une tâche simple. <code>stop_reason: "tool_use"</code> (Anthropic), <code>finish_reason: "tool_calls"</code> (OpenAI).</p>
+      </div>
+
+      <div class="col">
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/programming/command.png" alt="">Tool calling</h2>
+          <pre><b>① harness</b> déclare l'outil
+   { name, description, input_schema }
+<b>② modèle</b> demande
+   { type: "tool_use", name, input }
+<b>③ harness</b> exécute et répond
+   { type: "tool_result", content }</pre>
+          <p class="note">Le modèle choisit <strong>sur la description</strong>, envoyée en tokens à chaque tour : soignez-la, c'est un prompt.</p>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/finance/archive.png" alt="">Mémoire : quatre étages</h2>
+          <ol>
+            <li><strong>Context window</strong> : la conversation, limitée.</li>
+            <li><strong>Compaction</strong> : le harness résume l'historique.</li>
+            <li><strong>Fichiers</strong> : <code>AGENTS.md</code>, notes, plans.</li>
+            <li><strong>Recherche</strong> : grep, RAG, MCP, à la demande.</li>
+          </ol>
+          <div class="pair">
+            <div><b>MCP</b>connecte un agent à des outils</div>
+            <div><b>A2A</b>connecte des agents entre eux</div>
+          </div>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/settings/setting-2.png" alt="">Le harness</h2>
+          <p>Boucle · outils · contexte · <strong>permissions</strong> (allow / ask / deny, sandbox) · <strong>hooks</strong> déterministes · sous-agents · observabilité.</p>
+          <p class="note">Même modèle, deux harness : résultats et coûts très différents.</p>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/programming/hierarchy.png" alt="">5 patterns d'orchestration</h2>
+          <table>
+            <tr><td><strong>Chaîne</strong></td><td>étapes fixes : spec → plan → code</td></tr>
+            <tr><td><strong>Routeur</strong></td><td>un SLM trie, un LLM traite</td></tr>
+            <tr><td><strong>Parallélisation</strong></td><td>tâches indépendantes, ou vote</td></tr>
+            <tr><td><strong>Orchestrateur-workers</strong></td><td>découpage décidé par un LLM</td></tr>
+            <tr><td><strong>Évaluateur</strong></td><td>on itère jusqu'au critère</td></tr>
+          </table>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/essentials/danger.png" alt="">Comment un agent déraille</h2>
+          <ul>
+            <li><strong>Boucle sans fin</strong> → limite de tours.</li>
+            <li><strong>Faux succès</strong> → vérification indépendante.</li>
+            <li><strong>Explosion de coût</strong> → budget par tâche, gateway.</li>
+            <li><strong>Injection indirecte</strong> → droits minimaux.</li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/security/shield-tick.png" alt="">Guardrails</h2>
+          <div class="rules">
+            <div><b>Trio létal : données privées + contenu non fiable + sortie réseau</b><em>Cassez au moins une des trois branches.</em></div>
+          </div>
+          <p class="note">Gardes d'<strong>entrée</strong> et de <strong>sortie</strong> : elles réduisent le risque. Garde d'<strong>action</strong> (permissions, sandbox) : elle le <span class="hl">borne</span>.</p>
+        </div>
+      </div>
+
+      <div class="block span-2">
+        <h2><img src="assets/zenika/library/icons/gradient/location/routing.png" alt="">La gateway IA<small>un seul point de passage vers les modèles</small></h2>
+        <div class="gw">
+          <div class="keywords">
+            <div><b>Routage</b> modèle, fallback</div>
+            <div><b>FinOps</b> budgets par équipe</div>
+            <div><b>Cache</b> exact ou sémantique</div>
+            <div><b>Observabilité</b> logs, coût</div>
+            <div><b>Guardrails</b> pour tous</div>
+            <div><b>Conformité</b> audit, RGPD</div>
+          </div>
+          <pre><b># Claude Code passe par la gateway</b>
+<b>export</b> ANTHROPIC_BASE_URL=\
+  "https://llm-gw.example"
+<b>export</b> ANTHROPIC_AUTH_TOKEN="$CLE_EQUIPE"</pre>
+        </div>
+      </div>
+    </div>
+
+    <footer class="foot">
+      <span>Sous le capot : LLM, agents, harness et orchestrateurs · Zenika</span>
+      <span>Les noms d'outils changent. Les notions restent.</span>
+    </footer>
+  </section>
+</body>
+</html>

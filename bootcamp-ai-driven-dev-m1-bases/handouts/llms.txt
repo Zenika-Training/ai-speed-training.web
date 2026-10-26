@@ -1,0 +1,13 @@
+# Bases du développement agentique
+
+> Cadrer un assistant de code (CLAUDE.md, mode plan), générer une application greenfield puis faire évoluer un code brownfield avec des skills et des agents, et brancher des outils tiers via MCP, en pratique avec Claude Code (version symétrique GitHub Copilot dans les labs).
+
+## Table of Contents
+
+### Handouts
+
+- [Handout — Bases du développement agentique](/ai-speed-training.web/bootcamp-ai-driven-dev-m1-bases/handouts/handout-01-memo.md)
+- [Handout — Lab 1 · Générer une application PetClinic (greenfield)](/ai-speed-training.web/bootcamp-ai-driven-dev-m1-bases/handouts/handout-02-lab-1-greenfield.md)
+- [Handout — Lab 2 · Refactorer PetClinic (brownfield)](/ai-speed-training.web/bootcamp-ai-driven-dev-m1-bases/handouts/handout-03-lab-2-brownfield.md)
+- [Handout — Lab 3 · Brancher des outils tiers avec MCP (Playwright & Figma)](/ai-speed-training.web/bootcamp-ai-driven-dev-m1-bases/handouts/handout-04-lab-3-mcp.md)
+

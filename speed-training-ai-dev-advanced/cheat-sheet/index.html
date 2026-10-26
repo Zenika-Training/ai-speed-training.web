@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cheat sheet — Développeur IA — Avancé · Zenika</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Urbanist:wght@600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* Zenika cheat sheet — A4 recto-verso. Same tokens as the Slidev theme and the handouts viewer. */
+    @page { size: A4; margin: 0; }
+
+    :root {
+      color-scheme: light;
+      --zk-magenta: #c41e62;
+      --zk-red: #e1203f;
+      --zk-gradient: linear-gradient(90deg, var(--zk-magenta) 0%, var(--zk-red) 100%);
+      --zk-ink: #303030;
+      --zk-text: #595959;
+      --zk-line: #e3e3e3;
+      --zk-surface: #f7f7f7;
+      --zk-info: #ecf0f6;
+      --zk-info-border: #b9c6dc;
+      --zk-pink: #fbeaf0;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      background: #d9d9d9;
+      color: var(--zk-text);
+      font-family: 'Nunito', ui-sans-serif, system-ui, sans-serif;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Screen toolbar --------------------------------------------------- */
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding: 10px 16px;
+      background: var(--zk-ink);
+    }
+
+    .toolbar button {
+      padding: 7px 18px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--zk-gradient);
+      color: #fff;
+      font: 700 14px 'Nunito', sans-serif;
+      cursor: pointer;
+    }
+
+    .toolbar span {
+      align-self: center;
+      color: #fff;
+      font-size: 13px;
+      opacity: .8;
+    }
+
+    /* A4 sheet ------------------------------------------------------------ */
+
+    .sheet {
+      width: 210mm;
+      height: 297mm;
+      margin: 16px auto;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      box-shadow: 0 4px 18px rgb(0 0 0 / .18);
+      font-size: 9.6pt;
+      line-height: 1.45;
+    }
+
+    .head {
+      display: flex;
+      align-items: center;
+      gap: 6mm;
+      padding: 5.5mm 9mm 5mm;
+      background: var(--zk-gradient);
+      color: #fff;
+    }
+
+    .head img { height: 7mm; }
+
+    .head__titles { flex: 1; }
+
+    .head__eyebrow {
+      font: 700 6.6pt 'Urbanist', sans-serif;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      opacity: .9;
+    }
+
+    .head h1 {
+      margin: .3mm 0 0;
+      font-size: 15pt;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .head__motto {
+      max-width: 62mm;
+      font-size: 7.4pt;
+      font-style: italic;
+      text-align: right;
+    }
+
+    .body {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6mm 6mm;
+      padding: 7mm 11mm 2mm;
+    }
+
+    /* the two columns take the free height and spread their blocks over it */
+    .body--recto { grid-template-rows: 1fr auto; }
+    .body--verso { grid-template-rows: auto 1fr auto; }
+
+    .col {
+      display: flex;
+      flex-direction: column;
+      gap: 5mm;
+    }
+
+    /* blocks of a column are cards that share the free height */
+    .col > .block {
+      flex: 1 1 auto;
+      padding: 4mm 4.5mm;
+      border: 1px solid var(--zk-line);
+      border-top: 3px solid var(--zk-magenta);
+      border-radius: 2mm;
+      background: #fff;
+    }
+
+    .col > .block h2 { border-bottom: 0; padding-bottom: 0; }
+
+    .span-2 { grid-column: 1 / -1; }
+
+
+    .foot {
+      display: flex;
+      justify-content: space-between;
+      padding: 3mm 11mm 5mm;
+      color: #8a8a8a;
+      font-size: 6.2pt;
+    }
+
+    /* Blocks -------------------------------------------------------------- */
+
+    .block h2 {
+      display: flex;
+      align-items: center;
+      gap: 2mm;
+      margin: 0 0 2.6mm;
+      padding-bottom: 1.6mm;
+      border-bottom: 1.4px solid var(--zk-magenta);
+      color: var(--zk-ink);
+      font-size: 11.5pt;
+      font-weight: 800;
+      line-height: 1.15;
+    }
+
+    .block h2 img { width: 6mm; height: 6mm; }
+
+    .block h2 small {
+      margin-left: auto;
+      color: var(--zk-magenta);
+      font: 700 6pt 'Urbanist', sans-serif;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    h3 {
+      margin: 1.8mm 0 .8mm;
+      color: var(--zk-ink);
+      font-size: 7.8pt;
+      font-weight: 800;
+    }
+
+    p { margin: 0 0 2mm; }
+
+    p:last-child { margin-bottom: 0; }
+
+    .note { color: var(--zk-text); font-size: 8.8pt; }
+
+    strong { color: var(--zk-ink); }
+
+    .hl { color: var(--zk-magenta); font-weight: 700; }
+
+    ul, ol { margin: 0; padding-left: 4mm; }
+
+    li { margin: 1.2mm 0; }
+
+    li::marker { color: var(--zk-magenta); font-weight: 700; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9pt;
+    }
+
+    th {
+      padding: 1.4mm 2.2mm;
+      background: var(--zk-gradient);
+      color: #fff;
+      font-size: 8.4pt;
+      text-align: left;
+    }
+
+    td {
+      padding: 1.6mm 2.2mm;
+      border-bottom: 1px solid var(--zk-line);
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td { background: #fafafa; }
+
+    pre {
+      margin: 0 0 2mm;
+      padding: 2.6mm 3.2mm;
+      border-left: 2px solid var(--zk-magenta);
+      border-radius: 1.2mm;
+      background: var(--zk-surface);
+      color: var(--zk-ink);
+      font: 8pt/1.55 'Fira Code', ui-monospace, monospace;
+      white-space: pre-wrap;
+    }
+
+    pre b { color: var(--zk-magenta); font-weight: 500; }
+
+    /* Flow of steps (agent loop, brief workflow) */
+    .flow {
+      display: flex;
+      align-items: stretch;
+      gap: 1.4mm;
+      margin: 2.4mm 0;
+    }
+
+    .flow > div {
+      flex: 1;
+      padding: 2mm 1.6mm;
+      border: 1px solid var(--zk-line);
+      border-radius: 1.4mm;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .flow > div b {
+      color: var(--zk-magenta);
+      font-size: 8.4pt;
+    }
+
+    .flow > div.loop { border: 1px dashed var(--zk-magenta); background: var(--zk-pink); }
+
+    .flow > i {
+      align-self: center;
+      color: var(--zk-magenta);
+      font-style: normal;
+      font-weight: 800;
+    }
+
+    /* Two small cards side by side */
+    .pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3mm;
+    }
+
+    .pair > div {
+      padding: 2.4mm 3mm;
+      border-radius: 1.4mm;
+      background: var(--zk-surface);
+    }
+
+    .pair > div b { display: block; margin-bottom: .6mm; color: var(--zk-magenta); }
+
+    /* Ready-to-use prompts, 2 × 2 */
+    .prompts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3mm 6mm;
+    }
+
+    .prompts > div > b { display: block; margin-bottom: 1mm; color: var(--zk-ink); }
+
+    .prompts pre { margin: 0; }
+
+    /* Golden rules */
+    .rules { display: flex; flex-direction: column; gap: 3mm; }
+
+    .rules > div {
+      padding: 2.6mm 3.2mm;
+      border-left: 2px solid var(--zk-magenta);
+      border-radius: 1.4mm;
+      background: var(--zk-pink);
+    }
+
+    .rules b { display: block; color: var(--zk-ink); }
+
+    .rules em { color: var(--zk-magenta); }
+
+    /* Numbered reflexes, one row */
+    .reflexes {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4mm;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: reflex;
+    }
+
+    .reflexes li {
+      margin: 0;
+      padding: 2.6mm 2.6mm 2.4mm;
+      border-radius: 1.4mm;
+      background: var(--zk-surface);
+      font-size: 8.8pt;
+      line-height: 1.35;
+      counter-increment: reflex;
+    }
+
+    .reflexes li::before {
+      content: counter(reflex);
+      display: block;
+      width: 5.4mm;
+      height: 5.4mm;
+      margin-bottom: 1.4mm;
+      border-radius: 50%;
+      background: var(--zk-gradient);
+      color: #fff;
+      font-size: 8.4pt;
+      font-weight: 800;
+      line-height: 5.4mm;
+      text-align: center;
+    }
+
+    .keywords {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2mm 6mm;
+    }
+
+    .keywords b { color: var(--zk-magenta); }
+
+    /* Variants and extra blocks ----------------------------------------- */
+
+    .keywords--2 { grid-template-columns: 1fr 1fr; gap: 1.6mm 4mm; }
+
+    .reflexes--6 { grid-template-columns: repeat(6, 1fr); gap: 3mm; }
+
+    .flow--small { gap: 1mm; }
+
+    .flow--small > div { padding: 1.6mm 1mm; }
+
+    .flow--small > div b { font-size: 7.8pt; }
+
+    /* the full stack, one band per layer */
+    .stack { display: flex; flex-direction: column; gap: 1.2mm; margin-bottom: 2mm; }
+
+    .stack > div {
+      padding: 1.3mm 3mm;
+      border-radius: 1.2mm;
+      background: var(--zk-surface);
+      font-size: 8.8pt;
+    }
+
+    .stack b { color: var(--zk-ink); }
+
+    .stack__agents { border: 1px dashed var(--zk-info-border); background: var(--zk-info) !important; }
+
+    .stack__agents span { float: right; color: var(--zk-magenta); font-weight: 700; }
+
+    .stack__gw { background: var(--zk-gradient) !important; color: #fff; }
+
+    .stack__gw b { color: #fff; }
+
+    .block table td:first-child { white-space: nowrap; }
+
+    code {
+      padding: 0 .8mm;
+      border-radius: .8mm;
+      background: var(--zk-pink);
+      color: var(--zk-magenta);
+      font: 7.8pt 'Fira Code', ui-monospace, monospace;
+      font-variant-ligatures: none;
+    }
+
+    /* gateway: keywords next to the config snippet */
+    .gw { display: grid; grid-template-columns: 1.15fr 1fr; gap: 6mm; align-items: center; }
+
+    .gw pre { margin: 0; }
+
+    .rules + .note { margin-top: 2.4mm; }
+
+    /* context window bar, same blocks and tones as the deck diagram */
+    .cw { display: flex; gap: 1mm; margin: 1mm 0 2.4mm; }
+
+    .cw > div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 9mm;
+      padding: 1mm .8mm;
+      border-radius: 1.2mm;
+      color: var(--zk-ink);
+      font-size: 8pt;
+      font-weight: 700;
+      line-height: 1.15;
+      text-align: center;
+    }
+
+    .cw__fixed { background: var(--zk-info); box-shadow: inset 0 0 0 1px var(--zk-info-border); }
+
+    .cw__live { background: var(--zk-pink); box-shadow: inset 0 0 0 1px #f2c3d4; }
+
+    .cw__free {
+      background: repeating-linear-gradient(135deg, #fff, #fff 5px, #f1f1f1 5px, #f1f1f1 10px);
+      box-shadow: inset 0 0 0 1px #d5d5d5;
+      color: var(--zk-text) !important;
+    }
+
+    /* review grid: six axes, two per row */
+    .axes { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2mm 4mm; }
+
+    .axes b { color: var(--zk-magenta); }
+
+    .axes--1 { grid-template-columns: 1fr; gap: .8mm; }
+
+    .axes + .note { margin-top: 2mm; }
+
+    .axes--1 + .note { margin-top: 2mm; }
+
+    .pair--bad > div:first-child b { color: var(--zk-text); }
+
+    .block > ul + .pair, .block > .flow + .pair, .block > .pair + .note, .block > .cw + ul { margin-top: 2mm; }
+
+
+    /* Avancé: three ideas side by side, prompt anatomy axis, small tables */
+    .rules--3 { flex-direction: row; gap: 4mm; }
+
+    .rules--3 > div { flex: 1; }
+
+    .rules--3 em { font-style: normal; font-weight: 700; }
+
+    .cw-axis {
+      display: flex;
+      justify-content: space-between;
+      margin: -1.4mm 0 2mm;
+      color: var(--zk-text);
+      font-size: 7.4pt;
+    }
+
+    .cw__new { background: var(--zk-gradient); color: #fff !important; }
+
+    .block table.small { font-size: 8.4pt; }
+
+    .block table.small th { padding: 1mm 2mm; font-size: 8pt; }
+
+    .block table.small td { padding: 1mm 2mm; }
+
+    .block > .axes + .note, .block > table + .note, .block > .pair + .flow, .block > .flow + .note, .block > .axes + .pair { margin-top: 2mm; }
+
+    .flow > div span { display: block; font-size: 7.6pt; line-height: 1.25; }
+
+    /* Print ----------------------------------------------------------------- */
+
+    @media print {
+      html, body { background: #fff; }
+      .toolbar { display: none; }
+      .sheet { margin: 0; box-shadow: none; break-after: page; }
+      .sheet:last-child { break-after: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <button type="button" onclick="window.print()">Imprimer / PDF</button>
+    <span>A4 recto-verso · marges à « aucune » dans la boîte d'impression</span>
+  </div>
+
+  <!-- ================================================================ RECTO -->
+  <!-- Recto: modules 1 and 2 (under the hood, the harness), then the six module tips. -->
+  <section class="sheet">
+    <header class="head">
+      <img src="assets/zenika/logo.svg" alt="Zenika">
+      <div class="head__titles">
+        <div class="head__eyebrow">Cheat sheet · Développeur IA · Avancé · 1/2</div>
+        <h1>Sous le capot, le harness</h1>
+      </div>
+      <div class="head__motto">Le modèle prédit, le harness agit, la gateway gouverne.</div>
+    </header>
+
+    <div class="body body--recto">
+      <div class="col">
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/devices/cpu.png" alt="">Un appel au modèle&nbsp;: prefill, decode</h2>
+          <div class="pair">
+            <div><b>1. Prefill</b>lit le prompt <strong>en parallèle</strong> → temps avant le 1<sup>er</sup> token</div>
+            <div><b>2. Decode</b><strong>un token par passe</strong>, réutilise le cache → tokens par seconde</div>
+          </div>
+          <ul>
+            <li><strong>KV cache</strong>&nbsp;: évite de recalculer K et V de tous les tokens précédents. Llama 3 8B&nbsp;: 128&nbsp;Ko par token.</li>
+            <li><strong>Un tour = un appel complet</strong>&nbsp;: 5 à 20 tours pour une tâche simple.</li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/finance/strongbox.png" alt="">Le prompt caching</h2>
+          <div class="cw">
+            <div class="cw__fixed" style="flex: 10">System prompt</div>
+            <div class="cw__fixed" style="flex: 12">Tool definitions</div>
+            <div class="cw__fixed" style="flex: 12">Instructions projet</div>
+            <div class="cw__live" style="flex: 22">Conversation + résultats des tools</div>
+            <div class="cw__new" style="flex: 10">Nouveau message</div>
+          </div>
+          <div class="cw-axis"><span>← stable&nbsp;: servi par le cache</span><span>volatil&nbsp;: recalculé →</span></div>
+          <ul>
+            <li>Préfixe déjà vu&nbsp;: prefill sauté, <span class="hl">~90&nbsp;% de remise</span>.</li>
+            <li><strong>Casse le cache</strong>&nbsp;: changer le system prompt, brancher ou retirer un MCP, changer de modèle.</li>
+            <li><strong>Cache expiré</strong>&nbsp;: rien d'oublié, mais <strong>repayé plein tarif</strong>.</li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/finance/coin.png" alt="">Où part la facture</h2>
+          <ul>
+            <li><strong>L'entrée fait le volume</strong>&nbsp;: chaque tour renvoie tout le préfixe. La sortie coûte ~5× plus au token, mais pèse peu.</li>
+            <li><strong>Reasoning tokens</strong>&nbsp;: prix de sortie, souvent invisibles. L'effort se choisit <strong>par tâche</strong>.</li>
+            <li><strong>SLM</strong> (1 à ~15&nbsp;Md de paramètres)&nbsp;: le SLM trie et route, le LLM raisonne.</li>
+          </ul>
+          <p class="note"><span class="hl">Réduire ce qui entre</span> rapporte plus que raccourcir la sortie.</p>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/settings/setting-2.png" alt="">Primitives du harness&nbsp;: qui décide&nbsp;?</h2>
+          <table class="small">
+            <tr><th>Primitive</th><th>Qui décide qu'elle s'applique</th></tr>
+            <tr><td><strong>Instructions projet</strong></td><td>personne&nbsp;: toujours chargées</td></tr>
+            <tr><td><strong>Skill</strong></td><td>le modèle, sur sa description</td></tr>
+            <tr><td><strong>Hook</strong></td><td>le harness, à chaque événement</td></tr>
+            <tr><td><strong>Sous-agent</strong></td><td>l'agent ou toi</td></tr>
+            <tr><td><strong>MCP</strong></td><td>le modèle, à la demande</td></tr>
+          </table>
+          <p class="note">Le harness est un <strong>actif d'équipe versionné</strong>, sinon c'est de l'agentic debt.</p>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/essentials/flash-circle.png" alt="">Hooks&nbsp;: une garantie<small>quoi que dise le modèle</small></h2>
+          <div class="axes">
+            <div><b>Avant un tool</b> bloquer <code>rm -rf</code></div>
+            <div><b>Après un tool</b> formater</div>
+            <div><b>Fin de tour</b> lancer les tests</div>
+            <div><b>Fin de session</b> archiver</div>
+          </div>
+          <p class="note">« Lance toujours les tests » dans les instructions est une <strong>suggestion</strong>. <span class="hl">Le hook est une garantie.</span></p>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/security/lock.png" alt="">Une allowlist n'est pas une sandbox</h2>
+          <div class="pair">
+            <div><b>Allowlist</b>filtre des <strong>motifs de commande</strong>. Se contourne&nbsp;: <code>npm test &amp;&amp; curl …</code></div>
+            <div><b>Sandbox</b>borne les <strong>effets</strong>&nbsp;: fichiers, réseau, droits. Conteneur, VM, compte dédié.</div>
+          </div>
+          <p class="note">Le seul périmètre réel est l'<span class="hl">isolation</span>&nbsp;: aucun prompt n'en fait sortir l'agent.</p>
+        </div>
+      </div>
+
+      <div class="block span-2">
+        <h2><img src="assets/zenika/library/icons/gradient/essentials/verify.png" alt="">6 tips, un par module</h2>
+        <ol class="reflexes reflexes--6">
+          <li>Garde le <strong>début du contexte</strong> stable&nbsp;: c'est lui que le cache rentabilise.</li>
+          <li>Ce qui doit toujours arriver est un <strong>hook</strong>, pas une consigne.</li>
+          <li>Donne à l'agent <strong>de quoi chercher</strong>, pas tout le dépôt.</li>
+          <li>Si la spec n'est pas versionnée avec le code, <strong>elle ment déjà</strong>.</li>
+          <li>Ajoute un agent seulement si tu sais <strong>qui relira</strong> son travail.</li>
+          <li>Tracé et portable&nbsp;: un agent qu'on peut <strong>auditer</strong>, et <strong>quitter</strong>.</li>
+        </ol>
+      </div>
+    </div>
+
+    <footer class="foot">
+      <span>Développeur IA — Avancé · Zenika</span>
+      <span>Au verso&nbsp;: contexte, spec, orchestration, au-delà du poste</span>
+    </footer>
+  </section>
+
+  <!-- ================================================================ VERSO -->
+  <!-- Verso: the three ideas of the closing, modules 3 to 6, keywords. -->
+  <section class="sheet">
+    <header class="head">
+      <img src="assets/zenika/logo.svg" alt="Zenika">
+      <div class="head__titles">
+        <div class="head__eyebrow">Cheat sheet · Développeur IA · Avancé · 2/2</div>
+        <h1>Contexte, spec, orchestration</h1>
+      </div>
+      <div class="head__motto">Les agents préparent les preuves&nbsp;; sur le cœur de métier, l'humain décide.</div>
+    </header>
+
+    <div class="body body--verso">
+      <div class="block span-2">
+        <h2><img src="assets/zenika/library/icons/gradient/essentials/lamp.png" alt="">Trois idées à garder</h2>
+        <div class="rules rules--3">
+          <div><b>1. Le contexte fait la facture</b>L'entrée domine, le préfixe stable est en cache. <em>Mesurer ce qui entre.</em></div>
+          <div><b>2. Le harness agit</b>Ce qui doit arriver se configure, ça ne se demande pas. <em>Hook plutôt que consigne.</em></div>
+          <div><b>3. La gouvernance se trace</b>Spec, commit, appels&nbsp;: tout est tracé. <em>Ce qui n'est pas tracé n'est pas gouverné.</em></div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/design/layer.png" alt="">Ce qui entre dans la context window</h2>
+          <table class="small">
+            <tr><th>Élément</th><th>Entre…</th><th>Ensuite</th></tr>
+            <tr><td><strong>AGENTS.md</strong>, tools</td><td>au démarrage</td><td>en cache</td></tr>
+            <tr><td><strong>Historique</strong></td><td>à chaque échange</td><td>grossit, compacté</td></tr>
+            <tr><td><strong>Fichiers lus</strong></td><td>à la demande</td><td>jusqu'à la fin</td></tr>
+            <tr><td><strong>Skills</strong></td><td>jugées utiles</td><td>description d'abord</td></tr>
+          </table>
+          <p class="note"><strong>Leviers</strong>&nbsp;: filtrer les sorties de tools, traiter hors contexte, mémoire ciblée, <span class="hl">écrire moins de code</span>. Un sous-agent protège ta context window, <strong>pas ton budget</strong>. Mémoire&nbsp;: chercher dans un index compact, puis charger le détail.</p>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/education/clipboard.png" alt="">Spec-driven et qualité</h2>
+          <div class="flow">
+            <div><b>Spec-first<span>puis diverge</span></b></div><i>›</i>
+            <div class="loop"><b>Spec-anchored<span>évolue avec le code</span></b></div><i>›</i>
+            <div><b>Spec&#8209;as&#8209;source<span>code généré</span></b></div>
+          </div>
+          <ul>
+            <li>L'agent formalise une spec, il ne décide pas <strong>ce qui doit être vrai</strong>.</li>
+            <li><strong>Drift</strong> silencieux&nbsp;: tests fonctionnels, contrôle au commit, et d'abord la <strong>revue de spec</strong>.</li>
+            <li>Tests de construction jetables, <strong>tests fonctionnels</strong> durables. <strong>Mutation</strong>&nbsp;: <code>&lt;</code> → <code>&lt;=</code>, la suite doit échouer.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/programming/hierarchy.png" alt="">Cinq patterns d'orchestration</h2>
+          <div class="axes axes--1">
+            <div><b>Chaîne</b> étapes fixes&nbsp;: spec → plan → code</div>
+            <div><b>Routeur</b> un SLM trie, un LLM traite</div>
+            <div><b>Parallélisation</b> 3 revues d'une même PR</div>
+            <div><b>Orchestrateur-workers</b> découpage décidé par un LLM</div>
+            <div><b>Évaluateur</b> code + revue par un 2<sup>e</sup> agent</div>
+          </div>
+          <p class="note"><strong>Fiabilité composée</strong>&nbsp;: 0,95<sup>10</sup> ≈ <span class="hl">60&nbsp;%</span>. Chaîne courte, vérification entre les étapes. Paralléliser demande d'isoler (worktrees).</p>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/security/shield-tick.png" alt="">Politique de merge graduée</h2>
+          <div class="flow flow--small">
+            <div><b>Doc, mineur<span>merge auto</span></b></div><i>›</i>
+            <div><b>Fonctionnelle<span>revue synchrone</span></b></div><i>›</i>
+            <div class="loop"><b>Cœur, sécurité<span>double validation</span></b></div>
+          </div>
+          <p class="note"><strong>Règle minimale</strong>&nbsp;: vérification déterministe + revue par un agent distinct.</p>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/location/routing.png" alt="">AI gateway et budget caché</h2>
+          <ul>
+            <li><strong>Gateway</strong>&nbsp;: routage, plafond de dépense, guardrails pour tous, audit.</li>
+            <li>Entrée et sortie réduisent le risque, la <strong>garde d'action</strong> le borne.</li>
+            <li><strong>Budget</strong>&nbsp;= tokens + CI + stockage + temps de revue.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="block span-2">
+        <h2><img src="assets/zenika/library/icons/gradient/social/message-question.png" alt="">Mots-clés<small>glossaire complet dans les handouts</small></h2>
+        <div class="keywords">
+          <div><b>Prefill / decode</b> lire, puis générer</div>
+          <div><b>Prompt caching</b> préfixe réutilisé</div>
+          <div><b>Reasoning tokens</b> réflexion facturée</div>
+          <div><b>Hook</b> action déterministe</div>
+          <div><b>Sous-agent</b> contexte isolé</div>
+          <div><b>Sandbox</b> borne les effets</div>
+          <div><b>Context engineering</b> le bon contexte</div>
+          <div><b>SDD</b> spec = source de vérité</div>
+          <div><b>Drift</b> l'écart spec ↔ code</div>
+          <div><b>Fiabilité composée</b> produit des étapes</div>
+          <div><b>Gateway</b> point de passage unique</div>
+          <div><b>Agentic debt</b> harness non maîtrisé</div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="foot">
+      <span>Développeur IA — Avancé · Zenika</span>
+      <span>Ce qu'on automatise, il faut savoir le reprendre.</span>
+    </footer>
+  </section>
+</body>
+</html>

@@ -1,0 +1,19 @@
+# Le nouveau PDLC IA — ce qui change pour votre équipe
+
+> La roue du PDLC, les quality gates, le Context Nexus, les nouveaux rôles, la toolkit et le déploiement : ce qui change pour une équipe tech dans les semaines qui viennent, et le rôle du manager.
+
+## Table of Contents
+
+### Handouts
+
+- [Handout — Pourquoi changer, et la roue du PDLC](/ai-speed-training.web/speed-training-ai-pdlc-tech-managers/handouts/handout-01-pourquoi-et-la-roue.md)
+- [Handout — Les quality gates](/ai-speed-training.web/speed-training-ai-pdlc-tech-managers/handouts/handout-02-quality-gates.md)
+- [Handout — Le Context Nexus](/ai-speed-training.web/speed-training-ai-pdlc-tech-managers/handouts/handout-03-context-nexus.md)
+- [Handout — Équipe et nouveaux rôles](/ai-speed-training.web/speed-training-ai-pdlc-tech-managers/handouts/handout-04-equipe-et-roles.md)
+- [Handout — La toolkit](/ai-speed-training.web/speed-training-ai-pdlc-tech-managers/handouts/handout-05-toolkit.md)
+- [Handout — Déploiement et mesure](/ai-speed-training.web/speed-training-ai-pdlc-tech-managers/handouts/handout-06-deploiement-et-mesure.md)
+- [Handout — Votre rôle de manager](/ai-speed-training.web/speed-training-ai-pdlc-tech-managers/handouts/handout-07-cloture.md)
+- [Handout — Les activités](/ai-speed-training.web/speed-training-ai-pdlc-tech-managers/handouts/handout-08-activites.md)
+- [Handout — Les démos](/ai-speed-training.web/speed-training-ai-pdlc-tech-managers/handouts/handout-09-demos.md)
+- [Handout — Glossaire](/ai-speed-training.web/speed-training-ai-pdlc-tech-managers/handouts/handout-10-glossaire.md)
+

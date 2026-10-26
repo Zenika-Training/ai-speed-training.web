@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cheat sheet — Développer avec l'IA en équipe · Zenika</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Urbanist:wght@600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* Zenika cheat sheet — A4 recto-verso. Same tokens as the Slidev theme and the handouts viewer. */
+    @page { size: A4; margin: 0; }
+
+    :root {
+      color-scheme: light;
+      --zk-magenta: #c41e62;
+      --zk-red: #e1203f;
+      --zk-gradient: linear-gradient(90deg, var(--zk-magenta) 0%, var(--zk-red) 100%);
+      --zk-ink: #303030;
+      --zk-text: #595959;
+      --zk-line: #e3e3e3;
+      --zk-surface: #f7f7f7;
+      --zk-info: #ecf0f6;
+      --zk-info-border: #b9c6dc;
+      --zk-pink: #fbeaf0;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      background: #d9d9d9;
+      color: var(--zk-text);
+      font-family: 'Nunito', ui-sans-serif, system-ui, sans-serif;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Screen toolbar --------------------------------------------------- */
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding: 10px 16px;
+      background: var(--zk-ink);
+    }
+
+    .toolbar button {
+      padding: 7px 18px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--zk-gradient);
+      color: #fff;
+      font: 700 14px 'Nunito', sans-serif;
+      cursor: pointer;
+    }
+
+    .toolbar span {
+      align-self: center;
+      color: #fff;
+      font-size: 13px;
+      opacity: .8;
+    }
+
+    /* A4 sheet ------------------------------------------------------------ */
+
+    .sheet {
+      width: 210mm;
+      height: 297mm;
+      margin: 16px auto;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      box-shadow: 0 4px 18px rgb(0 0 0 / .18);
+      font-size: 9.6pt;
+      line-height: 1.45;
+    }
+
+    .head {
+      display: flex;
+      align-items: center;
+      gap: 6mm;
+      padding: 5.5mm 9mm 5mm;
+      background: var(--zk-gradient);
+      color: #fff;
+    }
+
+    .head img { height: 7mm; }
+
+    .head__titles { flex: 1; }
+
+    .head__eyebrow {
+      font: 700 6.6pt 'Urbanist', sans-serif;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      opacity: .9;
+    }
+
+    .head h1 {
+      margin: .3mm 0 0;
+      font-size: 15pt;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .head__motto {
+      max-width: 62mm;
+      font-size: 7.4pt;
+      font-style: italic;
+      text-align: right;
+    }
+
+    .body {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6mm 6mm;
+      padding: 7mm 11mm 2mm;
+    }
+
+    /* the two columns take the free height and spread their blocks over it */
+    .body--recto { grid-template-rows: 1fr auto; }
+    .body--verso { grid-template-rows: auto 1fr auto; }
+
+    .col {
+      display: flex;
+      flex-direction: column;
+      gap: 5mm;
+    }
+
+    /* blocks of a column are cards that share the free height */
+    .col > .block {
+      flex: 1 1 auto;
+      padding: 4mm 4.5mm;
+      border: 1px solid var(--zk-line);
+      border-top: 3px solid var(--zk-magenta);
+      border-radius: 2mm;
+      background: #fff;
+    }
+
+    .col > .block h2 { border-bottom: 0; padding-bottom: 0; }
+
+    .span-2 { grid-column: 1 / -1; }
+
+
+    .foot {
+      display: flex;
+      justify-content: space-between;
+      padding: 3mm 11mm 5mm;
+      color: #8a8a8a;
+      font-size: 6.2pt;
+    }
+
+    /* Blocks -------------------------------------------------------------- */
+
+    .block h2 {
+      display: flex;
+      align-items: center;
+      gap: 2mm;
+      margin: 0 0 2.6mm;
+      padding-bottom: 1.6mm;
+      border-bottom: 1.4px solid var(--zk-magenta);
+      color: var(--zk-ink);
+      font-size: 11.5pt;
+      font-weight: 800;
+      line-height: 1.15;
+    }
+
+    .block h2 img { width: 6mm; height: 6mm; }
+
+    .block h2 small {
+      margin-left: auto;
+      color: var(--zk-magenta);
+      font: 700 6pt 'Urbanist', sans-serif;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    h3 {
+      margin: 1.8mm 0 .8mm;
+      color: var(--zk-ink);
+      font-size: 7.8pt;
+      font-weight: 800;
+    }
+
+    p { margin: 0 0 2mm; }
+
+    p:last-child { margin-bottom: 0; }
+
+    .note { color: var(--zk-text); font-size: 8.8pt; }
+
+    strong { color: var(--zk-ink); }
+
+    .hl { color: var(--zk-magenta); font-weight: 700; }
+
+    ul, ol { margin: 0; padding-left: 4mm; }
+
+    li { margin: 1.2mm 0; }
+
+    li::marker { color: var(--zk-magenta); font-weight: 700; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9pt;
+    }
+
+    th {
+      padding: 1.4mm 2.2mm;
+      background: var(--zk-gradient);
+      color: #fff;
+      font-size: 8.4pt;
+      text-align: left;
+    }
+
+    td {
+      padding: 1.6mm 2.2mm;
+      border-bottom: 1px solid var(--zk-line);
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td { background: #fafafa; }
+
+    pre {
+      margin: 0 0 2mm;
+      padding: 2.6mm 3.2mm;
+      border-left: 2px solid var(--zk-magenta);
+      border-radius: 1.2mm;
+      background: var(--zk-surface);
+      color: var(--zk-ink);
+      font: 8pt/1.55 'Fira Code', ui-monospace, monospace;
+      white-space: pre-wrap;
+    }
+
+    pre b { color: var(--zk-magenta); font-weight: 500; }
+
+    /* Flow of steps (agent loop, brief workflow) */
+    .flow {
+      display: flex;
+      align-items: stretch;
+      gap: 1.4mm;
+      margin: 2.4mm 0;
+    }
+
+    .flow > div {
+      flex: 1;
+      padding: 2mm 1.6mm;
+      border: 1px solid var(--zk-line);
+      border-radius: 1.4mm;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .flow > div b {
+      color: var(--zk-magenta);
+      font-size: 8.4pt;
+    }
+
+    .flow > div.loop { border: 1px dashed var(--zk-magenta); background: var(--zk-pink); }
+
+    .flow > i {
+      align-self: center;
+      color: var(--zk-magenta);
+      font-style: normal;
+      font-weight: 800;
+    }
+
+    /* Two small cards side by side */
+    .pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3mm;
+    }
+
+    .pair > div {
+      padding: 2.4mm 3mm;
+      border-radius: 1.4mm;
+      background: var(--zk-surface);
+    }
+
+    .pair > div b { display: block; margin-bottom: .6mm; color: var(--zk-magenta); }
+
+    /* Ready-to-use prompts, 2 × 2 */
+    .prompts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3mm 6mm;
+    }
+
+    .prompts b { display: block; margin-bottom: 1mm; color: var(--zk-ink); }
+
+    .prompts pre { margin: 0; }
+
+    /* Golden rules */
+    .rules { display: flex; flex-direction: column; gap: 3mm; }
+
+    .rules > div {
+      padding: 2.6mm 3.2mm;
+      border-left: 2px solid var(--zk-magenta);
+      border-radius: 1.4mm;
+      background: var(--zk-pink);
+    }
+
+    .rules b { display: block; color: var(--zk-ink); }
+
+    .rules em { color: var(--zk-magenta); }
+
+    /* Numbered reflexes, one row */
+    .reflexes {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4mm;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: reflex;
+    }
+
+    .reflexes li {
+      margin: 0;
+      padding: 2.6mm 2.6mm 2.4mm;
+      border-radius: 1.4mm;
+      background: var(--zk-surface);
+      font-size: 8.8pt;
+      line-height: 1.35;
+      counter-increment: reflex;
+    }
+
+    .reflexes li::before {
+      content: counter(reflex);
+      display: block;
+      width: 5.4mm;
+      height: 5.4mm;
+      margin-bottom: 1.4mm;
+      border-radius: 50%;
+      background: var(--zk-gradient);
+      color: #fff;
+      font-size: 8.4pt;
+      font-weight: 800;
+      line-height: 5.4mm;
+      text-align: center;
+    }
+
+    .keywords {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2mm 6mm;
+    }
+
+    .keywords b { color: var(--zk-magenta); }
+
+    /* Variants and extra blocks ----------------------------------------- */
+
+    .keywords--2 { grid-template-columns: 1fr 1fr; gap: 1.6mm 4mm; }
+
+    .reflexes--6 { grid-template-columns: repeat(6, 1fr); gap: 3mm; }
+
+    .flow--small { gap: 1mm; }
+
+    .flow--small > div { padding: 1.6mm 1mm; }
+
+    .flow--small > div b { font-size: 7.8pt; }
+
+    /* the full stack, one band per layer */
+    .stack { display: flex; flex-direction: column; gap: 1.2mm; margin-bottom: 2mm; }
+
+    .stack > div {
+      padding: 1.3mm 3mm;
+      border-radius: 1.2mm;
+      background: var(--zk-surface);
+      font-size: 8.8pt;
+    }
+
+    .stack b { color: var(--zk-ink); }
+
+    .stack__agents { border: 1px dashed var(--zk-info-border); background: var(--zk-info) !important; }
+
+    .stack__agents span { float: right; color: var(--zk-magenta); font-weight: 700; }
+
+    .stack__gw { background: var(--zk-gradient) !important; color: #fff; }
+
+    .stack__gw b { color: #fff; }
+
+    .block table td:first-child { white-space: nowrap; }
+
+    code {
+      padding: 0 .8mm;
+      border-radius: .8mm;
+      background: var(--zk-pink);
+      color: var(--zk-magenta);
+      font: 7.8pt 'Fira Code', ui-monospace, monospace;
+    }
+
+    /* gateway: keywords next to the config snippet */
+    .gw { display: grid; grid-template-columns: 1.15fr 1fr; gap: 6mm; align-items: center; }
+
+    .gw pre { margin: 0; }
+
+    .rules + .note { margin-top: 2.4mm; }
+
+    /* Print ----------------------------------------------------------------- */
+
+    @media print {
+      html, body { background: #fff; }
+      .toolbar { display: none; }
+      .sheet { margin: 0; box-shadow: none; break-after: page; }
+      .sheet:last-child { break-after: auto; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="toolbar">
+    <button type="button" onclick="window.print()">Imprimer / PDF</button>
+    <span>A4 recto-verso · marges à « aucune » dans la boîte d'impression</span>
+  </div>
+
+  <!-- ================================================================ RECTO -->
+  <section class="sheet">
+    <header class="head">
+      <img src="assets/zenika/logo.svg" alt="Zenika">
+      <div class="head__titles">
+        <div class="head__eyebrow">Cheat sheet · Bootcamp AI-Driven Development · Module 2 · 1/2</div>
+        <h1>Développer avec l'IA en équipe</h1>
+      </div>
+      <div class="head__motto">La spec (et la doc) est le patrimoine, le code est un artefact régénérable.</div>
+    </header>
+
+    <div class="body body--recto">
+      <div class="col">
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/settings/setting-2.png" alt="">Agent = modèle + harness<small>Ch. 1</small></h2>
+          <div class="keywords keywords--2">
+            <div><b>AGENTS.md</b> règles stables, toujours actif</div>
+            <div><b>Skill</b> savoir-faire, à la demande</div>
+            <div><b>Hook</b> automatisation déterministe</div>
+            <div><b>Agent custom</b> périmètre borné, isolé</div>
+          </div>
+          <p class="note"><strong>MCP</strong> branche l'écosystème (forge, doc, ticketing). <code>SKILL.md</code> est portable, le déclenchement non : modèle seul (Copilot), <code>/&lt;nom&gt;</code> (Claude Code), <code>$&lt;nom&gt;</code> (Codex).</p>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/security/shield-tick.png" alt="">Piloter l'autonomie</h2>
+          <div class="flow flow--small">
+            <div><b>Observer</b></div><i>›</i>
+            <div><b>Demander</b></div><i>›</i>
+            <div><b>Périmètre</b></div><i>›</i>
+            <div><b>Plus rien demander</b></div><i>›</i>
+            <div><b>Au bout seul</b></div>
+          </div>
+          <ul>
+            <li>Le mode n'est qu'un <strong>défaut</strong> : les droits vivent dans un fichier.</li>
+            <li>Une <strong>allowlist n'est pas une sandbox</strong> : le seul périmètre réel est l'isolation.</li>
+            <li>La <span class="hl">policy vit dans le runtime</span>, pas dans le prompt.</li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/programming/data.png" alt="">Tokens, cache et mémoire<small>Ch. 2</small></h2>
+          <ul>
+            <li><strong>Mesurer d'abord</strong> (<code>/context</code>) ; la dépense se lit ailleurs.</li>
+            <li><strong>KV cache</strong> côté serveur (5 min à 24 h) ; expiré, il coûte de l'argent, jamais de la mémoire.</li>
+            <li>Tâche finie → <code>/clear</code> · en cours → <code>/compact</code>.</li>
+            <li><strong>Mémoire</strong> : fichier versionné, native, middleware. Aucun standard.</li>
+            <li><strong>RAG sur le code</strong> : naïf, AST-aware, knowledge graph (Graphify).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/education/clipboard.png" alt="">Spec-Driven Development<small>Ch. 3 · 4</small></h2>
+          <div class="flow flow--small">
+            <div><b>Spec-first</b></div><i>›</i>
+            <div><b>Spec-anchored</b></div><i>›</i>
+            <div class="loop"><b>Spec-as-source</b></div>
+          </div>
+          <ul>
+            <li><strong>OpenSpec</strong> · <strong>Spec Kit</strong> · <strong>BMAD</strong>.</li>
+            <li>Customiser sans forker : extensions, presets, bundles ; overrides TOML (BMAD) ; config et schemas (OpenSpec).</li>
+            <li>La <span class="hl">documentation complète</span> est le patrimoine.</li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/essentials/verify.png" alt="">Garde-fous, du code au commit</h2>
+          <div class="pair">
+            <div><b>Tests</b>fonctionnels durables ; score de mutation</div>
+            <div><b>Revue agentique</b>par un agent distinct du générateur</div>
+          </div>
+          <p class="note"><strong>Le commit</strong> : <code>SPEC.md</code> à jour, part d'IA tracée (<code>Co-Authored-By:</code>).</p>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/programming/hierarchy.png" alt="">Superviser au lieu d'approuver<small>Ch. 5 · 6</small></h2>
+          <ul>
+            <li>Legacy : <strong>re-documenter d'abord</strong>.</li>
+            <li>CLI agentique + <code>lazygit</code> pour relire.</li>
+            <li><strong>Worktrees</strong> : un agent par dossier ; au-delà de 2 sessions, on subit.</li>
+            <li>La revue de code <strong>évolue</strong>, elle ne disparaît pas.</li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/users/people.png" alt="">Partager en équipe<small>Ch. 7</small></h2>
+          <p>Un skill si c'est <strong>spécifique</strong>, <strong>répété</strong>, <strong>maintenu</strong>. Description : ce que ça fait <strong>et</strong> quand l'utiliser. Test : <span class="hl">agent A écrit, B teste</span>.</p>
+        </div>
+      </div>
+
+      <div class="block span-2">
+        <h2><img src="assets/zenika/library/icons/gradient/essentials/flash-circle.png" alt="">6 réflexes pour lundi matin</h2>
+        <ol class="reflexes reflexes--6">
+          <li><strong>Mesurer</strong> sa context window avant d'optimiser.</li>
+          <li>Mettre la <strong>policy</strong> dans un hook, pas dans le prompt.</li>
+          <li>La <strong>spec</strong> précède la génération de code.</li>
+          <li>Committer <strong>via l'assistant</strong> : doc suivie, part d'IA tracée.</li>
+          <li><strong>Relire le diff</strong> avant de valider.</li>
+          <li>Versionner et <strong>partager</strong> skills et <code>AGENTS.md</code>.</li>
+        </ol>
+      </div>
+    </div>
+
+    <footer class="foot">
+      <span>Bootcamp AI-Driven Development · Module 2 · Zenika</span>
+      <span>Au verso : commandes, prompts et mots-clés</span>
+    </footer>
+  </section>
+
+  <!-- ================================================================ VERSO -->
+  <section class="sheet">
+    <header class="head">
+      <img src="assets/zenika/logo.svg" alt="Zenika">
+      <div class="head__titles">
+        <div class="head__eyebrow">Cheat sheet · Bootcamp AI-Driven Development · Module 2 · 2/2</div>
+        <h1>Commandes, prompts et mots-clés</h1>
+      </div>
+      <div class="head__motto">Changer de harness coûte un renommage, pas une formation.</div>
+    </header>
+
+    <div class="body body--verso">
+      <div class="block span-2">
+        <h2><img src="assets/zenika/library/icons/gradient/messages/message-text.png" alt="">Prompts et commandes des labs</h2>
+        <div class="prompts">
+          <pre><b>User story</b>
+En suivant le skill story-writing,
+rédige la user story « … ».</pre>
+          <pre><b>OpenSpec</b>
+/opsx-propose Je veux construire
+une application Pomodoro simple.</pre>
+          <pre><b>Mémoire</b>
+/memory (Claude Code, Copilot CLI)
+Ta mémoire est-elle activée ?</pre>
+          <pre><b>Headless, mais borné</b>
+copilot -p "…" \
+  --allow-tool 'shell(mvn test)'</pre>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/programming/command.png" alt="">Un concept, plusieurs harness</h2>
+          <table>
+            <tr><th>Concept</th><th>GitHub Copilot</th><th>Claude Code</th></tr>
+            <tr><td>Instructions</td><td><code>copilot-instructions.md</code></td><td><code>CLAUDE.md</code></td></tr>
+            <tr><td>Skills</td><td><code>.github/skills/</code></td><td><code>.claude/skills/</code></td></tr>
+            <tr><td>Sous-agents</td><td><code>.github/agents/</code></td><td><code>.claude/agents/</code></td></tr>
+            <tr><td>Hooks</td><td><code>.github/hooks/*.json</code></td><td><code>settings.json</code></td></tr>
+            <tr><td>MCP</td><td><code>mcp-config.json</code></td><td><code>.mcp.json</code></td></tr>
+            <tr><td>Non interactif</td><td><code>copilot -p</code></td><td><code>claude -p</code></td></tr>
+          </table>
+          <p class="note">Portables : <code>AGENTS.md</code>, <code>SKILL.md</code>, MCP, le principe des hooks.</p>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/education/note.png" alt="">Spec Kit en commandes</h2>
+          <pre><b>specify init</b> &lt;PROJET&gt; --integration copilot
+/speckit.constitution → specify → plan
+  → tasks → implement
+<b>specify extension</b> add · <b>preset</b> add</pre>
+        </div>
+
+      </div>
+
+      <div class="col">
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/search/search-normal.png" alt="">Indexer avec Graphify</h2>
+          <pre>uv tool install graphifyy
+graphify install <b>--platform copilot</b>
+graphify .
+graphify hook install</pre>
+          <p class="note">Toujours nommer la plateforme.</p>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/programming/hierarchy.png" alt="">Worktrees</h2>
+          <pre>git worktree add -b feat/x ../proj-x
+git worktree list
+git worktree remove ../proj-x</pre>
+          <p class="note"><code>.env</code>, secrets et <code>node_modules/</code> ne suivent pas.</p>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/essentials/archive.png" alt="">Distribuer un skill</h2>
+          <pre>gh skill install \
+  my-company/dev-skills \
+  reviewing-prs@v1.2.0</pre>
+          <p class="note">Du prompt exécuté chez vous : à revoir comme une dépendance.</p>
+        </div>
+      </div>
+
+      <div class="block span-2">
+        <h2><img src="assets/zenika/library/icons/gradient/design/layer.png" alt="">Mots-clés</h2>
+        <div class="keywords">
+          <div><b>Harness</b> tout le code autour du modèle : outils, mémoire, permissions, boucle</div>
+          <div><b>Context window</b> tout ce que le modèle voit pendant une génération</div>
+          <div><b>Hook</b> action déterministe déclenchée par le harness, quoi que dise le modèle</div>
+          <div><b>Skill</b> dossier <code>SKILL.md</code> + scripts, chargé quand la tâche s'y prête</div>
+          <div><b>MCP</b> protocole standard pour brancher des outils à l'agent</div>
+          <div><b>SDD</b> la spec écrite, source de vérité de la génération</div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="foot">
+      <span>Bootcamp AI-Driven Development · Module 2 · Zenika</span>
+      <span>Les noms d'outils changent. La méthode reste.</span>
+    </footer>
+  </section>
+</body>
+</html>

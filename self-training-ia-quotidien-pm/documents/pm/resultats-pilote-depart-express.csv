@@ -1,0 +1,13 @@
+semaine;hotel;departs;departs_express;attente_mediane_min;litiges;frais_apres_depart
+S1;LYS-03;840;76;9;1;3
+S2;LYS-03;830;125;8;2;5
+S3;LYS-03;850;170;7;4;6
+S4;LYS-03;845;203;6;5;9
+S1;LIL-07;560;0;8;1;2
+S2;LIL-07;555;0;9;0;2
+S3;LIL-07;570;0;7;1;1
+S4;LIL-07;565;0;7;1;2
+S1;NTE-02;420;0;6;0;1
+S2;NTE-02;415;0;6;1;1
+S3;NTE-02;430;0;5;0;1
+S4;NTE-02;425;0;6;0;0

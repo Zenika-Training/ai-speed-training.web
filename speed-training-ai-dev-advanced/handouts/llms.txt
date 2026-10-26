@@ -1,0 +1,19 @@
+# Développeur IA — Avancé
+
+> Sous le capot des agents de code : coût et cache, harness et primitives, ingénierie du contexte, spec-driven development, orchestration, et ce qui change au-delà du poste.
+
+## Table of Contents
+
+### Handouts
+
+- [Handout — Sous le capot](/ai-speed-training.web/speed-training-ai-dev-advanced/handouts/handout-01-sous-le-capot.md)
+- [Handout — Le harness](/ai-speed-training.web/speed-training-ai-dev-advanced/handouts/handout-02-le-harness.md)
+- [Handout — Ingénierie du contexte](/ai-speed-training.web/speed-training-ai-dev-advanced/handouts/handout-03-ingenierie-du-contexte.md)
+- [Handout — Spec-driven et qualité](/ai-speed-training.web/speed-training-ai-dev-advanced/handouts/handout-04-spec-driven-et-qualite.md)
+- [Handout — Orchestrer et paralléliser](/ai-speed-training.web/speed-training-ai-dev-advanced/handouts/handout-05-orchestrer-et-paralleliser.md)
+- [Handout — Au-delà du poste](/ai-speed-training.web/speed-training-ai-dev-advanced/handouts/handout-06-au-dela-du-poste.md)
+- [Handout — Les exercices](/ai-speed-training.web/speed-training-ai-dev-advanced/handouts/handout-07-exercices.md)
+- [Handout — Les démos](/ai-speed-training.web/speed-training-ai-dev-advanced/handouts/handout-08-demos.md)
+- [Handout — Où ça se règle dans mon outil](/ai-speed-training.web/speed-training-ai-dev-advanced/handouts/handout-09-ou-ca-se-regle.md)
+- [Handout — Glossaire des mots-clés IA](/ai-speed-training.web/speed-training-ai-dev-advanced/handouts/handout-10-glossaire.md)
+

@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cheat sheet — Développeur IA — Foundation · Zenika</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Urbanist:wght@600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* Zenika cheat sheet — A4 recto-verso. Same tokens as the Slidev theme and the handouts viewer. */
+    @page { size: A4; margin: 0; }
+
+    :root {
+      color-scheme: light;
+      --zk-magenta: #c41e62;
+      --zk-red: #e1203f;
+      --zk-gradient: linear-gradient(90deg, var(--zk-magenta) 0%, var(--zk-red) 100%);
+      --zk-ink: #303030;
+      --zk-text: #595959;
+      --zk-line: #e3e3e3;
+      --zk-surface: #f7f7f7;
+      --zk-info: #ecf0f6;
+      --zk-info-border: #b9c6dc;
+      --zk-pink: #fbeaf0;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      background: #d9d9d9;
+      color: var(--zk-text);
+      font-family: 'Nunito', ui-sans-serif, system-ui, sans-serif;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Screen toolbar --------------------------------------------------- */
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding: 10px 16px;
+      background: var(--zk-ink);
+    }
+
+    .toolbar button {
+      padding: 7px 18px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--zk-gradient);
+      color: #fff;
+      font: 700 14px 'Nunito', sans-serif;
+      cursor: pointer;
+    }
+
+    .toolbar span {
+      align-self: center;
+      color: #fff;
+      font-size: 13px;
+      opacity: .8;
+    }
+
+    /* A4 sheet ------------------------------------------------------------ */
+
+    .sheet {
+      width: 210mm;
+      height: 297mm;
+      margin: 16px auto;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      box-shadow: 0 4px 18px rgb(0 0 0 / .18);
+      font-size: 9.6pt;
+      line-height: 1.45;
+    }
+
+    .head {
+      display: flex;
+      align-items: center;
+      gap: 6mm;
+      padding: 5.5mm 9mm 5mm;
+      background: var(--zk-gradient);
+      color: #fff;
+    }
+
+    .head img { height: 7mm; }
+
+    .head__titles { flex: 1; }
+
+    .head__eyebrow {
+      font: 700 6.6pt 'Urbanist', sans-serif;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      opacity: .9;
+    }
+
+    .head h1 {
+      margin: .3mm 0 0;
+      font-size: 15pt;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .head__motto {
+      max-width: 62mm;
+      font-size: 7.4pt;
+      font-style: italic;
+      text-align: right;
+    }
+
+    .body {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6mm 6mm;
+      padding: 7mm 11mm 2mm;
+    }
+
+    /* the two columns take the free height and spread their blocks over it */
+    .body--recto { grid-template-rows: 1fr auto; }
+    .body--verso { grid-template-rows: auto 1fr auto; }
+
+    .col {
+      display: flex;
+      flex-direction: column;
+      gap: 5mm;
+    }
+
+    /* blocks of a column are cards that share the free height */
+    .col > .block {
+      flex: 1 1 auto;
+      padding: 4mm 4.5mm;
+      border: 1px solid var(--zk-line);
+      border-top: 3px solid var(--zk-magenta);
+      border-radius: 2mm;
+      background: #fff;
+    }
+
+    .col > .block h2 { border-bottom: 0; padding-bottom: 0; }
+
+    .span-2 { grid-column: 1 / -1; }
+
+
+    .foot {
+      display: flex;
+      justify-content: space-between;
+      padding: 3mm 11mm 5mm;
+      color: #8a8a8a;
+      font-size: 6.2pt;
+    }
+
+    /* Blocks -------------------------------------------------------------- */
+
+    .block h2 {
+      display: flex;
+      align-items: center;
+      gap: 2mm;
+      margin: 0 0 2.6mm;
+      padding-bottom: 1.6mm;
+      border-bottom: 1.4px solid var(--zk-magenta);
+      color: var(--zk-ink);
+      font-size: 11.5pt;
+      font-weight: 800;
+      line-height: 1.15;
+    }
+
+    .block h2 img { width: 6mm; height: 6mm; }
+
+    .block h2 small {
+      margin-left: auto;
+      color: var(--zk-magenta);
+      font: 700 6pt 'Urbanist', sans-serif;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    h3 {
+      margin: 1.8mm 0 .8mm;
+      color: var(--zk-ink);
+      font-size: 7.8pt;
+      font-weight: 800;
+    }
+
+    p { margin: 0 0 2mm; }
+
+    p:last-child { margin-bottom: 0; }
+
+    .note { color: var(--zk-text); font-size: 8.8pt; }
+
+    strong { color: var(--zk-ink); }
+
+    .hl { color: var(--zk-magenta); font-weight: 700; }
+
+    ul, ol { margin: 0; padding-left: 4mm; }
+
+    li { margin: 1.2mm 0; }
+
+    li::marker { color: var(--zk-magenta); font-weight: 700; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9pt;
+    }
+
+    th {
+      padding: 1.4mm 2.2mm;
+      background: var(--zk-gradient);
+      color: #fff;
+      font-size: 8.4pt;
+      text-align: left;
+    }
+
+    td {
+      padding: 1.6mm 2.2mm;
+      border-bottom: 1px solid var(--zk-line);
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td { background: #fafafa; }
+
+    pre {
+      margin: 0 0 2mm;
+      padding: 2.6mm 3.2mm;
+      border-left: 2px solid var(--zk-magenta);
+      border-radius: 1.2mm;
+      background: var(--zk-surface);
+      color: var(--zk-ink);
+      font: 8pt/1.55 'Fira Code', ui-monospace, monospace;
+      white-space: pre-wrap;
+    }
+
+    pre b { color: var(--zk-magenta); font-weight: 500; }
+
+    /* Flow of steps (agent loop, brief workflow) */
+    .flow {
+      display: flex;
+      align-items: stretch;
+      gap: 1.4mm;
+      margin: 2.4mm 0;
+    }
+
+    .flow > div {
+      flex: 1;
+      padding: 2mm 1.6mm;
+      border: 1px solid var(--zk-line);
+      border-radius: 1.4mm;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .flow > div b {
+      color: var(--zk-magenta);
+      font-size: 8.4pt;
+    }
+
+    .flow > div.loop { border: 1px dashed var(--zk-magenta); background: var(--zk-pink); }
+
+    .flow > i {
+      align-self: center;
+      color: var(--zk-magenta);
+      font-style: normal;
+      font-weight: 800;
+    }
+
+    /* Two small cards side by side */
+    .pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3mm;
+    }
+
+    .pair > div {
+      padding: 2.4mm 3mm;
+      border-radius: 1.4mm;
+      background: var(--zk-surface);
+    }
+
+    .pair > div b { display: block; margin-bottom: .6mm; color: var(--zk-magenta); }
+
+    /* Ready-to-use prompts, 2 × 2 */
+    .prompts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3mm 6mm;
+    }
+
+    .prompts > div > b { display: block; margin-bottom: 1mm; color: var(--zk-ink); }
+
+    .prompts pre { margin: 0; }
+
+    /* Golden rules */
+    .rules { display: flex; flex-direction: column; gap: 3mm; }
+
+    .rules > div {
+      padding: 2.6mm 3.2mm;
+      border-left: 2px solid var(--zk-magenta);
+      border-radius: 1.4mm;
+      background: var(--zk-pink);
+    }
+
+    .rules b { display: block; color: var(--zk-ink); }
+
+    .rules em { color: var(--zk-magenta); }
+
+    /* Numbered reflexes, one row */
+    .reflexes {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4mm;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: reflex;
+    }
+
+    .reflexes li {
+      margin: 0;
+      padding: 2.6mm 2.6mm 2.4mm;
+      border-radius: 1.4mm;
+      background: var(--zk-surface);
+      font-size: 8.8pt;
+      line-height: 1.35;
+      counter-increment: reflex;
+    }
+
+    .reflexes li::before {
+      content: counter(reflex);
+      display: block;
+      width: 5.4mm;
+      height: 5.4mm;
+      margin-bottom: 1.4mm;
+      border-radius: 50%;
+      background: var(--zk-gradient);
+      color: #fff;
+      font-size: 8.4pt;
+      font-weight: 800;
+      line-height: 5.4mm;
+      text-align: center;
+    }
+
+    .keywords {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2mm 6mm;
+    }
+
+    .keywords b { color: var(--zk-magenta); }
+
+    /* Variants and extra blocks ----------------------------------------- */
+
+    .keywords--2 { grid-template-columns: 1fr 1fr; gap: 1.6mm 4mm; }
+
+    .reflexes--6 { grid-template-columns: repeat(6, 1fr); gap: 3mm; }
+
+    .flow--small { gap: 1mm; }
+
+    .flow--small > div { padding: 1.6mm 1mm; }
+
+    .flow--small > div b { font-size: 7.8pt; }
+
+    /* the full stack, one band per layer */
+    .stack { display: flex; flex-direction: column; gap: 1.2mm; margin-bottom: 2mm; }
+
+    .stack > div {
+      padding: 1.3mm 3mm;
+      border-radius: 1.2mm;
+      background: var(--zk-surface);
+      font-size: 8.8pt;
+    }
+
+    .stack b { color: var(--zk-ink); }
+
+    .stack__agents { border: 1px dashed var(--zk-info-border); background: var(--zk-info) !important; }
+
+    .stack__agents span { float: right; color: var(--zk-magenta); font-weight: 700; }
+
+    .stack__gw { background: var(--zk-gradient) !important; color: #fff; }
+
+    .stack__gw b { color: #fff; }
+
+    .block table td:first-child { white-space: nowrap; }
+
+    code {
+      padding: 0 .8mm;
+      border-radius: .8mm;
+      background: var(--zk-pink);
+      color: var(--zk-magenta);
+      font: 7.8pt 'Fira Code', ui-monospace, monospace;
+    }
+
+    /* gateway: keywords next to the config snippet */
+    .gw { display: grid; grid-template-columns: 1.15fr 1fr; gap: 6mm; align-items: center; }
+
+    .gw pre { margin: 0; }
+
+    .rules + .note { margin-top: 2.4mm; }
+
+    /* context window bar, same blocks and tones as the deck diagram */
+    .cw { display: flex; gap: 1mm; margin: 1mm 0 2.4mm; }
+
+    .cw > div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 9mm;
+      padding: 1mm .8mm;
+      border-radius: 1.2mm;
+      color: var(--zk-ink);
+      font-size: 8pt;
+      font-weight: 700;
+      line-height: 1.15;
+      text-align: center;
+    }
+
+    .cw__fixed { background: var(--zk-info); box-shadow: inset 0 0 0 1px var(--zk-info-border); }
+
+    .cw__live { background: var(--zk-pink); box-shadow: inset 0 0 0 1px #f2c3d4; }
+
+    .cw__free {
+      background: repeating-linear-gradient(135deg, #fff, #fff 5px, #f1f1f1 5px, #f1f1f1 10px);
+      box-shadow: inset 0 0 0 1px #d5d5d5;
+      color: var(--zk-text) !important;
+    }
+
+    /* review grid: six axes, two per row */
+    .axes { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2mm 4mm; }
+
+    .axes b { color: var(--zk-magenta); }
+
+    .axes--1 { grid-template-columns: 1fr; gap: .8mm; }
+
+    .axes + .note { margin-top: 2mm; }
+
+    .axes--1 + .note { margin-top: 2mm; }
+
+    .pair--bad > div:first-child b { color: var(--zk-text); }
+
+    .block > ul + .pair, .block > .flow + .pair, .block > .pair + .note, .block > .cw + ul { margin-top: 2mm; }
+
+
+    /* Print ----------------------------------------------------------------- */
+
+    @media print {
+      html, body { background: #fff; }
+      .toolbar { display: none; }
+      .sheet { margin: 0; box-shadow: none; break-after: page; }
+      .sheet:last-child { break-after: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <button type="button" onclick="window.print()">Imprimer / PDF</button>
+    <span>A4 recto-verso · marges à « aucune » dans la boîte d'impression</span>
+  </div>
+
+  <!-- ================================================================ RECTO -->
+  <!-- Recto: modules 1 and 2 (understand the machine, frame before coding), then the closing reflexes. -->
+  <section class="sheet">
+    <header class="head">
+      <img src="assets/zenika/logo.svg" alt="Zenika">
+      <div class="head__titles">
+        <div class="head__eyebrow">Cheat sheet · Développeur IA · Foundation · 1/2</div>
+        <h1>Comprendre la machine, cadrer</h1>
+      </div>
+      <div class="head__motto">L'agent ne devine pas&nbsp;: il prolonge ce qu'on lui donne. Le dev reste pilote.</div>
+    </header>
+
+    <div class="body body--recto">
+      <div class="col">
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/devices/cpu.png" alt="">Le modèle prédit, le harness agit</h2>
+          <ul>
+            <li>Le <strong>LLM</strong> prédit le token suivant&nbsp;: il produit du <span class="hl">plausible, pas du vrai</span>. Relancer donne une autre réponse.</li>
+            <li><strong>Pas de mémoire</strong>&nbsp;: à chaque appel, le harness renvoie toute la session. Une erreur du tour&nbsp;2 est relue à chaque tour.</li>
+          </ul>
+          <div class="flow">
+            <div><b>Demande</b></div><i>›</i>
+            <div class="loop"><b>Le modèle demande</b></div><i>›</i>
+            <div class="loop"><b>Le harness exécute</b></div><i>›</i>
+            <div class="loop"><b>Résultat</b></div><i>›</i>
+            <div><b>Réponse finale</b></div>
+          </div>
+          <p class="note"><strong>Agent = modèle + tools + boucle + objectif.</strong> Le modèle écrit une demande d'action, le harness vérifie les permissions et l'exécute.</p>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/design/layer.png" alt="">La context window d'un agent de code</h2>
+          <div class="cw">
+            <div class="cw__fixed" style="flex: 12">System prompt</div>
+            <div class="cw__fixed" style="flex: 13">Tool definitions</div>
+            <div class="cw__fixed" style="flex: 13">Instructions projet</div>
+            <div class="cw__live" style="flex: 16">Conversation</div>
+            <div class="cw__live" style="flex: 22">Tool calls + résultats</div>
+            <div class="cw__free" style="flex: 10">Libre</div>
+          </div>
+          <ul>
+            <li>C'est <strong>tout</strong> ce que le modèle voit&nbsp;: <span class="hl">ce qui n'y est pas n'existe pas</span>.</li>
+            <li>Chaque tool exposé, fichier lu, sortie de commande <strong>consomme du budget</strong>.</li>
+            <li>La code base n'y est pas&nbsp;: l'agent la lit <strong>morceau par morceau</strong>, avec des tools.</li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/messages/message-text.png" alt="">Une demande initiale bien cadrée</h2>
+          <pre><b>Objectif :</b> Pagine GET /bookings par curseur.
+<b>Fichiers :</b> pars de bookings.controller.ts
+  et de shared/pagination.
+<b>Invariant :</b> fais évoluer le contrat OpenAPI, garde le schéma Page.
+<b>Fini quand :</b> npm test -- bookings passe.</pre>
+          <p class="note">Le premier message oriente <strong>toute la suite</strong>&nbsp;: court, relu, avec des noms qui servent d'ancres.</p>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/programming/document-code.png" alt="">Où ranger quoi&nbsp;?</h2>
+          <table>
+            <tr><th>Chargé…</th><th>Où</th></tr>
+            <tr><td>à chaque session</td><td><strong>Instructions projet</strong> <code>AGENTS.md</code>&nbsp;: conventions, commandes, pièges</td></tr>
+            <tr><td>pour une tâche</td><td><strong>Demande initiale</strong>&nbsp;: la tâche du jour</td></tr>
+            <tr><td>à la demande</td><td><strong>Skill</strong> <code>SKILL.md</code>&nbsp;: un savoir-faire emballé</td></tr>
+            <tr><td>pour reprendre</td><td><strong>Note de reprise</strong>&nbsp;: où on en est</td></tr>
+          </table>
+          <p class="note"><span class="hl">Plus c'est chargé souvent, plus c'est court.</span></p>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/education/clipboard.png" alt="">Planifier avant de coder</h2>
+          <div class="flow">
+            <div><b>Besoin flou</b></div><i>›</i>
+            <div class="loop"><b>Plan relu et corrigé</b></div><i>›</i>
+            <div><b>Code, étape par étape</b></div>
+          </div>
+          <p class="note">Le <strong>mode plan</strong> explore sans rien modifier. Chaque étape se vérifie.</p>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/settings/setting-2.png" alt="">Niveaux d'autonomie</h2>
+          <div class="axes axes--1">
+            <div><b>Observer sans agir</b> explorer un code inconnu</div>
+            <div><b>Demander à chaque action</b> apprendre à le lire</div>
+            <div><b>Agir dans le périmètre</b> dérouler un plan validé</div>
+            <div><b>Aller au bout seul</b> un environnement isolé et jetable</div>
+          </div>
+          <p class="note">On monte d'un niveau avec un <strong>filet</strong>&nbsp;: tests, commits, diff relu.</p>
+        </div>
+      </div>
+
+      <div class="block span-2">
+        <h2><img src="assets/zenika/library/icons/gradient/essentials/verify.png" alt="">6 réflexes pour lundi matin</h2>
+        <ol class="reflexes reflexes--6">
+          <li><strong>Vérifier</strong>&nbsp;: tests, typage et revue restent les garde-fous.</li>
+          <li>Faire valider <strong>la demande et le plan</strong> avant le code.</li>
+          <li><strong>Rewind</strong>&nbsp;: corriger l'entrée et relancer, au lieu d'empiler.</li>
+          <li><strong>Une tâche, une session</strong>&nbsp;: ce qui traîne pollue.</li>
+          <li><strong>Relire le diff</strong>&nbsp;: un commit par étape, un humain avant le merge.</li>
+          <li>La consigne qu'on répète devient une <strong>skill</strong>.</li>
+        </ol>
+      </div>
+    </div>
+
+    <footer class="foot">
+      <span>Développeur IA — Foundation · Zenika</span>
+      <span>Au verso&nbsp;: produire et vérifier, étendre l'agent, garder la main</span>
+    </footer>
+  </section>
+
+  <!-- ================================================================ VERSO -->
+  <!-- Verso: activity prompts, modules 3 to 5, keywords. -->
+  <section class="sheet">
+    <header class="head">
+      <img src="assets/zenika/logo.svg" alt="Zenika">
+      <div class="head__titles">
+        <div class="head__eyebrow">Cheat sheet · Développeur IA · Foundation · 2/2</div>
+        <h1>Produire, vérifier, garder la main</h1>
+      </div>
+      <div class="head__motto">Viber pour explorer, piloter pour livrer.</div>
+    </header>
+
+    <div class="body body--verso">
+      <div class="block span-2">
+        <h2><img src="assets/zenika/library/icons/gradient/education/note.png" alt="">Prompts prêts à l'emploi<small>tirés des exercices</small></h2>
+        <div class="prompts">
+          <div><b>Du ticket au plan</b><pre>Explore le dépôt <b>sans rien modifier</b>. Propose
+la demande initiale du ticket (fichiers clés,
+commandes, invariants, pièges), puis un plan.</pre></div>
+          <div><b>Figer avant de modifier</b><pre>Avant de toucher à BookingsController, écris
+des tests qui capturent le comportement
+<b>ACTUEL</b> de GET /bookings, même s'il est faux.</pre></div>
+          <div><b>Faire relire le diff</b><pre>Relis le diff que tu viens de produire :
+<b>cas limites, sécurité, perf.</b></pre></div>
+          <div><b>Ma première skill</b><pre>Écris en SKILL.md la consigne que j'ai dû
+répéter : nom, <b>description</b>, consignes.</pre></div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/arrows/repeat.png" alt="">Feature par feature</h2>
+          <div class="flow">
+            <div class="loop"><b>Une étape</b></div><i>›</i>
+            <div class="loop"><b>Tester, relire</b></div><i>›</i>
+            <div class="loop"><b>Commit</b></div><i>›</i>
+            <div><b>Doc à jour</b></div>
+          </div>
+          <div class="pair">
+            <div><b>✗ Empiler</b>la context window se salit</div>
+            <div><b>✓ Rewind</b>corriger l'entrée, relancer</div>
+          </div>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/search/search-normal.png" alt="">Relire le code généré<small>comme un inconnu</small></h2>
+          <div class="axes">
+            <div><b>Correction</b> ticket résolu&nbsp;?</div>
+            <div><b>Cas limites</b> vide, <code>null</code></div>
+            <div><b>Sécurité</b> entrées, droits</div>
+            <div><b>Performance</b> N+1</div>
+            <div><b>Lisibilité</b> dans 6 mois</div>
+            <div><b>Dépendances</b> réelles&nbsp;?</div>
+          </div>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/essentials/lamp.png" alt="">Deux natures de tests</h2>
+          <div class="pair">
+            <div><b>Construction</b>pour <strong>l'agent</strong>, jetables</div>
+            <div><b>Fonctionnels</b>pour <strong>l'équipe</strong>, la spec</div>
+          </div>
+          <p class="note">En fin de feature, <span class="hl">le test fonctionnel gagne</span>.</p>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/programming/hierarchy.png" alt="">Étendre l'agent</h2>
+          <ul>
+            <li><strong>MCP</strong>&nbsp;: qui l'exécute, l'authentifie, le maintient&nbsp;? Il pèse à <strong>chaque appel</strong>.</li>
+            <li><strong>Skill</strong>&nbsp;: chargée à la demande, déclenchée par sa <strong>description</strong>.</li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/finance/coin.png" alt="">Plus n'est pas mieux</h2>
+          <div class="axes">
+            <div><b>Simple</b> concentrée</div>
+            <div><b>Chargée</b> tools dominants</div>
+            <div><b>Polluée</b> crédible, faux</div>
+            <div><b>Préparée</b> cadrée</div>
+          </div>
+          <p class="note"><strong>Le token se paie</strong>&nbsp;: 1&nbsp;tâche = 1&nbsp;session · être précis · couper les MCP inutiles · même modèle · du concis.</p>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/security/lock.png" alt="">2 règles d'or</h2>
+          <div class="rules">
+            <div><b>1. Outils validés, jamais de secret</b><em>L'enverriez-vous par email à un inconnu&nbsp;?</em></div>
+            <div><b>2. Un humain valide avant le merge</b><em>Qui signe si c'est faux&nbsp;?</em></div>
+          </div>
+          <p class="note"><strong>Trio létal</strong>&nbsp;: données privées + contenu non fiable + sortie vers l'extérieur. <span class="hl">Casser une branche.</span></p>
+        </div>
+      </div>
+
+      <div class="block span-2">
+        <h2><img src="assets/zenika/library/icons/gradient/social/message-question.png" alt="">Mots-clés<small>glossaire complet dans les handouts</small></h2>
+        <div class="keywords">
+          <div><b>Token</b> l'unité lue, écrite, facturée</div>
+          <div><b>Context window</b> la vue du modèle</div>
+          <div><b>Harness</b> tout sauf le modèle</div>
+          <div><b>Tools</b> demandés par le modèle</div>
+          <div><b>Agent</b> un objectif poursuivi en boucle</div>
+          <div><b>MCP</b> la prise standard des tools</div>
+          <div><b>Demande initiale</b> la tâche du jour</div>
+          <div><b>Skill</b> un savoir-faire à la demande</div>
+          <div><b>Context rot</b> la session se dégrade</div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="foot">
+      <span>Développeur IA — Foundation · Zenika</span>
+      <span>Les noms d'outils changent. Les notions restent.</span>
+    </footer>
+  </section>
+</body>
+</html>
