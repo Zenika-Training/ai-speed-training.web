@@ -1,0 +1,19 @@
+# Travailler avec l'IA — les bons réflexes et les mots-clés
+
+> Comprendre la machine, bien demander, maîtriser le contexte, l'IA dans la discovery produit, risques et coûts.
+
+## Table of Contents
+
+### Handouts
+
+- [Handout — Comprendre la machine](/ai-speed-training.web/speed-training-ai-for-business/handouts/handout-01-comprendre-la-machine.md)
+- [Handout — Bien demander](/ai-speed-training.web/speed-training-ai-for-business/handouts/handout-02-bien-demander.md)
+- [Handout — Maîtriser le contexte](/ai-speed-training.web/speed-training-ai-for-business/handouts/handout-03-maitriser-le-contexte.md)
+- [Handout — L'IA dans la discovery produit](/ai-speed-training.web/speed-training-ai-for-business/handouts/handout-04-discovery-produit.md)
+- [Handout — Risques, gouvernance et coûts](/ai-speed-training.web/speed-training-ai-for-business/handouts/handout-05-risques-et-couts.md)
+- [Handout — Les exercices de la journée](/ai-speed-training.web/speed-training-ai-for-business/handouts/handout-06-exercices.md)
+- [Handout — Exercice : de l'interview au PRD](/ai-speed-training.web/speed-training-ai-for-business/handouts/handout-07-exercice-prd.md)
+- [Handout — Les démos](/ai-speed-training.web/speed-training-ai-for-business/handouts/handout-08-demos.md)
+- [Handout — Cheat sheet : 7 réflexes pour lundi matin](/ai-speed-training.web/speed-training-ai-for-business/handouts/handout-09-cheat-sheet.md)
+- [Handout — Glossaire des mots-clés IA](/ai-speed-training.web/speed-training-ai-for-business/handouts/handout-10-glossaire.md)
+

@@ -1,0 +1,10 @@
+import{L as e,T as t,Y as n,_ as r,b as i,g as a,gt as o,mt as s,x as c}from"./modules/shiki-CLWvtuQJ.js";import{nt as l,rt as u}from"./index-BzRW2cto.js";import{t as d}from"./default-D1jKTG7q.js";import{t as f}from"./slidev/CodeBlockWrapper-C9TLcMDB.js";var p={__name:`slides.md__slidev_26`,setup(p){let{$slidev:m,$nav:h,$clicksContext:g,$clicks:_,$page:v,$renderContext:y,$frontmatter:b}=u();return g.setup(),(u,p)=>{let m=f;return e(),r(d,o(t(s(l)(s(b),25))),{default:n(()=>[p[1]||=a(`h1`,null,`Étape 3 : Scaffolder le projet`,-1),p[2]||=a(`p`,null,`Une fois l’architecture validée :`,-1),c(m,{title:``,ranges:[]},{default:n(()=>[...p[0]||=[a(`pre`,{class:`shiki shiki-themes vitesse-dark vitesse-light slidev-code`,style:{"--shiki-dark":`#dbd7caee`,"--shiki-light":`#393a34`,"--shiki-dark-bg":`#121212`,"--shiki-light-bg":`#ffffff`}},[a(`code`,{class:`language-text`},[a(`span`,{class:`line`},[a(`span`,null,`Tu vas scaffolder le projet [projet](project.md) à partir de`)]),i(`
+`),a(`span`,{class:`line`},[a(`span`,null,`notre [architecture](architecture.md) :`)]),i(`
+`),a(`span`,{class:`line`},[a(`span`,null,`- Initialiser le projet et créer la structure`)]),i(`
+`),a(`span`,{class:`line`},[a(`span`,null,`- Mettre en place la configuration`)]),i(`
+`),a(`span`,{class:`line`},[a(`span`,null,`- Ajouter et installer les dépendances nécessaires`)]),i(`
+`),a(`span`,{class:`line`},[a(`span`,null,`- Écrire un premier composant end-to-end « bête »`)]),i(`
+`),a(`span`,{class:`line`},[a(`span`,null,`- Démarrer le projet et vérifier qu'il tourne`)]),i(`
+`),a(`span`,{class:`line`},[a(`span`,null,`- Créer le fichier d'instructions IA`)]),i(`
+`),a(`span`,{class:`line`},[a(`span`)]),i(`
+`),a(`span`,{class:`line`},[a(`span`,null,`N'implémente pas encore la logique métier.`)])])],-1)]]),_:1}),p[3]||=a(`blockquote`,null,[a(`p`,null,[i(`Le scaffolding est l’une des tâches IA à `),a(`strong`,null,`plus forte valeur`),i(` : des heures de boilerplate en quelques minutes.`)])],-1)]),_:1},16)}}};export{p as default};

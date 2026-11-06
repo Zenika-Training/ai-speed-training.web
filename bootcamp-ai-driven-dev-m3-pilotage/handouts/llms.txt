@@ -1,0 +1,10 @@
+# Piloter le développement dans la chaîne de production
+
+> Sortir du poste du développeur pour piloter la chaîne de production collective : Context Nexus dans l’IDP, revue de PR par agents et SonarQube en CI, Deployment Gates et release en CD, observabilité d’équipe et FinOps, gouvernance MCP et registres de skills d’entreprise. Cours et quatre démonstrations vivantes.
+
+## Table of Contents
+
+### Handouts
+
+- [Handout — Piloter le développement dans la chaîne de production](/ai-speed-training.web/bootcamp-ai-driven-dev-m3-pilotage/handouts/handout-01-memo.md)
+

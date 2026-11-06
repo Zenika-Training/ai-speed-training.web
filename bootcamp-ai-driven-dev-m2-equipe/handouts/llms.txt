@@ -1,0 +1,21 @@
+# Développer avec l'IA en équipe
+
+> Passer de l'usage solo d'un assistant à des pratiques avancées mutualisables en équipe : harness outillé (MCP, hooks, skills), maîtrise des tokens et de la mémoire, Spec-Driven Development customisé, agents en parallèle et partage de skills. Labs outillés avec GitHub Copilot et Claude Code.
+
+## Table of Contents
+
+### Handouts
+
+- [Handout — Mémo du module 2](/ai-speed-training.web/bootcamp-ai-driven-dev-m2-equipe/handouts/handout-01-memo.md)
+- [Handout — Prérequis des labs](/ai-speed-training.web/bootcamp-ai-driven-dev-m2-equipe/handouts/handout-02-prerequis.md)
+- [Handout — Lab 1 · Boîte à outils agents personnels](/ai-speed-training.web/bootcamp-ai-driven-dev-m2-equipe/handouts/handout-03-lab-01-boite-a-outils.md)
+- [Handout — Lab 2 · User stories](/ai-speed-training.web/bootcamp-ai-driven-dev-m2-equipe/handouts/handout-04-lab-02-user-stories.md)
+- [Handout — Lab 3 · Pomodoro](/ai-speed-training.web/bootcamp-ai-driven-dev-m2-equipe/handouts/handout-05-lab-03-pomodoro.md)
+- [Handout — Lab 4 · Extension speckit-doc-tracker](/ai-speed-training.web/bootcamp-ai-driven-dev-m2-equipe/handouts/handout-06-lab-04-doc-tracker.md)
+- [Handout — Lab 4.4 à 4.6 · Phase de design (facultatif)](/ai-speed-training.web/bootcamp-ai-driven-dev-m2-equipe/handouts/handout-07-lab-04-phase-de-design.md)
+- [Handout — Lab 5 · Pilotage des tests en Spec-Driven Development](/ai-speed-training.web/bootcamp-ai-driven-dev-m2-equipe/handouts/handout-08-lab-05-pilotage-tests.md)
+- [Handout — Lab 6 · Rétro-documentation](/ai-speed-training.web/bootcamp-ai-driven-dev-m2-equipe/handouts/handout-09-lab-06-retro-documentation.md)
+- [Handout — Lab 7 · Poste terminal-first (facultatif)](/ai-speed-training.web/bootcamp-ai-driven-dev-m2-equipe/handouts/handout-10-lab-07-terminal-first.md)
+- [Handout — Lab 8 · Développement parallèle](/ai-speed-training.web/bootcamp-ai-driven-dev-m2-equipe/handouts/handout-11-lab-08-dev-parallele.md)
+- [Handout — Lab 9 · Skill d'équipe](/ai-speed-training.web/bootcamp-ai-driven-dev-m2-equipe/handouts/handout-12-lab-09-skill-equipe.md)
+
