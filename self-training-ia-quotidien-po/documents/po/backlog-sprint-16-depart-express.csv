@@ -1,0 +1,12 @@
+cle;titre;type;statut;estimation_fictive;source;dependance
+LAN-112;Consulter le détail de sa note;User story;Prêt;5;Fiche départ express v2 (DE-2);Connecteur PMS v2 (disponible)
+LAN-113;Régler sa note avec la pré-autorisation;User story;Prêt;8;Fiche départ express v2 (DE-3);Service Paiement : pré-autorisation (disponible)
+LAN-114;Régler avec la page du prestataire de paiement;User story;À affiner;5;Fiche départ express v2 (DE-3);équipe Gouvernail : un sprint, pas avant le sprint 17
+LAN-115;Renseigner les informations de société avant la facture;User story;Prêt;3;Fiche départ express v2 (DE-5, DE-10);—
+LAN-116;Contester une ligne de la note;User story;Prêt;3;Fiche départ express v2 (DE-4);—
+LAN-117;Déclarer le minibar et confirmer le départ;User story;À affiner;8;Fiche départ express v2 (DE-6, DE-7);Application Étages : accès en attente
+LAN-118;Sécurité : stockage des documents clients accessible sans authentification en préproduction;Sécurité;Prêt;3;Constat issu de Wiz, résumé par Aurèle;équipe Escale (prévenue)
+LAN-119;Anomalie : facture non reçue après le départ;Anomalie;À analyser;non estimé;14 incidents en 90 jours (ServiceNow);Connecteur PMS v2 ou PMS de l'hôtel (à analyser)
+LAN-101;Demander un départ tardif depuis l'application;User story;À spécifier;non estimé;Demande des hôtels pilotes, promise pour la fin du trimestre;—
+LAN-108;Accessibilité : contraste du bandeau de statut;User story;Prêt;2;Maëlle (design system);—
+LAN-109;Migrer la carte de chambre vers Lueur 3.3;Dette;À arbitrer;5;Malo;Lueur 3.3 (en préparation)

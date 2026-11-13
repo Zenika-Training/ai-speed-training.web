@@ -1,0 +1,61 @@
+id;hotel;profil;langue;mois;note;verbatim
+Q01;LYS-03;affaires;fr;M-3;2;25 minutes au comptoir un mardi matin, j'ai failli rater mon train.
+Q02;LYS-03;affaires;fr;M-3;2;J'ai demandé une facture au nom de ma société, on m'a dit de repasser. Résultat : facture refaite deux fois.
+Q03;LIL-07;affaires;fr;M-3;3;Le matin, une seule personne au comptoir pour dix clients qui partent.
+Q04;LYS-03;affaires;en;M-3;2;Waited almost half an hour to check out. Please let me pay on my phone.
+Q05;NTE-02;famille;fr;M-3;4;Au départ, on préfère vérifier la note avec quelqu'un : avec les enfants, on oublie toujours ce qu'on a pris.
+Q06;LYS-03;affaires;fr;M-3;2;L'application m'a déconnecté trois fois pendant l'enregistrement en ligne.
+Q07;LYS-03;loisirs;fr;M-3;3;Chambre bruyante côté rue, impossible de dormir avant minuit.
+Q08;LYS-03;affaires;fr;M-3;2;On m'a facturé deux bouteilles d'eau du minibar que je n'avais pas prises. Discussion pénible au comptoir.
+Q09;LIL-07;affaires;fr;M-3;2;Facture reçue avec la mauvaise adresse de société, impossible de la faire corriger par e-mail.
+Q10;LYS-03;affaires;fr;M-3;3;Chambre prête à 16 h alors qu'on me l'avait annoncée pour 14 h.
+Q11;LYS-03;affaires;fr;M-2;1;File d'attente interminable au départ. C'est le seul point noir du séjour.
+Q12;LIL-07;loisirs;fr;M-2;3;L'application ne s'ouvre plus depuis la dernière mise à jour.
+Q13;LYS-03;affaires;de;M-2;2;Das Zimmer war bei der Ankunft noch nicht fertig, und niemand hat uns Bescheid gegeben.
+Q14;NTE-02;famille;fr;M-2;3;Arrivés à 15 h avec les enfants, la chambre n'était pas prête. Aucune notification.
+Q15;LYS-03;affaires;fr;M-2;2;Au départ, vingt minutes de queue, alors que je n'avais rien à contester.
+Q16;LYS-03;affaires;fr;M-2;2;La facture n'est jamais arrivée par e-mail. Écrivez-moi à client.fictif@example.com.
+Q17;LIL-07;affaires;fr;M-2;2;Le départ prend plus de temps que l'arrivée.
+Q18;LYS-03;loisirs;fr;M-2;3;Week-end agréable, mais l'attente au moment de partir a gâché la fin du séjour.
+Q19;LYS-03;affaires;en;M-2;2;My company needs the VAT number on the invoice. I had to go back to the desk to get it fixed.
+Q20;NTE-02;loisirs;fr;M-2;3;Impossible de me connecter à l'application avec mon compte.
+Q21;LYS-03;affaires;fr;M-2;2;Le minibar m'a été facturé deux jours après mon départ, sans explication.
+Q22;LYS-03;affaires;fr;M-2;3;Comptoir saturé entre 8 h et 9 h. Il faudrait pouvoir payer en ligne.
+Q23;LIL-07;affaires;fr;M-2;2;Rappelez-moi au +33 1 00 00 00 00 : je n'arrive pas à me connecter à l'application.
+Q24;LYS-03;loisirs;fr;M-2;5;Personnel de réception très accueillant, rien à redire.
+Q25;NTE-02;famille;fr;M-2;4;On aime bien régler à la réception : on peut poser nos questions sur les suppléments de la note.
+Q26;LYS-03;affaires;fr;M-2;2;Trois personnes devant moi au départ et un seul réceptionniste : vingt minutes.
+Q27;LIL-07;affaires;de;M-2;2;Beim Check-out mussten wir lange warten.
+Q28;LYS-03;affaires;fr;M-2;3;On m'a annoncé que la chambre était prête alors qu'elle ne l'était pas.
+Q29;LYS-03;affaires;fr;M-2;2;L'écran « Mes demandes » ne se met pas à jour.
+Q30;LIL-07;famille;fr;M-2;3;Petit-déjeuner fermé trop tôt le dimanche pour les familles.
+Q31;LYS-03;affaires;fr;M-1;2;Départ : file d'attente encore plus longue que d'habitude.
+Q32;LYS-03;affaires;fr;M-1;2;Deux factures différentes pour le même séjour, et aucune n'était juste.
+Q33;NTE-02;famille;fr;M-1;2;Le minibar a été compté alors que les enfants n'y avaient pas touché. On a dû discuter longtemps.
+Q34;LYS-03;loisirs;en;M-1;3;The app crashed when I tried to ask for extra towels.
+Q35;LYS-03;affaires;fr;M-1;2;Minibar contesté au départ : dix minutes de discussion pour 4 euros.
+Q36;LIL-07;affaires;fr;M-1;2;Notification « chambre prête » reçue une heure après mon entrée dans la chambre.
+Q37;LYS-03;affaires;en;M-1;2;The check-out queue was the worst part of the stay.
+Q38;NTE-02;loisirs;fr;M-1;3;La piscine était fermée sans prévenir.
+Q39;LYS-03;affaires;fr;M-1;2;Impossible d'obtenir après coup la facture au nom de ma société.
+Q40;LIL-07;loisirs;en;M-1;3;No information on whether paying in the app works with a screen reader. I am visually impaired.
+Q41;LYS-03;affaires;fr;M-1;2;L'application affiche une heure d'arrivée fausse.
+Q42;NTE-02;famille;fr;M-1;4;La chambre familiale n'était pas prête à notre arrivée, mais on nous a offert un goûter.
+Q43;LYS-03;affaires;fr;M-1;2;L'application ne garde pas mes préférences d'un séjour à l'autre.
+Q44;LIL-07;affaires;fr;M-1;2;La facture a mis une semaine à arriver.
+Q45;LYS-03;loisirs;fr;M-1;3;Ménage pas fait le deuxième jour.
+Q46;LYS-03;affaires;fr;M-1;2;Tous les matins, la même file au départ.
+Q47;LYS-03;affaires;en;M-1;2;I was charged for the minibar after I left. Nobody told me before.
+Q48;LIL-07;affaires;fr;M-1;3;Départ long, mais personnel aimable.
+Q49;NTE-02;famille;fr;M-1;5;La réception a pris le temps de vérifier la note avec nous, merci !
+Q50;LIL-07;affaires;fr;M-1;2;Facture envoyée à une mauvaise adresse e-mail.
+Q51;LYS-03;famille;fr;M-1;3;Chambre prête plus tôt que prévu, mais on ne l'a su qu'en arrivant avec les enfants.
+Q52;LIL-07;loisirs;fr;M-1;2;La note comportait une ligne de parking alors que nous n'avions pas de voiture.
+Q53;LYS-03;affaires;fr;M-1;2;Attente au comptoir : 20 minutes. Inacceptable pour un hôtel d'affaires.
+Q54;LYS-03;loisirs;fr;M-1;3;Chambre pas prête à 15 h, on a attendu dans le hall.
+Q55;LIL-07;affaires;fr;M-1;2;Je dois saisir à nouveau toutes mes informations à chaque séjour dans l'application.
+Q56;LIL-07;affaires;fr;M-1;2;Erreur sur le minibar, réglée seulement après un appel.
+Q57;LYS-03;loisirs;fr;M-1;3;On voulait partir tôt, mais il y avait déjà du monde au comptoir à 7 h.
+Q58;NTE-02;affaires;fr;M-1;2;Même ici, le matin, il faut attendre pour régler sa note.
+Q59;LYS-03;affaires;fr;M-1;4;L'enregistrement en ligne fonctionne très bien.
+Q60;LYS-03;affaires;fr;M-1;2;La TVA n'apparaissait pas sur la facture, j'ai dû la redemander.

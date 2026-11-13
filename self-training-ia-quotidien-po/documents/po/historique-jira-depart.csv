@@ -1,0 +1,7 @@
+cle;titre;statut;quand;commentaire
+LAN-58;Afficher le détail de la note dans l'application;Abandonné;il y a 10 mois;Le connecteur PMS ne renvoie pas les lignes de consommation. À revoir quand le connecteur sera en version 2.
+LAN-73;Connecteur PMS v2 : lignes de consommation et statut de chambre;Fait;il y a 4 mois;Livré par l'équipe Amarre. Les lignes de consommation et le statut de chambre sont disponibles pour Lanterne.
+LAN-81;Envoi de la facture par e-mail depuis le PMS;Fait;il y a 9 mois;Paramétré dans le PMS des trois hôtels pilotes. Lanterne n'intervient pas.
+LAN-90;Pré-autorisation : validité portée de 3 à 7 jours;Fait;il y a 6 mois;Demande de l'équipe Gouvernail : les séjours de plus de 3 jours perdaient leur pré-autorisation. Nouvelle validité : 7 jours.
+LAN-95;Rappel de l'heure de départ la veille;Fait;il y a 14 mois;Notification envoyée à 18 h la veille du départ.
+LAN-101;Demander un départ tardif depuis l'application;À spécifier;sprint 14;Demande des hôtels pilotes. Non estimé. L'heure de départ du séjour en dépend.

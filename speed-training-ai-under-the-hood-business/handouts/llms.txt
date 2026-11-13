@@ -1,0 +1,15 @@
+# L'IA sous le capot — version métiers
+
+> Comprendre l'environnement de l'IA sans jargon : moteur, véhicule, dispatch, boîtier. Une métaphore par notion (LLM, agent, harness, orchestrateur, guardrails, gateway) et les questions à poser avant d'adopter un outil.
+
+## Table of Contents
+
+### Handouts
+
+- [Handout — La carte : qui est qui](/ai-speed-training.web/speed-training-ai-under-the-hood-business/handouts/handout-01-carte.md)
+- [Handout — Le moteur : comment pense un modèle](/ai-speed-training.web/speed-training-ai-under-the-hood-business/handouts/handout-02-moteur.md)
+- [Handout — Le véhicule : ce qu'est un agent](/ai-speed-training.web/speed-training-ai-under-the-hood-business/handouts/handout-03-vehicule.md)
+- [Handout — La flotte : faire travailler plusieurs agents](/ai-speed-training.web/speed-training-ai-under-the-hood-business/handouts/handout-04-flotte.md)
+- [Handout — Le code de la route : sécurité et contrôle](/ai-speed-training.web/speed-training-ai-under-the-hood-business/handouts/handout-05-code-de-la-route.md)
+- [Handout — Dictionnaire des métaphores](/ai-speed-training.web/speed-training-ai-under-the-hood-business/handouts/handout-06-dictionnaire.md)
+

@@ -1,0 +1,242 @@
+---
+url: >-
+  /ai-speed-training.web/speed-training-ai-under-the-hood/handouts/handout-02-llm-slm.md
+---
+# Handout — LLM et SLM sous le capot
+
+**Sous le capot : LLM, agents, harness et orchestrateurs · Zenika · fiche partie 2**
+
+On suit la phrase « Le chat dort sur le » à travers le modèle jusqu'au mot suivant, puis on regarde ce qui coûte (context window, KV cache) et comment on rend un modèle plus petit (SLM). Niveau « mécanique », sans formules : des ordres de grandeur.
+
+> **Ordres de grandeur** : les tailles de context window, les remises de cache, les tarifs et la liste des modèles changent tous les trimestres. Vérifiez la page du fournisseur avant de décider.
+
+## Le trajet d'une phrase dans le modèle
+
+*Partie 2 · slide « Le trajet d'une phrase dans le modèle »*
+
+| Étape              | Ce qui se passe                          | Exemple                                       |
+| ------------------ | ---------------------------------------- | --------------------------------------------- |
+| 1. Texte           | la phrase de départ                      | « Le chat dort sur le »                       |
+| 2. Tokenizer       | découpe en tokens, chacun avec un numéro | `[Le][ chat][ dort][ sur][ le]` → 2356 9411 … |
+| 3. Embedding       | chaque numéro devient un vecteur         | 4 096 nombres par token                       |
+| 4. Couches ×N      | attention + MLP, répétés                 | ×32 (8B), ×80 (70B)                           |
+| 5. Logits          | un score par token du vocabulaire        | ~128 000 scores                               |
+| 6. Échantillonnage | on tire le token suivant                 | canapé 41 %, lit 22 % → « canapé »            |
+
+> Un LLM ne génère **qu'un seul token à la fois** : pour 500 tokens de réponse, il refait ce trajet 500 fois (boucle autorégressive). Coût, latence et KV cache en découlent.
+
+Les pourcentages et les IDs de tokens sont illustratifs (ils dépendent du tokenizer). Llama 3 8B sert d'exemple parce que son architecture est publique ; les modèles fermés (GPT, Claude, Gemini) suivent les mêmes principes sans publier leurs dimensions.
+
+## Tokenisation : le modèle ne lit pas des mots
+
+*Partie 2 · slide « Tokenisation : le modèle ne lit pas des mots »*
+
+| Texte                                    | Découpage illustratif                   |
+| ---------------------------------------- | --------------------------------------- |
+| Mot rare (« anticonstitutionnellement ») | `Anti` · `constitution` · `nellement`   |
+| Code                                     | `def` · ` get` · `_user` · `(id` · `):` |
+
+* **Algorithme** : BPE (*Byte Pair Encoding*). On fusionne les paires de caractères les plus fréquentes du corpus jusqu'à obtenir le vocabulaire voulu. Les mots fréquents deviennent un seul token, les mots rares sont découpés.
+* **~4 caractères par token** en anglais. Le **français** et le code consomment souvent plus de tokens pour le même sens, car les corpus sont majoritairement anglais. L'indentation, les espaces et les noms de variables longs consomment aussi des tokens.
+* **128 k tokens** dans le vocabulaire de Llama 3 ; ~200 k pour les tokenizers récents d'OpenAI.
+
+> On **facture** et on **limite** en tokens, pas en mots. « Combien de r dans strawberry ? » : le modèle ne voit pas les lettres, mais des morceaux de mots. Les modèles récents s'en sortent mieux grâce au raisonnement, la cause reste la tokenisation.
+
+Pour vérifier : collez une phrase française et sa traduction anglaise dans un visualiseur de tokens (tiktokenizer, tokenizer playground) et comparez le nombre.
+
+## Embeddings : du numéro au sens
+
+*Partie 2 · slide « Embeddings : du numéro au sens »*
+
+Chaque token devient un **point dans un espace à des milliers de dimensions**. La **table d'embedding** est apprise : des mots au sens proche finissent à des positions proches. Au départ elle est aléatoire ; c'est l'entraînement qui rapproche les tokens utilisés dans des contextes similaires.
+
+Ordre de grandeur : Llama 3 8B, 128 256 tokens × 4 096 dimensions ≈ 525 millions de paramètres, rien que pour cette table.
+
+À la sortie de cette table, le vecteur de « chat » est le même quelle que soit la phrase. Ce sont les couches suivantes (l'attention) qui le rendent **contextuel** : « chat » dans « le chat dort » et « chat » dans « ouvre un chat Teams » finissent à des endroits différents.
+
+> **Deux sens du mot « embedding »** :
+>
+> * l'**embedding interne** est la première couche d'un LLM, invisible pour vous ;
+> * un **modèle d'embedding** transforme un texte entier en vecteur pour la recherche sémantique et le RAG (`text-embedding-3`, Mistral Embed, Voyage, Cohere, BGE, nomic-embed). Voir [le RAG](handout-03-agent#rag-le-retour-des-embeddings).
+
+Le célèbre « roi − homme + femme ≈ reine » vient de word2vec (2013) : une bonne intuition, mais les espaces des LLM modernes sont plus riches et moins linéaires.
+
+## Une couche transformer, c'est deux opérations
+
+*Partie 2 · slide « Une couche transformer, c'est deux opérations »*
+
+| Opération                | Ce qu'elle fait                                                                                              | À retenir                                                                                                                                        |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **① Attention**          | les tokens se lisent entre eux : chaque token va chercher l'information utile dans les tokens **précédents** | plusieurs « têtes » en parallèle (syntaxe, références…) ; dans « le chat ne traverse pas car **il** est fatigué », *il* regarde fortement *chat* |
+| **② MLP / feed-forward** | chaque token « réfléchit » seul : un réseau dense appliqué à chaque position                                 | environ deux tiers des paramètres d'un modèle dense ; c'est là que se loge l'essentiel des **connaissances factuelles**                          |
+
+* **Les liants** : la **connexion résiduelle** fait que chaque couche *ajoute* au vecteur au lieu de le remplacer ; la **normalisation** garde les valeurs stables.
+* **Empilement** : on répète le bloc **32 fois** (8B), **80 fois** (70B), **126 fois** (405B). Tendance observée : les premières couches captent la forme, les suivantes le sens.
+
+En une phrase, l'attention : chaque token produit une question (Q), une étiquette (K) et un contenu (V) ; il compare sa question aux étiquettes des tokens précédents et récupère une moyenne pondérée de leurs contenus. K et V reviennent avec le KV cache. « Précédents » est important (masque causal) : un LLM génératif ne regarde pas l'avenir.
+
+Coût : l'attention compare chaque token à tous les précédents, donc le coût de calcul croît avec le carré de la longueur du contexte (sans optimisation). C'est pour cela que les très longs contextes sont chers.
+
+## Choisir le mot suivant : logits, température, top-p
+
+*Partie 2 · slide « Choisir le mot suivant : logits, température, top-p »*
+
+Après « Le chat dort sur le », les logits (scores bruts) passent par un **softmax** qui les transforme en probabilités (illustratif) :
+
+| Candidat | Probabilité | Dans le noyau top-p = 0,7 |
+| -------- | ----------- | ------------------------- |
+| canapé   | 41 %        | oui                       |
+| lit      | 22 %        | oui                       |
+| tapis    | 9 %         | oui                       |
+| rebord   | 6 %         | non                       |
+| clavier  | 4 %         | non                       |
+| …        | 18 %        | non                       |
+
+* **Température** : **basse** (0 à 0,3), on prend presque toujours le favori ; **haute** (> 1), on aplatit la distribution, plus de surprises. « clavier » a une probabilité non nulle : avec une température haute, le modèle finira par l'écrire.
+* **Top-p / top-k** : on ne tire qu'au sein des candidats les plus probables (cumul ≥ p, ou les k premiers).
+
+Pour un agent de code, on veut en général une température basse : la reproductibilité compte plus que la créativité. Les modèles de raisonnement imposent souvent leurs propres réglages et n'exposent plus la température. Même à température 0, la sortie n'est pas parfaitement déterministe chez les fournisseurs cloud (batch, virgule flottante sur GPU) : ne construisez jamais un test qui suppose la même sortie mot pour mot.
+
+> Un LLM produit ce qui est **plausible**, pas ce qui est **vrai**. L'hallucination n'est pas un bug ponctuel : c'est le fonctionnement normal quand le contexte ne contient pas la bonne information. Le vrai remède : mettre l'information juste dans le contexte (RAG, lecture de fichiers, outils), d'où l'intérêt des agents.
+
+## D'où viennent les poids : trois phases d'entraînement
+
+*Partie 2 · slide « D'où viennent les poids : trois phases d'entraînement »*
+
+| Phase                                               | Ce qu'on fait                                                                                                                                                    | Résultat                                      |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| **1. Pré-entraînement : lire Internet**             | prédire le token suivant sur des milliers de milliards de tokens (15 000 milliards pour Llama 3, chiffre publié par Meta) ; des semaines sur des milliers de GPU | un modèle « de base » qui complète du texte   |
+| **2. Fine-tuning supervisé : apprendre à répondre** | des exemples question / bonne réponse, des conversations, des appels d'outils                                                                                    | un modèle « instruct » qui suit des consignes |
+| **3. Renforcement : apprendre à bien répondre**     | préférences humaines (RLHF), ou récompenses vérifiables : le test passe, le calcul est juste                                                                     | les modèles « de raisonnement » et agentiques |
+
+Les agents de code ont progressé vite depuis 2024 grâce à la phase 3 avec **récompenses vérifiables** : on fait exécuter des tests au modèle pendant l'entraînement et on récompense ce qui passe. Le code est un terrain idéal pour cela.
+
+* **Date de coupure** : le modèle ne connaît rien après la fin de son corpus. La librairie sortie le mois dernier, il faut la **fournir dans le contexte** (documentation, MCP, recherche web).
+* **Tokens de raisonnement** (« thinking », « extended thinking », « reasoning effort ») : le modèle « réfléchit » en générant des tokens, facturés et stockés dans le contexte. Plus d'effort = plus de tokens = plus de latence et de coût. C'est un curseur, pas un mode magique.
+
+## La context window : la seule mémoire de travail
+
+*Partie 2 · slide « La context window : la seule mémoire de travail »*
+
+> **Le modèle n'a pas de mémoire entre deux appels.** À chaque tour, le harness **renvoie tout** : instructions, historique, fichiers lus, résultats d'outils. Le modèle relit tout depuis le début. La « mémoire » d'un agent, c'est ce que le harness choisit de remettre dans la context window.
+
+* **128 k tokens** : la norme des modèles ouverts récents. **1 M+ tokens** : offres longues de Gemini, Claude, GPT.
+* **Plus long n'est pas mieux** : les performances se dégradent quand le contexte s'allonge (*lost in the middle*, article de Liu et al., 2023 ; *context rot*, expression plus récente) : l'information au milieu est moins bien exploitée.
+* **Ordre de grandeur** : 128 k tokens ≈ un roman de 300 pages, ou ~10 000 lignes de code. Un agent qui lit 30 fichiers et relance 10 fois les tests atteint vite cette limite, d'où la **compaction** (résumé automatique) dans les harness.
+
+Conseil pratique : une session d'agent courte et ciblée produit de meilleurs résultats qu'une session géante.
+
+## KV cache : ne pas tout recalculer à chaque token
+
+*Partie 2 · slides « KV cache : ne pas tout recalculer à chaque token » et « Le prix du KV cache : la mémoire GPU »*
+
+Pour générer un nouveau token, on a besoin de son Q à lui, mais des K et V de **tous les tokens précédents**. Ces K et V ne changent jamais une fois calculés : on les garde en mémoire GPU. C'est le **KV cache**.
+
+* **Sans cache**, le token n° 1 000 recalculerait K et V des 999 précédents. Le cache transforme un coût quadratique en coût linéaire.
+* **Le prix** : Llama 3 8B en 16 bits = **128 Kio par token**. Pour 128 k tokens : **16 Gio**, autant que le modèle lui-même.
+* **Les parades** : GQA (têtes K/V partagées), cache quantifié, PagedAttention (vLLM) pour paginer la mémoire comme un OS.
+
+Le calcul : 2 (K et V) × 32 couches × 8 têtes K/V × 128 dimensions × 2 octets (fp16) = 131 072 octets, soit 128 Kio par token. × 131 072 tokens = 16 Gio. C'est pour **une seule** conversation : un serveur qui sert 50 utilisateurs en parallèle doit loger 50 caches. Le KV cache, plus que le modèle, détermine combien d'utilisateurs on sert par GPU.
+
+* **GQA** (Grouped Query Attention) : Llama 3 8B a 32 têtes de requêtes mais seulement 8 têtes K/V, ce qui divise déjà le cache par 4.
+* **PagedAttention** (vLLM, 2023) alloue le cache par blocs, comme la mémoire virtuelle.
+* **Prefill vs decode** : le prefill traite tout le prompt d'un coup, le decode génère un token à la fois. Cela explique deux chiffres des benchmarks : **TTFT** (time to first token) et le débit en tokens par seconde.
+
+## Du KV cache au prompt caching : la facture de vos agents
+
+*Partie 2 · slide « Prompt caching : la facture de vos agents »*
+
+**Le principe** : les fournisseurs gardent le KV cache d'un préfixe déjà vu. Si votre requête commence **exactement** comme la précédente, le prefill de cette partie est sauté : réponse plus rapide, tokens d'entrée facturés beaucoup moins cher (**~90 %** de réduction possible sur les tokens lus en cache, ordre de grandeur).
+
+Anatomie d'une requête d'agent, du plus stable au plus volatil :
+
+1. system prompt ;
+2. définitions des tools ;
+3. instructions projet (`AGENTS.md`…) ;
+4. conversation et résultats des tools (croît à chaque tour) ;
+5. nouveau message.
+
+Un agent de code renvoie à chaque tour un préfixe énorme et quasi identique. Sans prompt caching, chaque tour coûterait le prix plein. C'est pourquoi les harness placent les éléments stables au début et les volatils à la fin.
+
+| Fournisseur       | Fonctionnement                                                                                                                              |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Anthropic**     | points de cache explicites (`cache_control`) ; lecture facturée ~10 % du prix d'entrée, écriture légèrement plus chère que l'entrée normale |
+| **OpenAI**        | cache automatique des préfixes longs, remise appliquée sans configuration                                                                   |
+| **Google Gemini** | cache implicite, plus *context caching* explicite avec durée de vie                                                                         |
+
+> **Conséquence pratique** : ne modifiez pas le début du contexte en cours de session. Changer le system prompt, ajouter ou retirer un serveur MCP (donc des définitions d'outils), ou mettre l'heure exacte dans les instructions casse le cache pour tout ce qui suit.
+
+Pourcentages et durées de vie changent régulièrement : ce sont des ordres de grandeur, la page tarifaire du fournisseur fait foi.
+
+## Rendre un modèle plus léger : quatre techniques
+
+*Partie 2 · slide « Rendre un modèle plus léger : quatre techniques »*
+
+| Technique                    | Principe                                                                                                         | Exemples                                                         |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| **Quantification**           | stocker les poids sur moins de bits : 16 → 8 → 4 bits ; perte de qualité faible jusqu'à 4 bits, nette en dessous | GGUF (llama.cpp, Ollama), AWQ, GPTQ, MLX                         |
+| **Distillation**             | un grand modèle « professeur » génère des réponses ; un petit modèle « élève » apprend à les imiter              | la plupart des SLM récents sont distillés                        |
+| **Élagage**                  | retirer des couches ou des neurones peu utiles, puis ré-entraîner un peu                                         |                                                                  |
+| **Mixture of Experts (MoE)** | pas plus petit, mais **moins actif** : seule une partie des poids travaille pour chaque token                    | un routeur choisit quelques experts (sous-réseaux MLP) par token |
+
+> Quantification et distillation sont les deux ingrédients principaux des **SLM**.
+
+Beaucoup de modèles frontière ouverts de 2025 et 2026 sont des MoE (DeepSeek, Qwen3 MoE, Llama 4, Mistral). On soupçonne que les modèles fermés le sont aussi, mais ce n'est pas publié.
+
+## Ce que pèse un modèle
+
+*Partie 2 · slide « Ce que pèse un modèle »*
+
+**Règle de calcul** : mémoire des poids ≈ nombre de paramètres × octets par paramètre, plus le KV cache par-dessus.
+
+| Modèle 8B  | Calcul                                          | Mémoire |
+| ---------- | ----------------------------------------------- | ------- |
+| FP16       | 8 milliards × 2 octets                          | 16 Go   |
+| INT8 / FP8 | 8 milliards × 1 octet                           | 8 Go    |
+| 4 bits     | 8 milliards × 0,5 octet, plus un peu de surcoût | ~5 Go   |
+
+**MoE : paramètres totaux vs actifs** (milliards). Le calcul suit les paramètres actifs, mais **tous les poids doivent tenir en mémoire**.
+
+| Modèle       | Total | Actifs par token |
+| ------------ | ----- | ---------------- |
+| DeepSeek-V3  | 671   | 37               |
+| Mixtral 8x7B | ~47   | ~13              |
+
+> Un modèle 8B quantifié en 4 bits tient sur un MacBook avec **16 Go** de mémoire unifiée.
+
+## Les SLM : petits, locaux, spécialisés
+
+*Partie 2 · slides « Les SLM : petits et locaux » et « SLM et LLM : le pattern hybride »*
+
+**Définition pratique** : de ~1 à ~15 milliards de paramètres. Assez petit pour tourner sur un poste, un téléphone ou un seul GPU ; même architecture qu'un LLM, juste moins de couches et des vecteurs plus étroits. La frontière n'est pas normalisée (7B, 15B ou 30B selon les sources) : ce qui compte, c'est « peut-il tourner sur la machine visée ? ».
+
+| Rubrique                         | Contenu                                                                                                                                         |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Le marché**                    | Phi-4 (14B), Phi-4-mini (3,8B) ; Gemma 3 (1B à 27B) ; Llama 3.2 (1B, 3B) ; Qwen3 (0,6B à 14B) ; Ministral (3B, 8B) ; SmolLM                     |
+| **Pour faire tourner (poste)**   | Ollama, LM Studio, llama.cpp, MLX                                                                                                               |
+| **Pour faire tourner (serveur)** | vLLM, SGLang, TGI                                                                                                                               |
+| **Embarqué**                     | Gemini Nano (Android, Chrome), Apple Foundation Models (~3B, sur l'appareil)                                                                    |
+| **Bons cas d'usage**             | classer, extraire, router, résumer court, compléter du code, **données sensibles qui ne doivent pas sortir**, latence faible, coût marginal nul |
+| **Limites**                      | raisonnement long multi-étapes, connaissances générales larges, agents autonomes sur de grosses bases de code : le LLM frontière reste devant   |
+| **Pattern hybride**              | le SLM **trie et route**, le LLM **raisonne** ; un guardrail est souvent lui-même un SLM (Llama Guard, Prompt Guard)                            |
+
+Argument entreprise fort : la souveraineté et la confidentialité. Un SLM sur un serveur interne ne fait sortir aucune donnée, et son coût est fixe (le matériel), pas à l'usage.
+
+Ce panorama bouge tous les trimestres (Phi-4 fin 2024, Llama 3.2 1B/3B en septembre 2024, Gemma 3 en mars 2025, Qwen3 en avril 2025) : vérifiez les dernières versions.
+
+## Ce que la mécanique change pour un développeur
+
+*Partie 2 · slide « Ce que la mécanique change pour un développeur »*
+
+Six réflexes qui découlent de la mécanique :
+
+| Fait              | Réflexe                                                                                                                 |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| **Tokens**        | **Comptez en tokens** : coût, limites et latence s'expriment en tokens ; le français et le code verbeux coûtent plus    |
+| **Autorégressif** | **Un token à la fois** : la longueur de la **sortie** fait la latence ; demandez des réponses courtes et des diffs      |
+| **Sans état**     | **Tout est dans le contexte** : ce qui n'est pas dans la context window n'existe pas ; d'où la doc, `AGENTS.md`, le RAG |
+| **KV cache**      | **Gardez le préfixe stable** : ne touchez pas aux instructions et aux outils en cours de session                        |
+| **Plausible**     | **Vérifiez** : le modèle prédit le probable ; tests, typage et revue restent les garde-fous de la vérité                |
+| **Taille**        | **Le bon modèle au bon endroit** : SLM local pour trier et protéger, LLM frontière pour raisonner                       |
+
+On a donc un moteur qui prédit des tokens, sans mémoire, et qui ne sait qu'écrire. La suite : comment cela devient [un agent](handout-03-agent) qui modifie votre code.

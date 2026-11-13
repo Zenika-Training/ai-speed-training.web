@@ -1,0 +1,20 @@
+# Développeur IA — Avancé
+
+> Un dev, plusieurs agents, un système : économie de l'agent, harness, contexte, spec-driven, patterns agentiques (GOAP, agent as a judge), worktrees et ADE.
+
+## Table of Contents
+
+### Handouts
+
+- [Handout — L'économie de l'agent](/ai-speed-training.web/speed-training-ai-dev-advanced/handouts/handout-01-sous-le-capot.md)
+- [Handout — Le harness, actif d'équipe](/ai-speed-training.web/speed-training-ai-dev-advanced/handouts/handout-02-le-harness.md)
+- [Handout — Ingénierie du contexte](/ai-speed-training.web/speed-training-ai-dev-advanced/handouts/handout-03-ingenierie-du-contexte.md)
+- [Handout — Spec-driven et qualité](/ai-speed-training.web/speed-training-ai-dev-advanced/handouts/handout-04-spec-driven-et-qualite.md)
+- [Handout — Patterns agentiques](/ai-speed-training.web/speed-training-ai-dev-advanced/handouts/handout-05-patterns-agentiques.md)
+- [Handout — Paralléliser : worktrees et ADE](/ai-speed-training.web/speed-training-ai-dev-advanced/handouts/handout-06-paralleliser-worktrees-ade.md)
+- [Handout — Les exercices](/ai-speed-training.web/speed-training-ai-dev-advanced/handouts/handout-07-exercices.md)
+- [Handout — Les démos](/ai-speed-training.web/speed-training-ai-dev-advanced/handouts/handout-08-demos.md)
+- [Handout — Où ça se règle dans mon outil](/ai-speed-training.web/speed-training-ai-dev-advanced/handouts/handout-09-ou-ca-se-regle.md)
+- [Handout — Glossaire des mots-clés IA](/ai-speed-training.web/speed-training-ai-dev-advanced/handouts/handout-10-glossaire.md)
+- [Handout — Au-delà du poste (pour aller plus loin)](/ai-speed-training.web/speed-training-ai-dev-advanced/handouts/handout-11-au-dela-du-poste.md)
+

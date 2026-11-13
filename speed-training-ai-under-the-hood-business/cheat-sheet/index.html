@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cheat sheet — L'IA sous le capot — version métiers · Zenika</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Urbanist:wght@600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* Zenika cheat sheet — A4 recto-verso. Same tokens as the Slidev theme and the handouts viewer. */
+    @page { size: A4; margin: 0; }
+
+    :root {
+      color-scheme: light;
+      --zk-magenta: #c41e62;
+      --zk-red: #e1203f;
+      --zk-gradient: linear-gradient(90deg, var(--zk-magenta) 0%, var(--zk-red) 100%);
+      --zk-ink: #303030;
+      --zk-text: #595959;
+      --zk-line: #e3e3e3;
+      --zk-surface: #f7f7f7;
+      --zk-info: #ecf0f6;
+      --zk-info-border: #b9c6dc;
+      --zk-pink: #fbeaf0;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      background: #d9d9d9;
+      color: var(--zk-text);
+      font-family: 'Nunito', ui-sans-serif, system-ui, sans-serif;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Screen toolbar --------------------------------------------------- */
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding: 10px 16px;
+      background: var(--zk-ink);
+    }
+
+    .toolbar button {
+      padding: 7px 18px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--zk-gradient);
+      color: #fff;
+      font: 700 14px 'Nunito', sans-serif;
+      cursor: pointer;
+    }
+
+    .toolbar span {
+      align-self: center;
+      color: #fff;
+      font-size: 13px;
+      opacity: .8;
+    }
+
+    /* A4 sheet ------------------------------------------------------------ */
+
+    .sheet {
+      width: 210mm;
+      height: 297mm;
+      margin: 16px auto;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      box-shadow: 0 4px 18px rgb(0 0 0 / .18);
+      font-size: 9.6pt;
+      line-height: 1.45;
+    }
+
+    .head {
+      display: flex;
+      align-items: center;
+      gap: 6mm;
+      padding: 5.5mm 9mm 5mm;
+      background: var(--zk-gradient);
+      color: #fff;
+    }
+
+    .head img { height: 7mm; }
+
+    .head__titles { flex: 1; }
+
+    .head__eyebrow {
+      font: 700 6.6pt 'Urbanist', sans-serif;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      opacity: .9;
+    }
+
+    .head h1 {
+      margin: .3mm 0 0;
+      font-size: 15pt;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .head__motto {
+      max-width: 62mm;
+      font-size: 7.4pt;
+      font-style: italic;
+      text-align: right;
+    }
+
+    .body {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6mm 6mm;
+      padding: 7mm 11mm 2mm;
+    }
+
+    /* the two columns take the free height and spread their blocks over it */
+    .body--recto { grid-template-rows: 1fr auto; }
+    .body--verso { grid-template-rows: auto 1fr auto; }
+
+    .col {
+      display: flex;
+      flex-direction: column;
+      gap: 5mm;
+    }
+
+    /* blocks of a column are cards that share the free height */
+    .col > .block {
+      flex: 1 1 auto;
+      padding: 4mm 4.5mm;
+      border: 1px solid var(--zk-line);
+      border-top: 3px solid var(--zk-magenta);
+      border-radius: 2mm;
+      background: #fff;
+    }
+
+    .col > .block h2 { border-bottom: 0; padding-bottom: 0; }
+
+    .span-2 { grid-column: 1 / -1; }
+
+
+    .foot {
+      display: flex;
+      justify-content: space-between;
+      padding: 3mm 11mm 5mm;
+      color: #8a8a8a;
+      font-size: 6.2pt;
+    }
+
+    /* Blocks -------------------------------------------------------------- */
+
+    .block h2 {
+      display: flex;
+      align-items: center;
+      gap: 2mm;
+      margin: 0 0 2.6mm;
+      padding-bottom: 1.6mm;
+      border-bottom: 1.4px solid var(--zk-magenta);
+      color: var(--zk-ink);
+      font-size: 11.5pt;
+      font-weight: 800;
+      line-height: 1.15;
+    }
+
+    .block h2 img { width: 6mm; height: 6mm; }
+
+    .block h2 small {
+      margin-left: auto;
+      color: var(--zk-magenta);
+      font: 700 6pt 'Urbanist', sans-serif;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    h3 {
+      margin: 1.8mm 0 .8mm;
+      color: var(--zk-ink);
+      font-size: 7.8pt;
+      font-weight: 800;
+    }
+
+    p { margin: 0 0 2mm; }
+
+    p:last-child { margin-bottom: 0; }
+
+    .note { color: var(--zk-text); font-size: 8.8pt; }
+
+    strong { color: var(--zk-ink); }
+
+    .hl { color: var(--zk-magenta); font-weight: 700; }
+
+    ul, ol { margin: 0; padding-left: 4mm; }
+
+    li { margin: 1.2mm 0; }
+
+    li::marker { color: var(--zk-magenta); font-weight: 700; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9pt;
+    }
+
+    th {
+      padding: 1.4mm 2.2mm;
+      background: var(--zk-gradient);
+      color: #fff;
+      font-size: 8.4pt;
+      text-align: left;
+    }
+
+    td {
+      padding: 1.6mm 2.2mm;
+      border-bottom: 1px solid var(--zk-line);
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td { background: #fafafa; }
+
+    pre {
+      margin: 0 0 2mm;
+      padding: 2.6mm 3.2mm;
+      border-left: 2px solid var(--zk-magenta);
+      border-radius: 1.2mm;
+      background: var(--zk-surface);
+      color: var(--zk-ink);
+      font: 8pt/1.55 'Fira Code', ui-monospace, monospace;
+      white-space: pre-wrap;
+    }
+
+    pre b { color: var(--zk-magenta); font-weight: 500; }
+
+    /* Flow of steps (agent loop, brief workflow) */
+    .flow {
+      display: flex;
+      align-items: stretch;
+      gap: 1.4mm;
+      margin: 2.4mm 0;
+    }
+
+    .flow > div {
+      flex: 1;
+      padding: 2mm 1.6mm;
+      border: 1px solid var(--zk-line);
+      border-radius: 1.4mm;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .flow > div b {
+      color: var(--zk-magenta);
+      font-size: 8.4pt;
+    }
+
+    .flow > div.loop { border: 1px dashed var(--zk-magenta); background: var(--zk-pink); }
+
+    .flow > i {
+      align-self: center;
+      color: var(--zk-magenta);
+      font-style: normal;
+      font-weight: 800;
+    }
+
+    /* Two small cards side by side */
+    .pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3mm;
+    }
+
+    .pair > div {
+      padding: 2.4mm 3mm;
+      border-radius: 1.4mm;
+      background: var(--zk-surface);
+    }
+
+    .pair > div b { display: block; margin-bottom: .6mm; color: var(--zk-magenta); }
+
+    /* Ready-to-use prompts, 2 × 2 */
+    .prompts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3mm 6mm;
+    }
+
+    .prompts b { display: block; margin-bottom: 1mm; color: var(--zk-ink); }
+
+    .prompts pre { margin: 0; }
+
+    /* Golden rules */
+    .rules { display: flex; flex-direction: column; gap: 3mm; }
+
+    .rules > div {
+      padding: 2.6mm 3.2mm;
+      border-left: 2px solid var(--zk-magenta);
+      border-radius: 1.4mm;
+      background: var(--zk-pink);
+    }
+
+    .rules b { display: block; color: var(--zk-ink); }
+
+    .rules em { color: var(--zk-magenta); }
+
+    /* Numbered reflexes, one row */
+    .reflexes {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4mm;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: reflex;
+    }
+
+    .reflexes li {
+      margin: 0;
+      padding: 2.6mm 2.6mm 2.4mm;
+      border-radius: 1.4mm;
+      background: var(--zk-surface);
+      font-size: 8.8pt;
+      line-height: 1.35;
+      counter-increment: reflex;
+    }
+
+    .reflexes li::before {
+      content: counter(reflex);
+      display: block;
+      width: 5.4mm;
+      height: 5.4mm;
+      margin-bottom: 1.4mm;
+      border-radius: 50%;
+      background: var(--zk-gradient);
+      color: #fff;
+      font-size: 8.4pt;
+      font-weight: 800;
+      line-height: 5.4mm;
+      text-align: center;
+    }
+
+    .keywords {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2mm 6mm;
+    }
+
+    .keywords b { color: var(--zk-magenta); }
+
+    /* Variants and extra blocks ----------------------------------------- */
+
+    .keywords--2 { grid-template-columns: 1fr 1fr; gap: 1.6mm 4mm; }
+
+    .reflexes--6 { grid-template-columns: repeat(6, 1fr); gap: 3mm; }
+
+    .flow--small { gap: 1mm; }
+
+    .flow--small > div { padding: 1.6mm 1mm; }
+
+    .flow--small > div b { font-size: 7.8pt; }
+
+    /* the full stack, one band per layer */
+    .stack { display: flex; flex-direction: column; gap: 1.2mm; margin-bottom: 2mm; }
+
+    .stack > div {
+      padding: 1.3mm 3mm;
+      border-radius: 1.2mm;
+      background: var(--zk-surface);
+      font-size: 8.8pt;
+    }
+
+    .stack b { color: var(--zk-ink); }
+
+    .stack__agents { border: 1px dashed var(--zk-info-border); background: var(--zk-info) !important; }
+
+    .stack__agents span { float: right; color: var(--zk-magenta); font-weight: 700; }
+
+    .stack__gw { background: var(--zk-gradient) !important; color: #fff; }
+
+    .stack__gw b { color: #fff; }
+
+    .block table td:first-child { white-space: nowrap; }
+
+    code {
+      padding: 0 .8mm;
+      border-radius: .8mm;
+      background: var(--zk-pink);
+      color: var(--zk-magenta);
+      font: 7.8pt 'Fira Code', ui-monospace, monospace;
+    }
+
+    /* gateway: keywords next to the config snippet */
+    .gw { display: grid; grid-template-columns: 1.15fr 1fr; gap: 6mm; align-items: center; }
+
+    .gw pre { margin: 0; }
+
+    .rules + .note { margin-top: 2.4mm; }
+
+    /* Print ----------------------------------------------------------------- */
+
+    @media print {
+      html, body { background: #fff; }
+      .toolbar { display: none; }
+      .sheet { margin: 0; box-shadow: none; break-after: page; }
+      .sheet:last-child { break-after: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <button type="button" onclick="window.print()">Imprimer / PDF</button>
+    <span>A4 recto-verso · marges à «&nbsp;aucune&nbsp;» dans la boîte d'impression</span>
+  </div>
+
+  <!-- ================================================================ RECTO -->
+  <section class="sheet">
+    <header class="head">
+      <img src="assets/zenika/logo.svg" alt="Zenika">
+      <div class="head__titles">
+        <div class="head__eyebrow">Cheat sheet · L'IA sous le capot, version métiers · 1/2</div>
+        <h1>Le dictionnaire de la route</h1>
+      </div>
+      <div class="head__motto">Une image pour chaque mot qu'on entend en réunion.</div>
+    </header>
+
+    <div class="body body--recto">
+      <div class="col">
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/location/map.png" alt="">Une entreprise de livraison</h2>
+          <table>
+            <tr><th>On dit</th><th>Pensez à</th></tr>
+            <tr><td><strong>LLM</strong></td><td>le <span class="hl">moteur</span>&nbsp;: puissant, il ne livre rien seul</td></tr>
+            <tr><td><strong>SLM</strong></td><td>la <span class="hl">citadine</span>&nbsp;: petite, économique, reste au garage</td></tr>
+            <tr><td><strong>Agent</strong></td><td>le <span class="hl">véhicule</span> en mission, qui choisit sa route</td></tr>
+            <tr><td><strong>Harness</strong></td><td>son <span class="hl">équipement</span>&nbsp;: outils, autorisations, consignes</td></tr>
+            <tr><td><strong>Orchestrateur</strong></td><td>le <span class="hl">dispatch</span>&nbsp;: répartit les tournées</td></tr>
+            <tr><td><strong>SDD</strong></td><td>le <span class="hl">dispatch</span> par bons de commande signés</td></tr>
+            <tr><td><strong>Guardrails</strong></td><td>les <span class="hl">contrôles</span> du boîtier, aller et retour</td></tr>
+            <tr><td><strong>Gateway</strong></td><td>le <span class="hl">boîtier</span> entre véhicule et moteur&nbsp;: bride, compte</td></tr>
+          </table>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/location/routing.png" alt="">Pas à pas, bus ou taxi&nbsp;?</h2>
+          <table>
+            <tr><th></th><th>Qui décide du trajet&nbsp;?</th></tr>
+            <tr><td><strong>Pas à pas</strong> · chatbot</td><td>vous&nbsp;: chaque commande, une course</td></tr>
+            <tr><td><strong>Bus</strong> · workflow</td><td>le programme&nbsp;: trajet fixé à l'avance</td></tr>
+            <tr><td><strong>Taxi</strong> · agent</td><td>l'IA&nbsp;: souple, moins prévisible</td></tr>
+          </table>
+          <p class="note">Prenez la solution la plus simple qui marche&nbsp;: si le trajet est connu, un bus suffit.</p>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/devices/cpu.png" alt="">Le moteur sous le capot</h2>
+          <ul>
+            <li><strong>Usine à moteurs</strong>&nbsp;: fabriqué, réglé, testé, puis figé. Il n'apprend plus en vous parlant.</li>
+            <li><strong>Briques de Lego</strong> (tokens)&nbsp;: il lit, écrit et facture en morceaux de mots.</li>
+            <li><strong>Autocomplétion géante</strong>&nbsp;: il prédit la suite <span class="hl">la plus plausible</span>, pas la plus vraie.</li>
+            <li><strong>GPS des sens</strong> (embeddings)&nbsp;: les mots proches habitent le même quartier.</li>
+            <li><strong>Plan de travail</strong> (context window)&nbsp;: sa seule mémoire, limitée, vidée à chaque conversation. Trop plein&nbsp;: il oublie le début et se perd au milieu.</li>
+            <li><strong>GPS sûr de lui</strong> (hallucination)&nbsp;: assuré ne veut pas dire exact.</li>
+            <li><strong>Curseur de créativité</strong> (température)&nbsp;: régulier ou inventif.</li>
+            <li><strong>Taxi au compteur</strong>&nbsp;: on paie ce qu'on envoie et ce qu'on reçoit&nbsp;; le trajet habituel (cache) coûte moins.</li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/devices/mobile.png" alt="">Citadine ou poids lourd&nbsp;?</h2>
+          <div class="pair">
+            <div><b>Citadine · SLM</b>tâches simples et répétitives, données qui ne sortent pas</div>
+            <div><b>Poids lourd · LLM</b>raisonner, rédiger, tâches difficiles, dans le cloud</div>
+          </div>
+          <p class="note">Les <strong>chevaux</strong> du moteur = ses paramètres&nbsp;: plus il y en a, plus il est puissant, et gourmand.</p>
+        </div>
+      </div>
+
+      <div class="block span-2">
+        <h2><img src="assets/zenika/library/icons/gradient/essentials/verify.png" alt="">5 réflexes pour lundi matin</h2>
+        <ol class="reflexes">
+          <li>Nouveau sujet, <strong>nouvelle conversation</strong>.</li>
+          <li><strong>Donnez vos documents</strong> plutôt que d'espérer qu'il sache.</li>
+          <li><strong>Vérifiez</strong> chiffres, noms, dates et sources.</li>
+          <li>Écrivez le <strong>bon de commande</strong> avant de lancer un agent.</li>
+          <li>Jamais les trois&nbsp;: <strong>clés, inconnu, porte ouverte</strong>.</li>
+        </ol>
+      </div>
+    </div>
+
+    <footer class="foot">
+      <span>L'IA sous le capot — version métiers · Zenika</span>
+      <span>Au verso&nbsp;: agents, flotte, sécurité</span>
+    </footer>
+  </section>
+
+  <!-- ================================================================ VERSO -->
+  <section class="sheet">
+    <header class="head">
+      <img src="assets/zenika/logo.svg" alt="Zenika">
+      <div class="head__titles">
+        <div class="head__eyebrow">Cheat sheet · L'IA sous le capot, version métiers · 2/2</div>
+        <h1>Agents, flotte et sécurité</h1>
+      </div>
+      <div class="head__motto">Le moteur prédit, le véhicule agit, le boîtier contrôle.</div>
+    </header>
+
+    <div class="body body--verso">
+      <div class="block span-2">
+        <h2><img src="assets/zenika/library/icons/gradient/security/lock.png" alt="">Cinq questions à poser à un fournisseur</h2>
+        <ol class="reflexes">
+          <li><strong>Où vont mes données&nbsp;?</strong> Pays, hébergeur, durée.</li>
+          <li><strong>Qui peut les voir&nbsp;?</strong> Servent-elles à entraîner le modèle&nbsp;?</li>
+          <li><strong>Combien ça coûte&nbsp;?</strong> À l'usage, au siège, plafond&nbsp;?</li>
+          <li><strong>Que peut faire l'agent&nbsp;?</strong> Seul, avec accord, interdit&nbsp;?</li>
+          <li><strong>Peut-on changer&nbsp;?</strong> De moteur, de fournisseur&nbsp;?</li>
+        </ol>
+      </div>
+
+      <div class="col">
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/arrows/repeat.png" alt="">Le véhicule&nbsp;: un agent</h2>
+          <p>Agent = <strong>moteur + outils + boucle + mission</strong>. Le moteur demande une action, le véhicule l'exécute ou la refuse.</p>
+          <div class="flow">
+            <div><b>Regarder</b></div><i>›</i>
+            <div><b>Agir</b></div><i>›</i>
+            <div class="loop"><b>Vérifier ↺</b></div>
+          </div>
+          <ul>
+            <li><strong>Quai de chargement</strong> (MCP)&nbsp;: ouvrir un quai, c'est donner un accès.</li>
+            <li><strong>Livre ouvert</strong> (RAG)&nbsp;: il cherche dans vos documents et les cite.</li>
+            <li><strong>Post-it, carnet, archives</strong>&nbsp;: la «&nbsp;mémoire&nbsp;» est du texte recollé.</li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/essentials/warning-2.png" alt="">Les sorties de route</h2>
+          <table>
+            <tr><th>Il…</th><th>Parade</th></tr>
+            <tr><td>tourne en rond</td><td>limiter les tours</td></tr>
+            <tr><td>dit «&nbsp;fini&nbsp;» trop tôt</td><td>vérifier le résultat</td></tr>
+            <tr><td>fait s'emballer le compteur</td><td>un budget par tâche</td></tr>
+            <tr><td>obéit à un faux ordre</td><td>autorisations, validation</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/programming/hierarchy.png" alt="">Cinq façons d'organiser la flotte</h2>
+          <table>
+            <tr><td><strong>Chaîne de montage</strong></td><td>une étape après l'autre</td></tr>
+            <tr><td><strong>Aiguillage</strong></td><td>chaque cas au bon spécialiste</td></tr>
+            <tr><td><strong>En parallèle</strong></td><td>plusieurs à la fois</td></tr>
+            <tr><td><strong>Chef de chantier</strong></td><td>il découpe et délègue</td></tr>
+            <tr><td><strong>Contrôle qualité</strong></td><td>un second relit et vérifie</td></tr>
+          </table>
+        </div>
+
+        <div class="block">
+          <h2><img src="assets/zenika/library/icons/gradient/security/shield-tick.png" alt="">Le code de la route</h2>
+          <div class="rules">
+            <div><b>Le faux ordre de mission</b><em>L'agent obéit à ce qu'il lit&nbsp;: qui a écrit ce document&nbsp;?</em></div>
+            <div><b>Clés + inconnu + porte ouverte</b><em>Mon agent a-t-il les trois&nbsp;? Retirez-en un.</em></div>
+            <div><b>Les contrôles du boîtier</b><em>Filtrer l'aller et le retour&nbsp;; le véhicule borne les actions.</em></div>
+            <div><b>Le boîtier</b><em>Entre véhicule et moteur&nbsp;: choisir, compter, journaliser.</em></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block span-2">
+        <h2><img src="assets/zenika/library/icons/gradient/education/book.png" alt="">Mots-clés<small>dictionnaire complet dans les handouts</small></h2>
+        <div class="keywords">
+          <div><b>Token</b> brique de texte&nbsp;: on paie et on est limité en tokens</div>
+          <div><b>Context window</b> le plan de travail, tout ce que le modèle voit</div>
+          <div><b>Hallucination</b> réponse inventée, dite avec assurance</div>
+          <div><b>Embedding</b> l'adresse d'un mot sur la carte des sens</div>
+          <div><b>RAG</b> répondre à livre ouvert, sur vos documents</div>
+          <div><b>MCP</b> quai standard qui relie agents et services</div>
+          <div><b>Injection de prompt</b> consigne cachée dans un contenu lu</div>
+          <div><b>Guardrails</b> filtres et règles autour du modèle</div>
+          <div><b>Gateway</b> passage unique vers les modèles de l'entreprise</div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="foot">
+      <span>L'IA sous le capot — version métiers · Zenika</span>
+      <span>Les noms d'outils changent. Les notions restent.</span>
+    </footer>
+  </section>
+</body>
+</html>

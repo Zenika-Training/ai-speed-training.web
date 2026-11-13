@@ -1,0 +1,14 @@
+# Sous le capot : LLM, agents, harness et orchestrateurs
+
+> Ce qui se passe entre le prompt tapé dans un agent de code et le fichier modifié sur le disque : tokens, KV cache, boucle d'agent, harness, orchestration, guardrails et gateways.
+
+## Table of Contents
+
+### Handouts
+
+- [Handout — Cartographie](/ai-speed-training.web/speed-training-ai-under-the-hood/handouts/handout-01-cartographie.md)
+- [Handout — LLM et SLM sous le capot](/ai-speed-training.web/speed-training-ai-under-the-hood/handouts/handout-02-llm-slm.md)
+- [Handout — Anatomie d'un agent](/ai-speed-training.web/speed-training-ai-under-the-hood/handouts/handout-03-agent.md)
+- [Handout — Harness et orchestrateurs](/ai-speed-training.web/speed-training-ai-under-the-hood/handouts/handout-04-harness-orchestrateurs.md)
+- [Handout — Guardrails et gateways](/ai-speed-training.web/speed-training-ai-under-the-hood/handouts/handout-05-guardrails-gateways.md)
+
