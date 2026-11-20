@@ -1,0 +1,44 @@
+    # Document fictif — aucune donnée réelle.
+    # Journaux de lanterne-sejour-api, du service Paiement et du service Notifications, préproduction (recette), 2026-10-21, 09:00 à 10:05 UTC.
+    # Extrait filtré sur les séjours de test ST-0411 à ST-0415 ; heures en UTC (heure de Paris = UTC + 2).
+    
+    2026-10-21T09:02:11.204Z INFO  lanterne-sejour-api req=a1f3 sejour=ST-0411 hotel=LYS-03 flag=depart-express:on POST /depart-express/confirmer note=248.50
+    2026-10-21T09:02:11.230Z INFO  paiement-api       req=a1f3 preauth=PA-7741 age=2d00h ttl=7d montant_preauth=300.00 montant=248.50 verdict=COUVRE
+    2026-10-21T09:02:11.912Z INFO  paiement-api       req=a1f3 capture=OK ref=CAP-5521 montant=248.50 duree_ms=682
+    2026-10-21T09:02:11.940Z INFO  lanterne-sejour-api req=a1f3 paiement=OK
+    2026-10-21T09:02:12.118Z INFO  lanterne-sejour-api req=a1f3 pms chambre=liberee
+    2026-10-21T09:02:12.130Z INFO  lanterne-sejour-api req=a1f3 depart=CONFIRME http=200
+    
+    2026-10-21T09:07:55.001Z WARN  paiement-api       certificat du prestataire de test expire dans 12 jours
+    
+    2026-10-21T09:14:40.102Z INFO  lanterne-sejour-api req=b2c8 sejour=ST-0412 hotel=LYS-03 flag=depart-express:on POST /depart-express/confirmer note=248.50
+    2026-10-21T09:14:40.131Z INFO  paiement-api       req=b2c8 preauth=PA-7702 age=8d01h ttl=7d montant_preauth=300.00 montant=248.50 verdict=EXPIREE
+    2026-10-21T09:14:40.388Z WARN  paiement-api       req=b2c8 capture=REFUSEE code=PREAUTH_EXPIREE http=422 duree_ms=257
+    2026-10-21T09:14:40.395Z WARN  lanterne-sejour-api req=b2c8 paiement=REFUSE code=PREAUTH_EXPIREE action=ignore
+    2026-10-21T09:14:40.610Z INFO  lanterne-sejour-api req=b2c8 pms chambre=liberee
+    2026-10-21T09:14:40.622Z INFO  lanterne-sejour-api req=b2c8 depart=CONFIRME http=200
+    2026-10-21T09:14:40.640Z INFO  notifications      req=b2c8 facture envoyee a exemple.fictif@exemple.invalid
+    
+    2026-10-21T09:31:02.540Z INFO  lanterne-sejour-api req=c9d4 sejour=ST-0413 hotel=LYS-03 flag=depart-express:on POST /depart-express/confirmer note=248.50
+    2026-10-21T09:31:02.566Z INFO  paiement-api       req=c9d4 preauth=PA-7703 age=8d01h ttl=7d montant_preauth=300.00 montant=248.50 verdict=EXPIREE
+    2026-10-21T09:31:02.801Z WARN  paiement-api       req=c9d4 capture=REFUSEE code=PREAUTH_EXPIREE http=422 duree_ms=235
+    2026-10-21T09:31:02.809Z WARN  lanterne-sejour-api req=c9d4 paiement=REFUSE code=PREAUTH_EXPIREE action=ignore
+    2026-10-21T09:31:03.021Z INFO  lanterne-sejour-api req=c9d4 pms chambre=liberee
+    2026-10-21T09:31:03.033Z INFO  lanterne-sejour-api req=c9d4 depart=CONFIRME http=200
+    2026-10-21T09:31:03.050Z INFO  notifications      req=c9d4 facture envoyee a exemple.fictif.2@exemple.invalid
+    
+    2026-10-21T09:47:18.330Z INFO  lanterne-sejour-api req=d3e7 sejour=ST-0414 hotel=LYS-03 flag=depart-express:on POST /depart-express/confirmer note=640.00
+    2026-10-21T09:47:18.356Z INFO  paiement-api       req=d3e7 preauth=PA-7790 age=1d00h ttl=7d montant_preauth=400.00 montant=640.00 verdict=INSUFFISANTE
+    2026-10-21T09:47:18.360Z INFO  lanterne-sejour-api req=d3e7 paiement=NON_TENTE message=REGLER_AU_COMPTOIR
+    2026-10-21T09:47:18.364Z INFO  lanterne-sejour-api req=d3e7 depart=NON_CONFIRME http=409
+    
+    2026-10-21T09:58:30.017Z INFO  lanterne-sejour-api req=e5a1 sejour=ST-0415 hotel=LYS-03 flag=depart-express:on POST /depart-express/confirmer note=132.00
+    2026-10-21T09:58:30.044Z INFO  paiement-api       req=e5a1 preauth=PA-7795 age=0d20h ttl=7d montant_preauth=150.00 montant=132.00 verdict=COUVRE
+    2026-10-21T09:58:38.470Z INFO  paiement-api       req=e5a1 capture=OK ref=CAP-5530 montant=132.00 duree_ms=8426
+    2026-10-21T09:58:38.495Z INFO  lanterne-sejour-api req=e5a1 paiement=OK
+    2026-10-21T09:58:38.671Z INFO  lanterne-sejour-api req=e5a1 pms chambre=liberee
+    2026-10-21T09:58:38.680Z INFO  lanterne-sejour-api req=e5a1 depart=CONFIRME http=200
+    
+    2026-10-21T10:03:12.400Z INFO  paiement-api       req=f7b2 capture=OK ref=CAP-5531 duree_ms=611
+    2026-10-21T10:03:41.900Z INFO  paiement-api       req=f8c3 capture=OK ref=CAP-5532 duree_ms=704
+    2026-10-21T10:04:20.250Z INFO  paiement-api       req=f9d4 capture=OK ref=CAP-5533 duree_ms=655

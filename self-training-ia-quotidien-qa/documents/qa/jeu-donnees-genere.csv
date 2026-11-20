@@ -1,0 +1,16 @@
+# Document fictif — aucune donnée réelle. Généré par un assistant IA à partir de besoin-donnees-test.md, tel quel, sans relecture.
+id_reservation;hotel;type_sejour;date_arrivee;date_depart;nb_nuits;carte;preautorisation_eur;age_preautorisation;note_eur;cas_vise;resultat_attendu
+T-01;LYS-03;individuel;2026-10-12;2026-10-14;2;9999 0000 0000 0001;300,00;048:00;248,50;B-03;Encaissé sur la pré-autorisation
+T-02;LYS-03;individuel;2026-10-12;2026-10-13;1;9999 0000 0000 0002;480,00;024:00;0,00;B-01;Confirmation directe
+T-03;LYS-03;individuel;2026-10-12;2026-10-13;1;9999 0000 0000 0003;480,00;024:00;0,01;B-02;Encaissé sur la pré-autorisation
+T-04;LYS-03;individuel;2026-10-13;2026-10-16;3;9999 0000 0000 0004;480,00;072:00;480,01;B-05;Réglez votre note au comptoir
+T-05;LIL-07;individuel;2026-10-13;2026-10-14;1;9999 0000 0000 0005;300,00;024:00;640,00;B-06;Réglez votre note au comptoir
+T-06;LYS-03;individuel;2026-10-14;2026-10-16;2;9999 0000 0000 0006;300,00;167:59;248,50;B-07;Encaissé sur la pré-autorisation
+T-07;LYS-03;individuel;2026-10-14;2026-10-16;2;9999 0000 0000 0007;300,00;168:00;248,50;B-08;Réglez votre note au comptoir
+T-08;LIL-07;individuel;2026-10-14;2026-10-16;2;9999 0000 0000 0008;300,00;192:00;248,50;B-09;Réglez votre note au comptoir
+T-09;LYS-03;individuel;2026-10-14;2026-10-15;1;9999 0000 0000 0009;300,00;200:00;640,00;B-10;Réglez votre note au comptoir
+T-10;LIL-07;groupe;2026-10-15;2026-10-17;2;9999 0000 0000 0010;300,00;048:00;248,50;B-11;Encaissé sur la pré-autorisation
+T-11;NTE-02;societe;2026-10-15;2026-10-17;2;9999 0000 0000 0011;300,00;048:00;248,50;B-12;Présentez-vous à la réception
+T-12;NTE-02;individuel;2026-10-16;2026-10-17;1;9999 0000 0000 0012;;;132,00;B-13;Réglez votre note au comptoir
+T-13;LYS-03;individuel;2026-10-15;2026-10-13;2;9999 0000 0000 0013;500,00;048:00;412,80;B-03;Encaissé sur la pré-autorisation
+T-14;LYS-03;individuel;2026-10-16;2026-10-17;1;4111 1111 1111 1111;150,00;024:00;132,00;B-03;Encaissé sur la pré-autorisation
