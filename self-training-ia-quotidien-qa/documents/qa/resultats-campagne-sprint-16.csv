@@ -1,0 +1,23 @@
+id_test;zone;titre;duree_prevue_min;resultat;anomalie;commentaire
+TR-001;Note détaillée;Afficher chaque ligne de la note et le total;6;Réussi;;
+TR-002;Note détaillée;Note sans aucune ligne de consommation;2;Réussi;;
+TR-003;Note détaillée;Ligne minibar affichée avec sa description;5;Réussi;;
+TR-010;Règlement;Règlement avec une pré-autorisation qui couvre la note;8;Réussi;;
+TR-011;Règlement;Pré-autorisation expirée (8 jours);3;Réussi;;
+TR-012;Règlement;Montant de la note supérieur à la pré-autorisation;3;Réussi;;
+TR-013;Règlement;Refus de la carte par le prestataire de paiement;7;Échoué;ANO-208;Passe à la relance ; attente fixe de 3 s sur la réponse du prestataire.
+TR-014;Règlement;Double appui sur « Confirmer et partir »;6;Échoué;ANO-206;Deux demandes d'encaissement envoyées au service Paiement.
+TR-020;Calcul du montant;Total avec la taxe de séjour;1;Réussi;;
+TR-021;Calcul du montant;Remise de fidélité appliquée avant la taxe;1;Réussi;;
+TR-022;Calcul du montant;Arrondi au centime;1;Réussi;;
+TR-023;Check-in;Montant estimé affiché à l'arrivée;6;Échoué;ANO-207;Estimation à l'arrivée sans la taxe de séjour.
+TR-030;Facturation;Facture envoyée par e-mail avec le bon montant;3;Réussi;;
+TR-031;Facturation;Facture disponible dans l'application;5;Réussi;;
+TR-032;Stockage des documents;Accès refusé sans authentification;2;Réussi;;
+TR-033;Stockage des documents;Accès refusé sans authentification, en préproduction;10;Bloqué;;Préproduction indisponible (certificat expiré), rétablie après la campagne.
+TR-034;Stockage des documents;Téléchargement d'une facture par un client authentifié;2;Réussi;;
+TR-050;Réservation;Réserver un séjour;10;Réussi;;
+TR-052;Compte client;Se connecter;4;Réussi;;
+TR-057;Facturation;Export des factures pour la réception;12;Non exécuté;;Plus de temps avant la fin du sprint.
+TR-060;Départ au comptoir;Départ standard saisi par la réception;8;Réussi;;
+TR-062;Accessibilité;Navigation au clavier du départ express (AA);15;Non exécuté;;Plus de temps avant la fin du sprint.

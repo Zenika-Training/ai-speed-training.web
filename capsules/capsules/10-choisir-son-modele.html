@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Choisir son modèle · Capsule IA 10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Red+Hat+Display:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="../engine/capsule.css">
+</head>
+<body>
+<script>
+window.CAPSULE = {
+  numero: 10,
+  theme: "Les bases",
+  titre: "Choisir son modèle",
+  duree: "2 min",
+  accroche: "Le modèle le moins cher au token n'est pas forcément le moins cher à l'usage. Il se choisit sur vos cas, tâche par tâche, et en continu.",
+  pages: [
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // À gauche (or) : trois essais d'un modèle bon marché, empilés. À droite (lavande) : un seul essai d'un modèle deux fois plus cher.
+        const z = (o.rand() - .5) * .8, u = 1.25, gap = .12;
+        if (o.rand() < .6) {
+          const k = Math.floor(o.rand() * 3);
+          return [-1.7 + o.rand() * 1.2, -1.9 + k * u + o.rand() * (u - gap), z, 1];
+        }
+        return [.5 + o.rand() * 1.2, -1.9 + o.rand() * (2 * u - gap), z, 0];
+      } },
+      kicker: "Le principe", chiffre: "× 1,5",
+      titre: "plus cher par tâche, pour un modèle deux fois moins cher au token",
+      texte: "Exemple illustratif : s'il doit s'y reprendre à trois fois, le modèle bon marché coûte 3 unités par tâche, contre 2 pour un modèle deux fois plus cher qui réussit du premier coup. Comparez le coût par tâche livrée."
+    },
+    {
+      forme: { type: "entonnoir", niveaux: [100, 70, 45], accent: [2] },
+      kicker: "La mesure",
+      titre: "Le bon indicateur : la dépense IA divisée par le travail livré",
+      texte: "Une partie des tokens ne produit rien d'exploitable : sessions abandonnées, boucles d'agent, relances. Suivez aussi cette part sans livraison, c'est elle qui gonfle la facture. Les proportions ci-contre sont illustratives."
+    },
+    {
+      forme: { type: "barres", valeurs: [100, 92], accent: [1] },
+      kicker: "Le piège", chiffre: "– 8 %",
+      titre: "de réussite sur des questions neuves de même difficulté",
+      texte: "Des chercheurs ont réécrit un test de maths célèbre avec un millier de questions inédites, de même niveau. Certains modèles y perdent jusqu'à 8 % : ils avaient en partie appris le test. Un score affiché ne prouve rien sur vos cas.",
+      source: { label: "Zhang et al. · GSM1k (2024)", url: "https://arxiv.org/abs/2405.00332" }
+    },
+    {
+      forme: { type: "pictos", icones: ["base", "loupe", "document"], accent: [0, 1] },
+      kicker: "La règle",
+      titre: "Un modèle s'évalue sur vos propres cas, pas sur ceux du fournisseur",
+      texte: "Constituez un jeu d'évaluation tiré de vos demandes réelles, par type de tâche : résumé, code, extraction… Chaque modèle candidat y est noté avant d'être autorisé, puis renoté à chaque nouvelle version."
+    },
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // Un radar à 7 axes : le cadre (lavande) et le profil du modèle (or).
+        const R = 2.1, S = [.92, .62, .8, .7, .48, .78, .58], ang = k => k * o.TAU / 7 + Math.PI / 2, g = () => o.gauss() * .03, q = i % 10;
+        const k = Math.floor(o.rand() * 7), k2 = (k + 1) % 7, t = o.rand();
+        if (q < 3) { const r = R * t; return [r * Math.cos(ang(k)) + g(), r * Math.sin(ang(k)) + g(), g(), 0]; }
+        if (q < 5) { const x = R * ((1 - t) * Math.cos(ang(k)) + t * Math.cos(ang(k2))), y = R * ((1 - t) * Math.sin(ang(k)) + t * Math.sin(ang(k2))); return [x + g(), y + g(), g(), 0]; }
+        const a = R * S[k], b = R * S[k2], x = (1 - t) * a * Math.cos(ang(k)) + t * b * Math.cos(ang(k2)), y = (1 - t) * a * Math.sin(ang(k)) + t * b * Math.sin(ang(k2));
+        return [x + g() * 1.5, y + g() * 1.5, g(), 1];
+      } },
+      kicker: "La grille", chiffre: "7",
+      titre: "critères pour admettre un modèle, pas seulement sa performance",
+      texte: "Capacité sur vos cas, coût par unité livrée, latence sous charge réelle, résidence des données, réversibilité, solidité du fournisseur, exposition réglementaire (AI Act). Un modèle brillant mais irremplaçable est un risque."
+    },
+    {
+      forme: { type: "barres", valeurs: [1, 1.1], accent: [1] },
+      kicker: "La résidence", chiffre: "× 1,1",
+      titre: "sur toute la facture pour imposer la région où tourne le modèle",
+      texte: "Chez Anthropic, limiter l'inférence aux États-Unis multiplie tous les prix des modèles récents par 1,1. Où vont les données est un critère à part entière : selon leur sensibilité, il restreint les modèles et hébergements possibles.",
+      source: { label: "Anthropic · Pricing", url: "https://platform.claude.com/docs/en/about-claude/pricing" }
+    },
+    {
+      forme: { type: "frise", jalons: 5, accent: [4] },
+      kicker: "Le rythme", chiffre: "60 j",
+      titre: "de préavis minimum avant qu'un modèle Claude soit retiré",
+      texte: "Les modèles se succèdent vite : Claude Sonnet 4.5, déprécié le 30 septembre 2026, est retiré le 30 novembre. Choisir n'est pas un achat annuel : veille, évaluation, admission, revue, retrait, en continu.",
+      source: { label: "Anthropic · Model deprecations", url: "https://platform.claude.com/docs/en/about-claude/model-deprecations" }
+    },
+    {
+      forme: { type: "dessin", vue: [100, 60], accent: [1, 2, 3], trait: 4, chemins: [
+        "M4 30 H38",
+        "M38 30 C56 30 60 8 96 8",
+        "M38 30 H96",
+        "M38 30 C56 30 60 52 96 52"
+      ] },
+      kicker: "En pratique",
+      titre: "Le modèle se choisit par type de tâche, pas une fois pour toutes",
+      texte: "Un petit modèle ou un modèle local résume bien mais génère mal du code. L'appel nomme une tâche et une classe de données, pas un fournisseur : la passerelle choisit le modèle, qu'on remplace sans toucher au code."
+    }
+  ],
+  aRetenir: {
+    titre: "Quatre réflexes",
+    points: [
+      "<b>Comptez par tâche livrée.</b> Le prix au token ne dit rien des relances ni du contexte consommé.",
+      "<b>Testez sur vos cas.</b> Un score de benchmark ne remplace pas un jeu d'évaluation tiré de vos demandes réelles.",
+      "<b>Gardez une alternative.</b> Un modèle se retire ou change de prix : prévoyez de quoi basculer.",
+      "<b>Adaptez le modèle à la tâche.</b> Résumé, code, extraction : chaque type de tâche a son meilleur choix."
+    ]
+  }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../engine/capsule.js"></script>
+</body>
+</html>

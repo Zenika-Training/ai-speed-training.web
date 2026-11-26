@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La grille de spec · Capsule IA 14</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Red+Hat+Display:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="../engine/capsule.css">
+</head>
+<body>
+<script>
+window.CAPSULE = {
+  numero: 14,
+  theme: "Usages et Méthodologie",
+  titre: "La grille de spec",
+  duree: "2 min",
+  accroche: "Avant le moindre code, des sous-agents IA passent la spec au crible, discipline par discipline. Aucune question ne reste sans réponse ni sans responsable.",
+  pages: [
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // La spec (lavande) au centre ; cinq sous-agents (or) autour lui envoient leurs questions en pointillés.
+        const q = i % 10, k = Math.floor(i / 10) % 5, a = k * o.TAU / 5 + Math.PI / 2, bx = 2.35 * Math.cos(a), by = 1.85 * Math.sin(a);
+        if (q < 4) return [(o.rand() - .5) * 1.3, (o.rand() - .5) * 1.7, o.gauss() * .03, 0];
+        if (q < 7) { const u = o.rand() * 2 - 1, t = o.rand() * o.TAU, s = Math.sqrt(1 - u * u), m = .32 * Math.cbrt(o.rand()); return [bx + m * s * Math.cos(t), by + m * u, m * s * Math.sin(t), 1]; }
+        const t = Math.floor(o.rand() * 5) / 5 + o.rand() * .07, ex = bx * .3, ey = by * .48;
+        return [bx + (ex - bx) * t + o.gauss() * .025, by + (ey - by) * t + o.gauss() * .025, o.gauss() * .025, 1];
+      } },
+      kicker: "Le principe", chiffre: "5",
+      titre: "sous-agents interrogent la spec avant qu'on écrive du code",
+      texte: "À la Quality Gate « Ready to Build », un sous-agent par discipline (front, back, architecture, sécurité, data) pose ses questions types à la spec. Un sous-agent est une IA lancée pour une tâche précise."
+    },
+    {
+      forme: { type: "pictos", icones: ["bulle", "document", "personne"], accent: [1, 2] },
+      kicker: "La règle",
+      titre: "Chaque question trouve sa réponse dans la spec, ou un responsable",
+      texte: "Une question ne reste jamais en suspens. Soit la réponse est écrite dans la spec, soit elle devient une action d'alignement confiée à une personne nommée, par exemple « voir l'équipe sécurité sur le chiffrement »."
+    },
+    {
+      forme: { type: "texte", segments: ["vite", "→", "2 s"], accent: [2] },
+      kicker: "Pas d'adjectifs",
+      titre: "« Rapide » ne se vérifie pas, un seuil chiffré si",
+      texte: "Performance, disponibilité, niveau d'accessibilité, durée de conservation des données : chaque exigence non fonctionnelle porte un chiffre que la machine peut contrôler. Le seuil ci-contre est illustratif."
+    },
+    {
+      forme: { type: "dessin", vue: [96, 62], accent: [1, 2], trait: 0, chemins: [
+        "M30 12 h62 v46 h-62 z",
+        "M14 2 h26 v6 h-4 v14 l9 9 h-36 l9 -9 v-14 h-4 z",
+        "M25 31 h4 l-2 27 z"
+      ] },
+      kicker: "Les versions",
+      titre: "La spec épingle la version de chaque composant et maquette",
+      texte: "Composants et jetons du design system, maquettes : la spec cite une version figée. Si le design system évolue pendant le développement, ce qui a été validé ne bouge pas sous les pieds de l'équipe."
+    },
+    {
+      forme: { type: "frise", jalons: 4, accent: [3] },
+      kicker: "Le mode", chiffre: "3 + 1",
+      titre: "contrôles : trois automatiques, puis un regard humain",
+      texte: "La machine vérifie d'abord la grille de questions, les versions figées et le contrat d'API (l'interface publiée entre services). Une personne juge ensuite ce qu'aucun outil ne vérifie : la solution répond-elle à l'intention ?"
+    },
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // Design (boule lavande), la gate (barre lavande), l'aller (lavande) et le retour en or avec sa pointe.
+        const q = i % 10, t = o.rand(), g = () => o.gauss() * .035;
+        if (q < 2) { const u = o.rand() * 2 - 1, a = o.rand() * o.TAU, s = Math.sqrt(1 - u * u), m = .5 * Math.cbrt(o.rand()); return [-2.45 + m * s * Math.cos(a), m * u, m * s * Math.sin(a), 0]; }
+        if (q < 4) return [1.5 + g(), (o.rand() - .5) * 2.8, g(), 0];
+        if (q < 6) return [-1.9 + 3.3 * t + g(), .55 + .45 * Math.sin(Math.PI * t) + g(), g(), 0];
+        if (q < 9) return [1.35 - 3.2 * t + g(), -.55 - .75 * Math.sin(Math.PI * t) + g(), g(), 1];
+        const u = o.rand(), v = o.rand() - .5; return [-1.95 + .45 * u, -.55 + v * .6 * u, g(), 1];
+      } },
+      kicker: "Le No-go",
+      titre: "Un refus renvoie en Design, avec chaque question et son interlocuteur",
+      texte: "La gate ne bloque pas en silence. La spec revient en conception avec la liste des questions restées sans réponse, chacune avec la personne à aller voir. L'équipe sait exactement quoi compléter."
+    },
+    {
+      forme: { type: "texte", segments: ["DoR"], accent: "tout" },
+      kicker: "En pratique",
+      titre: "Pas de génération tant que la spec n'est pas vérifiable",
+      texte: "La Definition of Ready, les conditions pour démarrer, est portée par le Specification Engineer. Ses formats rendent la spec lisible par une machine : scénarios Gherkin, schémas JSON, contrats OpenAPI."
+    }
+  ],
+  aRetenir: {
+    titre: "Trois réflexes",
+    points: [
+      "<b>Chiffrez vos exigences.</b> Remplacez chaque adjectif par un seuil que la machine peut contrôler.",
+      "<b>Épinglez vos versions.</b> Citez la version exacte des composants et maquettes validés.",
+      "<b>Nommez qui répond.</b> Une question sans réponse part avec un interlocuteur, jamais dans le vide."
+    ]
+  }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../engine/capsule.js"></script>
+</body>
+</html>

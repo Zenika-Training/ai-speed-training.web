@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La réversibilité · Capsule IA 21</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Red+Hat+Display:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="../engine/capsule.css">
+</head>
+<body>
+<script>
+window.CAPSULE = {
+  numero: 21,
+  theme: "Gouvernance et Responsabilité",
+  titre: "La réversibilité",
+  duree: "2 min",
+  accroche: "Et si l'accès aux modèles américains était coupé demain ? Être réversible, c'est pouvoir basculer chaque tâche vers une alternative déjà testée.",
+  pages: [
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // Vos usages (gauche) reliés au fournisseur (droite) par un flux coupé en son milieu ; les bords de la coupure en or.
+        const q = i % 10, ball = (cx, r) => { const u = o.rand() * 2 - 1, a = o.rand() * o.TAU, s = Math.sqrt(1 - u * u), k = r * Math.cbrt(o.rand()); return [cx + k * s * Math.cos(a), k * u, k * s * Math.sin(a), 0]; };
+        if (q < 3) return ball(-2.4, .6);
+        if (q < 6) return ball(2.4, .6);
+        let x = (o.rand() * 2 - 1) * 1.75; x += x < 0 ? -.1 : .1;
+        const jag = Math.abs(x) < .45 ? o.gauss() * .12 : o.gauss() * .04;
+        return [x, jag, o.gauss() * .04, Math.abs(x) < .7 ? 1 : 0];
+      } },
+      kicker: "Le scénario",
+      titre: "L'accès à un fournisseur de modèles est coupé du jour au lendemain",
+      texte: "Changement de licence, de réglementation ou de prix, arrêt d'un service : le lien peut se rompre. La bonne réponse n'est pas un discours, mais une alternative testée et un délai de bascule pour chaque type de tâche."
+    },
+    {
+      forme: { type: "texte", segments: ["TEST"], accent: "tout" },
+      kicker: "La distinction",
+      titre: "La réversibilité se teste, la souveraineté s'affirme",
+      texte: "La souveraineté est une affirmation sur l'endroit où se trouve un serveur. La réversibilité est une propriété que l'on vérifie. Héberger chez un grand fournisseur cloud américain n'est d'ailleurs ni souverain ni confidentiel."
+    },
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // Le flux quitte la voie habituelle (haut) et bascule (or) sur la voie de repli (bas).
+        const q = i % 10, t = o.rand(), g = () => o.gauss() * .035;
+        if (q < 3) return [-3 + t * 2.4 + g(), .9 + g(), g(), 0];
+        if (q < 4) return [t * 3 + g(), .9 + g(), g(), 0];
+        if (q < 6) { const m = 1 - t, P = [[-.6, .9], [.3, .9], [-.3, -.9], [.6, -.9]], w = [m * m * m, 3 * m * m * t, 3 * m * t * t, t * t * t];
+          return [w.reduce((s, v, j) => s + v * P[j][0], 0) + g(), w.reduce((s, v, j) => s + v * P[j][1], 0) + g(), g(), 1]; }
+        return [.6 + t * 2.4 + g(), -.9 + g(), g(), 1];
+      } },
+      kicker: "Le test",
+      titre: "Basculer vers une alternative nommée, dans un délai fixé à l'avance",
+      texte: "Pour chaque modèle et chaque type de tâche : le travail peut-il passer sur une alternative nommée, dans un délai défini, avec un écart de qualité et de coût annoncé ? Une alternative hypothétique ne compte pas."
+    },
+    {
+      forme: { type: "pictos", icones: ["bulle", "loupe", "document", "engrenage"], accent: "tout" },
+      kicker: "Les conditions", chiffre: "4",
+      titre: "conditions, toutes requises, pour pouvoir basculer",
+      texte: "Un point d'entrée qui ne nomme pas le fournisseur ; une alternative nommée et déjà évaluée ; des prompts versionnés hors du fournisseur, comme les skills d'Accor dans Git ; une bascule déjà exercée, pas seulement conçue."
+    },
+    {
+      forme: { type: "dessin", vue: [104, 58], accent: [0], trait: 0, chemins: [
+        "M4 4 h28 l10 10 v40 h-38 z",
+        "M72 13 l-17 16 l17 16 v-8 l-9 -8 l9 -8 z",
+        "M84 13 l17 16 l-17 16 v-8 l9 -8 l-9 -8 z"
+      ] },
+      kicker: "La nuance",
+      titre: "Les modèles locaux résument bien, mais génèrent mal le code",
+      texte: "Les modèles ouverts hébergés sur place suffisent aujourd'hui pour résumer ou rédiger une documentation courte, beaucoup moins pour écrire du code. La réversibilité se juge donc type de tâche par type de tâche."
+    },
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // Le gros du trafic (lavande) va au modèle principal ; une petite part (or) part déjà vers l'alternative.
+        const q = i % 20, t = o.rand(), g = () => o.gauss() * .04;
+        const ball = (cx, cy, r, acc) => { const u = o.rand() * 2 - 1, a = o.rand() * o.TAU, s = Math.sqrt(1 - u * u), k = r * Math.cbrt(o.rand()); return [cx + k * s * Math.cos(a), cy + k * u, k * s * Math.sin(a), acc]; };
+        if (q < 15) { const x = -3 + t * 5.6; return [x + g(), (x > 0 ? .9 * x / 2.6 : 0) + g(), g(), 0]; }
+        if (q < 17) return ball(2.75, .95, .38, 0);
+        if (q < 18) return [t * 2.6 + g(), -1.4 * t * t + g(), g(), 1];
+        return ball(2.75, -1.45, .26, 1);
+      } },
+      kicker: "Le mécanisme",
+      titre: "Une petite part du trafic part déjà vers les alternatives",
+      texte: "Envoyer en continu quelques requêtes vers d'autres modèles garde à jour la comparaison de qualité, de coût et de vitesse, et la bascule prête. Plus de fournisseurs, c'est plus de gestion des achats : une contrainte à prévoir."
+    },
+    {
+      forme: { type: "texte", segments: ["MODÈLE", "=", "?"], accent: [2] },
+      kicker: "En pratique",
+      titre: "Le modèle est un paramètre, jamais un nom écrit en dur",
+      texte: "La logique métier ne vit pas dans un prompt taillé pour un fournisseur : le modèle se change dans la configuration. Un responsable des risques fournisseurs tient à jour la matrice de dépendance et de réversibilité."
+    }
+  ],
+  aRetenir: {
+    titre: "Trois réflexes",
+    points: [
+      "<b>N'écrivez jamais le nom du modèle en dur.</b> Passez par la passerelle et laissez la configuration choisir.",
+      "<b>Versionnez vos prompts chez vous.</b> Rangés dans Git, ils survivent à un changement de fournisseur.",
+      "<b>Nommez l'alternative.</b> Pour chaque type de tâche, un repli évalué et une bascule déjà exercée."
+    ]
+  }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../engine/capsule.js"></script>
+</body>
+</html>

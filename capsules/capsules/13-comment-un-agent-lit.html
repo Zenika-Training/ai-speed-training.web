@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Comment l'agent lit · Capsule IA 13</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Red+Hat+Display:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="../engine/capsule.css">
+</head>
+<body>
+<script>
+window.CAPSULE = {
+  numero: 13,
+  theme: "Usages et Méthodologie",
+  titre: "Comment l'agent lit",
+  duree: "2 min",
+  accroche: "Un agent ne lit pas tout de la même façon. Consignes permanentes, spec du jour, recherche, procédures : chaque voie impose sa manière d'écrire.",
+  pages: [
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // L'agent (lavande) au centre ; quatre sources (lavande) aux coins ; quatre voies d'entrée en or.
+        const q = i % 10, k = Math.floor(i / 10) % 4, a = (k + .5) * o.TAU / 4, sx = 2.55 * Math.cos(a), sy = 1.75 * Math.sin(a), g = () => o.gauss() * .035;
+        if (q < 3) { const u = o.rand() * 2 - 1, t = o.rand() * o.TAU, s = Math.sqrt(1 - u * u), m = .6 * Math.cbrt(o.rand()); return [m * s * Math.cos(t), m * u, m * s * Math.sin(t), 0]; }
+        if (q < 5) return [sx + (o.rand() - .5) * .55, sy + (o.rand() - .5) * .55, g(), 0];
+        const t = .18 + o.rand() * .55; return [sx * (1 - t) + g(), sy * (1 - t) + g(), g(), 1];
+      } },
+      kicker: "Le principe", chiffre: "4",
+      titre: "voies pour faire entrer une information dans le travail d'un agent",
+      texte: "Les consignes permanentes, le contexte injecté pour la tâche, la recherche dans une base, les procédures appelées comme des outils. Tout ce que sait un agent au moment d'agir lui arrive par l'une de ces quatre voies."
+    },
+    {
+      forme: { type: "texte", segments: ["RÈGLE"], accent: "tout" },
+      kicker: "Le system prompt",
+      titre: "Les consignes permanentes : courtes, absolues, sans nuance",
+      texte: "Le system prompt est chargé au démarrage et reste actif pour chaque tâche. On y met les règles universelles : une convention sans exception, un interdit. Une erreur à éviter s'y écrit comme une interdiction."
+    },
+    {
+      forme: { type: "dessin", vue: [100, 60], accent: [1], trait: 3, chemins: [
+        "M6 26 h88 v30 h-88 z",
+        "M36 3 h28 v32 h-28 z M42 11 h16 M42 18 h16 M42 25 h10"
+      ] },
+      kicker: "L'injection",
+      titre: "La spec du jour est jointe pour une seule tâche",
+      texte: "Pour chaque tâche, l'agent reçoit son contexte de mission : la spec en cours, les directives du ticket. Écrite en critères d'acceptation, elle se lit comme une liste à vérifier : l'agent ne lit pas une spec, il l'analyse."
+    },
+    {
+      forme: { type: "pictos", icones: ["document", "engrenage"], accent: [1] },
+      kicker: "Les skills",
+      titre: "Un agent ne lit pas une procédure, il l'exécute",
+      texte: "Runbooks et contrôles deviennent des skills ou des outils MCP (le protocole qui branche l'agent sur vos outils) : lancer les tests, vérifier l'accessibilité. Ils s'écrivent avec une entrée et une sortie claires."
+    },
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // Matrice 4 registres (lignes) × 4 voies (colonnes) : les 8 chemins utilisés en or.
+        const M = [[1, 0, 1, 0], [1, 1, 0, 0], [1, 0, 0, 1], [0, 0, 1, 1]], k = i % 16, r = Math.floor(k / 4), c = k % 4;
+        return [-1.95 + c * 1.3 + (o.rand() - .5) * .62, 1.5 - r * 1.0 + (o.rand() - .5) * .62, (o.rand() - .5) * .3, M[r][c]];
+      } },
+      kicker: "La correspondance", chiffre: "8",
+      titre: "chemins relient les 4 registres du Nexus aux 4 voies de lecture",
+      texte: "Knowledge passe par les consignes et la recherche, Purpose par les consignes et l'injection, Contracts par les consignes et les skills, Process par les skills et la recherche. Un contenu s'écrit pour la voie qui le portera."
+    },
+    {
+      forme: { type: "reseau", noeuds: 5, accent: [0], centre: true },
+      kicker: "L'assembleur",
+      titre: "Une couche compose le contexte de chaque agent, tâche par tâche",
+      texte: "Le Context Assembler réunit la spec, les directives qui s'appliquent, la requête de connaissance, les contrats en vigueur et les skills disponibles. Ce n'est pas un agent métier : il transforme des documents en contexte."
+    },
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // Le socle chargé d'avance (lavande, en bas) ; des références légères au-dessus ; trois chargées à la demande (or).
+        const q = i % 10, g = () => o.gauss() * .03, pick = [2, 9, 13];
+        if (q < 4) return [(o.rand() - .5) * 5.4, -1.55 + (o.rand() - .5) * .8, (o.rand() - .5) * .6, 0];
+        const k = Math.floor(i / 10) % 24, x = -2.45 + (k % 8) * .7, y = .55 + Math.floor(k / 8) * .65, hot = pick.indexOf(k) >= 0;
+        if (q < 7 || !hot) { const u = o.rand() * 2 - 1, a = o.rand() * o.TAU, s = Math.sqrt(1 - u * u), m = .1 * Math.cbrt(o.rand()); return [x + m * s * Math.cos(a), y + m * u, m * s * Math.sin(a), hot ? 1 : 0]; }
+        const t = o.rand(); return [x + g(), y - (y + 1.15) * t + g(), g(), 1];
+      } },
+      kicker: "Au bon moment",
+      titre: "Un socle chargé d'avance, le reste à la demande",
+      texte: "Anthropic décrit une stratégie hybride : une partie du contexte est chargée d'emblée, et l'agent garde des références légères (chemins de fichiers, liens) pour charger le reste au moment voulu, avec ses outils.",
+      source: { label: "Anthropic · Effective context engineering", url: "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" }
+    }
+  ],
+  aRetenir: {
+    titre: "Trois réflexes",
+    points: [
+      "<b>Écrivez court ce qui est toujours chargé.</b> Une règle permanente tient en une phrase, sans exception.",
+      "<b>Transformez vos procédures en skills.</b> Une entrée, une sortie, un résultat vérifiable.",
+      "<b>Donnez à chaque tâche son contexte.</b> La spec du jour, pas toute la documentation."
+    ]
+  }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../engine/capsule.js"></script>
+</body>
+</html>

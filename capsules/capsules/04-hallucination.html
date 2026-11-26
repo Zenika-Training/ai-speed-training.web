@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>L'hallucination · Capsule IA 04</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Red+Hat+Display:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="../engine/capsule.css">
+</head>
+<body>
+<script>
+window.CAPSULE = {
+  numero: 4,
+  theme: "Les bases",
+  titre: "L'hallucination",
+  duree: "2 min",
+  accroche: "Une IA peut inventer une réponse fausse avec le plus grand aplomb. Comprendre pourquoi aide à repérer le piège et à s'en protéger.",
+  pages: [
+    {
+      forme: { type: "texte", segments: ["?", "→", "!"], accent: [2] },
+      kicker: "Le principe",
+      titre: "L'IA devine plutôt que d'avouer qu'elle ne sait pas",
+      texte: "Un modèle prédit la suite la plus plausible, pas la plus vraie. Selon des chercheurs d'OpenAI, son entraînement et ses tests récompensent la réponse tentée plutôt que l'aveu d'incertitude.",
+      source: { label: "OpenAI (Kalai et al.) · Why LMs Hallucinate", url: "https://arxiv.org/abs/2509.04664" }
+    },
+    {
+      forme: { type: "grille", cols: 5, rows: 2, accent: 1 },
+      kicker: "La règle du jeu", chiffre: "1 sur 10",
+      titre: "test de référence accorde un peu de crédit au « je ne sais pas »",
+      texte: "Les classements notent les modèles comme un QCM sans points négatifs : répondre au hasard rapporte plus que s'abstenir. Les modèles apprennent donc à toujours répondre, même sans savoir.",
+      source: { label: "OpenAI (Kalai et al.) · Why LMs Hallucinate", url: "https://arxiv.org/abs/2509.04664" }
+    },
+    {
+      forme: { type: "barres", valeurs: [90.5, 19.6], accent: [0] },
+      kicker: "La comparaison", chiffre: "90,5 %",
+      titre: "de réponses fausses pour un modèle qui ne s'abstient presque jamais",
+      texte: "Sur des questions factuelles pointues, GPT-4o-mini répond à 99 % d'entre elles et se trompe 9 fois sur 10. Claude 3 Haiku s'abstient sur 75 % des questions et ne se trompe que dans 19,6 % des cas.",
+      source: { label: "OpenAI (Wei et al.) · SimpleQA", url: "https://arxiv.org/abs/2411.04368" }
+    },
+    {
+      forme: { type: "dessin", vue: [70, 82], accent: [3], trait: 0, chemins: [
+        "M5 4 h60 v7 h-60 z",
+        "M5 18 h60 v7 h-60 z",
+        "M5 32 h60 v7 h-60 z",
+        "M5 46 h60 v7 h-60 z",
+        "M5 60 h60 v7 h-60 z",
+        "M5 74 h38 v7 h-38 z"
+      ] },
+      kicker: "Ordre de grandeur", chiffre: "1,8 %",
+      titre: "des résumés inventent un détail, chez le meilleur modèle",
+      texte: "Même quand on lui fournit le texte, un modèle peut y ajouter ce qui n'y figure pas. Au classement Vectara d'octobre 2026, ce taux atteint 7 % pour GPT-5.4 et 10,6 % pour Claude Sonnet 4.6.",
+      source: { label: "Vectara · Hallucination Leaderboard", url: "https://github.com/vectara/hallucination-leaderboard" }
+    },
+    {
+      forme: { type: "grille", cols: 3, rows: 2, accent: 6 },
+      kicker: "Le piège", chiffre: "6",
+      titre: "fausses décisions de justice, citées par des avocats en 2023",
+      texte: "Dans l'affaire Mata v. Avianca, ChatGPT avait inventé ces jurisprudences, puis assuré qu'elles étaient « réelles ». Le tribunal de New York a infligé 5 000 $ d'amende : l'aplomb d'une réponse ne prouve rien.",
+      source: { label: "Tribunal fédéral SDNY · Mata v. Avianca", url: "https://www.nhd.uscourts.gov/sites/default/files/pdf/Mata-v-Avianca-sanctions-order.PDF" }
+    },
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // Un point par affaire recensée : 2 305 points.
+        const k = i % 2305, c = k % 55, r = Math.floor(k / 55), sp = 6 / 54;
+        return [-3 + c * sp + o.gauss() * .012, 2.3 - r * sp + o.gauss() * .012, o.gauss() * .02, 1];
+      } },
+      kicker: "L'ampleur", chiffre: "2 305",
+      titre: "affaires judiciaires dans le monde impliquent un contenu inventé",
+      texte: "Un chercheur recense les décisions de justice où une IA a produit de fausses citations ou références. Chaque point ci-contre est une affaire, et la liste s'allonge chaque semaine.",
+      source: { label: "Damien Charlotin · AI Hallucination Cases", url: "https://www.damiencharlotin.com/hallucinations/" }
+    },
+    {
+      forme: { type: "barres", valeurs: [58, 17], accent: [1] },
+      kicker: "La limite", chiffre: "> 17 %",
+      titre: "d'erreurs, même pour des outils appuyés sur des sources",
+      texte: "Sur des questions juridiques, les chatbots généralistes se trompaient dans 58 à 82 % des cas. Les outils spécialisés, qui vont chercher dans des bases documentaires, font bien mieux, mais restent au-dessus de 17 %.",
+      source: { label: "Stanford HAI · AI on Trial", url: "https://hai.stanford.edu/news/ai-trial-legal-models-hallucinate-1-out-6-or-more-benchmarking-queries" }
+    },
+    {
+      forme: { type: "pictos", icones: ["bulle", "loupe"], accent: [0, 1] },
+      kicker: "La parade",
+      titre: "Dites à l'IA qu'elle a le droit de ne pas savoir",
+      texte: "Les chercheurs d'OpenAI suggèrent une consigne du type : « Ne réponds que si tu es sûr à plus de 90 % ; une erreur coûte 9 points, un “je ne sais pas” zéro. » L'abstention cesse alors d'être un échec.",
+      source: { label: "OpenAI (Kalai et al.) · Why LMs Hallucinate", url: "https://arxiv.org/abs/2509.04664" }
+    }
+  ],
+  aRetenir: {
+    titre: "Quatre réflexes",
+    points: [
+      "<b>Méfiez-vous de l'aplomb.</b> Une réponse sûre d'elle n'est pas une réponse vraie.",
+      "<b>Vérifiez avant de reprendre.</b> Chiffres, citations et références se contrôlent à la source.",
+      "<b>Fournissez vos documents.</b> Appuyée sur des sources, l'IA se trompe moins, sans devenir infaillible.",
+      "<b>Autorisez le doute.</b> Dites-lui qu'un « je ne sais pas » vaut mieux qu'une invention."
+    ]
+  }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../engine/capsule.js"></script>
+</body>
+</html>

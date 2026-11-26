@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Le token · Capsule IA 01</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Red+Hat+Display:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="../engine/capsule.css">
+</head>
+<body>
+<script>
+window.CAPSULE = {
+  numero: 1,
+  theme: "Les bases",
+  titre: "Le token",
+  duree: "2 min",
+  accroche: "L'unité que l'IA lit, compte et facture. Ce que vous écrivez, ce qu'elle répond et ce que vous payez se mesure en tokens.",
+  pages: [
+    {
+      forme: { type: "texte", segments: ["to", "ken", "isa", "tion"], accent: "alterne" },
+      kicker: "Le principe",
+      titre: "Un modèle ne lit pas des mots. Il lit des morceaux de mots.",
+      texte: "Avant tout calcul, le texte est découpé en tokens. Un mot courant tient souvent en un seul token, un mot long ou rare est coupé en plusieurs. Le découpage ci-contre est illustratif."
+    },
+    {
+      forme: { type: "texte", segments: ["4"], accent: "tout" },
+      kicker: "Ordre de grandeur", chiffre: "≈ 4",
+      titre: "caractères par token",
+      texte: "Pour un texte anglais courant, un token fait en moyenne 4 caractères, soit environ les trois quarts d'un mot.",
+      source: { label: "OpenAI · What are tokens and how to count them", url: "https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them" }
+    },
+    {
+      forme: { type: "grille", cols: 10, rows: 10, accent: 75 },
+      kicker: "La règle de conversion", chiffre: "100 → 75",
+      titre: "100 tokens font environ 75 mots",
+      texte: "La règle pour estimer de tête : une page de 500 mots en anglais représente environ 670 tokens.",
+      source: { label: "OpenAI · What are tokens and how to count them", url: "https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them" }
+    },
+    {
+      forme: { type: "texte", segments: ["EN", "<", "FR"], accent: [2] },
+      kicker: "Le piège",
+      titre: "En français, le compteur tourne plus vite",
+      texte: "Les découpeurs de texte ont surtout appris sur de l'anglais. Le même contenu en français produit davantage de tokens : il coûte plus cher et prend plus de place dans la mémoire du modèle."
+    },
+    {
+      forme: { type: "pile", feuilles: 24 },
+      kicker: "La mémoire de travail", chiffre: "1 M",
+      titre: "de tokens : la fenêtre de contexte des modèles Claude actuels",
+      texte: "C'est tout ce que le modèle peut lire en une requête : environ 750 000 mots, plusieurs romans. Au-delà, il ne peut plus tout prendre en compte.",
+      source: { label: "Anthropic · Context windows", url: "https://platform.claude.com/docs/en/build-with-claude/context-windows" }
+    },
+    {
+      forme: { type: "barres", valeurs: [1, 5], accent: [1] },
+      kicker: "La facture", chiffre: "× 5",
+      titre: "Un token généré coûte plus cher qu'un token lu",
+      texte: "Les API facturent au million de tokens, entrée et sortie séparément. Chez Anthropic, la sortie coûte 5 fois l'entrée. Une réponse longue pèse donc plus lourd qu'une question longue.",
+      source: { label: "Anthropic · Pricing", url: "https://platform.claude.com/docs/en/about-claude/pricing" }
+    }
+  ],
+  aRetenir: {
+    titre: "Trois réflexes",
+    points: [
+      "<b>Estimez vite.</b> 1 000 mots anglais font environ 1 300 tokens, un peu plus en français.",
+      "<b>Surveillez la sortie.</b> Demander une réponse courte est le levier d'économie le plus direct.",
+      "<b>Triez avant de coller.</b> Un contexte ciblé vaut mieux qu'une fenêtre remplie à ras bord."
+    ]
+  }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../engine/capsule.js"></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+id;zone;titre;niveau;duree_min;automatise;modules;passes_sur_10;dernier_resultat
+TR-001;Note détaillée;Afficher chaque ligne de la note et le total;E2E;6;oui;note-detaillee,calcul-note;10;Réussi
+TR-002;Note détaillée;Note sans aucune ligne de consommation;API;2;oui;note-detaillee;10;Réussi
+TR-003;Note détaillée;Ligne minibar affichée avec sa description;E2E;5;oui;note-detaillee,calcul-note;10;Réussi
+TR-010;Règlement;Règlement avec une pré-autorisation qui couvre la note;E2E;8;oui;preautorisation,calcul-note;10;Réussi
+TR-011;Règlement;Pré-autorisation expirée (8 jours);API;3;oui;preautorisation;10;Réussi
+TR-012;Règlement;Montant de la note supérieur à la pré-autorisation;API;3;oui;preautorisation,calcul-note;10;Réussi
+TR-013;Règlement;Refus de la carte par le prestataire de paiement;E2E;7;oui;preautorisation,paiement;6;Échoué
+TR-014;Règlement;Double appui sur « Confirmer et partir »;manuel;6;non;preautorisation,paiement;;Jamais exécuté
+TR-020;Calcul du montant;Total avec la taxe de séjour;unitaire;1;oui;calcul-note;10;Réussi
+TR-021;Calcul du montant;Remise de fidélité appliquée avant la taxe;unitaire;1;oui;calcul-note;10;Réussi
+TR-022;Calcul du montant;Arrondi au centime;unitaire;1;oui;calcul-note;10;Réussi
+TR-023;Check-in;Montant estimé affiché à l'arrivée;E2E;6;oui;checkin,calcul-note;10;Réussi
+TR-024;Check-in;Check-in en ligne avec pièce d'identité;E2E;9;oui;checkin;9;Réussi
+TR-025;Check-in;Choix de l'heure d'arrivée;E2E;4;oui;checkin;10;Réussi
+TR-030;Facturation;Facture envoyée par e-mail avec le bon montant;API;3;oui;facture-email,calcul-note;10;Réussi
+TR-031;Facturation;Facture disponible dans l'application;E2E;5;oui;facture-email,stockage-documents;10;Réussi
+TR-032;Stockage des documents;Accès refusé sans authentification;API;2;oui;stockage-documents;10;Réussi
+TR-033;Stockage des documents;Accès refusé sans authentification, en préproduction;manuel;10;non;stockage-documents;;Jamais exécuté
+TR-034;Stockage des documents;Téléchargement d'une facture par un client authentifié;API;2;oui;stockage-documents;10;Réussi
+TR-040;Contestation;Contester une ligne de la note;E2E;6;oui;contestation;;Jamais exécuté
+TR-050;Réservation;Réserver un séjour;E2E;10;oui;reservation;10;Réussi
+TR-051;Réservation;Annuler une réservation;E2E;8;oui;reservation;10;Réussi
+TR-052;Compte client;Se connecter;E2E;4;oui;auth-client;10;Réussi
+TR-053;Compte client;Réinitialiser son mot de passe;E2E;5;oui;auth-client;10;Réussi
+TR-054;Recherche;Rechercher un hôtel;API;2;oui;recherche;10;Réussi
+TR-055;Langue;Changer la langue de l'application;E2E;3;oui;i18n;10;Réussi
+TR-056;Notifications;E-mail de confirmation de réservation;API;3;oui;notifications;10;Réussi
+TR-057;Facturation;Export des factures pour la réception;manuel;12;non;export-factures,calcul-note;;Réussi
+TR-058;Fidélité;Solde de points après un séjour;E2E;6;oui;fidelite;10;Réussi
+TR-059;Avis;Avis du client après le séjour;E2E;5;oui;avis;10;Réussi
+TR-060;Départ au comptoir;Départ standard saisi par la réception;E2E;8;oui;pms-connecteur;10;Réussi
+TR-062;Accessibilité;Navigation au clavier du départ express (AA);manuel;15;non;note-detaillee,preautorisation;;Réussi

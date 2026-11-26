@@ -1,0 +1,9 @@
+service;environnement;juillet_2026;aout_2026;septembre_2026;octobre_2026;commentaire
+entrepot-calcul;production;4200;4300;4900;5600;requêtes des pipelines et des tableaux de bord
+entrepot-stockage;production;800;820;850;880;
+bac-a-sable-hugo;developpement;0;0;1900;2100;créé le 2 septembre pour un test de performance
+licences-bi;production;1800;1800;1800;1800;60 sièges à 30 € par mois, engagement annuel jusqu'au 30 juin 2027
+orchestration;production;600;600;600;600;
+connecteurs-ingestion;production;900;900;950;1000;
+sauvegardes;production;300;300;300;300;exigées par la politique de données (R7)
+total;;8600;8720;11300;12280;

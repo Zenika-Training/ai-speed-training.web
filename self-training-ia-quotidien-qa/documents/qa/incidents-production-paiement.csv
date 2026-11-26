@@ -1,0 +1,19 @@
+id;jour;composant;gravite;hotel;symptome;clients_touches;duree_min;cause
+INC-0402;J-84;Connecteur PMS v2;Moyenne;LYS-03;Statut de chambre mis à jour avec retard;0;45;File de messages saturée au pic du matin
+INC-0409;J-80;Service Lanterne;Moyenne;LYS-03;Délai de réponse du module pms supérieur à 8 secondes;12;35;Requêtes lentes vers le connecteur PMS v2
+INC-0414;J-75;Application mobile;Basse;LIL-07;Écran d'accueil lent à l'ouverture;5;20;Image d'accueil trop lourde
+INC-0418;J-70;Connecteur PMS v2;Basse;LIL-07;Lignes de la note affichées avec 10 minutes de retard;6;30;Cache non invalidé
+INC-0425;J-66;Service Lanterne;Basse;LIL-07;Délai de réponse du module pms supérieur à 8 secondes;4;15;Requêtes lentes vers le connecteur PMS v2
+INC-0431;J-61;Service Paiement;Haute;LIL-07;Encaissement débité deux fois après une nouvelle tentative;4;190;Nouvelle tentative automatique sans clé d'idempotence ; remboursements faits à la main
+INC-0436;J-58;Connecteur PMS v2;Moyenne;LYS-03;Statut de chambre mis à jour avec retard;0;60;File de messages saturée au pic du matin
+INC-0440;J-48;Service Lanterne;Moyenne;NTE-02;Délai de réponse du module pms supérieur à 8 secondes;8;40;Requêtes lentes vers le connecteur PMS v2
+INC-0445;J-44;Application Étages;Moyenne;LYS-03;Chambres libérées non affichées;0;90;Changement d'accès non répercuté
+INC-0449;J-41;Connecteur PMS v2;Basse;NTE-02;Heure de départ absente d'un séjour;1;20;Champ vide dans le PMS de l'hôtel
+INC-0453;J-38;Application mobile;Basse;LYS-03;Écran d'accueil lent à l'ouverture;3;25;Image d'accueil trop lourde
+INC-0458;J-33;Connecteur PMS v2;Moyenne;LIL-07;Statut de chambre mis à jour avec retard;0;50;File de messages saturée au pic du matin
+INC-0462;J-28;Service Lanterne;Basse;LYS-03;Redémarrage du service pendant un déploiement;2;10;Déploiement en journée
+INC-0467;J-23;Service Paiement;Haute;NTE-02;Pré-autorisation refusée par le prestataire alors que la carte était valide;9;75;Indisponibilité partielle du prestataire de paiement
+INC-0469;J-19;Application mobile;Basse;NTE-02;Écran d'accueil lent à l'ouverture;2;15;Image d'accueil trop lourde
+INC-0471;J-15;Connecteur PMS v2;Basse;LYS-03;Ligne de consommation affichée en double (total facturé correct);3;25;Doublon d'affichage
+INC-0476;J-9;Application Étages;Moyenne;LIL-07;Chambres libérées non affichées;0;55;Changement d'accès non répercuté
+INC-0480;J-5;Vue réception;Basse;LYS-03;Liste des demandes non rafraîchie;0;30;Rafraîchissement automatique désactivé

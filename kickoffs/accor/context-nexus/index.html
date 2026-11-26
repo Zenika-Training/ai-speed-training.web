@@ -1,0 +1,1514 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{--lightningcss-light:initial;--lightningcss-dark: ;color-scheme:light}body{color:#000;background:#fff;margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Guide Context Nexus</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Version visuelle de docs/guide-utilisation.md : à tenir à jour avec lui (hook .claude/hooks/guide-utilisation-check.sh). Page autonome ; publiable telle quelle en Artifact. -->
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>:root{--bg:#f3f6f6;--surface:#fff;--surface-2:#e8eeee;--ink:#132225;--muted:#56686c;--line:#d3ddde;--accent:#0e6b73;--accent-soft:#d6ecec;--human:#a86612;--human-soft:#f6e8d3;--go:#1e8049;--go-soft:#ddf0e4;--nogo:#b83a28;--nogo-soft:#f7e0db;--wait:#a86612;--wait-soft:#f6e8d3;--code-bg:#13262a;--code-fg:#ddebea;--on-accent:#fff;--f-display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;--f-body:"Inter", system-ui, -apple-system, "Segoe UI", sans-serif;--f-mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;--r:10px}@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0e1618;--surface:#152023;--surface-2:#1c2a2d;--ink:#e2ecec;--muted:#94a7aa;--line:#2a3b3e;--accent:#55c3ca;--accent-soft:#163a3d;--human:#e2a64e;--human-soft:#3a2c17;--go:#5cc98c;--go-soft:#173526;--nogo:#f08068;--nogo-soft:#3e1f1a;--wait:#e2a64e;--wait-soft:#3a2c17;--code-bg:#0a1214;--code-fg:#d3e3e2;--on-accent:#0e1618;--lightningcss-light: ;--lightningcss-dark:initial;color-scheme:dark}}:root[data-theme=dark]{--bg:#0e1618;--surface:#152023;--surface-2:#1c2a2d;--ink:#e2ecec;--muted:#94a7aa;--line:#2a3b3e;--accent:#55c3ca;--accent-soft:#163a3d;--human:#e2a64e;--human-soft:#3a2c17;--go:#5cc98c;--go-soft:#173526;--nogo:#f08068;--nogo-soft:#3e1f1a;--wait:#e2a64e;--wait-soft:#3a2c17;--code-bg:#0a1214;--code-fg:#d3e3e2;--on-accent:#0e1618;--lightningcss-light: ;--lightningcss-dark:initial;color-scheme:dark}*{box-sizing:border-box}body{background:var(--bg);color:var(--ink);font-family:var(--f-body);padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px));font-size:15.5px;line-height:1.6}body:before{content:"";height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg);position:fixed;inset:0 0 auto}a{color:var(--accent);text-underline-offset:2px}a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}code,kbd,pre{font-family:var(--f-mono);font-size:.86em}:not(pre)>code{background:var(--surface-2);white-space:nowrap;border-radius:5px;padding:.1em .38em}h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}p{margin:0}[id]{scroll-margin-top:84px}.shell{grid-template-columns:222px minmax(0,1fr);gap:24px;max-width:1360px;margin:0 auto;padding-block:20px 80px;display:grid}@media (width<=980px){.shell{grid-template-columns:minmax(0,1fr);gap:0}.side{display:none}}.side{top:calc(env(safe-area-inset-top,0px) + 20px);align-self:start;max-height:calc(100vh - 40px);padding-right:6px;font-size:13.5px;position:sticky;overflow:auto}.side .brand{font-family:var(--f-display);margin-bottom:10px;font-size:18px;font-weight:800}.side nav{flex-direction:column;gap:2px;display:flex}.side .grp{text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:14px 0 4px;font-size:11px;font-weight:600}.side a{color:var(--ink);border-radius:6px;gap:8px;padding:3px 8px;text-decoration:none;display:flex}.side a:hover{background:var(--surface-2)}.side a .n{font-family:var(--f-mono);color:var(--muted);min-width:28px;padding-top:1px;font-size:11.5px}body.focus .side nav>:not(.keep){display:none}body.focus .side nav>a.inrole{display:flex}body.focus .side nav>.grp.inrole{display:block}body:not(.focus) .side nav>.role-only{display:none}main{min-width:0}.tabs{z-index:20;background:var(--bg);border-bottom:1px solid var(--line);margin-bottom:6px;padding-block:10px}@media (width>=900px){.tabs{top:env(safe-area-inset-top,0px);position:sticky}}.tabs .row{flex-wrap:wrap;gap:4px;display:flex}.tab{font:inherit;color:var(--muted);cursor:pointer;white-space:nowrap;background:0 0;border:0;border-radius:8px;flex:none;align-items:center;gap:7px;padding:7px 12px;font-size:13.5px;font-weight:500;display:inline-flex}.tab svg{flex:none;width:16px;height:16px}.tab:hover{background:var(--surface-2);color:var(--ink)}.tab[aria-selected=true]{background:var(--ink);color:var(--bg)}.tab.all{font-weight:600}.tabs .sep{background:var(--line);flex:none;width:1px;margin:6px 4px}@media (width<=560px){.tab{padding:6px 9px;font-size:13px}.tabs .sep{display:none}}body.focus .full-only,body:not(.focus) .role-only{display:none!important}#content{flex-direction:column;display:flex}body.focus #content>.chapter:not(#annexes):not(#vue){display:contents}body.focus #content>#vue{order:0;margin-top:0}body.focus #content>#annexes{order:1000}body.focus .proc:not(.mine){display:none}.hero{border-bottom:1px solid var(--line);margin-bottom:8px;padding-block:22px 28px}.eyebrow{letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-size:12px;font-weight:600}.hero h1{letter-spacing:-.02em;margin:10px 0 14px;font-size:clamp(34px,5.4vw,56px);font-weight:800}.hero h1 em{color:var(--accent);font-style:normal}.hero .lede{color:var(--muted);max-width:64ch;font-size:17.5px}.hero .lede strong{color:var(--ink)}.banner{background:var(--surface);border:1px solid var(--line);border-radius:16px;order:0;margin:16px 0 28px;padding:26px}@media (width<=560px){.banner{padding:18px 16px}}.banner .top{align-items:center;gap:16px;display:flex}.ico{background:var(--accent-soft);width:52px;height:52px;color:var(--accent);border-radius:14px;flex:none;place-items:center;display:grid}.ico svg{width:28px;height:28px}.banner h2{letter-spacing:-.01em;font-size:clamp(26px,4vw,38px);font-weight:800}.banner .mission{color:var(--muted);max-width:62ch;margin-top:12px;font-size:17px}.facts{border-top:1px solid var(--line);grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:20px;padding-top:18px;display:grid}@media (width<=640px){.facts{grid-template-columns:minmax(0,1fr)}}.k{text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px;font-size:11.5px;font-weight:600}.places{flex-wrap:wrap;gap:6px;display:flex}.place{border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:3px 10px;font-size:12.5px}.place.on{background:var(--accent-soft);color:var(--accent);border-color:#0000;font-weight:600}.place.off{opacity:.6;text-decoration:line-through}.rchips{flex-wrap:wrap;gap:6px;display:flex}.journey{gap:16px;margin-top:22px;display:grid}.lane{grid-template-columns:130px minmax(0,1fr);align-items:start;gap:14px;display:grid}@media (width<=640px){.lane{grid-template-columns:minmax(0,1fr);gap:6px}}.lane-k{font-family:var(--f-display);padding-top:10px;font-size:16px;font-weight:700}.lane-k small{font-family:var(--f-body);color:var(--muted);font-size:12px;font-weight:500;display:block}.tiles{flex-wrap:wrap;align-items:stretch;gap:8px;display:flex}.tile{min-width:0;max-width:240px;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:12px;flex-direction:column;flex:150px;gap:2px;padding:10px 12px;text-decoration:none;display:flex}.tile:hover{border-color:var(--accent)}.tile .p{font-family:var(--f-mono);color:var(--accent);font-size:11.5px;font-weight:600}.tile .t{font-size:14px;font-weight:600;line-height:1.3}.tile .d{color:var(--muted);font-size:12.5px;line-height:1.4}.tiles .ar{color:var(--muted);flex:none;align-self:center;font-size:15px}.rstep{white-space:nowrap;border-radius:999px;align-self:flex-start;margin-left:auto;padding:3px 10px;font-size:12px;font-weight:600;display:none}body.focus .rstep{display:inline-block}.rstep.once{background:var(--accent-soft);color:var(--accent)}.rstep.daily{background:var(--surface-2);color:var(--ink)}.chapter{margin-top:60px}.chapter-head{border-bottom:2px solid var(--ink);align-items:baseline;gap:14px;margin-bottom:22px;padding-bottom:10px;display:flex}.chapter-head .num{font-family:var(--f-mono);color:var(--muted);font-size:13px}.chapter-head h2{letter-spacing:-.01em;font-size:clamp(26px,3.4vw,34px);font-weight:800}.chapter-intro{color:var(--muted);max-width:66ch;margin:-8px 0 24px}h3.sub{margin:34px 0 12px;font-size:20px;font-weight:700}h4.mini{margin-bottom:10px;font-size:16px}.prose{max-width:68ch}.prose p+p{margin-top:10px}.proc{background:var(--surface);border:1px solid var(--line);border-radius:14px;margin-bottom:22px;padding:24px 26px}@media (width<=560px){.proc{padding:18px 16px}}.proc-head{flex-wrap:wrap;align-items:flex-start;gap:14px;margin-bottom:16px;display:flex}.proc-head>div{flex:260px;min-width:0}.pid{font-family:var(--f-mono);background:var(--ink);color:var(--surface);border-radius:6px;flex:none;margin-top:3px;padding:4px 8px;font-size:13px;font-weight:600}.proc-head h3{font-size:22px;font-weight:700}.who{flex-wrap:wrap;gap:6px;margin-top:8px;display:flex}.chip{background:var(--surface-2);color:var(--muted);border-radius:999px;padding:2px 9px;font-size:12.5px;font-weight:500}.chip.once{background:var(--accent-soft);color:var(--accent)}.proc>*+*{margin-top:18px}.proc ul{margin:0;padding-left:20px}.proc ul li+li{margin-top:4px}ol.steps{counter-reset:s;flex-direction:column;gap:14px;margin:0;padding:0;list-style:none;display:flex}ol.steps>li{counter-increment:s;grid-template-columns:30px minmax(0,1fr);gap:12px;display:grid}ol.steps>li:before{content:counter(s);font-family:var(--f-display);border:1.5px solid var(--accent);width:28px;height:28px;color:var(--accent);border-radius:50%;place-items:center;font-size:14px;font-weight:700;display:grid}ol.steps>li>div{min-width:0}ol.steps>li>div>*+*{margin-top:8px}ol.steps ol,ol.steps ul{margin:6px 0 0;padding-left:20px}.note{border-radius:var(--r);padding:12px 16px;font-size:14.5px}.note>strong:first-child{text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;font-size:12px;display:block}.note.ok{background:var(--go-soft)}.note.ok>strong:first-child{color:var(--go)}.note.warn{background:var(--wait-soft)}.note.warn>strong:first-child{color:var(--wait)}.note.info{background:var(--accent-soft)}.note.info>strong:first-child{color:var(--accent)}.note.stop{background:var(--nogo-soft)}.note.stop>strong:first-child{color:var(--nogo)}.tw{border-radius:var(--r);border:1px solid var(--line);background:var(--surface);overflow-x:auto}.note .tw{background:0 0;border-color:#0000}table{border-collapse:collapse;width:100%;font-size:14px}th,td{text-align:left;vertical-align:top;border-bottom:1px solid var(--line);padding:9px 12px}tr:last-child td{border-bottom:0}th{text-transform:uppercase;letter-spacing:.07em;color:var(--muted);background:var(--surface-2);font-size:11.5px;font-weight:600}.note th{background:0 0}td code{white-space:nowrap}.code{background:var(--code-bg);color:var(--code-fg);border-radius:var(--r);margin:0;position:relative}.code pre{margin:0;padding:13px 80px 13px 16px;font-size:13px;line-height:1.55;overflow-x:auto}.code .lang{font-family:var(--f-mono);opacity:.5;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;position:absolute;bottom:6px;right:10px}.copy{font:600 11.5px var(--f-body);color:var(--code-fg);cursor:pointer;background:0 0;border:1px solid #a0bebe59;border-radius:6px;padding:3px 9px;position:absolute;top:6px;right:6px}.copy:hover{border-color:var(--code-fg)}figure{margin:0}.diagram{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;overflow-x:auto}.proc .diagram{background:var(--bg)}.diagram svg{width:100%;min-width:640px;height:auto;display:block}figcaption{color:var(--muted);margin-top:8px;font-size:13px}.s-box{fill:var(--surface-2);stroke:var(--line);stroke-width:1.5px}.s-box.acc{fill:var(--accent-soft);stroke:var(--accent)}.s-box.hum{fill:var(--human-soft);stroke:var(--human)}.s-inner{fill:var(--surface);stroke:var(--line);stroke-width:1px}.s-t{fill:var(--ink);font-family:var(--f-display);font-size:16px;font-weight:700}.s-s{fill:var(--muted);font-family:var(--f-body);font-size:12.5px}.s-m{fill:var(--ink);font-family:var(--f-mono);font-size:12px}.s-l{fill:var(--ink);font-family:var(--f-body);font-size:12.5px;font-weight:600}.s-la{fill:var(--accent);font-family:var(--f-body);font-size:12.5px;font-weight:600}.s-lh{fill:var(--human);font-family:var(--f-body);font-size:12.5px;font-weight:600}.s-line{stroke:var(--muted);stroke-width:1.6px;fill:none}.s-line.acc{stroke:var(--accent)}.s-line.hum{stroke:var(--human)}.s-line.dash{stroke-dasharray:5 4}.ah{fill:var(--muted)}.ah.acc{fill:var(--accent)}.ah.hum{fill:var(--human)}.flow{align-items:stretch;padding:4px 2px 8px;display:flex;overflow-x:auto}.flow .node{background:var(--surface);border:1.5px solid var(--line);border-radius:12px;flex-direction:column;flex:1 1 0;gap:6px;min-width:140px;padding:12px 13px;display:flex}.proc .flow .node{background:var(--bg)}.flow .node.cmd{border-color:var(--accent)}.flow .node.hum{border-color:var(--human)}.proc .flow .node.hum{background:var(--human-soft)}.flow .node .k{font-family:var(--f-mono);color:var(--muted);text-transform:none;letter-spacing:0;margin:0;font-size:11px;font-weight:400}.flow .node .c{font-family:var(--f-mono);color:var(--accent);font-size:13.5px;font-weight:600}.flow .node.hum .c{color:var(--human);font-family:var(--f-body)}.flow .node .d{font-size:13px;line-height:1.45}.flow .node .g{color:var(--muted);border-top:1px dashed var(--line);margin-top:auto;padding-top:6px;font-size:12.5px}.flow .node .g b{color:var(--ink);font-weight:600}.flow .arrow{width:26px;color:var(--muted);flex:none;place-items:center;display:grid}.flow .arrow svg{width:18px;height:18px}@media (width<=640px){.flow.stack{flex-direction:column}.flow.stack .node{min-width:0}.flow.stack .arrow{width:auto;height:22px}.flow.stack .arrow svg{transform:rotate(90deg)}}.pipe{margin:0;padding:0;list-style:none;position:relative}.pipe:before{content:"";background:var(--line);width:2px;position:absolute;top:8px;bottom:8px;left:13px}.pipe li{padding-bottom:16px;padding-left:42px;position:relative}.pipe li:last-child{padding-bottom:0}.pipe .dot{background:var(--surface);border:2px solid var(--accent);border-radius:50%;width:18px;height:18px;position:absolute;top:4px;left:5px}.pipe li.hum .dot{border-color:var(--human);background:var(--human-soft)}.pipe .t{font-weight:600}.pipe .stopper{color:var(--nogo);background:var(--nogo-soft);border-radius:999px;margin-top:4px;margin-right:6px;padding:1px 8px;font-size:12.5px;display:inline-flex}.pipe .loop{color:var(--accent);background:var(--accent-soft);border-radius:999px;margin-top:4px;padding:1px 8px;font-size:12.5px;display:inline-flex}.pipe .lane-l{letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;font-size:11px;font-weight:600}.grid{gap:14px;display:grid}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}@media (width<=720px){.g2,.g3{grid-template-columns:minmax(0,1fr)}}@media (width>=721px) and (width<=1000px){.g3{grid-template-columns:repeat(2,minmax(0,1fr))}}.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;min-width:0;padding:16px 18px}.proc .card{background:var(--bg)}.card h4{margin-bottom:6px;font-size:16px}.card p{color:var(--muted);font-size:14px}.rules{counter-reset:r;gap:10px;margin:0;padding:0;list-style:none;display:grid}.rules li{counter-increment:r;background:var(--surface);border:1px solid var(--line);border-radius:12px;grid-template-columns:46px minmax(0,1fr);align-items:start;gap:14px;padding:14px 16px;display:grid}.rules li:before{content:counter(r);font-family:var(--f-display);color:var(--accent);font-size:30px;font-weight:800;line-height:1}.rules b{font-family:var(--f-display);margin-bottom:2px;font-size:17px;display:block}.rules span{color:var(--muted);font-size:14px}.spaces{grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;display:grid}@media (width<=820px){.spaces{grid-template-columns:repeat(3,minmax(0,1fr))}}@media (width<=440px){.spaces{grid-template-columns:repeat(2,minmax(0,1fr))}}.space{background:var(--surface);border:1px solid var(--line);border-radius:10px;min-width:0;padding:12px}.space b{font-family:var(--f-display);font-size:15.5px;display:block}.space span{color:var(--muted);font-size:12.5px}.rcards{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;display:grid}.rcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;flex-direction:column;gap:12px;min-width:0;padding:18px;display:flex}.rcard .head{align-items:center;gap:12px;display:flex}.rcard .ico{border-radius:11px;width:40px;height:40px}.rcard .ico svg{width:22px;height:22px}.rcard h4{font-size:16.5px}.rcard .m{color:var(--muted);font-size:13.5px;line-height:1.45}.rcard .seq{grid-template-columns:auto minmax(0,1fr);align-items:center;gap:6px 10px;font-size:12px;display:grid}.rcard .seq .lbl{color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-size:10.5px;font-weight:600}.rcard .seq .cs{flex-wrap:wrap;gap:4px;display:flex}.rcard .go{font:inherit;color:var(--accent);border:1.5px solid var(--accent);cursor:pointer;text-align:left;background:0 0;border-radius:9px;justify-content:space-between;margin-top:auto;padding:8px 12px;font-size:13.5px;font-weight:600;display:flex}.rcard .go:hover{background:var(--accent);color:var(--on-accent)}.pchip{font-family:var(--f-mono);background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:1px 8px;font-size:12px;font-weight:600;text-decoration:none}.pchip:hover{text-decoration:underline}.pchip.d{background:var(--surface-2);color:var(--ink)}.rights{grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;display:grid}.right{border:1px solid var(--line);background:var(--bg);border-radius:12px;flex-direction:column;gap:6px;min-width:0;padding:12px 14px;display:flex}.right .verb{text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-size:11px;font-weight:600}.right .r{font-family:var(--f-mono);color:var(--accent);font-size:14px;font-weight:600}.right .then{font-family:var(--f-mono);color:var(--muted);font-size:12px}.right p{font-size:13px}.right .by{color:var(--muted);border-top:1px dashed var(--line);margin-top:auto;padding-top:6px;font-size:12px}.repo{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:14px;display:grid}@media (width<=760px){.repo{grid-template-columns:minmax(0,1fr)}}.tree{font-family:var(--f-mono);background:var(--code-bg);color:var(--code-fg);border-radius:12px;min-width:0;padding:14px 16px;font-size:13px;line-height:1.95;overflow-x:auto}.tree .row{white-space:nowrap;align-items:center;gap:8px;display:flex}.tree .row .dim{opacity:.5}.tree .row .hint{font-family:var(--f-body);opacity:.65;font-size:11.5px}.badge{font-family:var(--f-body);background:var(--accent);width:20px;height:20px;color:var(--on-accent);border-radius:50%;flex:none;place-items:center;font-size:11px;font-weight:700;display:inline-grid}.gl{background:var(--bg);border:1px solid var(--line);border-radius:12px;flex-direction:column;gap:12px;min-width:0;padding:14px 16px;display:flex}.gl .row{align-items:flex-start;gap:10px;font-size:13.5px;display:flex}.gl .row>div{min-width:0}.gl .path{color:var(--muted);font-size:12px}.mock{border:1px solid var(--line);background:var(--bg);border-radius:12px;min-width:0;overflow:hidden}.mock .bar{background:var(--surface-2);align-items:center;gap:8px;padding:9px 12px;font-size:13px;font-weight:600;display:flex}.mock .bar .ex{color:var(--muted);text-transform:uppercase;letter-spacing:.08em;border:1px dashed var(--muted);border-radius:4px;margin-left:auto;padding:0 5px;font-size:10.5px;font-weight:600}.mock .filters{border-bottom:1px solid var(--line);flex-wrap:wrap;gap:6px;padding:8px 12px;display:flex}.mock .f{border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:1px 8px;font-size:11.5px}.mock table{font-size:12.5px}.mock td,.mock th{padding:7px 10px}.mock th{background:0 0}.mock .tw{background:0 0;border:0;border-radius:0}.decisions{gap:12px;display:grid}.dec{background:var(--bg);border:1px solid var(--line);border-radius:12px;grid-template-columns:150px minmax(0,1fr);align-items:start;gap:14px;padding:14px 16px;display:grid}@media (width<=600px){.dec{grid-template-columns:minmax(0,1fr)}}.dec .what{font-family:var(--f-display);font-size:17px;font-weight:700}.dec .what small{font-family:var(--f-body);color:var(--muted);font-size:12px;font-weight:500;display:block}.dec .how{min-width:0;font-size:14px}.dec .how .code{margin-top:6px}.branch{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;display:grid}@media (width<=640px){.branch{grid-template-columns:minmax(0,1fr)}}.br{border-radius:12px;min-width:0;padding:14px 16px}.br.ok{background:var(--go-soft)}.br.ko{background:var(--nogo-soft)}.br.wa{background:var(--wait-soft);grid-column:1/-1}.br h4{margin-bottom:6px;font-size:15.5px}.br.ok h4{color:var(--go)}.br.ko h4{color:var(--nogo)}.br.wa h4{color:var(--wait)}.br p{font-size:14px}.br .code{margin-top:8px}.dgs{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;display:grid}@media (width<=640px){.dgs{grid-template-columns:minmax(0,1fr)}}.dgc{text-align:center;border-radius:12px;flex-direction:column;align-items:center;gap:6px;padding:14px;display:flex}.dgc.ok{background:var(--go-soft)}.dgc.ko{background:var(--nogo-soft)}.dgc svg{width:auto;height:34px}.dgc b{font-size:14px}.dgc.ok b{color:var(--go)}.dgc.ko b{color:var(--nogo)}.dgc span{color:var(--muted);font-size:12.5px}.pp{fill:var(--ink)}.pp.ghost{fill:none;stroke:var(--muted);stroke-dasharray:3 3}.v{font-family:var(--f-mono);white-space:nowrap;border-radius:999px;margin:1px 0;padding:2px 8px;font-size:12px;font-weight:600;display:inline-block}.v.go{background:var(--go-soft);color:var(--go)}.v.no{background:var(--nogo-soft);color:var(--nogo)}.v.wa{background:var(--wait-soft);color:var(--wait)}.v.ne{background:var(--surface-2);color:var(--muted)}.v.ac{background:var(--accent-soft);color:var(--accent)}.status{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;display:grid}@media (width<=720px){.status{grid-template-columns:minmax(0,1fr)}}.status .col{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}.status h4{align-items:center;gap:8px;margin-bottom:10px;font-size:15px;display:flex}.status h4 i{border-radius:50%;width:10px;height:10px;display:inline-block}.status ul{margin:0;padding-left:18px;font-size:14px}.status li+li{margin-top:5px}.search{align-items:center;gap:10px;margin-bottom:10px;display:flex}.search input{font:inherit;border:1px solid var(--line);background:var(--surface);min-width:0;color:var(--ink);border-radius:8px;flex:1;padding:9px 12px}.search .count{color:var(--muted);white-space:nowrap;font-size:13px}.hlbar{flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:12px;display:flex}.hlbar .lbl{color:var(--muted);margin-right:4px;font-size:12px;font-weight:600}.hl{font:inherit;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;border-radius:999px;padding:4px 10px;font-size:12.5px}.hl:hover{border-color:var(--accent)}.ov .diagram{padding:12px}.ov .diagram svg{min-width:1150px}.ov .lg{transition:opacity .2s}.ov[data-hl]:not([data-hl=""]) .lg:not(.on){opacity:.18}.ov-at{fill:var(--ink);font-family:var(--f-body);font-size:11.5px}.ov-act{fill:var(--surface);stroke:var(--line);stroke-width:1.2px}.ov-act.m{fill:var(--accent-soft);stroke:var(--accent);stroke-dasharray:4 3}.ov-pill{fill:var(--accent)}.ov-pt{fill:var(--on-accent);font-family:var(--f-mono);font-size:9.5px;font-weight:600}.ov-dec{fill:var(--human)}.ov-app{fill:var(--human-soft);stroke:var(--human);stroke-width:1.6px}.ov-ev{fill:var(--accent)}.ov-ml{fill:var(--muted);font-family:var(--f-body);font-size:10.5px}.ov-ml.h{fill:var(--human);font-weight:600}.ov-ml.a{fill:var(--accent);font-weight:600}.ov-gn{fill:var(--ink);font-family:var(--f-body);font-size:10.5px;font-weight:600}.ov-ph{fill:var(--ink);font-family:var(--f-display);font-size:15px;font-weight:700}.ov-ln{fill:var(--ink);font-family:var(--f-body);font-size:13px;font-weight:700}.ov-ln.m{fill:var(--accent)}.ov-alt{fill:var(--surface-2);opacity:.45}.ov-sep{stroke:var(--line);stroke-width:1px}.ov-band{fill:var(--bg);stroke:var(--line);stroke-width:1.2px}.legend{color:var(--muted);flex-wrap:wrap;align-items:center;gap:8px 18px;margin-top:10px;font-size:13px;display:flex}.legend span{align-items:center;gap:6px;display:inline-flex}.legend svg{width:16px;height:16px}:root{--c-pm:#4c51c6;--c-po:#8a44c2;--c-ux:#c23c79;--c-tl:#1f5fa8;--c-dev:#1a87c6;--c-qa:#0f8a7e;--c-appr:#b4650e;--c-dg:#b23a22;--c-ops:#3c7f2a;--c-machine:#5e6e73;--c-corpus:#7b5a1e;--c-regles:#62702a;--c-setup:#0e6b73;--c-snap:#0e6b73;--c-mgr:#47578f;--c-sponsor:#9a4f8a;--c-secu:#a33a3a;--c-dpo:#6a4c9c;--c-part:#0e7a52}@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--c-pm:#9ea3ff;--c-po:#c99bf2;--c-ux:#f28db9;--c-tl:#7fb0f0;--c-dev:#6cc6f2;--c-qa:#5fd3c4;--c-appr:#f0ae5e;--c-dg:#f28d74;--c-ops:#8ed17a;--c-machine:#a5b4b8;--c-corpus:#d9b36e;--c-regles:#b9c77a;--c-setup:#55c3ca;--c-snap:#55c3ca;--c-mgr:#a5b3e6;--c-sponsor:#e59cd6;--c-secu:#f09393;--c-dpo:#bfa2ee;--c-part:#6fd3a8}}:root[data-theme=dark]{--c-pm:#9ea3ff;--c-po:#c99bf2;--c-ux:#f28db9;--c-tl:#7fb0f0;--c-dev:#6cc6f2;--c-qa:#5fd3c4;--c-appr:#f0ae5e;--c-dg:#f28d74;--c-ops:#8ed17a;--c-machine:#a5b4b8;--c-corpus:#d9b36e;--c-regles:#b9c77a;--c-setup:#55c3ca;--c-snap:#55c3ca;--c-mgr:#a5b3e6;--c-sponsor:#e59cd6;--c-secu:#f09393;--c-dpo:#bfa2ee;--c-part:#6fd3a8}[style*=--lc]{--lc-soft:color-mix(in srgb,var(--lc) 12%,var(--surface));--lc-mid:color-mix(in srgb,var(--lc) 30%,var(--surface))}.ovg{container-type:inline-size}.hl{align-items:center;gap:6px;display:inline-flex}.hl i{background:var(--lc,var(--muted));border-radius:50%;flex:none;width:9px;height:9px}.hl[aria-pressed=true]{background:var(--lc,var(--accent));border-color:var(--lc,var(--accent));color:var(--surface)}.hl[aria-pressed=true] i{background:var(--surface)}.ogrid{grid-template-columns:128px repeat(var(--cols,10),minmax(0,1fr));border:1px solid var(--line);background:var(--surface);border-radius:14px;display:grid;overflow:hidden}.oc{border-bottom:1px solid var(--line);border-left:1px solid var(--line);flex-direction:column;gap:5px;min-width:0;padding:6px 5px;transition:opacity .2s,background .2s;display:flex}.oc.kc{border-left:0;padding:8px 10px}.oc.last{border-bottom:0}.of{text-transform:uppercase;letter-spacing:.08em;border-left:1px solid var(--line);border-bottom:1px solid var(--line);color:var(--muted);background:var(--surface);text-align:center;padding:7px 8px;font-size:10.5px;font-weight:700}.of.kc{text-align:left;border-left:0}.oh{background:var(--lc-soft,var(--surface-2));border-top:4px solid var(--lc,var(--line));text-align:center;align-items:center;gap:4px;padding:9px 4px 8px}.oh.kc{border-top-color:var(--line);text-align:left;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;justify-content:flex-end;align-items:flex-start;font-size:11px;font-weight:700}.oh .av{background:var(--lc);width:30px;height:30px;color:var(--surface);border-radius:50%;place-items:center;display:grid}.oh .av svg{width:16px;height:16px}.oh b{color:var(--ink);-webkit-hyphens:manual;hyphens:manual;overflow-wrap:break-word;font-size:12px;line-height:1.2}.oh small{color:var(--muted);font-size:10.5px;line-height:1.2}.ph{background:var(--surface);justify-content:center;gap:2px}.ph .n{font-family:var(--f-display);color:var(--muted);opacity:.45;font-size:22px;font-weight:800;line-height:1}.ph b{font-family:var(--f-display);-webkit-hyphens:manual;hyphens:manual;overflow-wrap:break-word;font-size:14.5px;line-height:1.2}.oa{color:var(--ink);background:var(--lc-soft);border:1px solid var(--lc-mid);border-left:3px solid var(--lc);-webkit-hyphens:auto;hyphens:auto;overflow-wrap:break-word;border-radius:7px;padding:5px 6px;font-size:11.5px;line-height:1.3;text-decoration:none;display:block}a.oa:hover{border-color:var(--lc);box-shadow:0 1px 0 var(--lc)}.oa.m{background:var(--surface);border:1px dashed var(--lc);border-left:3px solid var(--lc);color:var(--muted)}.op{font-family:var(--f-mono);color:var(--surface);background:var(--lc,var(--accent));white-space:nowrap;border-radius:999px;margin-top:3px;padding:0 6px;font-size:10px;font-weight:700;display:inline-block}.oa .op{margin-top:4px;display:table}.gr{background:var(--surface-2);border-top:2px solid var(--gc,var(--line));justify-content:center}.gr.go{--gc:var(--go);background:color-mix(in srgb,var(--go) 9%,var(--surface))}.gr.wa{--gc:var(--wait);background:color-mix(in srgb,var(--wait) 10%,var(--surface))}.gr.ne{--gc:var(--muted);background:var(--surface-2)}.gk{color:var(--ink);align-items:center;gap:8px;text-decoration:none;display:flex}.gk>span:last-child{min-width:0}.gk b{-webkit-hyphens:auto;hyphens:auto;overflow-wrap:break-word;font-size:12px;line-height:1.2;display:block}.gk small{color:var(--muted);margin-top:2px;font-size:10.5px;line-height:1.25;display:block}.gk:hover b{text-decoration:underline}.gb{width:30px;height:30px;font-family:var(--f-display);border-radius:50%;flex:none;place-items:center;font-size:12.5px;font-weight:800;display:grid}.gb.go{background:var(--go);color:var(--surface)}.gb.wa{background:var(--wait);color:var(--surface)}.gb.ne{background:var(--surface);color:var(--ink);border:2px dashed var(--muted)}.loopnote{color:var(--nogo);font-size:10.5px;font-weight:600;line-height:1.3}.om{text-align:center;border-radius:999px;justify-content:center;align-items:center;gap:4px;padding:4px 6px;font-size:10.5px;font-weight:700;line-height:1.2;display:flex}.om svg{flex:none;width:11px;height:11px}.om.dec{background:var(--lc);color:var(--surface)}.om.dec svg polygon{fill:var(--surface)}.om.app{background:var(--surface);color:var(--lc);border:1.5px solid var(--lc)}.om.app svg circle{fill:none;stroke:var(--lc)}.om.ev{color:var(--muted);border:1.5px dashed var(--lc);background:0 0}.om.ev svg rect{fill:var(--lc)}.oband{grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;display:grid}.ob{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--lc,var(--line));border-radius:12px;flex-direction:column;gap:4px;padding:12px 14px;transition:opacity .2s;display:flex}.ob .bh{align-items:center;gap:8px;display:flex}.ob .bh i{background:var(--lc);width:24px;height:24px;color:var(--surface);border-radius:50%;flex:none;place-items:center;display:grid}.ob .bh svg{width:13px;height:13px}.ob b{font-size:13.5px}.ob .ds{color:var(--muted);font-size:12.5px}.ob .ps{flex-wrap:wrap;gap:4px;margin-top:4px;display:flex}.ob .ps a{text-decoration:none}.ob .ps .op{margin:0}.ovg[data-hl]:not([data-hl=""]) .ogrid [data-l]:not(.on),.ovg[data-hl]:not([data-hl=""]) .oband [data-l]:not(.on){opacity:.18}.ovg[data-hl]:not([data-hl=""]) .ogrid .oc[data-l].on:not(.oh):not(.gr){background:var(--lc-soft)}.legend .lk{display:inline-flex}.legend .om{--lc:var(--ink);display:inline-flex}@container (width<=980px){.ogrid{grid-template-columns:minmax(0,1fr)}.oh,.of{display:none}.oc{border-left:0;padding:6px 10px}.oc:empty{display:none}.oc[data-name]:before{content:attr(data-name);text-transform:uppercase;letter-spacing:.06em;color:var(--lc,var(--muted));font-size:11px;font-weight:700}.oc[data-l]:not(.gr){border-left:4px solid var(--lc)}.ph{background:var(--ink);color:var(--surface);flex-direction:row;align-items:baseline;gap:10px}.ph .n{color:var(--surface);opacity:.5;font-size:18px}.gr{border-top-width:1px}.gr[data-name]{border-left:4px solid var(--lc);flex-direction:row;justify-content:space-between;align-items:center}.om{justify-content:flex-start}.oa .op{margin:0 0 0 6px;display:inline-block}}.gcards{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:22px;display:grid}.gcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;flex-direction:column;gap:10px;min-width:0;padding:16px 18px;display:flex}.gcard .gh{align-items:center;gap:12px;display:flex}.gbadge{width:40px;height:40px;font-family:var(--f-display);border-radius:50%;flex:none;place-items:center;font-size:15px;font-weight:800;display:grid}.gbadge.go{background:var(--go);color:var(--surface)}.gbadge.wa{background:var(--wait);color:var(--surface)}.gbadge.ne{background:var(--line);color:var(--ink)}.gcard h4{font-size:17px}.gcard .gh .v{margin-left:auto}.grow{grid-template-columns:92px minmax(0,1fr);gap:8px;font-size:13.5px;line-height:1.45;display:grid}.grow>span:first-child{color:var(--muted);text-transform:uppercase;letter-spacing:.06em;padding-top:2px;font-size:11.5px;font-weight:600}.crit{flex-wrap:wrap;gap:4px;display:flex}.crit code{font-size:11.5px}.foot{border-top:1px solid var(--line);color:var(--muted);margin-top:72px;padding-top:20px;font-size:13px}@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-dev" viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-pm" viewBox="0 0 24 24"><path d="M5 21V4M5 4h12l-2.5 4L17 12H5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-ux" viewBox="0 0 24 24"><path d="M4 20l1-4L16 5l3 3L8 19zM14 7l3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-appr" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></g></symbol>
+    <symbol id="i-sponsor" viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    <symbol id="i-dpo" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3M12 15v2"/></g></symbol>
+    <symbol id="i-part" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4"/><path d="M5 5h11l-2 4 2 4H5"/></g></symbol>
+    <symbol id="i-qa" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3"/><path d="M7.5 15h9"/></g></symbol>
+    <symbol id="i-tl" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="7" r="2.5"/><path d="M6 7.5v9M18 9.5c0 5-6 4-11 7.5"/></g></symbol>
+    <symbol id="i-po" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></g></symbol>
+    <symbol id="i-corpus" viewBox="0 0 24 24"><path d="M4 19V5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5 2.5 2.5 0 0 0 6.5 23H20v-5M9 8h7M9 12h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+    <symbol id="i-regles" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></g></symbol>
+    <symbol id="i-dg" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></g></symbol>
+    <symbol id="i-mgr" viewBox="0 0 24 24"><path d="M3 20h18M6 20v-7M11 20V5M16 20v-10M21 20v-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-secu" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21M8 10.5h5M10.5 8v5"/></g></symbol>
+    <symbol id="i-ops" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/></g></symbol>
+    <symbol id="i-bot" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4M9 13h.01M15 13h.01M9 17h6"/></g></symbol>
+    <symbol id="i-setup" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12l4 4L19 6"/></g></symbol>
+    <symbol id="i-snap" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></g></symbol>
+    <symbol id="i-all" viewBox="0 0 24 24"><path d="M4 5h16M4 10h16M4 15h10M4 20h7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="arr" viewBox="0 0 20 20"><path d="M2 10h14M11 5l5 5-5 5" stroke="currentColor" stroke-width="2" fill="none"/></symbol>
+  </defs>
+</svg>
+
+<div class="shell" lang="fr">
+<aside class="side" aria-label="Sommaire">
+  <div class="brand">Context Nexus</div>
+  <nav id="toc">
+    <div class="grp">Repères</div>
+    <a href="#reperes"><span class="n">00</span>Trois endroits, cinq règles</a>
+    <a class="keep top" href="#vue"><span class="n">01</span>Vue d'ensemble</a>
+    <a href="#roles"><span class="n">02</span>Les rôles</a>
+    <div class="grp role-only" data-h="once">Une fois</div>
+    <div class="grp role-only" data-h="daily">Ensuite</div>
+    <div class="grp">Démarrer</div>
+    <a href="#p1" data-p="p1"><span class="n">P1</span>Obtenir son accès</a>
+    <a href="#p2" data-p="p2"><span class="n">P2</span>Brancher le dépôt</a>
+    <a href="#p3" data-p="p3"><span class="n">P3</span>Équiper son poste</a>
+    <a href="#p3b" data-p="p3b"><span class="n">P3b</span>Hackathon : poste prêt</a>
+    <div class="grp">Comprendre et préparer</div>
+    <a href="#p4" data-p="p4"><span class="n">P4</span>Interroger l'existant</a>
+    <a href="#p5" data-p="p5"><span class="n">P5</span>Écrire un ticket prêt</a>
+    <a href="#p6" data-p="p6"><span class="n">P6</span>Répondre aux questions</a>
+    <a href="#p7" data-p="p7"><span class="n">P7</span>Référentiels métier</a>
+    <div class="grp">Construire et livrer</div>
+    <a href="#p8" data-p="p8"><span class="n">P8</span>Ticket, chemin court</a>
+    <a href="#p9" data-p="p9"><span class="n">P9</span>Ticket avec Spec Kit</a>
+    <a href="#p10" data-p="p10"><span class="n">P10</span>Livrer et passer G3</a>
+    <a href="#p11" data-p="p11"><span class="n">P11</span>Relire et approuver</a>
+    <a href="#p12" data-p="p12"><span class="n">P12</span>Décider une gate</a>
+    <div class="grp">Tenir le Nexus à jour</div>
+    <a href="#p13" data-p="p13"><span class="n">P13</span>Embarquer un produit</a>
+    <a href="#p14" data-p="p14"><span class="n">P14</span>Specs as-is</a>
+    <a href="#p15" data-p="p15"><span class="n">P15</span>Valider et surveiller</a>
+    <a href="#p16" data-p="p16"><span class="n">P16</span>Nommer les responsables</a>
+    <a href="#p17" data-p="p17"><span class="n">P17</span>Contrôles et gates</a>
+    <a href="#p18" data-p="p18"><span class="n">P18</span>Mettre à jour l'instantané</a>
+    <div class="grp">Suivre et auditer</div>
+    <a href="#p19" data-p="p19"><span class="n">P19</span>Suivre l'avancement</a>
+    <a href="#p20" data-p="p20"><span class="n">P20</span>Auditer</a>
+    <div class="grp keep">Annexes</div>
+    <a class="keep" href="#verdicts"><span class="n">A</span>Verdicts</a>
+    <a class="keep" href="#commandes"><span class="n">A</span>Commandes et outils</a>
+    <a class="keep" href="#variables"><span class="n">A</span>Variables du poste</a>
+    <a class="keep" href="#gabarits"><span class="n">A</span>Gabarits à copier</a>
+    <a class="keep" href="#depannage"><span class="n">A</span>Dépannage</a>
+    <a class="keep" href="#vocabulaire"><span class="n">A</span>Vocabulaire</a>
+    <a class="keep" href="#etat"><span class="n">A</span>Ce qui existe aujourd'hui</a>
+  </nav>
+</aside>
+
+<main>
+  <div class="tabs" role="tablist" aria-label="Vue du guide"><div class="row" id="tabs"></div></div>
+
+  <header class="hero full-only">
+    <div class="eyebrow">Guide d'utilisation · version du 20 novembre 2026</div>
+    <h1>Le Nexus lit.<br><em>Vous écrivez.</em></h1>
+    <p class="lede">Ce guide couvre <strong>l'utilisation</strong> de Context Nexus, sans accès au dépôt de l'outil. <strong>Choisissez votre rôle dans les onglets</strong> : vous ne verrez que vos procédures, dans l'ordre où vous les ferez. L'onglet <em>Tout le guide</em> suit le cycle du travail, du besoin à la livraison. Pour l'administration, adressez-vous à l'équipe plateforme.</p>
+  </header>
+
+  <div id="content">
+  <section class="banner role-only" id="banner" aria-live="polite"></section>
+
+  <!-- ============ REPÈRES ============ -->
+  <section id="reperes" class="chapter full-only" style="margin-top:36px">
+    <div class="chapter-head"><span class="num">00</span><h2>Repères</h2></div>
+
+    <div class="note info" style="margin-top:0"><strong>Tech Lead pressé ?</strong>La version d'une page : <code>guide-tech-lead.md</code>.</div>
+    <h3 class="sub">Trois endroits</h3>
+    <figure>
+      <div class="diagram">
+        <svg viewBox="0 0 840 430" role="img" aria-labelledby="d1t">
+          <title id="d1t">Le central, votre poste et Jira/GitLab : qui lit et qui écrit</title>
+          <defs>
+            <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0L10 5L0 10z"/></marker>
+            <marker id="ahA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah acc" d="M0 0L10 5L0 10z"/></marker>
+            <marker id="ahH" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah hum" d="M0 0L10 5L0 10z"/></marker>
+          </defs>
+          <rect class="s-box acc" x="260" y="14" width="320" height="128" rx="14"/>
+          <text class="s-t" x="282" y="44">Le central</text>
+          <text class="s-s" x="282" y="64">webapp · serveur nexus · registre</text>
+          <rect class="s-inner" x="282" y="80" width="88" height="44" rx="8"/><text class="s-l" x="326" y="107" text-anchor="middle">Explorer</text>
+          <rect class="s-inner" x="376" y="80" width="88" height="44" rx="8"/><text class="s-l" x="420" y="107" text-anchor="middle">Règles</text>
+          <rect class="s-inner" x="470" y="80" width="88" height="44" rx="8"/><text class="s-l" x="514" y="107" text-anchor="middle">Pilotage</text>
+          <rect class="s-box" x="14" y="262" width="350" height="154" rx="14"/>
+          <text class="s-t" x="36" y="292">Votre poste</text>
+          <text class="s-s" x="36" y="312">Claude Code ouvert dans le dépôt de l'équipe</text>
+          <rect class="s-inner" x="36" y="328" width="142" height="70" rx="8"/>
+          <text class="s-m" x="107" y="356" text-anchor="middle">nexus-local</text>
+          <text class="s-s" x="107" y="376" text-anchor="middle">lit l'instantané</text>
+          <rect class="s-inner" x="196" y="328" width="146" height="70" rx="8"/>
+          <text class="s-m" x="269" y="356" text-anchor="middle">.nexus/</text>
+          <text class="s-s" x="269" y="376" text-anchor="middle">règles + contexte signés</text>
+          <line class="s-line" x1="178" y1="363" x2="194" y2="363" marker-end="url(#ah)"/>
+          <rect class="s-box hum" x="476" y="262" width="350" height="154" rx="14"/>
+          <text class="s-t" x="498" y="292">Jira et GitLab</text>
+          <text class="s-s" x="498" y="312">là où vivent le besoin, le code et les décisions</text>
+          <rect class="s-inner" x="498" y="328" width="146" height="70" rx="8"/>
+          <text class="s-l" x="571" y="356" text-anchor="middle">Ticket</text>
+          <text class="s-s" x="571" y="376" text-anchor="middle">besoin, critères</text>
+          <rect class="s-inner" x="658" y="328" width="146" height="70" rx="8"/>
+          <text class="s-l" x="731" y="356" text-anchor="middle">Merge request</text>
+          <text class="s-s" x="731" y="376" text-anchor="middle">CI, approbations</text>
+          <line class="s-line acc" x1="290" y1="144" x2="160" y2="258" marker-end="url(#ahA)"/>
+          <text class="s-la" x="196" y="186" text-anchor="end">instantané signé</text>
+          <text class="s-s" x="196" y="202" text-anchor="end">posé par MR (P2, P18)</text>
+          <line class="s-line acc dash" x1="346" y1="144" x2="268" y2="258" marker-end="url(#ahA)" marker-start="url(#ahA)"/>
+          <text class="s-la" x="316" y="214">MCP nexus</text>
+          <text class="s-s" x="316" y="230">à votre nom, vos droits</text>
+          <line class="s-line hum" x1="366" y1="300" x2="472" y2="300" marker-end="url(#ahH)"/>
+          <text class="s-lh" x="419" y="284" text-anchor="middle">en votre nom</text>
+          <text class="s-s" x="419" y="320" text-anchor="middle">avec votre</text>
+          <text class="s-s" x="419" y="336" text-anchor="middle">accord</text>
+          <line class="s-line dash" x1="652" y1="258" x2="548" y2="144" marker-end="url(#ah)"/>
+          <text class="s-l" x="626" y="186">lit seulement (GET)</text>
+          <text class="s-s" x="626" y="202">décisions de gate, CI</text>
+        </svg>
+      </div>
+      <figcaption>Le central ne décide pas et n'écrit jamais de lui-même dans Jira ou GitLab : ce qui y part passe par vous.</figcaption>
+    </figure>
+
+    <div class="grid g3" style="margin-top:16px">
+      <div class="card"><h4>La webapp du central</h4><p>Chercher ce qui existe, répondre aux questions, tenir les référentiels métier, régler les règles, suivre. Adresse donnée par l'équipe plateforme.</p></div>
+      <div class="card"><h4>Claude Code dans le dépôt</h4><p>Traiter un ticket, de la vérification à la livraison.</p></div>
+      <div class="card"><h4>Jira et GitLab</h4><p>Écrire le besoin, relire, approuver, décider. Le Nexus n'y écrit jamais de lui-même.</p></div>
+    </div>
+
+    <h3 class="sub">Six espaces dans la webapp</h3>
+    <p class="prose" style="margin-bottom:12px;color:var(--muted)">Menu de gauche ; vous ne voyez que ce que vos droits permettent. Le nœud se choisit dans la barre du haut, <em>Mes droits</em> est dans le menu utilisateur.</p>
+    <div class="spaces">
+      <div class="space"><b>Explorer</b><span>tout le monde</span></div>
+      <div class="space"><b>Pilotage</b><span>suivi</span></div>
+      <div class="space"><b>Corpus</b><span>Responsable du corpus</span></div>
+      <div class="space"><b>Règles</b><span>Responsable des règles, décideurs</span></div>
+      <div class="space"><b>Plateforme</b><span>équipe plateforme</span></div>
+      <div class="space"><b>Audit</b><span>sécurité</span></div>
+    </div>
+
+    <h3 class="sub">Les nœuds : droits et règles s'héritent</h3>
+    <figure>
+      <div class="diagram">
+        <svg viewBox="0 0 760 210" role="img" aria-labelledby="d2t">
+          <title id="d2t">Organisation, regroupements et produits</title>
+          <rect class="s-box acc" x="290" y="12" width="180" height="48" rx="10"/>
+          <text class="s-t" x="380" y="42" text-anchor="middle">Organisation</text>
+          <rect class="s-box" x="120" y="86" width="190" height="44" rx="10"/>
+          <text class="s-l" x="215" y="113" text-anchor="middle">Regroupement A</text>
+          <rect class="s-box" x="450" y="86" width="190" height="44" rx="10"/>
+          <text class="s-l" x="545" y="113" text-anchor="middle">Regroupement B</text>
+          <rect class="s-inner" x="40" y="156" width="130" height="40" rx="8"/><text class="s-l" x="105" y="181" text-anchor="middle">Produit</text>
+          <rect class="s-inner" x="190" y="156" width="130" height="40" rx="8"/><text class="s-l" x="255" y="181" text-anchor="middle">Produit</text>
+          <rect class="s-inner" x="440" y="156" width="130" height="40" rx="8"/><text class="s-l" x="505" y="181" text-anchor="middle">Produit</text>
+          <rect class="s-inner" x="590" y="156" width="130" height="40" rx="8"/><text class="s-l" x="655" y="181" text-anchor="middle">Produit</text>
+          <path class="s-line" d="M350 60 L230 86"/><path class="s-line" d="M410 60 L530 86"/>
+          <path class="s-line" d="M190 130 L120 156"/><path class="s-line" d="M240 130 L250 156"/>
+          <path class="s-line" d="M520 130 L510 156"/><path class="s-line" d="M570 130 L645 156"/>
+          <line class="s-line acc" x1="736" y1="20" x2="736" y2="190" marker-end="url(#ahA)"/>
+          <text class="s-la" x="726" y="60" text-anchor="end">hérité</text>
+          <text class="s-s" x="726" y="76" text-anchor="end">vers le bas</text>
+        </svg>
+      </div>
+      <figcaption>Un rôle donné sur un regroupement vaut pour tous ses produits. Une règle posée plus haut s'applique plus bas ; l'ajouter est libre, la modifier ou la désactiver est une exception (P17).</figcaption>
+    </figure>
+
+    <h3 class="sub">Cinq règles pour tous</h3>
+    <ol class="rules">
+      <li><div><b>Le Nexus lit, vous écrivez.</b><span>Ce qui part vers Jira ou GitLab part en votre nom, avec votre accord.</span></div></li>
+      <li><div><b>Rien sans source.</b><span>Une information sans source ne compte pas. Une spec <code>draft</code> est une hypothèse non relue : citez-la comme telle.</span></div></li>
+      <li><div><b>La machine propose, une personne décide.</b><span>Aucun verdict de la machine ne remplace une approbation.</span></div></li>
+      <li><div><b>Aucun secret ni donnée client.</b><span>Ni dans un ticket, ni dans une conversation, ni dans un référentiel. Ne cherchez pas à retrouver ce que le Nexus a masqué.</span></div></li>
+      <li><div><b>Ne touchez jamais <code>.nexus/</code> à la main.</b><span>Un instantané modifié ne donne plus jamais de feu vert.</span></div></li>
+    </ol>
+  </section>
+
+  <section id="vue" class="chapter">
+    <div class="chapter-head"><span class="num">01</span><h2>Vue d'ensemble</h2></div>
+    <p class="chapter-intro">Tout le cycle d'un coup d'œil : les six phases de haut en bas, une colonne et une couleur par acteur, groupées par famille (produit, ingénierie, gouvernance, exploitation, machine). Entre deux phases, un bandeau marque la gate : sous chaque acteur, une pastille dit s'il la <b>décide</b>, l'<b>approuve</b> ou, pour la machine, l'<b>évalue</b>. Cliquez une étape pour ouvrir sa procédure, une gate pour son détail.</p>
+    <div class="ov ovg" id="ov" data-hl="">
+      <div class="hlbar" id="hlbar"><span class="lbl">Mettre en avant :</span></div>
+      <div class="ogrid" id="ogrid" role="table" aria-label="Les six phases du cycle, les gates G1 à G6 et les acteurs de chaque étape"></div>
+      <div class="k" style="margin:18px 0 8px">En continu, tout au long du cycle</div>
+      <div class="oband" id="oband"></div>
+      <div class="legend">
+        <span class="om dec" style="--lc:var(--ink)"><svg viewBox="0 0 16 16"><polygon points="8,1 15,8 8,15 1,8"/></svg>décide</span><span>prend la décision de la gate</span>
+        <span class="om app" style="--lc:var(--ink)"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="5" stroke-width="2.5"/></svg>approuve</span><span>approuve la MR</span>
+        <span class="om ev" style="--lc:var(--muted)"><svg viewBox="0 0 16 16"><rect x="3" y="3" width="10" height="10" rx="2"/></svg>évalue</span><span>la machine propose un verdict</span>
+        <span><span class="gb go" style="width:18px;height:18px;font-size:0"></span>évaluée aujourd'hui</span>
+        <span><span class="gb wa" style="width:18px;height:18px;font-size:0"></span>en cours</span>
+        <span><span class="gb ne" style="width:18px;height:18px;font-size:0"></span>définie, à venir</span>
+        <span>À chaque gate, un <span class="v no">NO-GO</span> renvoie à la phase d'avant, avec le critère nommé.</span>
+      </div>
+    </div>
+
+    <div class="gcards full-only">
+      <div class="gcard" id="gate-g1"><div class="gh"><span class="gbadge ne">G1</span><h4>Ready to Spec</h4><span class="v ne">à venir</span></div>
+        <div class="grow"><span>Quand</span><span>le PO passe le ticket Besoin à « Soumettre à G1 » dans Jira</span></div>
+        <div class="grow"><span>Objet</span><span>le ticket Besoin et ses cinq rubriques (<a href="#ticket-besoin">gabarit</a>)</span></div>
+        <div class="grow"><span>Évaluée</span><span>au central ; avis avant de soumettre par <code>/gate g1</code></span></div>
+        <div class="grow"><span>Décidée par</span><span>le PO ou PM, par la transition Jira « Ready to Spec » (GO) ou « Retour au demandeur » (NO-GO)</span></div>
+        <div class="grow"><span>Ensuite</span><span>GO : <code>/speckit-specify</code> part du ticket</span></div>
+        <div class="grow"><span>Critères</span><span class="crit"><code>fields-complete</code><code>verifiable-problem</code><code>context-indexed</code><code>data-availability</code><code>reuse-candidate</code><code>priority-owner</code></span></div>
+      </div>
+      <div class="gcard" id="gate-g2"><div class="gh"><span class="gbadge wa">G2</span><h4>Ready to Build</h4><span class="v wa">en cours</span></div>
+        <div class="grow"><span>Quand</span><span>une MR modifie <code>specs/</code></span></div>
+        <div class="grow"><span>Objet</span><span>la spec et son <a href="#en-tete-spec">en-tête</a></span></div>
+        <div class="grow"><span>Évaluée</span><span>dans la CI de l'équipe, job <code>gate-check</code></span></div>
+        <div class="grow"><span>Décidée par</span><span>les approbations de la MR de spec : PO, UX, Tech Lead, architecte</span></div>
+        <div class="grow"><span>Ensuite</span><span>GO : spec fusionnée, ticket « Ready for Dev »</span></div>
+        <div class="grow"><span>Critères</span><span class="crit"><code>acceptance-assertions</code><code>pinned-versions</code><code>api-contract</code><code>nfr-quantified</code><code>spec-grid</code><code>definition-of-ready</code></span></div>
+      </div>
+      <div class="gcard" id="gate-g3"><div class="gh"><span class="gbadge go">G3</span><h4>Ready to Release</h4><span class="v go">évaluée</span></div>
+        <div class="grow"><span>Quand</span><span>le pipeline de la MR tourne</span></div>
+        <div class="grow"><span>Objet</span><span>le code et sa MR</span></div>
+        <div class="grow"><span>Évaluée</span><span>dans la CI, job <code>gate-check</code> ; avis sur le poste par <code>/gate g3</code> (<a href="#p10">P10</a>)</span></div>
+        <div class="grow"><span>Décidée par</span><span>les approbateurs nommés (<a href="#p11">P11</a>) ; dérogation et attestation PCI ou CAB par le Decision Guarantor (<a href="#p12">P12</a>)</span></div>
+        <div class="grow"><span>Ensuite</span><span>GO : fusion ; NO-GO : <code>/implement</code> reprend</span></div>
+        <div class="grow"><span>Critères</span><span class="crit"><code>deterministic-checks</code><code>security-findings</code><code>matches-spec</code><code>review-record</code><code>criticality-approval</code><code>flag-activation-plan</code></span></div>
+      </div>
+      <div class="gcard" id="gate-g4"><div class="gh"><span class="gbadge ne">G4</span><h4>Released and Observable</h4><span class="v ne">à venir</span></div>
+        <div class="grow"><span>Quand</span><span>un déploiement ou une bascule de flag</span></div>
+        <div class="grow"><span>Objet</span><span>la mise en production</span></div>
+        <div class="grow"><span>Évaluée</span><span>par l'étape <code>gate-check g4</code> du pipeline de déploiement</span></div>
+        <div class="grow"><span>Décidée par</span><span>l'exploitation, qui atteste la responsabilité opérationnelle (runbook, retour arrière)</span></div>
+        <div class="grow"><span>Ensuite</span><span>NO-GO : retour arrière selon le <a href="#plan-activation">plan d'activation</a></span></div>
+        <div class="grow"><span>Critères</span><span class="crit"><code>release-traced</code><code>observability-live</code><code>kpis-instrumented</code><code>post-release-validation</code><code>ai-usage-attributed</code><code>operational-ownership</code></span></div>
+      </div>
+      <div class="gcard" id="gate-g5"><div class="gh"><span class="gbadge ne">G5</span><h4>Opportunity or Retire</h4><span class="v ne">à venir</span></div>
+        <div class="grow"><span>Quand</span><span>la fenêtre d'analyse se ferme (90 jours par défaut) ou un incident revient</span></div>
+        <div class="grow"><span>Objet</span><span>le dossier de preuves : résultats contre les promesses de G1, coût, incidents</span></div>
+        <div class="grow"><span>Évaluée</span><span>au central</span></div>
+        <div class="grow"><span>Décidée par</span><span>le PO ou PM : <strong>Continue</strong>, <strong>Ready to spec</strong> (nouveau besoin) ou <strong>Retire</strong></span></div>
+        <div class="grow"><span>Ensuite</span><span>Ready to spec : retour à G1 ; Retire : G6</span></div>
+        <div class="grow"><span>Critères</span><span class="crit"><code>outcomes-vs-claims</code><code>cost-known</code><code>explicit-verdict</code><code>opportunity-meets-g1</code><code>process-findings-routed</code></span></div>
+      </div>
+      <div class="gcard" id="gate-g6"><div class="gh"><span class="gbadge ne">G6</span><h4>Retirement Scoped</h4><span class="v ne">à venir</span></div>
+        <div class="grow"><span>Quand</span><span>verdict « Retire » à G5</span></div>
+        <div class="grow"><span>Objet</span><span>le cadrage du retrait</span></div>
+        <div class="grow"><span>Évaluée</span><span>au central, avec la carte d'impact (capacités, dépendances, flux)</span></div>
+        <div class="grow"><span>Décidée par</span><span>le PO ou PM</span></div>
+        <div class="grow"><span>Ensuite</span><span>utilisateurs prévenus, connaissance versée au Nexus, décision consignée</span></div>
+        <div class="grow"><span>Critères</span><span class="crit"><code>evidence-based</code><code>dependencies-mapped</code><code>users-identified</code><code>knowledge-captured</code><code>decision-recorded</code></span></div>
+      </div>
+    </div>
+    <p class="full-only" style="margin-top:12px;font-size:13px;color:var(--muted)">G1 et G4 à G6 sont définies dans le central ; leurs contrôles automatiques existent sur des preuves fournies, mais leur lecture des vrais systèmes et l'écran « À décider » restent à venir.</p>
+  </section>
+
+  <section id="roles" class="chapter full-only">
+    <div class="chapter-head"><span class="num">02</span><h2>Les rôles</h2></div>
+    <p class="chapter-intro">Quatorze rôles, chacun avec son parcours. Ouvrez le vôtre : seules vos procédures restent, dans l'ordre où vous les ferez.</p>
+    <div class="rcards" id="rcards"></div>
+  </section>
+
+  <!-- ============ DÉMARRER ============ -->
+  <section class="chapter" id="ch-demarrer">
+    <div class="chapter-head full-only"><span class="num">03</span><h2>Démarrer</h2></div>
+    <p class="chapter-intro full-only">Avoir un compte et un rôle, brancher le dépôt, équiper le poste (ou, à un hackathon, un dépôt déjà branché).</p>
+
+    <article class="proc" id="p1">
+      <header class="proc-head"><span class="pid">P1</span><div><h3>Obtenir son accès</h3><div class="who"><span class="chip">Tout le monde</span><span class="chip once">une fois</span></div></div></header>
+      <div class="flow stack" aria-label="Obtenir son accès">
+        <div class="node"><span class="k">équipe plateforme</span><span class="c">adresse</span><span class="d">de la webapp et façon de se connecter</span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node cmd"><span class="k">webapp</span><span class="c">Se connecter</span><span class="d">compte de l'organisation ou local ; session de 8 h</span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node hum"><span class="k">Responsable du corpus</span><span class="c">vous donne un rôle</span><span class="d">sur votre produit, selon votre besoin</span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node"><span class="k">webapp</span><span class="c">Mes droits</span><span class="d">vos rôles par nœud, et d'où ils viennent</span></div>
+      </div>
+      <ol class="steps">
+        <li><div><p>Demandez à l'équipe plateforme <strong>l'adresse de la webapp</strong> et la façon de vous connecter (compte de l'organisation ou compte local).</p></div></li>
+        <li><div><p>Ouvrez la webapp, cliquez <strong>Se connecter</strong>. La session dure 8 heures.</p></div></li>
+        <li><div><p>Demandez votre rôle sur votre produit au <strong>Responsable du corpus</strong> de ce produit, en précisant ce dont vous avez besoin :</p>
+          <div class="rights">
+            <div class="right"><span class="verb">Lire</span><span class="r">lecteur</span><p>lire, chercher, suivre</p><span class="by">accordé par le Responsable du corpus</span></div>
+            <div class="right"><span class="verb">Contribuer</span><span class="r">contributeur</span><p>répondre aux questions ouvertes, travailler dans Claude Code</p><span class="by">accordé par le Responsable du corpus</span></div>
+            <div class="right"><span class="verb">Métier</span><span class="r">business-editor</span><span class="then">publier : business-publisher</span><p>sources, personas, designs, intentions</p><span class="by">à demander à part</span></div>
+            <div class="right"><span class="verb">Objectifs</span><span class="r">okr-editor</span><span class="then">publier : okr-publisher</span><p>écrire des OKR</p><span class="by">à demander à part</span></div>
+            <div class="right"><span class="verb">Relier Figma</span><span class="r">ux</span><p>connexion Figma, design system qui fait foi, maquettes ; ni accès, ni exceptions</p><span class="by">accordé par le Responsable du corpus</span></div>
+            <div class="right"><span class="verb">Décrire le produit</span><span class="r">owner</span><p>le produit, ses sources, ses accès, ses règles</p><span class="by">accordé par le Responsable du corpus</span></div>
+            <div class="right"><span class="verb">Auditer</span><span class="r">auditeur</span><p>auditer l'instance</p><span class="by">à demander à l'équipe plateforme</span></div>
+          </div>
+          <div class="note warn"><strong>Attention</strong>Les rôles <code>owner</code> et <code>contributeur</code> ne donnent <strong>pas</strong> les droits métier : demandez-les à part.</div></div></li>
+        <li><div><p><strong>Si vous travaillez dans Claude Code</strong>, rien d'autre à demander : Claude Code se connecte au central avec ce même compte (<a href="#p3">P3</a>, étape 7). Personne ne vous remet de jeton.</p></div></li>
+      </ol>
+      <div class="note ok"><strong>Vérifier</strong>Menu utilisateur › <em>Mes droits</em> : vos rôles par nœud, et d'où ils viennent. Un rôle donné sur un regroupement vaut pour tous ses produits.</div>
+      <div class="note warn"><strong>Si ça bloque</strong>Un produit qui « n'existe pas » (erreur 404) est un produit que vous n'avez pas le droit de lire. Un bouton absent est une permission absente.</div>
+    </article>
+
+    <article class="proc" id="p2">
+      <header class="proc-head"><span class="pid">P2</span><div><h3>Brancher le dépôt de l'équipe</h3><div class="who"><span class="chip">Tech Lead</span><span class="chip once">une fois par dépôt</span><span class="chip">après l'embarquement (P13)</span></div></div></header>
+      <div class="note info"><strong>Principe</strong>Personne hors de l'équipe n'écrit dans son dépôt ni dans son GitLab : c'est vous qui posez tout, par MR. Voici ce qui change une fois le branchement fait ; les pastilles renvoient aux étapes.</div>
+      <div class="repo">
+        <div class="tree" aria-label="Ce qui arrive dans le dépôt">
+          <div class="row">votre-dépôt/</div>
+          <div class="row"><span class="dim">├─</span> .nexus/ <span class="badge">1</span><span class="hint">instantané</span></div>
+          <div class="row"><span class="dim">│&nbsp;&nbsp;├─</span> rules/ <span class="dim">· contexte · manifeste</span></div>
+          <div class="row"><span class="dim">│&nbsp;&nbsp;├─</span> ci/gate-check.gitlab-ci.yml</div>
+          <div class="row"><span class="dim">│&nbsp;&nbsp;└─</span> approvals/rules.yaml <span class="dim">·</span> CODEOWNERS</div>
+          <div class="row"><span class="dim">├─</span> tests de caractérisation <span class="badge">2</span><span class="hint">si specs as-is</span></div>
+          <div class="row"><span class="dim">├─</span> .gitlab-ci.yml <span class="badge">3</span><span class="hint">+ include du composant</span></div>
+          <div class="row"><span class="dim">├─</span> CODEOWNERS <span class="badge">5</span><span class="hint">copié de .nexus/approvals/</span></div>
+          <div class="row"><span class="dim">├─</span> .mcp.json <span class="badge">6</span></div>
+          <div class="row"><span class="dim">└─</span> .claude/commands/ <span class="dim">·</span> .claude/skills/ <span class="badge">6</span></div>
+        </div>
+        <div class="gl" aria-label="Ce qui se règle dans GitLab">
+          <div class="k" style="margin:0">Dans les paramètres GitLab</div>
+          <div class="row"><span class="badge">4</span><div><strong>Variable <code>NEXUS_GITLAB_TOKEN</code></strong><div class="path">Paramètres › CI/CD › Variables · masquée · jeton de projet <code>read_api</code></div></div></div>
+          <div class="row"><span class="badge">4</span><div><strong>Signature</strong> <span style="color:var(--muted);font-size:12.5px">(si mise en place)</span><div class="path">au niveau du groupe : <code>NEXUS_SNAPSHOT_KEYS</code>, <code>NEXUS_REQUIRE_SIGNATURE=1</code></div></div></div>
+          <div class="row"><span class="badge">4</span><div><strong>Figma</strong> <span style="color:var(--muted);font-size:12.5px">(facultatif)</span><div class="path"><code>NEXUS_FIGMA_TOKEN</code> masquée ; sinon le central vérifie les maquettes</div></div></div>
+          <div class="row"><span class="badge">5</span><div><strong>Règles d'approbation</strong><div class="path">celles de <code>.nexus/approvals/rules.yaml</code></div></div></div>
+          <div class="k" style="margin:6px 0 0">Résultat</div>
+          <div class="row"><span class="v go">gate-check</span><div class="path">un job sur chaque MR, avec des cas <code>G3 · &lt;critère&gt;</code>, et <code>G2 · &lt;critère&gt;</code> si la MR modifie une spec</div></div>
+        </div>
+      </div>
+      <ol class="steps">
+        <li><div><p><strong>Instantané.</strong> Vous recevez de l'équipe plateforme un fichier <code>&lt;dépôt&gt;.nexus.patch</code>. Sur une branche :</p>
+          <div class="code"><span class="lang">bash</span><button class="copy" type="button">Copier</button><pre>git switch -c nexus/premier-instantane</pre></div>
+          <div class="code"><span class="lang">bash</span><button class="copy" type="button">Copier</button><pre>git apply --index &lt;chemin&gt;/&lt;dépôt&gt;.nexus.patch</pre></div>
+          <p>Commitez, poussez, ouvrez la MR, faites-la relire, fusionnez. Le dossier <code>.nexus/</code> est dans le dépôt.</p></div></li>
+        <li><div><p><strong>Tests de caractérisation</strong> (si le produit a des specs « as-is ») : vous recevez <code>&lt;dépôt&gt;.patch</code> et un <code>LISEZMOI.md</code>. Même geste (<code>git apply --index</code>), MR, fusion. Votre CI les exécute ; <strong>un test rouge signale une spec fausse, pas un bug</strong>.</p></div></li>
+        <li><div><p><strong>CI.</strong> Dans <code>.gitlab-ci.yml</code>, incluez le composant fourni :</p>
+          <div class="code"><span class="lang">yaml</span><button class="copy" type="button">Copier</button><pre>include:
+  - local: .nexus/ci/gate-check.gitlab-ci.yml</pre></div></div></li>
+        <li><div><p><strong>Variable de CI.</strong> GitLab › Paramètres › CI/CD › Variables : créez <code>NEXUS_GITLAB_TOKEN</code>, <strong>masquée</strong>, avec un jeton de projet à portée <code>read_api</code>. Si l'équipe plateforme a mis en place la signature des instantanés, ajoutez aussi (au niveau du groupe) <code>NEXUS_SNAPSHOT_KEYS</code> (la clé publique qu'elle vous donne) et <code>NEXUS_REQUIRE_SIGNATURE=1</code>. <code>NEXUS_FIGMA_TOKEN</code> (jeton Figma de lecture, masqué) est facultatif : sans lui, G2 fait vérifier les maquettes par le central, avec la connexion Figma du produit (<a href="#p7">P7</a>).</p></div></li>
+        <li><div><p><strong>Approbations.</strong> Appliquez dans GitLab les règles de <code>.nexus/approvals/rules.yaml</code> et copiez le <code>CODEOWNERS</code> de <code>.nexus/approvals/</code> à la racine. Ils viennent des responsables de gate nommés au central (<a href="#p16">P16</a>).</p></div></li>
+        <li><div><p><strong>Commandes Claude Code.</strong> Demandez à l'équipe plateforme les fichiers <code>.mcp.json</code>, <code>.claude/commands/</code> et <code>.claude/skills/</code> de votre dépôt (elle les génère pour vous). Commitez-les par MR : toute l'équipe en profite, et personne n'a besoin du dépôt de l'outil.</p></div></li>
+      </ol>
+      <div class="note ok"><strong>Vérifier</strong>Ouvrez une MR de test : un job <code>gate-check</code> apparaît et son widget de tests montre des cas <code>G3 · &lt;critère&gt;</code>, et aussi <code>G2 · &lt;critère&gt;</code> quand la MR modifie une spec (<code>specs/&lt;NNN&gt;/spec.md</code>). Le job tourne même si un job précédent a échoué : un pipeline rouge donne un verdict motivé.</div>
+      <div class="note warn"><strong>Si ça bloque</strong>
+        <div class="tw"><table>
+          <thead><tr><th>Symptôme</th><th>Que faire</th></tr></thead>
+          <tbody>
+            <tr><td>Job <code>gate-check</code> : « NEXUS_GITLAB_TOKEN absent »</td><td>créer la variable (étape 4)</td></tr>
+            <tr><td>Le job ne peut pas installer son outil</td><td>l'outil n'est pas encore publié sur votre index interne : demandez à l'équipe plateforme ; en attendant, retirez l'inclusion et utilisez <code>/gate g3</code> sur le poste (un avis, pas une preuve)</td></tr>
+            <tr><td><code>git apply</code> refuse le patch</td><td>le dépôt a changé depuis la génération : demandez un nouveau patch</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </article>
+
+    <article class="proc" id="p3">
+      <header class="proc-head"><span class="pid">P3</span><div><h3>Équiper son poste et Claude Code</h3><div class="who"><span class="chip">Développeur</span><span class="chip">QA</span><span class="chip">Tech Lead</span><span class="chip once">étapes 1–4 : une fois par poste</span><span class="chip once">étapes 5–8 : une fois par dépôt</span></div></div></header>
+      <div class="note info"><strong>Avant de commencer</strong>Il vous faut : Claude Code installé (méthode de l'organisation), <code>git</code>, <code>uv</code>, le clone du dépôt d'équipe sur la branche avec <code>.nexus/</code> et le <code>.mcp.json</code> commité par le Tech Lead (<a href="#p2">P2</a>), Zscaler actif pour GitLab, vos comptes Jira et GitLab, et votre rôle <code>contributeur</code> sur le produit (<a href="#p1">P1</a>). <strong>Aucun jeton du central n'est à demander ni à recopier</strong> : Claude Code se connecte au central avec votre compte de l'organisation (étape 7).</div>
+      <ol class="steps">
+        <li><div><p><strong>Installer <code>nexus-local</code></strong>, le serveur qui lit l'instantané sur votre poste. Ouvrez la page <strong>Installer son poste</strong> du central (menu de la webapp › <em>Installer mon poste</em>, ou <code>https://&lt;adresse du central&gt;/api/v1/poste</code>), connectez-vous, téléchargez le paquet, vérifiez son empreinte SHA-256, puis installez le fichier avec la commande <code>uv tool install</code> affichée sur la page.</p>
+          <p>Si le navigateur a ajouté <code> (1)</code>, rendez au fichier son nom d'origine avant de l'installer. La page indique comment configurer les certificats, le miroir PyPI et Python derrière Zscaler.</p>
+          <p>Vérifiez que <code>nexus-local --help</code> répond.</p></div></li>
+        <li><div><p><strong>Votre jeton GitLab personnel</strong> (portée <code>read_api</code>), pour que Claude lise la CI de vos MR. Créez-le vous-même dans GitLab (Préférences › Jetons d'accès) et rangez-le dans <code>~/.config/nexus-local/.env</code>, hors de tout dépôt. Créez le fichier avec les permissions <code>600</code> comme indiqué sur la page, puis saisissez cette ligne dans un éditeur :</p>
+          <div class="code"><span class="lang">.env</span><button class="copy" type="button">Copier</button><pre>SPECKIT_GITLAB_TOKEN=&lt;votre jeton personnel GitLab&gt;</pre></div></div></li>
+        <li><div><p><strong>Clé de signature</strong> (si l'équipe plateforme en publie une) : collez la ligne de clé publique dans <code>~/.config/nexus-local/snapshot-keys</code>. C'est une clé publique, pas un secret.</p></div></li>
+        <li><div><p><strong>Brancher Jira et GitLab dans Claude Code.</strong> Ajoutez les serveurs MCP Jira et GitLab de l'organisation au niveau utilisateur avec les commandes publiées sur <strong>Installer son poste</strong>. Si une commande manque, demandez-la à la plateforme. Authentifiez chaque serveur depuis <code>/mcp</code> si Claude Code le demande. Sans MCP GitLab, la livraison peut passer par <code>git push</code> et <code>glab</code>.</p>
+          <p><strong>Sans accès au MCP Jira</strong> (non fourni, ou vous n'avez pas les droits), Claude lit et écrit dans Jira par l'API REST, avec <strong>votre</strong> jeton, au travers de <code>nexus-local</code>.</p>
+          <p><strong>Repli REST de Jira</strong> (facultatif, à poser si le MCP Jira vous manque). Dans le même fichier <code>~/.config/nexus-local/.env</code>, hors de tout dépôt :</p>
+          <div class="code"><span class="lang">.env</span><button class="copy" type="button">Copier</button><pre>SPECKIT_JIRA_URL=https://&lt;votre-site&gt;.atlassian.net
+SPECKIT_JIRA_EMAIL=&lt;votre e-mail Atlassian&gt;
+SPECKIT_JIRA_TOKEN=&lt;votre jeton d'API Atlassian&gt;</pre></div>
+          <p>Le jeton se crée sur <code>id.atlassian.com</code> (Sécurité › Jetons d'API). Pour un Jira Data Center, omettez <code>SPECKIT_JIRA_EMAIL</code> et mettez un jeton d'accès personnel. Vérifiez : <code>nexus-local jira access</code> doit répondre <code>"reachable": true</code> avec votre nom. Les collectes Atlassian se font <strong>sans</strong> Zscaler.</p>
+          <p>Les droits sont les vôtres : Claude ne voit et n'écrit que ce que vous pouvez voir et écrire. Claude utilise le MCP Jira quand il est là ; le repli prend le relais quand il est absent ou non authentifié. L'écriture reste celle de <code>/deliver</code> : un commentaire et une transition, après un aperçu que vous validez.</p></div></li>
+        <li><div><p><strong>Ouvrir Claude Code dans le dépôt :</strong></p>
+          <div class="code"><span class="lang">bash</span><button class="copy" type="button">Copier</button><pre>cd &lt;dépôt de l'équipe&gt;
+claude</pre></div></div></li>
+        <li><div><p><strong>Approuver les serveurs du projet.</strong> Au premier lancement, Claude Code demande d'approuver les serveurs MCP déclarés dans le dépôt : acceptez <code>nexus-local</code> et <code>nexus</code>, et <code>figma</code> s'il est déclaré.</p>
+          <div class="note info"><strong>MCP Figma</strong><code>figma</code> (le MCP Figma officiel) n'est posé que si le produit a un design system qui fait foi (<a href="#p7">P7</a>) : authentifiez-le par <code>/mcp</code> › <code>figma</code> › <strong>Authenticate</strong>, avec votre compte Figma. Claude y lit le design system et les maquettes ; ses outils d'écriture sont refusés dans <code>.claude/settings.json</code>.</div></div></li>
+        <li><div><p><strong>Se connecter au central.</strong> Tapez <code>/mcp</code>, choisissez <code>nexus</code> (signalé « à authentifier »), puis <strong>Authenticate</strong>.</p>
+          <div class="flow stack" aria-label="Connexion au central">
+            <div class="node cmd"><span class="k">Claude Code</span><span class="c">/mcp › nexus</span><span class="d">Authenticate</span></div>
+            <div class="arrow"><svg><use href="#arr"/></svg></div>
+            <div class="node"><span class="k">navigateur</span><span class="c">connexion</span><span class="d">compte de l'organisation ou du central</span></div>
+            <div class="arrow"><svg><use href="#arr"/></svg></div>
+            <div class="node hum"><span class="k">vous</span><span class="c">Autoriser</span><span class="d">la page nomme Claude Code et l'adresse locale qui reçoit l'accès</span></div>
+            <div class="arrow"><svg><use href="#arr"/></svg></div>
+            <div class="node"><span class="k">résultat</span><span class="c">à votre nom</span><span class="d">vos droits, relus à chaque appel</span></div>
+          </div>
+          <p>Un rôle retiré vaut tout de suite. La connexion se renouvelle seule ; si elle expire ou est révoquée, Claude Code vous redemande de vous connecter.</p>
+          <p>Faites de même <strong>une fois dans un terminal</strong>, pour les commandes de <code>nexus-local</code> qui parlent au central (la section « Existant ailleurs » du brief, <code>snapshot pull</code>) :</p>
+          <div class="code"><span class="lang">bash</span><button class="copy" type="button">Copier</button><pre>nexus-local --repo . login</pre></div>
+          <p>Le navigateur s'ouvre de la même façon. Pour couper l'accès de ce poste : <code>nexus-local --repo . logout</code>.</p>
+          <p>Si le central est injoignable, tout le travail sur un ticket continue sur l'instantané du dépôt ; seuls <code>/existant</code> (limité à votre produit, il le dit), les questions ouvertes depuis Claude Code et <code>snapshot pull</code> attendent son retour.</p>
+          <div class="note info"><strong>Poste en conteneur</strong>, voie recommandée : la page « Installer mon poste » du central (onglet « Conteneur Docker ») fournit le kit à télécharger (<code>nexus-poste-kit.zip</code> : Dockerfile, compose, wheel et adresse du central), que vous construisez sur votre machine ; aucune image n'est publiée (sources : <code>deploy/poste/</code>, voir son <code>README.md</code>). Le navigateur de votre machine doit pouvoir revenir dans le conteneur. L'image fixe donc les ports de retour : <code>NEXUS_LOCAL_CALLBACK_PORT</code> (port de <code>nexus-local login</code>) et <code>NEXUS_LOCAL_CALLBACK_HOST=0.0.0.0</code> (adresse d'écoute dans le conteneur), <code>MCP_OAUTH_CALLBACK_PORT</code> pour Claude Code. Ces ports ne sont publiés que sur <code>127.0.0.1</code> de votre machine. L'adresse de retour annoncée au central reste <code>http://127.0.0.1:&lt;port&gt;/callback</code>. Hors conteneur, ne posez pas ces variables. Derrière Zscaler, le conteneur lit en lecture seule le certificat déjà présent sur votre poste (<code>NEXUS_CA_FILE</code> et <code>compose.ca.yaml</code>) : il n'entre ni dans l'image ni dans le dépôt.</div></div></li>
+        <li><div><p><strong>Vérifier</strong>, dans Claude Code :</p>
+          <ul>
+            <li>tapez <code>/mcp</code> et vérifiez que <code>nexus-local</code>, <code>nexus</code>, les MCP Jira et GitLab configurés, et <code>figma</code> s'il est déclaré, sont connectés ;</li>
+            <li>tapez « appelle l'outil <code>snapshot_status</code> du serveur nexus-local » : il donne votre produit, la date de l'instantané, et dit s'il est signé, périmé ou modifié ;</li>
+            <li>tapez <code>/tickets</code> : la liste de vos tickets s'affiche.</li>
+          </ul>
+          <p>Hors de Claude Code, en cas de doute :</p>
+          <div class="code"><span class="lang">bash</span><button class="copy" type="button">Copier</button><pre>nexus-local --repo . status</pre></div></div></li>
+      </ol>
+      <div class="note ok"><strong>Liste de contrôle</strong>
+        <ul class="checklist" style="list-style:none;padding:0;display:grid;gap:4px;margin-top:4px">
+          <li><label><input type="checkbox" id="ck1"> <code>nexus-local</code> installé</label></li>
+          <li><label><input type="checkbox" id="ck2"> jeton GitLab dans <code>~/.config/nexus-local/.env</code></label></li>
+          <li><label><input type="checkbox" id="ck3"> MCP Jira et GitLab ajoutés</label></li>
+          <li><label><input type="checkbox" id="ck4"> <code>.nexus/</code> présent</label></li>
+          <li><label><input type="checkbox" id="ck5"> serveurs du projet approuvés</label></li>
+          <li><label><input type="checkbox" id="ck6"> <code>nexus</code> authentifié dans <code>/mcp</code></label></li>
+          <li><label><input type="checkbox" id="ck7"> <code>nexus-local login</code> fait</label></li>
+        </ul>
+      </div>
+      <div class="note warn"><strong>Si ça bloque</strong>
+        <div class="tw"><table>
+          <thead><tr><th>Symptôme</th><th>Que faire</th></tr></thead>
+          <tbody>
+            <tr><td><code>nexus-local</code> et <code>nexus</code> absents de <code>/mcp</code></td><td>vous avez ouvert Claude Code hors du dépôt, ou <code>.mcp.json</code> n'est pas commité (P2, étape 6)</td></tr>
+            <tr><td>Vous avez refusé les serveurs au premier lancement</td><td><code>claude mcp reset-project-choices</code>, puis relancez Claude Code</td></tr>
+            <tr><td><code>nexus</code> redemande la connexion</td><td>session expirée : <code>/mcp</code> › <code>nexus</code> › Authenticate</td></tr>
+            <tr><td><code>nexus</code> connecté mais un produit « inconnu »</td><td>votre compte n'a pas de rôle sur ce produit (P1)</td></tr>
+            <tr><td>« poste non connecté au central : lancer <code>nexus-local login</code> »</td><td>P3, étape 7, dans un terminal</td></tr>
+            <tr><td>« ce central n'annonce pas de serveur d'autorisation »</td><td>le central ne propose pas encore la connexion des personnes : signalez-le à l'équipe plateforme</td></tr>
+            <tr><td>« aucun instantané .nexus/ »</td><td>le dépôt n'a pas encore reçu son instantané : P2, étape 1</td></tr>
+            <tr><td>« instantané modifié localement »</td><td><code>git checkout -- .nexus/</code>, ou demandez un nouvel instantané</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </article>
+    <article class="proc" id="p3b">
+      <header class="proc-head"><span class="pid">P3b</span><div><h3>Hackathon : être prêt en autonomie, sans MR d'embarquement</h3><div class="who"><span class="chip">Participant d'un hackathon</span><span class="chip once">une fois par événement</span></div></div></header>
+      <div class="note info"><strong>Dépôt déjà branché</strong>À un hackathon, le dépôt de l'équipe contient déjà le <code>.nexus/</code>, les commandes Claude Code, la status line et un <code>.mcp.json</code> <strong>portable</strong> : pas de Tech Lead, pas de MR à fusionner (<a href="#p2">P2</a> n'a pas lieu d'être). Il reste l'installation du poste et la connexion. <strong>Temps d'embarquement : à mesurer</strong> : personne qui découvre le produit ne l'a encore chronométré, aucune durée n'est annoncée.</div>
+      <div class="note info"><strong>Ce que vous recevez</strong>De l'organisateur : votre invitation au central (lien à usage unique) et votre accès à Claude Code (<strong>comment il est donné n'est pas décidé</strong> ; sans lui rien ne démarre). Le reste, la ligne d'installation et vos accès GitLab, s'affiche après l'invitation. Il vous faut un terminal (macOS, Linux, WSL ou PowerShell sous Windows), <code>git</code>, Claude Code connecté à un compte, un navigateur et un gestionnaire de mots de passe.</div>
+      <ol class="steps">
+        <li><div><p><strong>Accepter l'invitation.</strong> Ouvrez le lien, choisissez identifiant et mot de passe (12 caractères au moins). La page <strong>Votre accès GitLab</strong> s'affiche ensuite.</p></div></li>
+        <li><div><p><strong>Copier vos accès GitLab, tout de suite.</strong> La page ne les affiche <strong>qu'une seule fois</strong> : rangez-les dans votre gestionnaire de mots de passe avant d'aller plus loin.</p>
+          <div class="tw"><table>
+            <thead><tr><th>Accès</th><th>À quoi il sert</th></tr></thead>
+            <tbody>
+              <tr><td>Adresse</td><td><code>https://gitlab.34-155-130-81.sslip.io</code>, le GitLab de l'événement</td></tr>
+              <tr><td>Identifiant</td><td>le même que sur le central</td></tr>
+              <tr><td>Jeton personnel <code>glpat-…</code></td><td>git et API ; sa date de fin est affichée. C'est lui que l'installeur et <code>git clone</code> demandent</td></tr>
+              <tr><td>Mot de passe</td><td>seulement pour vous connecter à GitLab dans le navigateur</td></tr>
+            </tbody>
+          </table></div></div></li>
+        <li><div><p><strong>Installer votre poste.</strong> Copiez la ligne affichée sur la page et collez-la dans un terminal :</p>
+          <div class="code"><span class="lang">bash</span><button class="copy" type="button">Copier</button><pre>curl -fsSL 'https://&lt;central&gt;/api/v1/poste/i/&lt;code&gt;/install.sh' | sh</pre></div>
+          <p>Sous Windows, dépliez <em>Sous Windows (PowerShell)</em> sur la page. Le script vérifie le paquet, installe <code>nexus-local</code>, branche Claude Code, puis vous demande votre <strong>jeton</strong> (il le range dans un fichier lisible par vous seul). Il propose ensuite le dépôt de votre équipe : <strong>Entrée</strong> suffit pour l'accepter. Pour cloner, il demande votre identifiant puis ce même jeton.</p>
+          <p>La ligne est valable <strong>15 minutes</strong>. Passé ce délai, ou si vous avez fermé la page, menu de la webapp › <em>Installer mon poste</em> en donne une autre.</p></div></li>
+        <li><div><p><strong>Sans l'installeur</strong>, si le script échoue : clonez le dépôt à la main, avec votre identifiant et votre jeton comme mot de passe.</p>
+          <div class="code"><span class="lang">bash</span><button class="copy" type="button">Copier</button><pre>git clone https://gitlab.34-155-130-81.sslip.io/courtloop/courtloop-web.git
+cd courtloop-web</pre></div>
+          <p>La page détaille la configuration à la main (<em>Sans l'installeur : cloner et configurer à la main</em>) et liste les <em>Dépôts des autres équipes</em>, en lecture seule. Le dépôt contient <code>DEMARRER.md</code> : ces mêmes pas, l'adresse de votre central, et <strong>les tickets de votre équipe avec la clé du projet Jira fictif</strong> (par exemple <code>CT-201</code> pour le projet <code>CT</code>).</p></div></li>
+        <li><div><p><strong>Continuer vers Context Nexus.</strong> Cochez <em>J'ai copié mon jeton et mon mot de passe</em>, puis <strong>Continuer vers Context Nexus</strong>. Vérifiez dans <em>Mes droits</em> que vous êtes <code>contributeur</code> sur le nœud de votre équipe.</p></div></li>
+        <li><div><p><strong>Ouvrir Claude Code dans le dépôt</strong> (<code>claude</code>), approuver les serveurs <code>nexus-local</code> et <code>nexus</code>.</p></div></li>
+        <li><div><p><strong>Vous connecter au central.</strong> <code>/mcp</code> › <code>nexus</code> › <strong>Authenticate</strong>, connectez-vous, lisez le consentement, <strong>Autoriser</strong>. Puis, une fois dans un terminal :</p>
+          <div class="code"><span class="lang">bash</span><button class="copy" type="button">Copier</button><pre>nexus-local --repo . login</pre></div>
+          <p>Aucun jeton à recopier (<a href="#p3">P3</a>, étape 7).</p></div></li>
+        <li><div><p><strong>Vérifier</strong>, dans Claude Code : <code>/mcp</code> montre <code>nexus-local</code> et <code>nexus</code> connectés ; « appelle l'outil <code>snapshot_status</code> du serveur nexus-local » donne votre produit et la date de l'instantané.</p></div></li>
+        <li><div><p><strong>Premier ticket.</strong> Prenez un ticket de <code>DEMARRER.md</code>, tapez <code>/ticket &lt;clé&gt;</code> : le verdict (<code>prêt</code>, <code>à compléter</code>, <code>non prêt</code>) puis le brief. <strong>Le « Jira » de l'événement n'est pas décidé</strong> : tant qu'aucun MCP Jira ne répond, Claude vous demande de coller le résumé et la description ; copiez-les depuis <code>DEMARRER.md</code>. Ensuite <code>/implement &lt;clé&gt;</code>, puis <a href="#p10">P10</a> pour livrer.</p></div></li>
+      </ol>
+      <div class="note ok"><strong>Par rôle, dans l'équipe</strong>
+        <div class="tw"><table>
+          <thead><tr><th>Qui</th><th>Ce qu'il fait</th></tr></thead>
+          <tbody>
+            <tr><td>Chaque membre qui travaille dans le dépôt</td><td>les étapes 1 à 3 et 5 à 9, sur son poste</td></tr>
+            <tr><td>Le membre qui approuve la MR d'un autre (à deux, l'autre ; à trois, à tour de rôle)</td><td>relit et approuve dans GitLab avec son propre compte : l'auteur ne peut pas approuver sa propre MR (<a href="#p11">P11</a>)</td></tr>
+            <tr><td>Un membre sans poste équipé (PO, par exemple)</td><td>webapp seulement : étapes 1, 2 et 5, <em>Explorer</em>, questions ouvertes (<a href="#p6">P6</a>)</td></tr>
+            <tr><td>L'animateur</td><td>circule, aide, tient la liste « qui est bloqué à l'installation » ; liste de validation : <code>docs/validation-manuelle-kit-poste.md</code></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div class="note warn"><strong>Si ça bloque</strong>
+        <div class="tw"><table>
+          <thead><tr><th>Symptôme</th><th>Que faire</th></tr></thead>
+          <tbody>
+            <tr><td>La ligne d'installation est refusée</td><td>plus de 15 minutes ont passé : menu de la webapp › <em>Installer mon poste</em> en donne une autre</td></tr>
+            <tr><td>Jeton ou mot de passe GitLab perdu</td><td>la page ne les redonne pas : lien <em>Perdu ? Un nouveau jeton</em></td></tr>
+            <tr><td><code>git clone</code> refuse le mot de passe</td><td>donnez le <strong>jeton</strong> <code>glpat-…</code>, pas le mot de passe du navigateur</td></tr>
+            <tr><td><code>nexus-local</code> : commande introuvable après l'installation</td><td>rouvrez le terminal (le <code>PATH</code> change à l'installation) ; <code>uv tool update-shell</code> si besoin</td></tr>
+            <tr><td><code>nexus-local</code> et <code>nexus</code> absents de <code>/mcp</code></td><td>Claude Code ouvert hors du dépôt cloné, ou serveurs refusés : <code>claude mcp reset-project-choices</code></td></tr>
+            <tr><td><code>nexus</code> : l'authentification échoue ou ne revient pas</td><td><strong>cas encore non éprouvé</strong> sur macOS et Windows avec le vrai Claude Code : notez le message exact et l'heure, prévenez l'animateur (ne cherchez pas de jeton)</td></tr>
+            <tr><td>« poste non connecté au central »</td><td><code>nexus-local --repo . login</code> dans un terminal</td></tr>
+            <tr><td><code>/tickets</code> ne liste rien, ou demande une configuration Jira</td><td>attendu tant que le Jira de l'événement n'est pas branché : prenez les tickets de <code>DEMARRER.md</code></td></tr>
+            <tr><td><code>nexus</code> connecté mais produit « inconnu »</td><td>votre compte n'a pas le rôle sur le nœud de votre équipe : prévenez l'animateur</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div class="note info"><strong>L'exploitant : produire des dépôts « prêts à cloner »</strong>Sur le poste de l'exploitant, jamais par un participant :
+        <div class="code"><span class="lang">bash</span><button class="copy" type="button">Copier</button><pre>NEXUS_CENTRAL_URL=https://&lt;central&gt; python -m speckit_bootstrap demo-scenario --pack &lt;id&gt; --ci --demo-root workspace/&lt;dossier&gt;</pre></div>
+        <p><code>--central-url &lt;adresse&gt;</code> fait la même chose ; la variable d'environnement permet à <code>provision.py</code> et <code>golden.py</code> de la transmettre. Sans adresse, le <code>.mcp.json</code> n'a que <code>nexus-local</code> et la commande le dit. Chaque dépôt reçoit : <code>.mcp.json</code> (<code>nexus-local --repo .</code> et <code>nexus</code> en <code>type: http</code>, sans jeton ni chemin de la machine), <code>.claude/commands/</code> avec son manifeste d'empreintes, la status line, <code>.nexus/</code> dont le manifeste porte l'adresse du central, <code>.gitlab-ci.yml</code> et <code>DEMARRER.md</code>. Le golden de la CI contient cette adresse : si elle change, le reconstruire. <strong>La connexion d'un vrai Claude Code au central en ligne n'est pas éprouvée</strong> : <code>docs/validation-manuelle-kit-poste.md</code>.</p></div>
+    </article>
+  </section>
+
+  <!-- ============ COMPRENDRE ============ -->
+  <section class="chapter" id="ch-comprendre">
+    <div class="chapter-head full-only"><span class="num">04</span><h2>Comprendre l'existant et préparer le besoin</h2></div>
+    <p class="chapter-intro full-only">Avant de coder, savoir ce que le système fait déjà, écrire un besoin qu'on peut construire, trancher ce qui est incertain.</p>
+
+    <article class="proc" id="p4">
+      <header class="proc-head"><span class="pid">P4</span><div><h3>Interroger l'existant</h3><div class="who"><span class="chip">Product Manager</span><span class="chip">Product Owner</span><span class="chip">UX</span><span class="chip">tous ceux qui veulent savoir</span><span class="chip">avant d'écrire un besoin</span></div></div></header>
+      <div class="note info"><strong>Deux portes, la même connaissance</strong>Dans la webapp (ci-dessous) pour le PM, le PO et l'UX ; dans Claude Code par <code>/existant &lt;sujet&gt;</code> pour le développeur (<a href="#p8">P8</a>, étape 2).</div>
+      <ol class="steps">
+        <li><div><p>Webapp › <em>Explorer › Interroger l'existant</em>. Choisissez le nœud (l'organisation pour chercher partout).</p></div></li>
+        <li><div><p>Posez la question en langage courant : « annulation d'une réservation », « lien de paiement ».</p></div></li>
+        <li><div><p>Lisez pour chaque résultat : le <strong>statut</strong> (<code>draft</code> = hypothèse non relue), les <strong>sources</strong>, les <strong>questions ouvertes</strong> (ce qui est incertain).</p></div></li>
+        <li><div><p>Lisez le bandeau de <strong>couverture</strong> : « N produits sur M ont de la connaissance publiée ».</p></div></li>
+        <li><div><p><strong>Copiez la réponse sourcée</strong> pour la coller dans le ticket.</p></div></li>
+      </ol>
+      <div class="note stop"><strong>À retenir</strong>Un résultat vide sur un produit non couvert veut dire « le Nexus ne sait pas », pas « ça n'existe pas ».</div>
+      <div class="note warn"><strong>Si le bandeau dit « Recherche lexicale seule »</strong>La recherche par le sens est indisponible : reformulez avec les mots de l'équipe.</div>
+    </article>
+
+    <article class="proc" id="p5">
+      <header class="proc-head"><span class="pid">P5</span><div><h3>Écrire un ticket prêt</h3><div class="who"><span class="chip">Product Manager</span><span class="chip">Product Owner</span></div></div></header>
+      <p class="prose"><strong>Pour le développement.</strong> Le Dev lancera <code>/ticket</code> sur votre ticket ; il sera jugé ainsi. <span class="v no">non prêt</span> n'est pas un refus : c'est la liste de ce qu'il faut ajouter.</p>
+      <div class="tw"><table>
+        <thead><tr><th>Critère</th><th>Effet</th></tr></thead>
+        <tbody>
+          <tr><td>Description assez complète pour comprendre le besoin</td><td><span class="v no">bloquant</span></td></tr>
+          <tr><td>Au moins un critère d'acceptation identifiable</td><td><span class="v no">bloquant</span></td></tr>
+          <tr><td>Critères écrits comme des assertions (contexte, action, résultat, seuil)</td><td><span class="v wa">avertissement</span></td></tr>
+          <tr><td>Ticket rattaché à une capacité connue du système</td><td><span class="v wa">avertissement</span></td></tr>
+          <tr><td>Pas de question ouverte non traitée sur les specs voisines</td><td><span class="v wa">avertissement</span></td></tr>
+          <tr><td>Exigences non fonctionnelles citées si elles comptent</td><td><span class="v wa">avertissement</span></td></tr>
+        </tbody>
+      </table></div>
+      <div class="grid g2">
+        <div class="card"><h4>La forme d'un critère</h4><p style="color:var(--ink)"><strong>Étant donné</strong> &lt;contexte&gt;, <strong>quand</strong> &lt;action&gt;, <strong>alors</strong> &lt;résultat observable&gt;.</p></div>
+        <div class="card"><h4>Un chiffre plutôt qu'un adjectif</h4><p><span style="color:var(--go)">✓</span> « le paiement aboutit en moins de 3 secondes pour 95 % des cas »<br><span style="color:var(--nogo)">✗</span> « rapide et fiable »</p></div>
+      </div>
+      <div class="note info"><strong>Pour la spécification (besoin, gate G1)</strong>Utilisez le gabarit <a href="#ticket-besoin">Ticket Besoin</a>. Pour un avis avant la revue, lancez <code>/gate g1 &lt;clé&gt;</code> dans Claude Code : il lit le ticket avec le MCP Jira (sinon <code>jira_issue</code> de <code>nexus-local</code>) et juge critère par critère (champs complets, contexte cité, données disponibles…). C'est un <strong>avis sur le poste</strong> : rien n'est consigné au central, et la décision reste la transition du ticket (P12).</div>
+    </article>
+
+    <article class="proc" id="p6">
+      <header class="proc-head"><span class="pid">P6</span><div><h3>Répondre aux questions ouvertes</h3><div class="who"><span class="chip">Product Owner</span><span class="chip">UX</span><span class="chip">droit <code>contributeur</code></span></div></div></header>
+      <div class="flow stack" aria-label="Vie d'une question ouverte">
+        <div class="node"><span class="k">spec as-is</span><span class="c">contradiction</span><span class="d">code, tickets et doc ne disent pas la même chose</span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node hum"><span class="k">vous</span><span class="c">réponse</span><span class="d">nature, décision, qui, date, source</span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node"><span class="k">Responsable du corpus</span><span class="c">intégrée</span><span class="d">dans la spec, citée par une référence</span></div>
+      </div>
+      <ol class="steps">
+        <li><div><p>Webapp › <em>Explorer › Questions ouvertes</em>. Filtrez par état « ouverte ».</p></div></li>
+        <li><div><p>Choisissez une question. Dans le panneau de droite, renseignez :</p>
+          <ul>
+            <li>la <strong>nature</strong> de la réponse : le code est le bon, le code est à corriger, autre décision, hors périmètre ;</li>
+            <li>le <strong>texte</strong> de la décision ;</li>
+            <li><strong>qui a décidé</strong>, la <strong>date</strong>, la <strong>source</strong> (réunion, page, ticket).</li>
+          </ul></div></li>
+        <li><div><p><kbd>Ctrl</kbd> + <kbd>Entrée</kbd> enregistre et passe à la suivante.</p></div></li>
+        <li><div><p>Vous ne savez pas ? Choisissez <strong>Reportée</strong>, ne devinez pas.</p></div></li>
+      </ol>
+      <p class="prose">Votre réponse est versionnée, jamais écrasée. Elle entre dans la spec au passage suivant du Responsable du corpus, citée par une référence, jamais par votre nom. Depuis Claude Code connecté au central (<a href="#p3">P3</a>, étape 7), la même chose se fait par « liste mes questions ouvertes » puis « réponds à la question &lt;clé&gt; ».</p>
+    </article>
+
+    <article class="proc" id="p7">
+      <header class="proc-head"><span class="pid">P7</span><div><h3>Tenir les référentiels métier</h3><div class="who"><span class="chip"><code>business-editor</code> / <code>business-publisher</code></span><span class="chip"><code>okr-editor</code> / <code>okr-publisher</code></span><span class="chip">Figma : <code>ux</code> ou <code>owner</code></span></div></div></header>
+      <div class="flow" aria-label="Publier un référentiel">
+        <div class="node"><span class="k">1</span><span class="c">Source publiée</span><span class="d">titre, lien, provenance, version, date, responsable</span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node"><span class="k">2</span><span class="c">Référentiel</span><span class="d">OKR, persona, design, intention</span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node"><span class="k">3</span><span class="c">Brouillon</span><span class="d">source liée</span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node hum"><span class="k">4</span><span class="c">Relecture</span><span class="d">par le responsable métier</span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node cmd"><span class="k">5</span><span class="c">Publier</span><span class="d">action séparée, droit <code>*-publisher</code></span></div>
+      </div>
+      <ol class="steps">
+        <li><div><p>Webapp › <em>Explorer › Produit</em>, onglet <em>Référentiels</em> (ou <em>Personas</em>). Choisissez le nœud où l'information s'applique : un niveau parent la partage avec tous ses produits.</p></div></li>
+        <li><div><p><strong>Commencez par une source</strong> : un référentiel publié doit citer au moins une source publiée. Champs obligatoires : titre, lien, provenance, version, date de collecte, responsable, audience <code>node</code>, classification <code>internal</code>.</p></div></li>
+        <li><div><p>Créez le référentiel, avec ses champs obligatoires :</p>
+          <div class="tw"><table>
+            <thead><tr><th>Type</th><th>Champs obligatoires</th></tr></thead>
+            <tbody>
+              <tr><td>OKR</td><td>objectif, responsable, état, période (début, fin) ; par résultat clé : identifiant, mesure, valeur de départ, cible, unité, source de mesure</td></tr>
+              <tr><td>Persona</td><td>description, preuves (faits sourcés), hypothèses (à confirmer)</td></tr>
+              <tr><td>Design, intention, spécification</td><td>description</td></tr>
+            </tbody>
+          </table></div></div></li>
+        <li><div><p><strong>Liez la source publiée</strong> (OKR, persona, design), <strong>enregistrez en brouillon</strong>.</p></div></li>
+        <li><div><p><strong>Faites relire</strong> par le responsable métier.</p></div></li>
+        <li><div><p><strong>Publiez</strong> (action séparée, droit <code>*-publisher</code>).</p></div></li>
+      </ol>
+      <div class="note stop"><strong>Règles</strong>N'inventez ni valeur de départ, ni cible, ni échéance : sans elles, l'OKR reste en brouillon. Séparez les faits des hypothèses. Pour un design, distinguez ce qui est visible, ce qui est décrit et ce que vous en déduisez ; joignez un lien Figma versionné ou, hors Figma, un export. Aucune donnée réelle de client ou d'employé dans une démonstration.</div>
+      <h4 id="p7-figma" style="font-size:16px;font-weight:700;margin:22px 0 8px">Relier Figma au produit</h4>
+      <p class="prose"><em>UX ou <code>owner</code> : rôle <code>ux</code>, ou permission de configurer le nœud.</em> Une fois par produit, ou sur un regroupement pour tous ses produits.</p>
+      <div class="flow" aria-label="Relier Figma au produit">
+        <div class="node hum"><span class="k">1</span><span class="c">Connecter Figma</span><span class="d"><em>Corpus › Sources</em>, onglet <em>Figma</em> ; lecture seule, à votre nom</span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node"><span class="k">2</span><span class="c">Design system</span><span class="d">désigné comme faisant foi</span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node"><span class="k">3</span><span class="c">Maquettes</span><span class="d">vérifiées dans Figma par le central</span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node cmd"><span class="k">résultat</span><span class="c">instantané et G2</span><span class="d"><code>.nexus/design/</code>, maquettes citées vérifiées</span></div>
+      </div>
+      <ol class="steps">
+        <li><div><p><em>Corpus › Sources</em>, onglet <em>Figma</em>. Cliquez <strong>Connecter Figma</strong> : Figma vous demande d'autoriser une lecture seule, à votre nom. Si l'équipe plateforme n'a pas encore enregistré l'application Figma, l'écran propose de coller un jeton personnel Figma de lecture à la place.</p></div></li>
+        <li><div><p><strong>Liez le design system</strong> (lien du fichier de bibliothèque) et désignez-le <strong>comme faisant foi</strong> : il vaut pour le produit et ses descendants, et part dans l'instantané (<code>.nexus/design/</code>) à la projection suivante (<a href="#p18">P18</a>).</p></div></li>
+        <li><div><p><strong>Liez les maquettes</strong> des parcours clés. Le central vérifie chaque lien dans Figma et n'en garde que la clé, le nom, la version et la date ; jamais le contenu d'une maquette.</p></div></li>
+        <li><div><p>Chaque geste s'enregistre seul (pas de bouton Enregistrer). Les liens d'un regroupement apparaissent plus bas, en lecture seule.</p></div></li>
+      </ol>
+      <div class="note info"><strong>Bon à savoir</strong>Pour couper l'accès : <strong>Déconnecter</strong> efface les jetons du central ; retirez aussi l'application dans vos réglages Figma, qui n'offre pas de révocation à distance. Cette connexion sert G2 : sans jeton Figma sur le poste ni en CI, les maquettes citées par une spec sont vérifiées par elle. Éprouvée sur la démonstration, pas encore contre le vrai Figma de l'organisation.</div>
+    </article>
+  </section>
+
+  <!-- ============ CONSTRUIRE ET LIVRER ============ -->
+  <section class="chapter" id="ch-livrer">
+    <div class="chapter-head full-only"><span class="num">05</span><h2>Construire et livrer</h2></div>
+    <p class="chapter-intro full-only">Du ticket prêt à la MR fusionnée. Deux chemins pour coder (choisissez Spec Kit <strong>ou</strong> le chemin court, jamais les deux sur un même ticket), puis la relecture et la décision humaine.</p>
+
+    <article class="proc" id="p8">
+      <header class="proc-head"><span class="pid">P8</span><div><h3>Traiter un ticket, chemin court</h3><div class="who"><span class="chip">Développeur</span><span class="chip">ticket simple, ou dépôt sans Spec Kit</span></div></div></header>
+      <div class="flow" aria-label="Chemin court">
+        <div class="node cmd"><span class="k">1</span><span class="c">/tickets</span><span class="d">vos tickets ouverts, 10 par page, colonne « Prêt ? » indicative</span><span class="g"><b>Vous :</b> un numéro ou une clé ; <code>suivante</code> pour la page d'après</span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node cmd"><span class="k">2</span><span class="c">/existant &lt;sujet&gt;</span><span class="d">ce que le système fait déjà, avec statut et sources (<a href="#p4">P4</a>)</span><span class="g"><b>Vous :</b> lisez les questions ouvertes et les produits « non couverts »</span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node cmd"><span class="k">3</span><span class="c">/ticket ABC-123</span><span class="d">le verdict, ce qui manque, puis le <strong>brief</strong> : règles, capacité, extraits sourcés, avertissements</span><span class="g"><b>Vous :</b> <span class="v no">non prêt</span> complétez avec le PO et relancez</span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node cmd"><span class="k">4</span><span class="c">/implement ABC-123</span><span class="d">branche <code>feature/ABC-123-…</code>, code par petits incréments, contrôles après chacun, spec amendée, avis de G3</span><span class="g"><b>Vous :</b> relisez <strong>chaque</strong> diff ; plan d'activation si demandé</span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node cmd"><span class="k">5</span><span class="c">/deliver ABC-123</span><span class="d">MR, CI, ticket à jour</span><span class="g">voir <a href="#p10">P10</a></span></div>
+      </div>
+
+      <h4 class="mini">Pendant <code>/implement</code> : la boucle des contrôles</h4>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 760 200" role="img" aria-labelledby="d3t">
+            <title id="d3t">Boucle d'implémentation : incrément, contrôles, correction jusqu'à 5 tentatives</title>
+            <defs><marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0L10 5L0 10z"/></marker></defs>
+            <rect class="s-box acc" x="20" y="60" width="160" height="64" rx="12"/>
+            <text class="s-t" x="100" y="90" text-anchor="middle">Incrément</text>
+            <text class="s-s" x="100" y="110" text-anchor="middle">un petit pas de code</text>
+            <rect class="s-box" x="260" y="60" width="180" height="64" rx="12"/>
+            <text class="s-t" x="350" y="90" text-anchor="middle">Contrôles de code</text>
+            <text class="s-s" x="350" y="110" text-anchor="middle">tests · lint · secrets · spec</text>
+            <rect class="s-box" x="540" y="14" width="200" height="56" rx="12"/>
+            <text class="s-l" x="640" y="38" text-anchor="middle">vert : incrément suivant</text>
+            <text class="s-s" x="640" y="56" text-anchor="middle">jusqu'à la fin du ticket</text>
+            <rect class="s-box hum" x="540" y="120" width="200" height="64" rx="12"/>
+            <text class="s-lh" x="640" y="146" text-anchor="middle">rouge 5 fois : arrêt</text>
+            <text class="s-s" x="640" y="166" text-anchor="middle">Claude explique, vous reprenez</text>
+            <line class="s-line" x1="180" y1="92" x2="256" y2="92" marker-end="url(#ah2)"/>
+            <line class="s-line" x1="440" y1="80" x2="536" y2="48" marker-end="url(#ah2)"/>
+            <line class="s-line" x1="440" y1="106" x2="536" y2="146" marker-end="url(#ah2)"/>
+            <path class="s-line dash" d="M350 124 C350 176 100 176 100 128" marker-end="url(#ah2)"/>
+            <text class="s-s" x="225" y="190" text-anchor="middle">rouge : Claude corrige (5 tentatives au plus)</text>
+          </svg>
+        </div>
+      </figure>
+      <ul>
+        <li>Un test rouge se corrige dans le code, ou dans la spec si elle est fausse. <strong>Jamais en adaptant le test.</strong></li>
+        <li>Un secret détecté sort du code immédiatement.</li>
+        <li><code>design-tokens</code> (avertissement) relève, dans les lignes ajoutées, les couleurs et polices codées en dur : utilisez les jetons et composants du design system qui fait foi (<code>.nexus/design/design-system.yaml</code>).</li>
+        <li>Rien n'est poussé, le ticket n'est pas touché.</li>
+      </ul>
+      <div class="note info"><strong>Autres vues de /tickets</strong><code>/tickets ouverts</code>, <code>/tickets bugs</code>, <code>/tickets a-faire</code>, <code>/tickets bloques</code>, <code>/tickets sprint</code>, <code>/tickets recents --jours 7</code>. Raccourcis : <code>/mes-tickets</code>, <code>/bugs</code>, <code>/a-prendre</code>, <code>/bloques</code>. Ajoutez <code>--tout</code> pour tout le projet Jira au lieu de votre équipe.</div>
+      <div class="note warn"><strong>Si ça bloque</strong>« contrôle non évaluable » : aucune commande n'est définie pour ce contrôle sur votre pile ; signalez-le au Responsable des règles. Pour voir quels contrôles s'appliquent et d'où ils viennent : « appelle l'outil <code>code_checks_config</code> ».</div>
+    </article>
+
+    <article class="proc" id="p9">
+      <header class="proc-head"><span class="pid">P9</span><div><h3>Traiter un ticket avec Spec Kit</h3><div class="who"><span class="chip">Développeur, Tech Lead</span><span class="chip">dépôt où l'équipe a installé Spec Kit</span></div></div></header>
+      <div class="prose">
+        <p>Le Nexus <strong>ne modifie pas</strong> les commandes Spec Kit : elles appartiennent à l'équipe. Il les <strong>encadre</strong>. <code>/parcours</code> vérifie le ticket, vous dit à quelle étape vous en êtes, prépare la commande suivante et ce que le Nexus doit lui apporter. Selon la version de Spec Kit, les commandes s'écrivent <code>/speckit-specify</code> ou <code>/speckit.specify</code> : <code>/parcours</code> utilise celle de votre dépôt.</p>
+        <p><strong>Démarrer.</strong> Tapez <code>/parcours ABC-123</code>. Il lit le ticket, donne son verdict (<span class="v no">non prêt</span> : il s'arrête), assemble le brief, cherche le dossier <code>specs/NNN-*/</code>, puis affiche la séquence avec l'état de chaque étape (<span class="v go">fait</span> <span class="v ne">à faire</span> <span class="v ac">prochaine</span>) et propose la prochaine commande, prête à copier. <strong>Relancez <code>/parcours ABC-123</code> à chaque étape</strong> : c'est votre tableau de bord.</p>
+      </div>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 1080 250" role="img" aria-labelledby="d4t">
+            <title id="d4t">Séquence Spec Kit encadrée par /parcours, avec l'apport du Nexus à chaque étape</title>
+            <defs><marker id="ah3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah acc" d="M0 0L10 5L0 10z"/></marker></defs>
+            <rect class="s-box acc" x="10" y="12" width="1060" height="36" rx="18"/>
+            <text class="s-la" x="30" y="35">/parcours ABC-123</text>
+            <text class="s-s" x="170" y="35">relancé à chaque étape : état de la séquence et commande suivante</text>
+            <line class="s-line acc" x1="20" y1="108" x2="1060" y2="108" marker-end="url(#ah3)"/>
+            <g id="seq"></g>
+          </svg>
+        </div>
+        <figcaption>En haut, la commande Spec Kit ; en bas, ce qu'il faut demander au Nexus à cette étape.</figcaption>
+      </figure>
+      <div class="grid g2">
+        <div class="card"><h4>1 · <code>/speckit-specify</code></h4><p>Lancez-la avec la description préparée par <code>/parcours</code> : clé et résumé du ticket, critères d'acceptation <strong>cités tels quels</strong>, capacité. Vérifiez que <code>spec.md</code> cite la clé et reprend les critères mot pour mot. Un critère à changer se change <strong>dans Jira, par le PO</strong>. Ajoutez ensuite l'<a href="#en-tete-spec">en-tête Nexus</a> : G2 s'appuie sur lui ; chaque maquette Figma citée doit exister à la version épinglée, avec le nœud cité (lien copié de Figma avec son <code>node-id</code>).</p></div>
+        <div class="card"><h4>2 · <code>/speckit-clarify</code></h4><p>Avant : « liste les questions ouvertes du produit avec <code>open_questions</code> ». Tranchez ce qui relève de l'équipe. Ce qui relève du PO ou d'une autre équipe : ne devinez pas, laissez la question ouverte et signalez-la (<a href="#p6">P6</a>).</p></div>
+        <div class="card"><h4>3 · <code>/speckit-plan</code></h4><p>Si le brief n'est plus dans la conversation, relancez <code>/ticket ABC-123</code>. Demandez « que fait déjà le système sur &lt;sujet&gt; ? avec <code>existing</code> ». Vérifiez que <code>plan.md</code> couvre les rubriques du <a href="#plan-conception">plan de conception</a>.</p></div>
+        <div class="card"><h4>4 · <code>/speckit-tasks</code></h4><p>Demandez « ajoute en tâches de fin les contrôles de <code>code_checks_config</code> ». Les dernières tâches de <code>tasks.md</code> sont les contrôles : tests, lint, secrets, spec à jour, jetons du design system.</p></div>
+        <div class="card"><h4>5 · <code>/speckit-analyze</code></h4><p>Le Nexus n'apporte rien de plus ici. Relancez-la après <strong>chaque</strong> retouche de spec, plan ou tâches.</p></div>
+        <div class="card"><h4>6 · <code>/speckit-implement</code></h4><p>Après chaque incrément significatif : « lance <code>code_checks</code> ». Un test ne s'adapte jamais pour passer ; un secret sort immédiatement ; rien n'est poussé.</p></div>
+        <div class="card"><h4>7 · <code>/speckit-converge</code></h4><p>« lance <code>code_checks</code> puis <code>gate_check</code> sur g3 » : l'avis de G3 avant de livrer (plan d'activation, preuves manquantes).</p></div>
+        <div class="card"><h4>8 · Livrer</h4><p><code>/gate g3</code>, puis <code>/deliver ABC-123</code> (<a href="#p10">P10</a>).</p></div>
+      </div>
+      <div class="note warn"><strong>Si ça bloque</strong>« Spec Kit n'est pas installé dans ce dépôt » : son installation (<code>specify init</code>) est une décision de l'équipe ; en attendant, prenez le chemin court (<a href="#p8">P8</a>).</div>
+    </article>
+
+    <article class="proc" id="p10">
+      <header class="proc-head"><span class="pid">P10</span><div><h3>Livrer et passer G3</h3><div class="who"><span class="chip">Développeur</span></div></div></header>
+      <div class="grid g2" style="align-items:start">
+        <ol class="pipe">
+          <li><span class="dot"></span><div class="lane-l">Vous</div><div class="t"><code>/gate g3</code> (ou <code>/gate g3 &lt;MR&gt;</code>)</div><div style="font-size:14px">L'avis de la machine critère par critère, avec l'action attendue et les personnes à engager. C'est un <strong>avis</strong>.</div></li>
+          <li><span class="dot"></span><div class="lane-l">Vous</div><div class="t">Plan d'activation</div><div style="font-size:14px">S'il manque : <a href="#plan-activation">gabarit</a>.</div></li>
+          <li><span class="dot"></span><div class="lane-l">Claude · <code>/deliver ABC-123</code></div><div class="t">Relance contrôles et avis de G3</div><span class="stopper">rouge : ne pousse pas</span><span class="stopper">NO-GO : ne pousse pas</span></li>
+          <li><span class="dot"></span><div class="lane-l">Claude</div><div class="t">Pousse la branche, ouvre la MR</div><div style="font-size:14px">Titre = clé et résumé ; description = critères, spec, capacité, plan d'activation.</div></li>
+          <li><span class="dot"></span><div class="lane-l">Claude</div><div class="t">Lit la CI et corrige</div><div style="font-size:14px">Pipeline, tests, SonarQube, Checkmarx.</div><span class="loop">↻ 3 tours au plus</span></li>
+          <li><span class="dot"></span><div class="lane-l">Claude</div><div class="t">Relit le passage de G3</div><div style="font-size:14px">Vous dit ce qui attend qui.</div></li>
+          <li><span class="dot"></span><div class="lane-l">Claude, en votre nom</div><div class="t">Commentaire et transition dans Jira</div><div style="font-size:14px">Sans MCP Jira, il vous donne le texte à coller.</div></li>
+          <li class="hum"><span class="dot"></span><div class="lane-l">Approbateurs</div><div class="t">Relisent la MR (<a href="#p11">P11</a>)</div></li>
+          <li class="hum"><span class="dot"></span><div class="lane-l">Vous</div><div class="t">Fusionnez vous-même</div><div style="font-size:14px">Une fois les approbations obtenues. <strong>Claude ne fusionne jamais.</strong></div></li>
+        </ol>
+        <div>
+          <h4 class="mini">Les critères de G3 et ce qu'ils lisent</h4>
+          <div class="tw"><table>
+            <thead><tr><th>Critère</th><th>Pour le satisfaire</th></tr></thead>
+            <tbody>
+              <tr><td><code>deterministic-checks</code><br><small style="color:var(--muted)">jobs et rapport de tests de la MR</small></td><td>un pipeline vert qui publie son rapport de tests</td></tr>
+              <tr><td><code>security-findings</code><br><small style="color:var(--muted)">SonarQube, Checkmarx, rapports GitLab</small></td><td>zéro alerte bloquante, et aucune analyse attendue qui manque (SonarQube ou Checkmarx absent = non évaluable, jamais un succès) ; une dérogation se décide par une personne (<a href="#p12">P12</a>)</td></tr>
+              <tr><td><code>matches-spec</code><br><small style="color:var(--muted)">juge séparé, désactivé par défaut</small></td><td><span class="v ne">non-évalué</span> : le relecteur vérifie que le code suit la spec</td></tr>
+              <tr><td><code>review-record</code><br><small style="color:var(--muted)">approbations, hors auteur et agents</small></td><td>les approbations exigées par la criticité du produit</td></tr>
+              <tr><td><code>criticality-approval</code><br><small style="color:var(--muted)">rôles exigés ; PCI ou CAB : attestation</small></td><td><a href="#p12">P12</a></td></tr>
+              <tr><td><code>flag-activation-plan</code><br><small style="color:var(--muted)">section <code>## Plan d'activation</code> de la MR</small></td><td><a href="#plan-activation">gabarit</a></td></tr>
+            </tbody>
+          </table></div>
+        </div>
+      </div>
+      <div class="note warn"><strong>Si ça bloque</strong>
+        <div class="tw"><table>
+          <thead><tr><th>Symptôme</th><th>Que faire</th></tr></thead>
+          <tbody>
+            <tr><td>Claude demande de coller le ticket ou la liste</td><td>ni MCP Jira, ni repli REST : posez <code>SPECKIT_JIRA_URL</code>, <code>SPECKIT_JIRA_TOKEN</code> (et <code>SPECKIT_JIRA_EMAIL</code> pour Jira Cloud), puis <code>nexus-local jira access</code></td></tr>
+            <tr><td><code>jira_access</code> : jeton refusé</td><td>jeton expiré, mal copié, ou e-mail manquant (Jira Cloud) ; pour Data Center, jeton d'accès personnel sans e-mail</td></tr>
+            <tr><td><code>jira_update</code> : transition absente</td><td>le nom de transition des règles du niveau n'existe pas sur ce ticket : choisissez l'une de celles que l'aperçu liste, ou ne commentez que</td></tr>
+            <tr><td><code>ci_feedback</code> échoue</td><td>Zscaler actif ? <code>SPECKIT_GITLAB_TOKEN</code> dans <code>~/.config/nexus-local/.env</code> ? Remote <code>origin</code> non reconnu : ajoutez <code>SPECKIT_GITLAB_URL=&lt;adresse de GitLab&gt;</code> au même fichier</td></tr>
+            <tr><td>Critère <span class="v ne">non-évaluable</span></td><td>la preuve n'est pas publiée (rapport de tests, analyse de sécurité) ou la MR n'existe pas encore</td></tr>
+            <tr><td>G2 · <code>design-refs</code> <span class="v ne">non-évaluable</span></td><td>Figma n'a pas pu être lu : ni jeton Figma (poste ou CI), ni connexion Figma du produit, ou poste non connecté au central (<code>nexus-local login</code>) ; demandez à l'UX de relier Figma (<a href="#p7">P7</a>)</td></tr>
+            <tr><td>G2 · <code>design-drift</code></td><td>la maquette a changé depuis la version citée : épinglez la nouvelle version dans la spec, ou faites confirmer par l'UX celle qui fait foi</td></tr>
+            <tr><td>Claude s'arrête après 3 tours</td><td>lisez son explication et reprenez la main</td></tr>
+            <tr><td>Alerte de sécurité contestée</td><td>ne la contournez pas : demandez une dérogation au Decision Guarantor (<a href="#p12">P12</a>)</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </article>
+
+    <article class="proc" id="p11">
+      <header class="proc-head"><span class="pid">P11</span><div><h3>Relire et approuver une MR</h3><div class="who"><span class="chip">Tech Lead</span><span class="chip">QA</span><span class="chip">Approbateur de gate</span></div></div></header>
+      <div class="flow stack" aria-label="Ce qu'on lit dans une MR">
+        <div class="node"><span class="k">1 · dans la MR</span><span class="c">résumé gate-check</span><span class="d">critères en échec, ce qui attend qui</span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node"><span class="k">2</span><span class="c">diff + spec amendée</span><span class="d"><code>matches-spec</code> n'est pas évalué : votre relecture le couvre</span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node"><span class="k">3</span><span class="c">plan d'activation</span><span class="d">dans la description</span></div>
+      </div>
+      <div class="branch">
+        <div class="br ok"><h4>Tout est bon : approuvez</h4><p>Dans GitLab. Votre approbation compte si vous êtes nommé approbateur ; celle de l'auteur de la MR ou d'un agent ne compte jamais.</p></div>
+        <div class="br ko"><h4>Quelque chose manque : refusez</h4><p>En commentaire, avec la ligne que propose le résumé :</p>
+          <div class="code"><button class="copy" type="button">Copier</button><pre>NO-GO g3:&lt;critère&gt; — &lt;action attendue&gt; — @&lt;personne à engager&gt;</pre></div></div>
+        <div class="br wa"><h4>Après un nouveau push : réapprouvez</h4><p>Une approbation antérieure au dernier commit ne compte plus.</p></div>
+      </div>
+      <div class="note info"><strong>QA en plus</strong>Suivez les tests de caractérisation dans la webapp : <em>Pilotage › Qualité des specs</em>, onglet <em>Tests en CI</em>. Un scénario rouge signale une spec fausse : ouvrez une question (<a href="#p6">P6</a>) plutôt que de corriger le test.</div>
+    </article>
+
+    <article class="proc" id="p12">
+      <header class="proc-head"><span class="pid">P12</span><div><h3>Décider une gate</h3><div class="who"><span class="chip">Decision Guarantor</span><span class="chip">Approbateur de gate</span><span class="chip">nommés en P16</span></div></div></header>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 900 150" role="img" aria-labelledby="d6t">
+            <title id="d6t">Les six quality gates, leur état et où elles se décident</title>
+            <line class="s-line" x1="30" y1="62" x2="870" y2="62"/>
+            <g id="gates"></g>
+            <rect x="30" y="122" width="12" height="12" rx="3" style="fill:var(--go)"/><text class="s-s" x="48" y="132">évaluée par la machine</text>
+            <rect x="210" y="122" width="12" height="12" rx="3" style="fill:var(--wait)"/><text class="s-s" x="228" y="132">en cours</text>
+            <rect x="310" y="122" width="12" height="12" rx="3" style="fill:var(--line)"/><text class="s-s" x="328" y="132">définie, pas encore évaluée</text>
+          </svg>
+        </div>
+      </figure>
+      <p class="prose">La décision se donne <strong>là où vit l'objet</strong> : sur la <strong>merge request</strong> pour G2 et G3, par une <strong>transition du ticket Jira</strong> pour G1, G5 et G6. Le central la lit et la consigne ; il ne décide pas. Le résumé du job <code>gate-check</code> propose ces lignes déjà remplies : copiez-les.</p>
+      <div class="decisions">
+        <div class="dec"><div class="what" style="color:var(--go)">Accepter<small>tout approbateur nommé</small></div><div class="how">J'approuve la MR dans GitLab.</div></div>
+        <div class="dec"><div class="what" style="color:var(--nogo)">Refuser<small>tout approbateur nommé</small></div><div class="how">Je commente :
+          <div class="code"><button class="copy" type="button">Copier</button><pre>NO-GO g3:&lt;critère&gt; — &lt;action attendue&gt; — @&lt;personne à engager&gt;</pre></div></div></div>
+        <div class="dec"><div class="what" style="color:var(--human)">Déroger<small>à un critère bloquant · Decision Guarantor seulement</small></div><div class="how">Je commente, <strong>et</strong> j'approuve la MR :
+          <div class="code"><button class="copy" type="button">Copier</button><pre>DÉROGATION g3:&lt;critère&gt; — &lt;motif&gt; — jusqu'au AAAA-MM-JJ — approuvée par @&lt;moi&gt;</pre></div></div></div>
+        <div class="dec"><div class="what" style="color:var(--human)">Attester<small>périmètre PCI ou CAB · Decision Guarantor</small></div><div class="how">Je commente, <strong>et</strong> j'approuve la MR :
+          <div class="code"><button class="copy" type="button">Copier</button><pre>ATTESTATION g3:&lt;critère&gt; — @&lt;moi&gt;</pre></div></div></div>
+        <div class="dec"><div class="what">Escalader</div><div class="how">J'ajoute le label <code>gate-escalade</code>. L'escalade est levée par l'approbation du Decision Guarantor donnée <strong>après</strong>.</div></div>
+      </div>
+      <div class="note stop"><strong>Pour que votre décision compte</strong>
+        <ul>
+          <li>vous devez être nommé dans <em>Règles › Rôles de gouvernance</em>, avec le compte GitLab ou Jira que vous utilisez : le <code>@nom</code> écrit dans la ligne ne prouve rien, c'est l'auteur du commentaire qui compte ;</li>
+          <li>elle doit porter sur le <strong>dernier commit</strong> : après un nouveau push, refaites le geste ;</li>
+          <li>un <code>NO-GO</code> n'est jamais rouvert : la correction ouvre un nouveau passage ;</li>
+          <li>une dérogation tombe à sa date de fin : le critère redevient bloquant ;</li>
+          <li>modifier un commentaire après coup est signalé ; c'est la version lue qui compte.</li>
+        </ul>
+      </div>
+      <div class="note ok"><strong>Vérifier</strong>Webapp › <em>Règles › Passages</em> : vue <em>Tous les passages</em> (votre décision a-t-elle été retenue, sinon le motif), vue <em>Dérogations en cours</em> (échéances), vue <em>Statistiques</em> (flux et pertinence des gates, agrégés par gate, jamais par personne). La vue <em>Ce qui m'attend</em> reste vide tant que vos comptes GitLab et Jira ne sont pas reliés à votre identité du central, et les passages ne sont relus qu'à la demande de l'équipe plateforme : en attendant, suivez vos MR dans GitLab.</div>
+    </article>
+  </section>
+
+  <!-- ============ TENIR À JOUR ============ -->
+  <section class="chapter" id="ch-maj">
+    <div class="chapter-head full-only"><span class="num">06</span><h2>Tenir le Nexus à jour</h2></div>
+    <p class="chapter-intro full-only">Embarquer un produit, construire et garder sa connaissance, nommer les décideurs, régler les règles, et faire arriver tout cela dans les dépôts.</p>
+
+    <article class="proc" id="p13">
+      <header class="proc-head"><span class="pid">P13</span><div><h3>Embarquer un produit</h3><div class="who"><span class="chip">droit <code>owner</code> sur le produit</span><span class="chip">le nœud a été créé par l'équipe plateforme</span></div></div></header>
+      <div class="flow" aria-label="Qui fait quoi pour embarquer un produit">
+        <div class="node cmd"><span class="k">vous · 1-3</span><span class="c">décrire, sources, accès</span><span class="d">dans la webapp</span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node"><span class="k">équipe plateforme · 4</span><span class="c">collecte</span><span class="d">Confluence, Jira, Notion, documents</span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node cmd"><span class="k">vous</span><span class="c">specs as-is</span><span class="d"><a href="#p14">P14</a></span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node"><span class="k">équipe plateforme · 5</span><span class="c">publication, patchs</span><span class="d">connaissance publiée</span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node hum"><span class="k">6 · vous prévenez</span><span class="c">Tech Lead, règles</span><span class="d"><a href="#p2">P2</a> et <a href="#p16">P16</a></span></div>
+      </div>
+      <ol class="steps">
+        <li><div><p><strong>Décrire le produit.</strong> <em>Explorer › Produit</em>, onglet <em>État</em>, <strong>Modifier</strong> : équipe propriétaire, dépôts GitLab (applicatifs et dépendances), projet et filtre Jira, espace Confluence, criticité, classe de données, pile, périmètre PCI ou CAB. Enregistrez.</p></div></li>
+        <li><div><p><strong>Choisir les sources.</strong> <em>Corpus › Sources</em>, un onglet par source : pages Confluence, racines Notion, bibliothèques de documents à collecter, Figma (<a href="#p7">P7</a>, ou déléguez-le à l'UX avec le rôle <code>ux</code>).</p></div></li>
+        <li><div><p><strong>Donner les accès.</strong> <em>Corpus › Accès</em>, onglet <em>Rôles d'accès</em> : ajoutez chaque personne (identifiant fourni par l'équipe plateforme), son rôle (<a href="#p1">P1</a>), éventuellement une date de fin.</p></div></li>
+        <li><div><p><strong>Demander la collecte</strong> à l'équipe plateforme, puis construire les specs (<a href="#p14">P14</a>).</p></div></li>
+        <li><div><p><strong>Demander la publication et les patchs</strong> à l'équipe plateforme une fois les specs vérifiées : elle publie la connaissance et produit les patchs que le Tech Lead fusionne (<a href="#p2">P2</a>).</p></div></li>
+        <li><div><p><strong>Prévenir le Tech Lead</strong> pour P2, et le Responsable des règles pour <a href="#p16">P16</a>.</p></div></li>
+      </ol>
+      <div class="note ok"><strong>Vérifier</strong><em>Explorer › Interroger l'existant</em> : votre produit n'apparaît plus dans « non couverts ». <em>Pilotage › Observatoire</em> : chaque étape de votre produit est à jour.</div>
+    </article>
+
+    <article class="proc" id="p14">
+      <header class="proc-head"><span class="pid">P14</span><div><h3>Construire les specs as-is</h3><div class="who"><span class="chip">session Claude Code dans <code>workspace/&lt;équipe&gt;/</code></span><span class="chip">préparé par l'équipe plateforme, jamais versionné</span></div></div></header>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 900 260" role="img" aria-labelledby="d5t">
+            <title id="d5t">Construction du corpus : carte des capacités, boucle par capacité, questions, constitution</title>
+            <defs><marker id="ah5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0L10 5L0 10z"/></marker></defs>
+            <rect class="s-box acc" x="10" y="90" width="140" height="70" rx="12"/>
+            <text class="s-m" x="80" y="120" text-anchor="middle">/capacites</text>
+            <text class="s-s" x="80" y="140" text-anchor="middle">8 à 20 capacités</text>
+            <rect class="s-box hum" x="180" y="90" width="120" height="70" rx="12"/>
+            <text class="s-lh" x="240" y="118" text-anchor="middle">point d'arrêt</text>
+            <text class="s-s" x="240" y="138" text-anchor="middle">valider avec</text>
+            <text class="s-s" x="240" y="153" text-anchor="middle">Tech Lead et PO</text>
+            <rect class="s-box" x="330" y="20" width="300" height="210" rx="14" style="fill:none;stroke-dasharray:6 5"/>
+            <text class="s-l" x="346" y="42">pour chaque capacité, une à la fois</text>
+            <rect class="s-inner" x="350" y="58" width="260" height="44" rx="8"/>
+            <text class="s-m" x="366" y="85">/spec-capacite &lt;NNN&gt;</text>
+            <rect class="s-inner" x="350" y="116" width="260" height="44" rx="8"/>
+            <text class="s-m" x="366" y="143">make verify-specs</text>
+            <text class="s-s" x="526" y="143">→ 0 preuve cassée</text>
+            <rect class="s-inner" x="350" y="174" width="260" height="44" rx="8"/>
+            <text class="s-m" x="366" y="201">/tests-capacite &lt;NNN&gt;</text>
+            <line class="s-line" x1="480" y1="102" x2="480" y2="114" marker-end="url(#ah5)"/>
+            <line class="s-line" x1="480" y1="160" x2="480" y2="172" marker-end="url(#ah5)"/>
+            <rect class="s-box hum" x="660" y="40" width="110" height="70" rx="12"/>
+            <text class="s-lh" x="715" y="68" text-anchor="middle">questions</text>
+            <text class="s-s" x="715" y="88" text-anchor="middle">tranchées (P6)</text>
+            <rect class="s-box" x="660" y="140" width="110" height="70" rx="12"/>
+            <text class="s-m" x="715" y="168" text-anchor="middle">/integrer-</text>
+            <text class="s-m" x="715" y="186" text-anchor="middle">reponses</text>
+            <rect class="s-box acc" x="790" y="90" width="100" height="70" rx="12"/>
+            <text class="s-m" x="840" y="120" text-anchor="middle">/constitution</text>
+            <text class="s-s" x="840" y="140" text-anchor="middle">puis publier</text>
+            <line class="s-line" x1="150" y1="125" x2="176" y2="125" marker-end="url(#ah5)"/>
+            <line class="s-line" x1="300" y1="125" x2="326" y2="125" marker-end="url(#ah5)"/>
+            <line class="s-line" x1="630" y1="100" x2="656" y2="80" marker-end="url(#ah5)"/>
+            <line class="s-line" x1="715" y1="110" x2="715" y2="136" marker-end="url(#ah5)"/>
+            <line class="s-line" x1="770" y1="160" x2="788" y2="140" marker-end="url(#ah5)"/>
+            <path class="s-line dash" d="M660 190 C640 250 520 250 500 232" marker-end="url(#ah5)"/>
+            <text class="s-s" x="590" y="252" text-anchor="middle">puis verify-specs à nouveau</text>
+          </svg>
+        </div>
+      </figure>
+      <ol class="steps">
+        <li><div><p><strong><code>/capacites</code></strong> : la carte des capacités métier (8 à 20), à partir du code, de Jira et de la documentation. <strong>Point d'arrêt : validez la carte avec le Tech Lead et le PO</strong> avant d'aller plus loin.</p></div></li>
+        <li><div><p>Pour chaque capacité, une à la fois :</p>
+          <ol>
+            <li><strong><code>/spec-capacite &lt;NNN&gt;</code></strong> : la spec du comportement <strong>actuel</strong>, chaque affirmation avec sa preuve ; les contradictions entre code, tickets et documentation deviennent des questions ouvertes ;</li>
+            <li><strong>vérifiez</strong> : <code>make verify-specs TEAMS=&lt;équipe&gt;</code> jusqu'à zéro preuve cassée ;</li>
+            <li><strong><code>/tests-capacite &lt;NNN&gt;</code></strong> : les tests de caractérisation de la spec.</li>
+          </ol></div></li>
+        <li><div><p><strong>Faites trancher les questions ouvertes</strong> par le PO et le Tech Lead (<a href="#p6">P6</a>). Une séance commune d'une heure vaut mieux que des relances.</p></div></li>
+        <li><div><p><strong><code>/integrer-reponses &lt;NNN&gt;</code></strong> pour chaque spec qui a des réponses, puis <code>make verify-specs</code> à nouveau.</p></div></li>
+        <li><div><p><strong><code>/constitution</code></strong> : les principes de l'équipe tirés des conventions observées.</p></div></li>
+        <li><div><p>Passez la main à l'équipe plateforme pour la publication (<a href="#p13">P13</a>, étape 5).</p></div></li>
+      </ol>
+    </article>
+
+    <article class="proc" id="p15">
+      <header class="proc-head"><span class="pid">P15</span><div><h3>Valider et surveiller</h3><div class="who"><span class="chip">Responsable du corpus</span><span class="chip once">chaque semaine</span></div></div></header>
+      <div class="grid g2">
+        <div class="card"><h4>Ce que les postes ont remis</h4><p>Dépôts, dépendances proposés. <em>Corpus › À valider</em> : accepter ou refuser <strong>chaque</strong> élément, avec un motif.</p></div>
+        <div class="card"><h4>Sources et délégations</h4><p><em>Corpus › Couverture de la collecte</em> : relancer les délégués avant l'échéance.</p></div>
+        <div class="card"><h4>Questions « répondue, à intégrer »</h4><p><em>Explorer › Questions ouvertes</em> : <a href="#p14">P14</a>, étape 4.</p></div>
+        <div class="card"><h4>Preuves cassées</h4><p><em>Pilotage › Qualité des specs</em>, onglet <em>Preuves</em> : reprendre la spec.</p></div>
+        <div class="card"><h4>Accès échus ou à retirer</h4><p><em>Corpus › Accès</em> : retirer ; le retrait vaut à la requête suivante.</p></div>
+      </div>
+    </article>
+
+    <article class="proc" id="p16">
+      <header class="proc-head"><span class="pid">P16</span><div><h3>Nommer les responsables de gate</h3><div class="who"><span class="chip">droit <code>owner</code> sur le nœud</span><span class="chip once">une fois, puis à chaque changement de personne</span></div></div></header>
+      <h4 class="mini">Un seul Decision Guarantor par nœud</h4>
+      <div class="dgs">
+        <div class="dgc ko"><svg viewBox="0 0 40 34"><circle class="pp ghost" cx="20" cy="10" r="7"/><path class="pp ghost" d="M6 33c0-8 6-12 14-12s14 4 14 12"/></svg><b>Aucun</b><span>aucune dérogation acceptée</span></div>
+        <div class="dgc ok"><svg viewBox="0 0 40 34"><circle class="pp" cx="20" cy="10" r="7"/><path class="pp" d="M6 33c0-8 6-12 14-12s14 4 14 12"/></svg><b>Un seul</b><span>les dérogations peuvent compter</span></div>
+        <div class="dgc ko"><svg viewBox="0 0 64 34"><circle class="pp" cx="20" cy="10" r="7"/><path class="pp" d="M6 33c0-8 6-12 14-12s14 4 14 12"/><circle class="pp" cx="44" cy="10" r="7"/><path class="pp" d="M30 33c0-8 6-12 14-12s14 4 14 12"/></svg><b>Plusieurs</b><span>aucune dérogation acceptée</span></div>
+      </div>
+      <ol class="steps">
+        <li><div><p><em>Règles › Rôles de gouvernance</em>.</p></div></li>
+        <li><div><p>Pour chaque rôle des gates, renseignez la personne avec son <strong>compte GitLab</strong> et son <strong>compte Jira</strong> : c'est par eux que ses décisions seront reconnues.</p></div></li>
+        <li><div><p>Nommez <strong>un seul Decision Guarantor</strong> par nœud.</p></div></li>
+        <li><div><p>Un rôle déclaré sur le produit remplace celui du regroupement.</p></div></li>
+        <li><div><p>Demandez une nouvelle projection pour que les règles d'approbation et le <code>CODEOWNERS</code> suivent (<a href="#p2">P2</a>, étape 5, puis <a href="#p18">P18</a>).</p></div></li>
+      </ol>
+    </article>
+
+    <article class="proc" id="p17">
+      <header class="proc-head"><span class="pid">P17</span><div><h3>Régler contrôles et gates</h3><div class="who"><span class="chip">droit <code>owner</code> (porte <code>rule.override</code>)</span></div></div></header>
+      <div class="grid g3">
+        <div class="card"><h4>Ajouter</h4><p>Libre, à tout niveau : organisation, regroupement, produit.</p></div>
+        <div class="card"><h4>Modifier ou désactiver une règle héritée</h4><p>Une <strong>exception</strong> : un approbateur nommé et une date de fin (6 mois au plus, 3 pour un produit de criticité haute).</p></div>
+        <div class="card"><h4>Critère ajouté ou rendu bloquant</h4><p><strong>Avertit pendant 30 jours</strong> avant de bloquer, sauf urgence motivée.</p></div>
+      </div>
+      <figure>
+        <div class="diagram">
+          <svg viewBox="0 0 760 120" role="img" aria-labelledby="d7t">
+            <title id="d7t">Préavis de 30 jours avant qu'un nouveau critère bloque</title>
+            <rect x="30" y="40" width="430" height="28" rx="6" style="fill:var(--wait-soft);stroke:var(--wait)"/>
+            <text class="s-lh" x="245" y="59" text-anchor="middle">avertissement seulement</text>
+            <rect x="460" y="40" width="270" height="28" rx="6" style="fill:var(--nogo-soft);stroke:var(--nogo)"/>
+            <text class="s-l" x="595" y="59" text-anchor="middle" style="fill:var(--nogo)">bloquant</text>
+            <line class="s-line" x1="30" y1="30" x2="30" y2="80"/><text class="s-s" x="30" y="22">J : enregistré, « en vigueur le … »</text>
+            <line class="s-line" x1="460" y1="30" x2="460" y2="80"/><text class="s-s" x="460" y="22">J + 30</text>
+            <text class="s-s" x="30" y="100">La règle n'agit dans un dépôt qu'après une nouvelle projection fusionnée (P18). Chaque passage garde la version des règles qui l'a jugé.</text>
+          </svg>
+        </div>
+      </figure>
+      <div class="grid g2" style="align-items:start">
+        <div>
+          <h4 class="mini">Ajouter ou ajuster un contrôle de code</h4>
+          <ol class="steps">
+            <li><div><p><em>Règles › Contrôles</em>, famille <strong>contrôles de code</strong>, niveau de votre produit.</p></div></li>
+            <li><div><p>Lisez la valeur effective et le niveau d'où elle vient.</p></div></li>
+            <li><div><p>Ajoutez le contrôle (par exemple la commande de tests de votre pile), ou, pour un contrôle hérité, renseignez l'approbateur de l'exception.</p></div></li>
+            <li><div><p>Enregistrez. Les autres familles se règlent de même : contrôles du ticket, lecture de la CI, mise à jour du ticket, files de travail (les vues de <code>/tickets</code>).</p></div></li>
+          </ol>
+        </div>
+        <div>
+          <h4 class="mini">Ajouter un critère à une gate</h4>
+          <ol class="steps">
+            <li><div><p>Rédigez-le d'abord avec la <a href="#fiche-critere">fiche de critère</a>.</p></div></li>
+            <li><div><p><em>Règles › Quality gates</em>, choisissez le niveau et la gate.</p></div></li>
+            <li><div><p>Ajoutez le critère : méthode (contrôle automatique, juge, humain), bloquant ou avertissement, action en cas de refus, rôle à engager. Réglez le chemin d'approbation par criticité si besoin.</p></div></li>
+            <li><div><p>Enregistrez : la date « en vigueur le … » s'affiche.</p></div></li>
+            <li><div><p>Une exception datée se suit dans l'onglet <em>Exceptions</em>, celles qui échoient d'abord.</p></div></li>
+          </ol>
+        </div>
+      </div>
+      <div class="note info"><strong>Bon à savoir</strong>Écrire une règle en français ne crée pas un contrôle : demandez à l'équipe plateforme si un contrôle existant la couvre. Aujourd'hui, <strong>G3</strong> est évaluée par la machine ; <strong>G2</strong> l'est en partie, sur une MR qui modifie une spec (contrôles déterministes, dont les maquettes Figma ; pour les critères confiés au juge, la forme est contrôlée d'abord : mal formée, le critère échoue ou reste non évaluable ; bien formée et juge désactivé, il passe « en attente humaine », le fond restant à relire, jamais un <code>GO</code> par défaut) ; <strong>G1</strong> donne un avis sur le poste (<code>/gate g1 &lt;clé&gt;</code>), sans rien consigner au central ; G4, G5 et G6 sont définies mais pas évaluées.</div>
+    </article>
+
+    <article class="proc" id="p18">
+      <header class="proc-head"><span class="pid">P18</span><div><h3>Mettre à jour l'instantané</h3><div class="who"><span class="chip">Développeur ou Tech Lead</span><span class="chip">quand Claude signale « instantané périmé » ou « version plus récente au central »</span></div></div></header>
+      <div class="flow stack" aria-label="Cycle d'une nouvelle règle jusqu'au dépôt">
+        <div class="node"><span class="k">central</span><span class="c">règle réglée</span><span class="d">Responsable des règles (P17)</span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node"><span class="k">central</span><span class="c">nouvelle projection</span><span class="d">version signée de l'instantané</span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node cmd"><span class="k">poste</span><span class="c">snapshot pull</span><span class="d">empreintes et signature vérifiées, commit local</span></div>
+        <div class="arrow"><svg><use href="#arr"/></svg></div>
+        <div class="node hum"><span class="k">équipe</span><span class="c">MR relue, fusionnée</span><span class="d">la règle agit à la fusion</span></div>
+      </div>
+      <ol class="steps">
+        <li><div><p>Dans le dépôt, sur la branche par défaut à jour :</p>
+          <div class="code"><span class="lang">bash</span><button class="copy" type="button">Copier</button><pre>nexus-local --repo . snapshot pull</pre></div>
+          <p>Il tire la dernière version, vérifie empreintes et signature, et la commite sur une branche <code>nexus/instantane-&lt;version&gt;</code>, <strong>sans pousser</strong>.</p></div></li>
+        <li><div><p>Poussez cette branche, ouvrez la MR, faites-la relire, fusionnez. <strong>Les nouvelles règles n'agissent qu'à la fusion.</strong></p></div></li>
+      </ol>
+      <div class="note warn"><strong>Si ça bloque</strong>« poste non connecté au central » : <code>nexus-local --repo . login</code> (<a href="#p3">P3</a>, étape 7). Signature refusée : la clé publique de <code>~/.config/nexus-local/snapshot-keys</code> n'est pas à jour ; demandez la nouvelle à l'équipe plateforme. Central injoignable : réessayez plus tard, rien n'est bloqué en attendant.</div>
+    </article>
+  </section>
+
+  <!-- ============ SUIVRE ============ -->
+  <section class="chapter" id="ch-suivre">
+    <div class="chapter-head full-only"><span class="num">07</span><h2>Suivre et auditer</h2></div>
+
+    <article class="proc" id="p19">
+      <header class="proc-head"><span class="pid">P19</span><div><h3>Suivre l'avancement</h3><div class="who"><span class="chip">Manager</span><span class="chip">Sponsor</span><span class="chip">responsables du corpus et des règles</span><span class="chip">rôle <code>lecteur</code></span></div></div></header>
+      <div class="grid g2">
+        <div class="card"><h4>Où en est chaque produit, étape par étape ?</h4><p><em>Pilotage › Observatoire</em> : vue matrice pour un regroupement, pipeline pour un produit ; mise à jour en direct.</p></div>
+        <div class="card"><h4>Les specs sont-elles prouvées ? Leurs tests passent-ils en CI ?</h4><p><em>Pilotage › Qualité des specs</em>, onglets <em>Preuves</em> et <em>Tests en CI</em>.</p></div>
+        <div class="card"><h4>Que contient le corpus ?</h4><p>Tickets, délais, fraîcheur : <em>Pilotage › Statistiques</em> (chaque graphique a son tableau).</p></div>
+        <div class="card"><h4>Que fait ce produit ?</h4><p><em>Explorer › Produit</em>, <em>Explorer › Interroger l'existant</em> (<a href="#p4">P4</a>).</p></div>
+      </div>
+      <div class="note warn"><strong>À retenir</strong>Une étape sans information s'affiche « non déclarée » : ce n'est pas un succès.</div>
+    </article>
+
+    <article class="proc" id="p20">
+      <header class="proc-head"><span class="pid">P20</span><div><h3>Auditer</h3><div class="who"><span class="chip">rôle <code>auditeur</code></span></div></div></header>
+      <div class="grid g2" style="align-items:start">
+        <div class="mock" aria-label="Exemple de journal d'audit">
+          <div class="bar">Audit › Journal d'audit <span class="ex">exemple</span></div>
+          <div class="filters"><span class="f">nœud</span><span class="f">acteur</span><span class="f">action</span></div>
+          <div class="tw"><table>
+            <thead><tr><th>Action</th><th>Acteur</th><th>Nœud</th></tr></thead>
+            <tbody>
+              <tr><td>connexion</td><td>personne A</td><td>—</td></tr>
+              <tr><td>rôle attribué : <code>contributeur</code></td><td>personne B</td><td>produit X</td></tr>
+              <tr><td>question répondue</td><td>personne A</td><td>produit X</td></tr>
+              <tr><td>configuration modifiée</td><td>personne C</td><td>regroupement</td></tr>
+              <tr><td><span class="v no">accès refusé</span></td><td>personne D</td><td>produit Y</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+        <div class="mock" aria-label="Exemple d'écritures déléguées">
+          <div class="bar">Audit › Écritures déléguées <span class="ex">exemple</span></div>
+          <div class="tw"><table>
+            <thead><tr><th>Écrit au nom de</th><th>Cible</th><th>État</th></tr></thead>
+            <tbody>
+              <tr><td>personne A</td><td>MR · lien</td><td><span class="v wa">déclaré</span></td></tr>
+              <tr><td>personne A</td><td>commentaire Jira · lien</td><td><span class="v wa">déclaré</span></td></tr>
+              <tr><td>personne E</td><td>MR · lien</td><td><span class="v wa">déclaré</span></td></tr>
+            </tbody>
+          </table></div>
+          <div style="padding:10px 12px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line)">État déclaré par le poste : ouvrez le lien pour vérifier dans GitLab ou Jira.</div>
+        </div>
+      </div>
+      <ol class="steps">
+        <li><div><p><em>Audit › Journal d'audit</em> : filtrez par nœud, acteur ou action. Vous y voyez les connexions, attributions et retraits de rôles, réponses, changements de configuration, et les refus d'accès. Aucun jeton ni contenu de requête n'y est copié.</p></div></li>
+        <li><div><p><em>Audit › Écritures déléguées</em> : ce qui a été écrit au nom d'une personne (MR, commentaire Jira), avec cible, lien, contexte et état. <strong>Les états sont déclarés par le poste</strong>, sans vérification : contrôlez dans GitLab ou Jira par le lien.</p></div></li>
+      </ol>
+    </article>
+  </section>
+
+  <!-- ============ ANNEXES ============ -->
+  <section class="chapter" id="annexes">
+    <div class="chapter-head"><span class="num">A</span><h2>Annexes</h2></div>
+
+    <h3 class="sub" id="verdicts" style="margin-top:0">Verdicts</h3>
+    <div class="tw"><table>
+      <thead><tr><th>Où</th><th>Valeurs</th><th>Lecture</th></tr></thead>
+      <tbody>
+        <tr><td>Ticket</td><td><span class="v go">prêt</span> <span class="v wa">à compléter</span> <span class="v no">non prêt</span></td><td><code>non prêt</code> : un critère bloquant manque, on n'implémente pas</td></tr>
+        <tr><td>Contrôles de code</td><td><span class="v go">vert</span> <span class="v wa">à compléter</span> <span class="v no">rouge</span></td><td><code>à compléter</code> : un avertissement ou un contrôle non évaluable</td></tr>
+        <tr><td>CI</td><td><span class="v go">vert</span> <span class="v wa">à compléter</span> <span class="v no">rouge</span> <span class="v ac">en cours</span></td><td><code>à compléter</code> : un contrôle que la CI ne publie pas sous ce nom</td></tr>
+        <tr><td>Gate</td><td><span class="v go">GO</span> <span class="v no">NO-GO</span> <span class="v ac">escalade</span> <span class="v wa">en attente humaine</span></td><td>jamais « passe avec un avertissement » ; <code>en attente humaine</code> : une approbation manque</td></tr>
+        <tr><td>Critère de gate</td><td><span class="v go">pass</span> <span class="v no">fail</span> <span class="v ne">non-évaluable</span> <span class="v ne">non-évalué</span> <span class="v wa">en-attente</span></td><td><code>non-évaluable</code> : preuve absente ; <code>non-évalué</code> : juge désactivé, à relire ; <code>en-attente</code> : geste humain attendu</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3 class="sub" id="commandes">Commandes Claude Code</h3>
+    <div class="tw"><table>
+      <thead><tr><th>Commande</th><th>Rôle</th></tr></thead>
+      <tbody>
+        <tr><td><code>/tickets [vue] [--tout]</code>, <code>/mes-tickets</code>, <code>/bugs</code>, <code>/a-prendre</code>, <code>/bloques</code></td><td>lister et choisir (<a href="#p8">P8</a>)</td></tr>
+        <tr><td><code>/existant &lt;sujet&gt;</code></td><td>ce que le système fait déjà (<a href="#p8">P8</a>, <a href="#p4">P4</a>)</td></tr>
+        <tr><td><code>/ticket &lt;clé&gt;</code></td><td>verdict et brief (<a href="#p8">P8</a>)</td></tr>
+        <tr><td><code>/implement &lt;clé&gt;</code></td><td>chemin court (<a href="#p8">P8</a>)</td></tr>
+        <tr><td><code>/parcours &lt;clé&gt;</code></td><td>séquence Spec Kit encadrée (<a href="#p9">P9</a>)</td></tr>
+        <tr><td><code>/gate g3 [MR]</code></td><td>avis de G3 (<a href="#p10">P10</a>)</td></tr>
+        <tr><td><code>/deliver &lt;clé&gt;</code></td><td>livrer (<a href="#p10">P10</a>)</td></tr>
+        <tr><td><code>/capacites</code>, <code>/spec-capacite</code>, <code>/tests-capacite</code>, <code>/integrer-reponses</code>, <code>/constitution</code></td><td>construire le corpus (<a href="#p14">P14</a>, dossier de travail du produit seulement)</td></tr>
+        <tr><td><code>nexus-local login</code>, <code>nexus-local logout</code> (terminal)</td><td>connecter ce poste au central à votre nom, ou couper cet accès (<a href="#p3">P3</a>)</td></tr>
+      </tbody>
+    </table></div>
+    <p class="prose" style="margin-top:12px">Outils que vous pouvez demander par leur nom : <code>snapshot_status</code>, <code>code_checks_config</code>, <code>code_checks</code>, <code>search</code> (dans l'instantané), <code>existing</code> (tous les produits), <code>open_questions</code>, <code>answer_question</code>, <code>gate_check</code>, <code>ci_feedback</code>, <code>figma_check</code> (une maquette citée, vérifiée avec la connexion Figma du produit). Les skills <code>definir-persona</code>, <code>formuler-business-intent</code> et <code>preparer-specification</code> aident à rédiger à partir des référentiels métier, sans rien publier.</p>
+
+    <h3 class="sub" id="variables">Variables du poste</h3>
+    <div class="tw"><table>
+      <thead><tr><th>Variable</th><th>Où</th><th>Pour</th></tr></thead>
+      <tbody>
+        <tr><td><code>SPECKIT_GITLAB_TOKEN</code></td><td><code>~/.config/nexus-local/.env</code></td><td>lire la CI et la MR</td></tr>
+        <tr><td><code>SPECKIT_GITLAB_URL</code></td><td>idem, si besoin</td><td>GitLab, si le remote n'est pas reconnu</td></tr>
+        <tr><td><code>SPECKIT_JIRA_URL</code>, <code>SPECKIT_JIRA_TOKEN</code>, <code>SPECKIT_JIRA_EMAIL</code></td><td>idem, sans MCP Jira</td><td>lire et écrire dans Jira par l'API REST (repli) ; <code>SPECKIT_JIRA_FLAVOR=cloud|datacenter</code> force la saveur</td></tr>
+        <tr><td><code>SPECKIT_FIGMA_TOKEN</code></td><td>idem, facultatif</td><td>lire les maquettes citées pour G2 depuis le poste ; sans lui, le central les vérifie (<a href="#p7">P7</a>)</td></tr>
+        <tr><td><code>NEXUS_CENTRAL_URL</code></td><td>idem, si l'équipe plateforme le demande</td><td>une autre adresse du central</td></tr>
+        <tr><td><em>(aucune pour le central)</em></td><td>—</td><td>Claude Code et <code>nexus-local login</code> s'y connectent avec votre compte (<a href="#p3">P3</a>, étape 7)</td></tr>
+        <tr><td><code>NEXUS_LOCAL_CALLBACK_PORT</code>, <code>NEXUS_LOCAL_CALLBACK_HOST</code></td><td>environnement, poste en conteneur seulement</td><td>port fixe et adresse d'écoute du retour de <code>nexus-local login</code> (défaut : port au hasard sur <code>127.0.0.1</code>)</td></tr>
+        <tr><td><code>MCP_OAUTH_CALLBACK_PORT</code></td><td>environnement, poste en conteneur seulement</td><td>port fixe du retour OAuth de Claude Code (<code>/mcp</code> › Authenticate)</td></tr>
+        <tr><td><code>NEXUS_CA_FILE</code></td><td>environnement, poste en conteneur derrière Zscaler</td><td>le certificat de l'entreprise déjà présent sur votre machine, lu en lecture seule (<code>compose.ca.yaml</code>)</td></tr>
+        <tr><td><code>~/.config/nexus-local/snapshot-keys</code></td><td>fichier</td><td>vérifier la signature des instantanés</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note stop" style="margin-top:12px"><strong>Jamais</strong>de jeton dans un dépôt, un ticket ou une conversation.</div>
+
+    <h3 class="sub" id="gabarits">Gabarits à copier</h3>
+    <div class="grid g2" style="align-items:start">
+      <div class="card" id="plan-activation"><h4>Plan d'activation</h4><p style="margin-bottom:10px">Dans la description de la MR.</p>
+        <div class="code"><span class="lang">md</span><button class="copy" type="button">Copier</button><pre>## Plan d'activation
+- Livré : ce qui part en production
+- Activé : flag `nom-du-flag`, et comment il s'ouvre (ou « Sans flag : motif »)
+- Retour arrière : la condition et le geste
+- Responsable : @compte</pre></div></div>
+      <div class="card" id="en-tete-spec"><h4>En-tête de spec</h4><p style="margin-bottom:10px">Toute première ligne de <code>spec.md</code>. Versions exactes seulement (jamais une plage ni <code>latest</code>) ; la cible d'une exigence est un nombre, l'unité à part. Retirez les listes vides.</p>
+        <div class="code"><span class="lang">yaml</span><button class="copy" type="button">Copier</button><pre>---
+capacites: [CAP-003]                # capacités concernées
+tickets: [ABC-123]                  # origine des critères d'acceptation
+components:                         # composants réutilisés, version exacte
+  - {name: "paiement-sdk", version: "4.2.1"}
+designs:                            # maquettes figées : lien Figma avec node-id, version
+  - {url: "https://www.figma.com/design/&lt;clé&gt;/&lt;titre&gt;?node-id=12-34", version: "1234567890"}
+contracts:                          # contrats d'API, chemins dans le dépôt
+  - {kind: openapi, path: contracts/paiement/lien.yaml}
+nfr:                                # exigences non fonctionnelles chiffrées
+  - {id: NFR-01, metric: latence-p95, target: 300, unit: ms}
+---</pre></div>
+        <p style="margin-top:10px">Une maquette hors Figma reste « en attente » tant que l'UX ne l'a pas confirmée. Dans le corps, pour chaque scénario : « Critères d'acceptation (report du ticket ABC-123 le &lt;date&gt;) » puis <code>CA-01 : Étant donné …, quand …, alors …</code>.</p></div>
+    </div>
+
+    <div class="card" id="plan-conception" style="margin-top:14px"><h4>Plan de conception : rubriques attendues dans <code>plan.md</code></h4>
+      <div class="tw" style="margin-top:8px"><table>
+        <tbody>
+          <tr><td style="width:36px"><b>1</b></td><td><strong>Contexte technique et contraintes</strong> : contraintes imposées (avec source), hypothèses marquées <code>[HYPOTHÈSE]</code> et comment les vérifier.</td></tr>
+          <tr><td><b>2</b></td><td><strong>Composants touchés et capacités réutilisées</strong> : nature du changement (création, modification, réutilisation), équipe responsable.</td></tr>
+          <tr><td><b>3</b></td><td><strong>Contrats d'API</strong> : fichier, ce qu'il expose, consommateurs ; ou « Sans objet : raison ».</td></tr>
+          <tr><td><b>4</b></td><td><strong>Modèle de données</strong> : entités créées ou modifiées ; ou « Sans objet : raison ».</td></tr>
+          <tr><td><b>5</b></td><td><strong>Conception de l'expérience</strong> : maquettes (version figée), parcours, accessibilité visée.</td></tr>
+          <tr><td><b>6</b></td><td><strong>Exigences non fonctionnelles</strong> : métrique, cible avec unité, vérification.</td></tr>
+          <tr><td><b>7</b></td><td><strong>Grille de spécification</strong> : une question et sa réponse par discipline (sécurité, données, UX et accessibilité, exploitation, architecture), ou l'action d'alignement et la personne.</td></tr>
+          <tr><td><b>8</b></td><td><strong>Décisions de conception</strong> : décision, alternatives écartées, motif.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="card" id="ticket-besoin" style="margin-top:14px"><h4>Ticket Besoin</h4>
+      <p>Type <strong>Besoin</strong> (ou épopée avec le label <code>besoin</code>). Titre : le résultat recherché et le parcours concerné.</p>
+      <div class="tw" style="margin-top:10px"><table>
+        <thead><tr><th>Rubrique</th><th>À écrire</th><th>Insuffisant</th></tr></thead>
+        <tbody>
+          <tr><td>1. Problème</td><td>qui rencontre quoi, dans quelle situation ; conséquences ; constat vérifiable, chiffré si possible</td><td style="color:var(--nogo)">« Améliorer le panier »</td></tr>
+          <tr><td>2. Utilisateurs</td><td>segments ou personas, situations d'usage, volume estimé</td><td style="color:var(--nogo)">« Tous les clients »</td></tr>
+          <tr><td>3. Résultat attendu</td><td>indicateur, cible avec unité, échéance, objectif ou OKR lié, méthode de mesure</td><td style="color:var(--nogo)">« Plus simple et plus rapide »</td></tr>
+          <tr><td>4. Périmètre</td><td>inclus, exclu ; capacité existante à réutiliser (<a href="#p4">P4</a>) ou absence justifiée</td><td style="color:var(--nogo)">une liste de solutions</td></tr>
+          <tr><td>5. Contraintes et données</td><td>contraintes, dépendances, données, chacune « disponible », « à acquérir » ou « bloquée »</td><td style="color:var(--nogo)">« À voir avec l'équipe »</td></tr>
+          <tr><td>Décision de priorité</td><td>priorité, justification, responsable nommé, date</td><td style="color:var(--nogo)">une priorité sans responsable</td></tr>
+        </tbody>
+      </table></div>
+      <p style="margin-top:10px">Une valeur inconnue s'écrit comme telle, avec l'action pour l'obtenir. « Sans objet » est accepté s'il est justifié ; une rubrique vide ne l'est pas. Les sources citées doivent être accessibles et datées.</p>
+    </div>
+
+    <div class="card" id="fiche-critere" style="margin-top:14px"><h4>Fiche de critère de gate</h4>
+      <p>Une fiche par critère, avant toute saisie.</p>
+      <div class="tw" style="margin-top:10px"><table>
+        <thead><tr><th>Champ</th><th>Exemple</th></tr></thead>
+        <tbody>
+          <tr><td>Gate et produit</td><td>G3, produit Paiement</td></tr>
+          <tr><td>Condition de réussite</td><td>le temps de réponse au 95e percentile est sous 300 ms pour le scénario convenu</td></tr>
+          <tr><td>Preuve attendue et emplacement</td><td>rapport de charge publié par le pipeline de la MR</td></tr>
+          <tr><td>Méthode</td><td>contrôle automatique (règle et seuil), juge (consigne, preuves, limites) ou décision humaine (rôle, preuves à lire)</td></tr>
+          <tr><td>Effet</td><td>bloquant ou avertissement</td></tr>
+          <tr><td>En cas de refus</td><td>ce qui manque ou doit être corrigé</td></tr>
+          <tr><td>Rôle à engager</td><td>Tech Lead, Decision Guarantor…</td></tr>
+        </tbody>
+      </table></div>
+      <p style="margin-top:10px">Séparez deux conditions qui peuvent échouer indépendamment. Évitez « vérifier la qualité ». Préférez un contrôle automatique quand une règle suffit. Le juge n'est jamais utilisé en périmètre PCI ou CAB.</p>
+    </div>
+
+    <h3 class="sub" id="depannage">Dépannage</h3>
+    <div class="search"><input type="search" id="dq" placeholder="Filtrer : 404, instantané, ci_feedback…" aria-label="Filtrer le dépannage"><span class="count" id="dcount"></span></div>
+    <div class="tw"><table id="dtable">
+      <thead><tr><th>Symptôme</th><th>Cause</th><th>Que faire</th></tr></thead>
+      <tbody>
+        <tr><td>Erreur 404 sur un produit</td><td>pas de droit de lecture</td><td><a href="#p1">P1</a>, étape 3</td></tr>
+        <tr><td>Bouton absent</td><td>permission absente</td><td><em>Mes droits</em>, puis demander le rôle</td></tr>
+        <tr><td>« Session expirée »</td><td>session de 8 h écoulée</td><td>Se connecter</td></tr>
+        <tr><td>Serveurs absents de <code>/mcp</code></td><td>Claude Code ouvert hors du dépôt, <code>.mcp.json</code> absent, serveurs refusés</td><td><a href="#p3">P3</a></td></tr>
+        <tr><td><code>nexus</code> redemande la connexion</td><td>connexion expirée ou révoquée</td><td><code>/mcp</code> › <code>nexus</code> › Authenticate</td></tr>
+        <tr><td>« instantané périmé »</td><td>nouvelle version au central</td><td><a href="#p18">P18</a></td></tr>
+        <tr><td>« instantané modifié localement »</td><td><code>.nexus/</code> touché</td><td><code>git checkout -- .nexus/</code></td></tr>
+        <tr><td><code>non prêt</code></td><td>critère bloquant absent</td><td>compléter le ticket avec le PO</td></tr>
+        <tr><td>Contrôle « non évaluable »</td><td>pas de commande pour votre pile</td><td>Responsable des règles (<a href="#p17">P17</a>)</td></tr>
+        <tr><td>G2 · <code>design-refs</code> non évaluable</td><td>Figma illisible : ni jeton, ni connexion du produit</td><td><a href="#p7">P7</a> (UX), <a href="#p10">P10</a></td></tr>
+        <tr><td><code>ci_feedback</code> échoue</td><td>Zscaler, jeton GitLab, remote</td><td><a href="#p10">P10</a></td></tr>
+        <tr><td>Décision ignorée dans <em>Passages</em></td><td>auteur non nommé, commit périmé, auteur de la MR</td><td><a href="#p12">P12</a></td></tr>
+        <tr><td>Résultat vide dans <em>Interroger l'existant</em></td><td>produit non couvert</td><td>voir le bandeau de couverture ; Responsable du corpus</td></tr>
+      </tbody>
+    </table></div>
+    <p style="margin-top:10px;color:var(--muted)">Pour tout le reste : l'équipe plateforme.</p>
+
+    <h3 class="sub" id="vocabulaire">Vocabulaire</h3>
+    <div class="grid g2">
+      <div class="card"><h4>Nœud</h4><p>Organisation, regroupement ou produit ; règles et droits s'y attachent et s'héritent.</p></div>
+      <div class="card"><h4>Central</h4><p>Le service partagé : webapp, serveur <code>nexus</code>, registre.</p></div>
+      <div class="card"><h4>Instantané (<code>.nexus/</code>)</h4><p>La copie signée des règles et du contexte d'un produit, dans son dépôt.</p></div>
+      <div class="card"><h4>Brief</h4><p>Le contexte assemblé pour un ticket : règles, capacité, extraits sourcés, avertissements.</p></div>
+      <div class="card"><h4>Spec as-is</h4><p>La description sourcée de ce que fait déjà une capacité.</p></div>
+      <div class="card"><h4>Question ouverte</h4><p>Une incertitude d'une spec, à trancher par une personne.</p></div>
+      <div class="card"><h4>Contrôles du ticket</h4><p>Ce qui juge un ticket prêt.</p></div>
+      <div class="card"><h4>Contrôles de code</h4><p>Tests, lint, secrets, spec à jour, jetons du design system, lancés sur le poste.</p></div>
+      <div class="card"><h4>Quality gate</h4><p>G1 à G6 seulement : le passage d'une phase à la suivante, décidé par une personne.</p></div>
+      <div class="card"><h4>Passage</h4><p>Une évaluation d'une gate sur une MR ou un ticket, à un commit donné.</p></div>
+      <div class="card"><h4>Design system qui fait foi</h4><p>La bibliothèque Figma désignée pour un nœud ; ses jetons partent dans l'instantané.</p></div>
+      <div class="card"><h4>Exception</h4><p>Une règle héritée modifiée, avec approbateur et date de fin.</p></div>
+      <div class="card"><h4>Dérogation</h4><p>Un critère bloquant en échec couvert par le Decision Guarantor, jusqu'à une date.</p></div>
+    </div>
+
+    <h3 class="sub" id="etat">Ce qui existe aujourd'hui</h3>
+    <div class="status">
+      <div class="col"><h4><i style="background:var(--go)"></i>Existe</h4><ul>
+        <li>boucle Claude Code de <code>/tickets</code> à <code>/deliver</code></li>
+        <li><code>/parcours</code> avec Spec Kit</li>
+        <li>recherche de l'existant</li>
+        <li>questions ouvertes</li>
+        <li>référentiels métier (pilote)</li>
+        <li>G3 sur le poste et en CI</li>
+        <li>webapp et ses six espaces</li>
+        <li>connexion de Claude Code et du poste au central à votre nom</li>
+      </ul></div>
+      <div class="col"><h4><i style="background:var(--wait)"></i>En partie</h4><ul>
+        <li>lecture des décisions de gate par le central (à la demande)</li>
+        <li>G2 (contrôles déterministes et maquettes Figma en CI, juge non branché)</li>
+        <li>Figma relié au produit (éprouvé sur la démonstration)</li>
+        <li>connexion par le compte de l'organisation (Entra : recette sur le vrai tenant à faire)</li>
+        <li>« Ce qui m'attend »</li>
+      </ul></div>
+      <div class="col"><h4><i style="background:var(--line)"></i>À venir</h4><ul>
+        <li>G1, G4, G5, G6</li>
+        <li>accès du PO par l'app Claude</li>
+        <li>décision dans la webapp</li>
+        <li>signal automatique de nouvelle version d'instantané</li>
+      </ul></div>
+    </div>
+  </section>
+  </div>
+
+  <footer class="foot">Context Nexus · guide d'utilisation, version du 20 novembre 2026. Les numéros P1 à P20 sont ceux du guide Markdown (P3b y est « P3 bis »). Pour l'administration, l'équipe plateforme.</footer>
+</main>
+</div>
+
+<script>
+(function(){
+  var PROCS={
+    p1:["Obtenir son accès","Webapp, rôle, Mes droits"],
+    p2:["Brancher le dépôt","Instantané, CI, approbations, par MR"],
+    p3:["Équiper son poste","nexus-local, jetons, MCP, connexion"],
+    p3b:["Hackathon : poste prêt","Dépôt déjà branché, sans MR d'embarquement"],
+    p8:["Ticket, chemin court","/tickets → /implement"],
+    p9:["Ticket avec Spec Kit","/parcours encadre Spec Kit"],
+    p10:["Livrer et passer G3","/gate g3, /deliver, fusion"],
+    p18:["Mettre à jour l'instantané","snapshot pull, puis MR"],
+    p11:["Relire et approuver","Diff, spec, plan d'activation"],
+    p4:["Interroger l'existant","Ce que le système fait déjà"],
+    p5:["Écrire un ticket prêt","Étant donné, quand, alors"],
+    p6:["Répondre aux questions","Trancher, ou reporter"],
+    p7:["Référentiels métier","OKR, personas, designs"],
+    p13:["Embarquer un produit","Décrire, sources, accès"],
+    p14:["Construire les specs as-is","/capacites → /constitution"],
+    p15:["Valider et surveiller","Revue de la semaine"],
+    p16:["Nommer les responsables","Rôles de gouvernance"],
+    p17:["Régler contrôles et gates","Ajouter, exceptions, préavis"],
+    p12:["Décider une gate","GO, NO-GO, dérogation"],
+    p19:["Suivre l'avancement","Observatoire, qualité, stats"],
+    p20:["Auditer","Journal, écritures déléguées"]
+  };
+  var ROLES=[
+    {id:"dev",label:"Développeur",short:"Développeur",mission:"Vous transformez un ticket prêt en merge request qui passe G3, depuis Claude Code dans le dépôt.",places:{web:false,code:true,jg:true},rights:["contributeur"],once:["p1","p3"],daily:["p8","p9","p10","p18"]},
+    {id:"part",label:"Participant d'un hackathon",short:"Hackathon",mission:"Dépôt déjà branché, aucune MR d'embarquement : vous installez votre poste, vous vous connectez au central, vous prenez un premier ticket.",places:{web:true,code:true,jg:true},rights:["contributeur"],once:["p1","p3b"],daily:["p8","p10","p11"]},
+    {id:"qa",label:"QA",short:"QA",mission:"Vous relisez et approuvez les MR, et vous vérifiez que les tests de caractérisation passent en CI.",places:{web:true,code:true,jg:true},rights:["contributeur","approbateur nommé"],once:["p1","p3"],daily:["p11","p19"]},
+    {id:"tl",label:"Tech Lead",short:"Tech Lead",mission:"Vous branchez le dépôt sur le Nexus, puis vous codez et relisez avec l'équipe.",places:{web:false,code:true,jg:true},rights:["contributeur","approbateur nommé"],once:["p1","p2","p3"],daily:["p8","p9","p10","p11","p18"]},
+    {id:"pm",label:"Product Manager",short:"PM",mission:"Vous portez le besoin : vous écrivez le ticket Besoin et décidez G1, puis vous jugez les résultats à G5 et cadrez un retrait à G6.",places:{web:true,code:false,jg:true},rights:["contributeur","okr-editor"],once:["p1"],daily:["p4","p5","p7"]},
+    {id:"po",label:"Product Owner",short:"PO",mission:"Vous rendez les tickets prêts à construire, tranchez les questions ouvertes et approuvez la spec à G2.",places:{web:true,code:false,jg:true},rights:["contributeur","business-editor"],once:["p1"],daily:["p4","p5","p6","p7"]},
+    {id:"ux",label:"UX",short:"UX",mission:"Vous reliez Figma au produit, tenez les personas et les designs sourcés, et vous approuvez la spec à G2 pour l'expérience.",places:{web:true,code:false,jg:true},rights:["contributeur","business-editor","ux"],once:["p1"],daily:["p4","p6","p7"]},
+    {id:"corpus",label:"Responsable du corpus",short:"Corpus",mission:"Vous embarquez un produit et gardez sa connaissance sourcée, vérifiée et à jour.",places:{web:true,code:true,jg:false},rights:["owner"],once:["p1","p13"],daily:["p14","p15","p19"]},
+    {id:"regles",label:"Responsable des règles",short:"Règles",mission:"Vous nommez les décideurs des gates et réglez contrôles, critères et exceptions.",places:{web:true,code:false,jg:false},rights:["owner"],once:["p1","p16"],daily:["p17","p19"]},
+    {id:"appr",label:"Approbateur de gate",short:"Approbateur",mission:"Nommé pour une gate, vous approuvez la MR ou la refusez en nommant le critère.",places:{web:true,code:false,jg:true},rights:["nommé dans Rôles de gouvernance"],once:["p1"],daily:["p11","p12"]},
+    {id:"dg",label:"Decision Guarantor",short:"Decision Guarantor",mission:"Seul de votre rôle sur le nœud, vous accordez les dérogations, attestez en PCI ou CAB et levez les escalades.",places:{web:true,code:false,jg:true},rights:["nommé dans Rôles de gouvernance"],once:["p1"],daily:["p12","p11"]},
+    {id:"mgr",label:"Manager",short:"Manager",mission:"Vous suivez l'avancement des produits de vos équipes, sans rien modifier.",places:{web:true,code:false,jg:false},rights:["lecteur"],once:["p1"],daily:["p19","p4"]},
+    {id:"sponsor",label:"Sponsor",short:"Sponsor",mission:"Vous suivez l'avancement du programme et la couverture des produits, sans rien modifier.",places:{web:true,code:false,jg:false},rights:["lecteur"],once:["p1"],daily:["p19","p4"]},
+    {id:"secu",label:"Sécurité",short:"Sécurité",mission:"Vous contrôlez les accès, les refus d'accès et ce qui a été écrit au nom de qui.",places:{web:true,code:false,jg:false},rights:["auditeur"],once:["p1"],daily:["p20"]},
+    {id:"dpo",label:"DPO",short:"DPO",mission:"Vous vérifiez que chaque écriture est attribuée à une personne et qu'aucune donnée personnelle ne circule.",places:{web:true,code:false,jg:false},rights:["auditeur"],once:["p1"],daily:["p20"]}
+  ];
+  function byId(id){return ROLES.filter(function(r){return r.id===id})[0]||null}
+  function icon(id){return '<svg aria-hidden="true"><use href="#i-'+id+'"/></svg>'}
+  function chip(p,cls){return '<a class="pchip'+(cls?" "+cls:"")+'" href="#'+p+'" title="'+PROCS[p][0]+'">'+p.toUpperCase()+'</a>'}
+  function places(pl){
+    var L=[["web","Webapp"],["code","Claude Code"],["jg","Jira · GitLab"]];
+    return L.map(function(x){return '<span class="place '+(pl[x[0]]?"on":"off")+'">'+x[1]+'</span>'}).join("");
+  }
+
+  // Vue d'ensemble : phases en lignes, acteurs en colonnes, une ligne de gate entre deux phases
+  var ROLE_LANE={dev:"dev",qa:"qa",tl:"tl",pm:"pm",po:"po",ux:"ux",appr:"appr",dg:"dg",corpus:"corpus",regles:"regles",mgr:"mgr",sponsor:"sponsor",secu:"secu",dpo:"dpo"};
+  var ov=document.getElementById("ov");
+  (function(){
+    var LANES=[["pm","PM","Product Manager","pm"],["po","PO","Product Owner","po"],["ux","UX","designer","ux"],["tl","Tech Lead","","tl"],["dev","Dévelop­peur","","dev"],["qa","QA","","qa"],["appr","Approba­teur","de gate","appr"],["dg","Decision Guarantor","","dg"],["ops","Exploi­tation","","ops"],["machine","La machine","Claude Code, CI, central","bot"]];
+    var FAM=[["Produit",3],["Ingénierie",3],["Gouvernance",2],["Run",1],["Automatisé",1]];
+    function lc(id){return ' style="--lc:var(--c-'+id+')"'}
+    var PH=["Besoin","Spécifier","Développer, livrer","Mettre en production","Mesurer (90 jours)","Retirer"];
+    var GT=[{g:"G1",n:"Ready to Spec",st:"ne",w:"ticket Jira"},{g:"G2",n:"Ready to Build",st:"wa",w:"MR de spec"},{g:"G3",n:"Ready to Release",st:"go",w:"MR"},
+            {g:"G4",n:"Released, observable",st:"ne",w:"déploiement"},{g:"G5",n:"Opportunity or Retire",st:"ne",w:"À décider"},{g:"G6",n:"Retirement scoped",st:"ne",w:"À décider"}];
+    var ACT=[
+      [0,"pm","Chercher l'existant","p4"],[0,"pm","Écrire le ticket Besoin","p5"],[0,"po","Critères d'acceptation","p5"],[0,"ux","Personas sourcés","p7"],[0,"ux","Relier Figma, design system","p7"],[0,"machine","/gate g1 : avis sur le ticket"],
+      [1,"po","Trancher les questions","p6"],[1,"ux","Designs en version figée","p7"],[1,"tl","/parcours, /speckit-specify","p9"],[1,"dev","clarify, plan, tasks","p9"],[1,"machine","brief, questions, maquettes vérifiées"],
+      [2,"tl","Coder avec l'équipe","p8"],[2,"dev","/ticket, /implement","p8"],[2,"dev","/gate g3, /deliver","p10"],[2,"qa","Relire diff et spec","p11"],[2,"qa","Tests en CI","p11"],[2,"appr","Approuver ou NO-GO","p11"],[2,"dg","Dérogation, attestation","p12"],[2,"machine","contrôles, CI, gate-check"],
+      [3,"dev","Plan d'activation","p10"],[3,"ops","Déployer, ouvrir le flag"],[3,"machine","traces, sondes, indicateurs"],
+      [4,"pm","Résultats contre promesses de G1"],[4,"ops","Surveiller, incidents"],[4,"machine","dossier de preuves"],
+      [5,"pm","Utilisateurs touchés"],[5,"tl","Dépendances et flux"],[5,"machine","carte d'impact"]
+    ];
+    var MK=[
+      [0,"pm","dec","décide (Jira)"],[0,"machine","ev","évalue"],
+      [1,"po","app","approuve"],[1,"ux","app","approuve"],[1,"tl","app","approuve"],[1,"appr","app","approuve"],[1,"dg","dec","arbitre l'escalade"],[1,"machine","ev","évalue"],
+      [2,"tl","app","approuve"],[2,"qa","app","approuve"],[2,"appr","app","approuve"],[2,"dg","dec","déroge, atteste"],[2,"machine","ev","évalue"],
+      [3,"ops","dec","atteste"],[3,"machine","ev","évalue"],
+      [4,"pm","dec","Continue, Spec ou Retire"],[4,"machine","ev","évalue"],
+      [5,"pm","dec","décide"],[5,"machine","ev","évalue"]
+    ];
+    var BAND=[["setup","Mise en place, une fois","accès, dépôt branché, poste équipé",["p1","p2","p3"]],
+      ["corpus","Responsable du corpus","embarque et vérifie la connaissance",["p13","p14","p15"]],
+      ["regles","Responsable des règles","nomme les décideurs, règle les critères",["p16","p17"]],
+      ["snap","Instantané .nexus/","règles projetées dans chaque dépôt",["p18"]],
+      ["mgr","Manager","suit ses équipes",["p19"]],
+      ["sponsor","Sponsor","suit le programme",["p19"]],
+      ["secu","Sécurité","audite les accès et les écritures",["p20"]],
+      ["dpo","DPO","audite l'attribution des écritures",["p20"]]];
+    var ICON={dec:'<svg viewBox="0 0 16 16"><polygon points="8,1 15,8 8,15 1,8"/></svg>',
+              app:'<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="5" stroke-width="2.5"/></svg>',
+              ev:'<svg viewBox="0 0 16 16"><rect x="3" y="3" width="10" height="10" rx="2"/></svg>'};
+    var h='<div class="of kc"></div>'+FAM.map(function(f){return '<div class="of" style="grid-column:span '+f[1]+'">'+f[0]+'</div>'}).join("");
+    h+='<div class="oc kc oh" role="columnheader">Phase<br>puis gate</div>';
+    LANES.forEach(function(L){h+='<div class="oc oh" role="columnheader" data-l="'+L[0]+'"'+lc(L[0])+'><span class="av"><svg aria-hidden="true"><use href="#i-'+L[3]+'"/></svg></span><b>'+L[1]+'</b>'+(L[2]?'<small>'+L[2]+'</small>':'')+'</div>'});
+    PH.forEach(function(p,k){
+      var last=k===PH.length-1;
+      h+='<div class="oc kc ph" role="rowheader"><span class="n">'+(k+1)+'</span><b>'+p+'</b></div>';
+      LANES.forEach(function(L){
+        var cell=ACT.filter(function(a){return a[0]===k&&a[1]===L[0]}).map(function(a){
+          var inner=a[2]+(a[3]?'<span class="op">'+a[3].toUpperCase()+'</span>':'');
+          var cls="oa"+(L[0]==="machine"?" m":"");
+          return a[3]?'<a class="'+cls+'" href="#'+a[3]+'">'+inner+'</a>':'<span class="'+cls+'">'+inner+'</span>';
+        }).join("");
+        h+='<div class="oc" data-l="'+L[0]+'" data-name="'+L[1].replace("\u00ad","")+'"'+lc(L[0])+'>'+cell+'</div>';
+      });
+      var g=GT[k];
+      h+='<div class="oc kc gr '+g.st+(last?" last":"")+'" role="rowheader"><a class="gk" href="#gate-'+g.g.toLowerCase()+'"><span class="gb '+g.st+'">'+g.g+'</span><span><b>'+g.n+'</b><small>'+g.w+'</small></span></a>'+(k===4?'<span class="loopnote">↩ Ready to spec : retour en phase 1</span>':'')+'</div>';
+      LANES.forEach(function(L){
+        var m=MK.filter(function(x){return x[0]===k&&x[1]===L[0]}).map(function(x){return '<span class="om '+x[2]+'">'+ICON[x[2]]+x[3]+'</span>'}).join("");
+        h+='<div class="oc gr '+g.st+(last?" last":"")+'" data-l="'+L[0]+'"'+(m?' data-name="'+L[1].replace("\u00ad","")+'"':'')+lc(L[0])+'>'+m+'</div>';
+      });
+    });
+    var og=document.getElementById("ogrid"); og.style.setProperty("--cols", LANES.length); og.innerHTML=h;
+    document.getElementById("oband").innerHTML=BAND.map(function(b){
+      return '<div class="ob" data-l="'+b[0]+'"'+lc(b[0])+'><div class="bh"><i><svg aria-hidden="true"><use href="#i-'+b[0]+'"/></svg></i><b>'+b[1]+'</b></div><span class="ds">'+b[2]+'</span><div class="ps">'+b[3].map(function(p){return '<a href="#'+p+'"><span class="op">'+p.toUpperCase()+'</span></a>'}).join("")+'</div></div>';
+    }).join("");
+  })();
+  var HL=[["","Tout le monde"],["pm","PM"],["po","PO"],["ux","UX"],["tl","Tech Lead"],["dev","Développeur"],["qa","QA"],["appr","Approbateur"],["dg","Decision Guarantor"],["ops","Exploitation"],["machine","La machine"],["corpus","Corpus"],["regles","Règles"],["mgr","Manager"],["sponsor","Sponsor"],["secu","Sécurité"],["dpo","DPO"]];
+  var hlbar=document.getElementById("hlbar");
+  hlbar.insertAdjacentHTML("beforeend",HL.map(function(x){return '<button type="button" class="hl" id="hl-'+(x[0]||"all")+'" data-l="'+x[0]+'" aria-pressed="false"'+(x[0]?' style="--lc:var(--c-'+x[0]+')"><i></i>':'>')+x[1]+'</button>'}).join(""));
+  function ovHighlight(key){
+    key=key||""; ov.setAttribute("data-hl",key);
+    ov.querySelectorAll(".ogrid [data-l], .oband [data-l]").forEach(function(e){e.classList.toggle("on", !!key && e.getAttribute("data-l")===key)});
+    hlbar.querySelectorAll(".hl").forEach(function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-l")===key))});
+  }
+  hlbar.addEventListener("click",function(e){var b=e.target.closest(".hl");if(b)ovHighlight(b.getAttribute("data-l"))});
+
+  // Cartes des rôles
+  document.getElementById("rcards").innerHTML=ROLES.map(function(r){
+    return '<div class="rcard"><div class="head"><span class="ico">'+icon(r.id)+'</span><h4>'+r.label+'</h4></div>'+
+      '<p class="m">'+r.mission+'</p><div class="places">'+places(r.places)+'</div>'+
+      '<div class="seq"><span class="lbl">Une fois</span><span class="cs">'+r.once.map(function(p){return chip(p)}).join("")+'</span>'+
+      '<span class="lbl">Ensuite</span><span class="cs">'+r.daily.map(function(p){return chip(p,"d")}).join("")+'</span></div>'+
+      '<button type="button" class="go" data-r="'+r.id+'"><span>Ouvrir mon parcours</span><span aria-hidden="true">→</span></button></div>';
+  }).join("");
+
+  // Onglets
+  var tabs=document.getElementById("tabs");
+  tabs.innerHTML='<button type="button" role="tab" class="tab all" id="tab-all" data-r="">'+icon("all")+'Tout le guide</button><span class="sep" aria-hidden="true"></span>'+
+    ROLES.map(function(r){return '<button type="button" role="tab" class="tab" id="tab-'+r.id+'" data-r="'+r.id+'">'+icon(r.id)+r.short+'</button>'}).join("");
+
+  var banner=document.getElementById("banner"), nav=document.getElementById("toc");
+  function tiles(list){
+    return list.map(function(p,i){
+      return (i?'<span class="ar" aria-hidden="true">→</span>':'')+'<a class="tile" href="#'+p+'"><span class="p">'+p.toUpperCase()+'</span><span class="t">'+PROCS[p][0]+'</span><span class="d">'+PROCS[p][1]+'</span></a>';
+    }).join("");
+  }
+  function setMode(id, fromHash){
+    var r=byId(id);
+    tabs.querySelectorAll(".tab").forEach(function(t){t.setAttribute("aria-selected", String((t.dataset.r||null)===(r?r.id:null)))});
+    document.body.classList.toggle("focus", !!r);
+    ovHighlight(r?ROLE_LANE[r.id]:"");
+    var seq=r?r.once.concat(r.daily):[];
+    document.querySelectorAll(".proc").forEach(function(p){
+      var i=seq.indexOf(p.id);
+      p.classList.toggle("mine", i>=0);
+      p.style.order=r&&i>=0?String(i+1):"";
+      var tag=p.querySelector(".rstep");
+      if(!tag){tag=document.createElement("span");tag.className="rstep";p.querySelector(".proc-head").appendChild(tag)}
+      if(r&&i>=0){var once=i<r.once.length;tag.className="rstep "+(once?"once":"daily");tag.textContent=(once?"Une fois":"Ensuite")+" · étape "+(i+1)+" sur "+seq.length}
+    });
+    nav.querySelectorAll(".inrole").forEach(function(e){e.classList.remove("inrole");e.style.order=""});
+    if(r){
+      var hOnce=nav.querySelector('[data-h="once"]'), hDaily=nav.querySelector('[data-h="daily"]');
+      hOnce.classList.add("inrole");hOnce.style.order="0";
+      r.once.forEach(function(p,i){var a=nav.querySelector('a[data-p="'+p+'"]');a.classList.add("inrole");a.style.order=String(i+1)});
+      hDaily.classList.add("inrole");hDaily.style.order=String(r.once.length+1);
+      r.daily.forEach(function(p,i){var a=nav.querySelector('a[data-p="'+p+'"]');a.classList.add("inrole");a.style.order=String(r.once.length+2+i)});
+      nav.querySelectorAll(".keep").forEach(function(e){e.style.order=e.classList.contains("top")?"-1":"500"});
+      banner.innerHTML='<div class="eyebrow">Mon parcours</div>'+
+        '<div class="top" style="margin-top:10px"><span class="ico">'+icon(r.id)+'</span><h2>'+r.label+'</h2></div>'+
+        '<p class="mission">'+r.mission+'</p>'+
+        '<div class="facts"><div><div class="k">Où vous travaillez</div><div class="places">'+places(r.places)+'</div></div>'+
+        '<div><div class="k">Rôle à avoir</div><div class="rchips">'+r.rights.map(function(x){return '<code>'+x+'</code>'}).join(" ")+'</div></div></div>'+
+        '<div class="journey"><div class="lane"><div class="lane-k">Une fois<small>pour démarrer</small></div><div class="tiles">'+tiles(r.once)+'</div></div>'+
+        '<div class="lane"><div class="lane-k">Ensuite ↻<small>au quotidien</small></div><div class="tiles">'+tiles(r.daily)+'</div></div></div>';
+    }else{
+      nav.querySelectorAll(".keep").forEach(function(e){e.style.order=""});
+      banner.innerHTML="";
+    }
+    try{ if(r) localStorage.setItem("cn-role",r.id); else localStorage.removeItem("cn-role"); }catch(e){}
+    if(!fromHash){
+      try{ history.replaceState(null,"", r?"#parcours-"+r.id:location.pathname+location.search); }catch(e){}
+    }
+  }
+  function go(id){setMode(id);window.scrollTo({top:0,behavior:"auto"})}
+  tabs.addEventListener("click",function(e){var t=e.target.closest(".tab");if(t)go(t.dataset.r||null)});
+  tabs.addEventListener("keydown",function(e){
+    if(e.key!=="ArrowRight"&&e.key!=="ArrowLeft")return;
+    var all=[].slice.call(tabs.querySelectorAll(".tab")),i=all.indexOf(document.activeElement);if(i<0)return;
+    var n=all[(i+(e.key==="ArrowRight"?1:all.length-1))%all.length];n.focus();n.click();e.preventDefault();
+  });
+  document.getElementById("rcards").addEventListener("click",function(e){var b=e.target.closest(".go");if(b)go(b.dataset.r)});
+
+  // Lien interne vers une partie masquée dans la vue rôle : revenir à « Tout le guide »
+  document.addEventListener("click",function(e){
+    var a=e.target.closest('a[href^="#"]');if(!a)return;
+    var t=document.getElementById(a.getAttribute("href").slice(1));if(!t)return;
+    if(document.body.classList.contains("focus")&&t.offsetParent===null){
+      e.preventDefault();setMode(null);
+      requestAnimationFrame(function(){t.scrollIntoView()});
+    }
+  });
+
+  function fromHash(){
+    var h=location.hash.replace("#","");
+    if(h.indexOf("parcours-")===0){setMode(h.slice(9),true);return true}
+    return false;
+  }
+  window.addEventListener("hashchange",fromHash);
+  if(!fromHash()){
+    var saved=null;try{saved=localStorage.getItem("cn-role")}catch(e){}
+    setMode(saved,true);
+    var tgt=location.hash&&document.getElementById(location.hash.slice(1));
+    if(tgt&&tgt.offsetParent===null){setMode(null,true);tgt.scrollIntoView()}
+  }
+
+  // Séquence Spec Kit
+  var SEQ=[["0","/parcours","—"],["1","specify","ticket, critères,","capacité ; en-tête"],["2","clarify","open_questions"],
+    ["3","plan","brief, existing"],["4","tasks","code_checks_config","en tâches de fin"],["5","analyze","— relancer après","chaque retouche"],
+    ["6","implement","code_checks","à chaque incrément"],["7","converge","code_checks","gate_check g3"],["8","deliver","/gate g3 puis","/deliver (P10)"]];
+  var step=1040/9,h="";
+  SEQ.forEach(function(s,i){
+    var cx=20+step*i+step/2-4;
+    h+='<circle cx="'+cx+'" cy="108" r="15" style="fill:var(--surface);stroke:var(--accent);stroke-width:2"/>';
+    h+='<text class="s-la" x="'+cx+'" y="113" text-anchor="middle">'+s[0]+'</text>';
+    h+='<text class="s-m" x="'+cx+'" y="78" text-anchor="middle">'+s[1]+'</text>';
+    h+='<line class="s-line dash" x1="'+cx+'" y1="124" x2="'+cx+'" y2="150"/>';
+    h+='<text class="s-s" x="'+cx+'" y="170" text-anchor="middle">'+s[2]+'</text>';
+    if(s[3]) h+='<text class="s-s" x="'+cx+'" y="186" text-anchor="middle">'+s[3]+'</text>';
+  });
+  h+='<text class="s-s" x="20" y="230">Commandes Spec Kit : /speckit-specify ou /speckit.specify selon la version ; /parcours utilise celle du dépôt.</text>';
+  document.getElementById("seq").innerHTML=h;
+
+  // Gates
+  var GATES=[["G1","besoin","ticket Jira","ne"],["G2","spec","MR","wa"],["G3","code","MR","go"],["G4","","","ne"],["G5","","ticket Jira","ne"],["G6","","ticket Jira","ne"]];
+  var gs=840/6,gh="";
+  GATES.forEach(function(x,i){
+    var cx=30+gs*i+gs/2, fill=x[3]==="go"?"var(--go)":x[3]==="wa"?"var(--wait)":"var(--line)", tf=x[3]==="ne"?"var(--ink)":"var(--surface)";
+    gh+='<circle cx="'+cx+'" cy="62" r="26" style="fill:'+fill+'"/>';
+    gh+='<text x="'+cx+'" y="68" text-anchor="middle" style="fill:'+tf+';font-family:var(--f-display);font-weight:800;font-size:17px">'+x[0]+'</text>';
+    if(x[1]) gh+='<text class="s-l" x="'+cx+'" y="22" text-anchor="middle">'+x[1]+'</text>';
+    if(x[2]) gh+='<text class="s-s" x="'+cx+'" y="106" text-anchor="middle">décidée sur : '+x[2]+'</text>';
+  });
+  document.getElementById("gates").innerHTML=gh;
+
+  // Copier
+  document.querySelectorAll(".copy").forEach(function(btn){
+    btn.addEventListener("click",function(){
+      var pre=btn.parentNode.querySelector("pre"),txt=pre.textContent;
+      function done(){btn.textContent="Copié";setTimeout(function(){btn.textContent="Copier"},1600)}
+      function fallback(){var r=document.createRange();r.selectNodeContents(pre);var s=getSelection();s.removeAllRanges();s.addRange(r);btn.textContent="Sélectionné"}
+      try{navigator.clipboard.writeText(txt).then(done,fallback)}catch(e){fallback()}
+    });
+  });
+
+  // Dépannage
+  var dq=document.getElementById("dq"),rows=document.querySelectorAll("#dtable tbody tr"),dc=document.getElementById("dcount");
+  function norm(s){return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"")}
+  function filt(){var q=norm(dq.value.trim()),n=0;rows.forEach(function(r){var ok=!q||norm(r.textContent).indexOf(q)>=0;r.hidden=!ok;if(ok)n++});dc.textContent=n+" / "+rows.length}
+  dq.addEventListener("input",filt);filt();
+
+  // Liste de contrôle P3
+  document.querySelectorAll(".checklist input").forEach(function(c){
+    try{c.checked=localStorage.getItem("cn-"+c.id)==="1"}catch(e){}
+    c.addEventListener("change",function(){try{localStorage.setItem("cn-"+c.id,c.checked?"1":"0")}catch(e){}});
+  });
+})();
+</script>
+
+</body></html>

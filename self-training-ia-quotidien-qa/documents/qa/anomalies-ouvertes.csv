@@ -1,0 +1,14 @@
+id;titre;zone;severite;etat;detectee_par;assignee
+ANO-201;Le message « Réglez votre note au comptoir » ne dit pas pourquoi (retour de la démonstration);Règlement;Mineure;Ouverte;Démonstration;Yann
+ANO-202;Description d'une ligne de note tronquée au-delà de 60 caractères, sans points de suspension;Note détaillée;Mineure;Ouverte;Session exploratoire;Leïla
+ANO-203;Total de la note décalé de quelques pixels sur un écran de 320 px;Note détaillée;Mineure;Ouverte;Session exploratoire;Leïla
+ANO-204;Message de refus de carte affiché en anglais (« Payment declined »);Règlement;Mineure;Ouverte;Session exploratoire;Inès
+ANO-205;Focus clavier invisible sur le bouton « Confirmer et partir » (accessibilité AA, règle DE-12);Règlement;Majeure;Ouverte;Session exploratoire;Maëlle
+ANO-206;Deux appuis rapides sur « Confirmer et partir » : deux demandes d'encaissement de 184,50 € envoyées au service Paiement (cartes de test);Règlement;Bloquante;Ouverte;TR-014;Rayan
+ANO-207;Montant estimé du check-in sans la taxe de séjour depuis le calcul partagé (!52);Check-in;Majeure;En cours;TR-023;Inès
+ANO-208;Test TR-013 instable : attente fixe de 3 s sur la réponse du prestataire de paiement;Règlement;Mineure;Ouverte;TR-013;Malo
+ANO-209;Objet de l'e-mail de facture entièrement en minuscules;Facturation;Mineure;Ouverte;Session exploratoire;Leïla
+ANO-210;Note détaillée affichée en 2,4 s sur le réseau de LYS-03, sans seuil attendu dans la fiche;Note détaillée;Mineure;Ouverte;Session exploratoire;Malo
+ANO-211;Libellé « Séjour de groupe » : majuscule en trop dans le message « Présentez-vous à la réception »;Règlement;Mineure;Ouverte;Session exploratoire;Leïla
+ANO-212;Capture d'écran obsolète dans la page « Parcours Départ » de la documentation;Documentation;Mineure;Ouverte;Revue de la documentation;Yann
+ANO-213;Départ express confirmé sans encaissement quand la pré-autorisation a plus de 7 jours (ST-0412 et ST-0413, préproduction);Règlement;Majeure;Ouverte;Session exploratoire;Théo

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Relire l'IA · Capsule IA 16</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Red+Hat+Display:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="../engine/capsule.css">
+</head>
+<body>
+<script>
+window.CAPSULE = {
+  numero: 16,
+  theme: "Usages et Méthodologie",
+  titre: "Relire l'IA",
+  duree: "3 min",
+  accroche: "Ce que l'IA produit a l'air juste, c'est son talent. Code, spec ou compte rendu : voici quoi vérifier avant de dire « OK ».",
+  pages: [
+    {
+      forme: { type: "texte", segments: ["relire"], accent: "tout" },
+      kicker: "Le principe",
+      titre: "L'IA écrit vite, la vérification reste à vous",
+      texte: "Un texte fluide ou un code qui s'exécute ne prouve rien. Tout ce que l'IA produit arrive avec le même aplomb, juste ou faux : c'est à la relecture que se fait la différence."
+    },
+    {
+      forme: { type: "grille", cols: 10, rows: 10, accent: 45 },
+      kicker: "Ordre de grandeur", chiffre: "45 %",
+      titre: "des tâches de code produisent une faille de sécurité",
+      texte: "Veracode a soumis plus de 100 modèles à 80 tâches de code : l'IA a introduit une faille dans 45 % des cas. Un code qui compile et passe les tests peut donc rester vulnérable.",
+      source: { label: "Veracode · GenAI Code Security Report", url: "https://www.veracode.com/press-release/ai-generated-code-poses-major-security-risks-in-nearly-half-of-all-development-tasks-veracode-research-reveals/" }
+    },
+    {
+      forme: { type: "texte", segments: ["NEUF", "≠", "SÛR"], accent: [1] },
+      kicker: "Le piège",
+      titre: "Un modèle plus récent ou plus gros n'est pas plus sûr",
+      texte: "Veracode constate que la sécurité du code généré n'a pas progressé avec le temps, alors que la justesse syntaxique s'améliorait. Ne relâchez pas la relecture parce que l'outil est récent.",
+      source: { label: "Veracode · GenAI Code Security Report", url: "https://www.veracode.com/press-release/ai-generated-code-poses-major-security-risks-in-nearly-half-of-all-development-tasks-veracode-research-reveals/" }
+    },
+    {
+      forme: { type: "barres", valeurs: [5.2, 21.7], accent: [1] },
+      kicker: "Le paquet fantôme", chiffre: "21,7 %",
+      titre: "de paquets inventés par les modèles ouverts, 5,2 % pour les autres",
+      texte: "Sur 576 000 exemples de code, les modèles ont cité des dépendances qui n'existent pas, 205 474 noms inventés au total. Un pirate peut publier un paquet piégé sous ce nom : vérifiez qu'une dépendance existe avant de l'installer.",
+      source: { label: "arXiv · Package Hallucinations by Code Generating LLMs", url: "https://arxiv.org/abs/2406.10279" }
+    },
+    {
+      forme: { type: "grille", cols: 10, rows: 10, accent: 19 },
+      kicker: "Le coût caché", chiffre: "+ 19 %",
+      titre: "de temps en plus avec l'IA, pour des développeurs qui s'en croyaient gagnants",
+      texte: "Dans un essai contrôlé, 16 développeurs expérimentés ont mis 19 % de temps de plus avec l'IA, tout en estimant avoir gagné 20 %. Relire et corriger prend du temps qu'on ne voit pas. Outils du début 2025.",
+      source: { label: "arXiv · Impact of early-2025 AI on developer productivity", url: "https://arxiv.org/abs/2507.09089" }
+    },
+    {
+      forme: { type: "pictos", icones: ["loupe", "document", "cadenas", "personne"], accent: [0, 1, 2, 3] },
+      kicker: "En pratique",
+      titre: "Quatre questions à poser à chaque merge request",
+      texte: "Ça existe ? (dépendances, API, champs). Le test vérifie-t-il vraiment quelque chose ? Y a-t-il un secret ou une donnée sensible ? Quelle règle métier l'IA a-t-elle supposée ? Lisez le diff avec ces quatre questions."
+    },
+    {
+      forme: { type: "texte", segments: ["MÉTIER"], accent: "tout" },
+      kicker: "Pour les non-devs",
+      titre: "Une spec ou une user story se relit règle par règle",
+      texte: "L'IA peut inventer une règle plausible : annulation gratuite jusqu'à 24 h au lieu de 48 h, heure de Paris au lieu de l'heure locale de l'hôtel. Confrontez chaque règle métier à sa source. L'exemple est illustratif."
+    },
+    {
+      forme: { type: "frise", jalons: 3, accent: [0, 1, 2] },
+      kicker: "Pour vous aider",
+      titre: "Demandez à l'IA de faciliter votre relecture",
+      texte: "Un petit changement à la fois, la liste de ses hypothèses, les tests qui le prouvent. Ce qui est court et explicité se relit vraiment. Un énorme diff, lui, finit approuvé sans être lu."
+    },
+    {
+      forme: { type: "pictos", icones: ["personne"], accent: "tout" },
+      kicker: "La responsabilité",
+      titre: "Approuver, c'est signer : l'agent n'est pas une excuse",
+      texte: "Chez Accor, un humain nommé garantit chaque mise en production : il vérifie les preuves et peut dire non. Valider sans lire, c'est engager son nom sur ce que l'on n'a pas vu."
+    }
+  ],
+  aRetenir: {
+    titre: "Quatre réflexes",
+    points: [
+      "<b>Vérifiez que ça existe.</b> Dépendances, API, champs : une IA peut les inventer.",
+      "<b>Testez ce que les tests prouvent.</b> Un test vert qui ne vérifie rien ne protège de rien.",
+      "<b>Relisez la règle métier à sa source.</b> Spec, user story ou compte rendu : confrontez chaque règle au document de référence.",
+      "<b>Demandez des petits changements.</b> Avec les hypothèses listées, vous relisez vraiment."
+    ]
+  }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../engine/capsule.js"></script>
+</body>
+</html>

@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Hackathon CourtLoop · Accor</title>
+  <script type="module" crossorigin src="../assets/hackathon-DkhRYGX0.js"></script>
+  <link rel="modulepreload" crossorigin href="../assets/modulepreload-polyfill-P2Xu9kJm.js">
+  <link rel="stylesheet" crossorigin href="../assets/hackathon-DK8Mkoxh.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6-5.3-6-11a6 6 0 1 1 12 0c0 5.7-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></symbol>
+  <symbol id="i-radar" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="M12 12l6-6"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></symbol>
+  <symbol id="i-trap" viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.5"/></symbol>
+  <symbol id="i-hand" viewBox="0 0 24 24"><path d="M7 11V6a1.5 1.5 0 0 1 3 0v4M10 10V4.5a1.5 1.5 0 0 1 3 0V10M13 10V5.5a1.5 1.5 0 0 1 3 0V12M16 9.5a1.5 1.5 0 0 1 3 0V14a7 7 0 0 1-7 7h-1a6 6 0 0 1-5-2.7L3.5 15a1.5 1.5 0 0 1 2.5-1.6L7 15"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></symbol>
+  <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.4"/><path d="M15.5 14.2A5 5 0 0 1 21 19"/></symbol>
+  <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-timer" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-bug" viewBox="0 0 24 24"><rect x="8" y="7" width="8" height="12" rx="4"/><path d="M12 7V4M4 11h4M16 11h4M4 17h4M16 17h4M9 4l1.5 2M15 4l-1.5 2"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 6h6l2 2h10v11H3z"/></symbol>
+  <symbol id="i-life" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M5.6 5.6l3.6 3.6M14.8 14.8l3.6 3.6M18.4 5.6l-3.6 3.6M9.2 14.8l-3.6 3.6"/></symbol>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow">Accor · Hackathon · Context Nexus · CourtLoop · 9 h 30 – 17 h 30</p>
+    <h1>Le hackathon <span>CourtLoop</span></h1>
+    <p class="lead">Une journée, une squad de huit rôles, quatre gates.</p>
+  </div>
+</header>
+<nav class="pnav" aria-label="Le hackathon"><div class="wrap" role="tablist">
+  <button type="button" role="tab" id="t-objectif" aria-controls="o-objectif" aria-selected="false" tabindex="-1">L'objectif</button><button type="button" role="tab" id="t-journee" aria-controls="o-journee" aria-selected="false" tabindex="-1">La journée</button><button type="button" role="tab" id="t-installer" aria-controls="o-installer" aria-selected="false" tabindex="-1">S'installer</button><button type="button" role="tab" id="t-regles" aria-controls="o-regles" aria-selected="false" tabindex="-1">Les règles du jeu</button><button type="button" role="tab" id="t-capot" aria-controls="o-capot" aria-selected="false" tabindex="-1">Sous le capot <span class="wip">WIP</span></button><button type="button" role="tab" id="t-lots" aria-controls="o-lots" aria-selected="false" tabindex="-1">Les lots</button><button type="button" role="tab" id="t-role" aria-controls="o-role" aria-selected="false" tabindex="-1">Mon rôle</button>
+</div></nav>
+
+<main id="p3">
+<div class="onglet" role="tabpanel" id="o-objectif" aria-labelledby="t-objectif" hidden>
+<div class="hero3">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Hackathon · une squad · 9 h 30 – 17 h 30</span>
+      <h1>Faire évoluer CourtLoop, <span>de la v0.1 à la v0.2</span></h1>
+      <p class="lead3">On part de l'application qui tourne aujourd'hui. En une journée, la squad choisit, spécifie, construit et met en service quatre évolutions, en passant les gates G1 à G4.</p>
+      <div class="stats3">
+        <div><b>4</b><span>lots d'évolution</span></div>
+        <div><b>9</b><span>tests verts au départ</span></div>
+        <div><b>G1→G4</b><span>par lot</span></div>
+        <div><b>1</b><span>release taguée le soir</span></div>
+      </div>
+    </div>
+    <svg class="versions" viewBox="0 0 520 380" role="img" aria-label="La v0.1 réserve un court d'une heure. La v0.2 ajoute la durée, un calendrier accessible, l'heure du club et des métriques.">
+      <rect class="bx3" x="10" y="20" width="200" height="340" rx="18"/>
+      <text class="t" x="34" y="66">v0.1</text>
+      <text class="s" x="34" y="92">aujourd'hui</text>
+      <g class="s"><text x="34" y="140">1 club, 4 courts</text><text x="34" y="170">créneaux d'1 heure</text><text x="34" y="200">réservation sans</text><text x="34" y="220">double créneau</text><text x="34" y="250">conflit → 409</text><text x="34" y="280">en mémoire</text></g>
+      <path d="M222 190h60" stroke="var(--ink-3)" stroke-width="3" fill="none"/><path d="M276 180l12 10-12 10" stroke="var(--ink-3)" stroke-width="3" fill="none"/>
+      <rect class="bx3" x="300" y="20" width="210" height="340" rx="18" style="stroke:var(--rasp)"/>
+      <text class="t" x="324" y="66">v0.2</text>
+      <text class="s" x="324" y="92">ce soir, 16 h 30</text>
+      <g class="new">
+        <circle cx="332" cy="135" r="13" fill="var(--la)"/><text x="327" y="140" fill="#fff" font-weight="900">A</text><text x="354" y="140" fill="var(--ink)">durée 60·90·120</text>
+        <circle cx="332" cy="185" r="13" fill="var(--lb)"/><text x="327" y="190" fill="#fff" font-weight="900">B</text><text x="354" y="190" fill="var(--ink)">calendrier accessible</text>
+        <circle cx="332" cy="235" r="13" fill="var(--lc)"/><text x="327" y="240" fill="#fff" font-weight="900">C</text><text x="354" y="240" fill="var(--ink)">heure du club</text>
+        <circle cx="332" cy="285" r="13" fill="var(--ld)"/><text x="326" y="290" fill="#fff" font-weight="900">D</text><text x="354" y="290" fill="var(--ink)">traces et métriques</text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<section id="objectifs">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Ce soir, la squad aura</span>
+      <h2>Les objectifs de la journée</h2>
+      <p>Avant le jour J, lisez la <a href="../../../parcours/programme.html#etapes">documentation du Context Nexus</a>, à l'étape « Se projeter » du programme.</p>
+    </div>
+    <div class="stack">
+      <div class="tech"><div class="k"><i style="background:var(--rasp)">1</i>Livré la v0.2</div><p>Quatre évolutions de CourtLoop : la durée de réservation, un calendrier accessible, l'heure du club, les traces et métriques. Une release taguée le soir.</p></div>
+      <div class="tech"><div class="k"><i style="background:var(--g2)">2</i>Passé chaque lot par les gates</div><p>De G1 à G4 : à chaque gate, la machine donne son avis et une personne décide, en 10 minutes au plus.</p></div>
+      <div class="tech"><div class="k"><i style="background:var(--blue)">3</i>Pratiqué le Nexus, chacun dans son rôle</div><p>Les profils techniques explorent puis construisent avec Claude Code ; les profils non techniques découpent puis définissent le besoin.</p></div>
+      <div class="tech"><div class="k"><i style="background:var(--g1)">4</i>Préparé la suite</div><p>Le besoin du responsable de club, passé en G1 l'après-midi, devient le prochain lot.</p></div>
+      <div class="tech"><div class="k"><i style="background:var(--g4)">5</i>Mesuré sa journée</div><p>Trois chiffres en rétro : les passages de gate, les NO-GO, le temps de décision.</p></div>
+    </div>
+  </div>
+</section>
+</div>
+<div class="onglet" role="tabpanel" id="o-journee" aria-labelledby="t-journee" hidden>
+<section id="deroule">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">9 h 30 – 17 h 30</span>
+      <h2>Le déroulé de la journée</h2>
+      <p>Les grands temps de la journée. Le détail de chacun est dans son onglet.</p>
+    </div>
+    <ol class="role-tl deroule" id="derouleList"></ol>
+  </div>
+</section>
+
+<section id="journee3" class="alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Planning de la squad</span>
+      <h2>La journée, rôle par rôle</h2>
+      <p>Une ligne par rôle, une couleur par gate. Cliquez un rôle pour ouvrir sa fiche.</p>
+    </div>
+    <div class="split3">
+      <div class="side3"><span class="ico" style="background:var(--blue)">&lt;/&gt;</span><div><h3>Profils techniques</h3><ul><li><b>Matin, explorer :</b> le projet, sa configuration, celle du Nexus et les gates ; contester le découpage en G2.</li><li><b>Après-midi, construire :</b> <code>/implement</code> du lot C, puis des lots A, B et D, MR, train de merge.</li></ul></div></div>
+      <div class="side3"><span class="ico" style="background:var(--rasp)">✎</span><div><h3>Profils non techniques</h3><ul><li><b>Matin, découper :</b> les lots A à D en tickets, avec critères et maquettes ; les présenter en G2.</li><li><b>Après-midi, définir le besoin :</b> G1 approfondie sur le besoin du responsable de club et CT-112 ; puis recette en G3 et décision d'activation en G4.</li></ul></div></div>
+    </div>
+    <div class="stg" id="stDay">
+      <div class="stage-bar"><b>Planning de la squad</b><button class="pbtn" type="button" data-stage="stDay"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span>Plein écran</span></button></div>
+      <div class="stage-body scroll"><div class="lanes3" id="lanes3" role="table" aria-label="Activités par rôle et par créneau"></div></div>
+      <div class="legend3">
+        <span><i style="background:var(--g1)"></i>G1 prêt à spécifier</span><span><i style="background:var(--g2)"></i>G2 prêt à construire</span><span><i style="background:var(--g3)"></i>G3 prêt à livrer</span><span><i style="background:var(--g4)"></i>G4 en service, observable (sur table)</span>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+<div class="onglet" role="tabpanel" id="o-installer" aria-labelledby="t-installer" hidden>
+<section class="p1" id="p1-env">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">9 h 45 – 10 h 15 au plus · sur chaque poste, avec l'animateur</p>
+      <h2>Ce qui tourne pendant la journée</h2>
+      <p>Tout vit dans un Codespace : le central Context Nexus, la forge GitLab de démonstration, le Jira de démonstration et l'application CourtLoop. Le navigateur du participant passe par les ports transférés du Codespace.</p>
+    </div>
+    <div class="p1-scroll">
+      <svg class="p1-map" viewBox="0 0 1200 520" role="img" aria-label="Le navigateur du participant et Claude Code accèdent, dans le Codespace, au central sur le port 8783, à la forge sur 8790 et à CourtLoop sur 8791. Jira est un serveur MCP de démonstration. Le compte Claude sert à la connexion de Claude Code.">
+        <defs><marker id="p1a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--ink-3)"/></marker></defs>
+        <rect x="20" y="40" width="210" height="190" rx="16" class="p1-out"/>
+        <text class="p1-h" x="40" y="78">Navigateur</text><text class="p1-s" x="40" y="104">du participant</text>
+        <text class="p1-s" x="40" y="150">webapp, CourtLoop,</text><text class="p1-s" x="40" y="174">liens de connexion</text>
+        <rect x="20" y="290" width="210" height="190" rx="16" class="p1-out"/>
+        <text class="p1-h" x="40" y="328">Compte Claude</text><text class="p1-s" x="40" y="354">claude.ai</text>
+        <text class="p1-s" x="40" y="400">connexion de</text><text class="p1-s" x="40" y="424">Claude Code (/login)</text>
+        <rect x="290" y="20" width="890" height="480" rx="20" class="p1-cs"/>
+        <text class="p1-lbl" x="314" y="52">CODESPACE · dépôt du hackathon</text>
+        <g>
+          <rect x="314" y="72" width="270" height="180" rx="14" class="p1-box" style="stroke:var(--rasp)"/>
+          <text class="p1-h" x="334" y="108">Context Nexus</text><text class="p1-port" x="334" y="134">:8783 · central</text>
+          <text class="p1-s" x="334" y="172">webapp, 6 espaces</text><text class="p1-s" x="334" y="198">MCP nexus</text><text class="p1-s" x="334" y="224">17 identités de démo</text>
+        </g>
+        <g>
+          <rect x="604" y="72" width="270" height="180" rx="14" class="p1-box" style="stroke:var(--plum)"/>
+          <text class="p1-h" x="624" y="108">Forge « GitLab »</text><text class="p1-port" x="624" y="134">:8790 · demo-forge</text>
+          <text class="p1-s" x="624" y="172">dépôt, MR, CI</text><text class="p1-s" x="624" y="198">gate-check G2, G3</text><text class="p1-s" x="624" y="224">« Figma » de démo</text>
+        </g>
+        <g>
+          <rect x="894" y="72" width="266" height="180" rx="14" class="p1-box" style="stroke:var(--green)"/>
+          <text class="p1-h" x="914" y="108">CourtLoop</text><text class="p1-port" x="914" y="134">:8791 · server.py</text>
+          <text class="p1-s" x="914" y="172">page joueur</text><text class="p1-s" x="914" y="198">API des créneaux</text><text class="p1-s" x="914" y="224">9 tests</text>
+        </g>
+        <g>
+          <rect x="314" y="290" width="410" height="186" rx="14" class="p1-box" style="stroke:var(--blue)"/>
+          <text class="p1-h" x="334" y="326">Claude Code</text><text class="p1-port" x="334" y="352">dans le dépôt courtloop-booking-api</text>
+          <text class="p1-s" x="334" y="392">MCP nexus-local : instantané .nexus/</text><text class="p1-s" x="334" y="418">MCP nexus : le central</text><text class="p1-s" x="334" y="444">MCP jira : Jira de démo, à ton nom</text>
+        </g>
+        <g>
+          <rect x="744" y="290" width="416" height="88" rx="14" class="p1-box" style="stroke:var(--red)"/>
+          <text class="p1-h" x="764" y="324">Jira de démo</text><text class="p1-s" x="764" y="354">36 tickets CT ; écritures journalisées</text>
+          <rect x="744" y="388" width="416" height="88" rx="14" class="p1-box p1-dash"/>
+          <text class="p1-h" x="764" y="422">Confluence</text><text class="p1-s" x="764" y="452">sources métier du pack, publiées dans le central</text>
+        </g>
+        <path class="p1-arr" d="M232 130h78" marker-end="url(#p1a)"/>
+        <path class="p1-arr" d="M232 384h78" marker-end="url(#p1a)"/>
+        <path class="p1-arr p1-d" d="M520 288V256" marker-end="url(#p1a)"/>
+        <path class="p1-arr p1-d" d="M680 288V256" marker-end="url(#p1a)"/>
+        <path class="p1-arr p1-d" d="M726 334h16" marker-end="url(#p1a)"/>
+      </svg>
+    </div>
+
+    <div class="p1-who">
+      <div class="p1-card"><h3>Profils techniques</h3><p>Tech Lead, Dev 1, Dev 2, QA</p><ul><li>Codespace</li><li>Compte Claude et Claude Code</li><li>Jira de démo dans Claude Code</li><li>Webapp du central</li></ul></div>
+      <div class="p1-card"><h3>Profils non techniques</h3><p>Product Manager, Product Owner, UX, Scrum Master</p><ul><li>Codespace, pour la webapp seulement</li><li>Compte Claude pour le PO (exercice <code>/formuler-business-intent</code>), facultatif pour les autres</li><li>Figma : compte de l'UX, facultatif</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="p1 alt" id="p1-install">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Pas à pas</p>
+      <h2>Installer l'environnement</h2>
+      <p>Une invitation, une ligne à coller dans un terminal, et le poste est prêt. Les profils non techniques s'arrêtent aux étapes 1, 2 et 5 : la webapp leur suffit. Le détail est dans la <a href="../../../parcours/programme.html#etapes">documentation du Context Nexus</a> (procédure P3b).</p>
+    </div>
+    <ol class="p1-steps">
+      <li class="p1-step"><span class="p1-n">1</span><div class="p1-body">
+        <p><b>Accepter l'invitation.</b> Ouvrez le lien remis par l'animateur, choisissez votre identifiant et votre mot de passe (12 caractères au moins). Votre rôle dans la squad est déjà fixé : il est défini à la construction de ce lien. La page <b>Votre accès GitLab</b> s'affiche.</p>
+      </div></li>
+      <li class="p1-step"><span class="p1-n">2</span><div class="p1-body">
+        <p><b>Copier vos accès GitLab, tout de suite.</b> Rangez-les dans votre gestionnaire de mots de passe.</p>
+        <p class="p1-warn">La page ne les affiche qu'une seule fois.</p>
+        <div class="p1-tablebox p1-scroll"><table class="p1-acc" style="min-width:560px">
+          <thead><tr><th>Accès</th><th>À quoi il sert</th></tr></thead>
+          <tbody>
+            <tr><td>Adresse</td><td><code>https://gitlab.34-155-130-81.sslip.io</code>, le GitLab du hackathon</td></tr>
+            <tr><td>Identifiant</td><td>le même que sur le central</td></tr>
+            <tr><td>Jeton personnel <code>glpat-…</code></td><td>git et API ; c'est lui que l'installeur et <code>git clone</code> demandent</td></tr>
+            <tr><td>Mot de passe</td><td>seulement pour vous connecter à GitLab dans le navigateur</td></tr>
+          </tbody>
+        </table></div>
+      </div></li>
+      <li class="p1-step"><span class="p1-n">3</span><div class="p1-body">
+        <p><b>Installer votre poste.</b> Copiez la ligne affichée sur la page et collez-la dans un terminal (macOS, Linux, WSL) :</p>
+        <pre class="p1-code">curl -fsSL 'https://&lt;central&gt;/api/v1/poste/i/&lt;code&gt;/install.sh' | sh</pre>
+        <p>Sous Windows, dépliez <i>Sous Windows (PowerShell)</i> sur la page. Le script vérifie le paquet, l'installe, branche Claude Code et vous demande votre <b>jeton</b>, qu'il range dans un fichier lisible par vous seul. Il propose ensuite le dépôt de votre équipe : <b>Entrée</b> suffit pour l'accepter. Pour cloner, il demande votre identifiant puis ce même jeton.</p>
+        <p class="p1-note">La ligne est valable 15 minutes. Passé ce délai, ou si vous avez fermé la page, <i>Installer mon poste</i> dans la webapp en donne une autre.</p>
+      </div></li>
+      <li class="p1-step"><span class="p1-n">4</span><div class="p1-body">
+        <p><b>Sans l'installeur</b>, s'il échoue : clonez le dépôt à la main, avec votre identifiant et votre jeton comme mot de passe.</p>
+        <pre class="p1-code">git clone https://gitlab.34-155-130-81.sslip.io/courtloop/courtloop-web.git
+cd courtloop-web</pre>
+      </div></li>
+      <li class="p1-step"><span class="p1-n">5</span><div class="p1-body">
+        <p><b>Continuer vers Context Nexus.</b> Cochez <i>J'ai copié mon jeton et mon mot de passe</i>, puis <b>Continuer vers Context Nexus</b>.</p>
+      </div></li>
+    </ol>
+    <div class="p1-check">
+      <h3>Vous êtes prêt quand</h3>
+      <ul>
+        <li>Claude Code, ouvert dans le dépôt (<code>claude</code>), montre <code>nexus-local</code> et <code>nexus</code> connectés dans <code>/mcp</code> ;</li>
+        <li>la webapp du central s'ouvre avec votre identifiant.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+</div>
+<div class="onglet" role="tabpanel" id="o-regles" aria-labelledby="t-regles" hidden>
+<div class="part2">
+<section id="programme">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Le programme à 360°</p>
+      <h2>Un projet, toute la plateforme</h2>
+      <p>Le trajet de chaque lot, de G1 à G4, avec ce que le central apporte à chaque étape et qui agit.</p>
+    </div>
+
+    <div class="stage" id="stage360">
+      <div class="bar">
+        <span class="bt">Le programme à 360°</span>
+        <button type="button" class="btn ghost sm" id="prev" aria-label="Étape précédente">Précédent</button>
+        <button type="button" class="btn primary sm" id="next">Présenter</button>
+        <button type="button" class="btn ghost sm" id="all">Tout afficher</button>
+        <button type="button" class="btn ghost sm fs" data-stage="stage360">Plein écran</button>
+      </div>
+      <div class="canvas">
+        <svg class="map2" id="map" viewBox="0 0 1600 900" role="img" aria-label="Schéma à 360° : le central en haut, le trajet du besoin au milieu de G1 à G4, les rôles en bas, et la boucle vers le besoin suivant">
+          <defs>
+            <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="ahd"/></marker>
+            <linearGradient id="zk2" x1="0" x2="1"><stop offset="0" stop-color="#1a2257"/><stop offset="1" stop-color="#2e3f8f"/></linearGradient>
+          </defs>
+
+          <!-- Libellés des bandes -->
+          <text class="lane-t" x="40" y="412">Le trajet</text>
+          <text class="lane-t" x="40" y="440">du besoin</text>
+          <text class="lane-t" x="40" y="664">Qui agit</text>
+          <text class="lane-s" x="40" y="690">plein : mène</text>
+          <text class="lane-s" x="40" y="710">contour : aide</text>
+          <circle cx="46" cy="734" r="6" class="dot-t"/><text class="lane-s" x="58" y="739">technique</text>
+          <circle cx="46" cy="756" r="6" class="dot-b"/><text class="lane-s" x="58" y="761">non technique</text>
+
+          <!-- Étape 1 : la plateforme -->
+          <g class="st" data-s="1">
+            <rect class="box" x="30" y="70" width="200" height="170" rx="16"/>
+            <text class="h" x="50" y="102">Sources</text>
+            <g class="src"><rect x="46" y="118" width="84" height="30" rx="8"/><text x="88" y="138">Confluence</text></g>
+            <g class="src"><rect x="136" y="118" width="80" height="30" rx="8"/><text x="176" y="138">Jira</text></g>
+            <g class="src"><rect x="46" y="156" width="84" height="30" rx="8"/><text x="88" y="176">Code</text></g>
+            <g class="src fig"><rect x="136" y="156" width="80" height="30" rx="8"/><text x="176" y="176">Figma</text></g>
+            <text class="small" x="50" y="220">lues, jamais modifiées</text>
+            <line class="ln" x1="232" y1="155" x2="256" y2="155" marker-end="url(#ah)"/>
+
+            <rect class="box" x="260" y="60" width="1304" height="180" rx="18"/>
+            <path d="M260 78 a18 18 0 0 1 18 -18 h1268 a18 18 0 0 1 18 18 v28 h-1304z" fill="url(#zk2)"/>
+            <text class="hw" x="282" y="92">Context Nexus · le central</text>
+            <text class="hw2" x="1544" y="92">lit, aide, consigne · n'écrit jamais chez vous</text>
+            <g class="cell"><rect x="276" y="118" width="324" height="108" rx="12"/><text class="ch" x="296" y="150">Explorer</text><text class="cl" x="296" y="178">Interroger l'existant,</text><text class="cl" x="296" y="200">personas, OKR, capacités</text></g>
+            <g class="cell"><rect x="616" y="118" width="300" height="108" rx="12"/><text class="ch" x="636" y="150">Règles</text><text class="cl" x="636" y="178">Grille de spécification,</text><text class="cl" x="636" y="200">gates, design system</text></g>
+            <g class="cell"><rect x="932" y="118" width="300" height="108" rx="12"/><text class="ch" x="952" y="150">Instantané .nexus/</text><text class="cl" x="952" y="178">Projeté dans le dépôt :</text><text class="cl" x="952" y="200">brief et contrôles de code</text></g>
+            <g class="cell"><rect x="1248" y="118" width="300" height="108" rx="12"/><text class="ch" x="1268" y="150">Passages · Pilotage</text><text class="cl" x="1268" y="178">Décisions lues et tracées,</text><text class="cl" x="1268" y="200">audit, indicateurs</text></g>
+          </g>
+
+          <!-- Étape 2 : Besoin, G1 -->
+          <g class="st" data-s="2">
+            <line class="cn" x1="378" y1="228" x2="378" y2="296" marker-end="url(#ah)"/><g class="pill"><rect x="324" y="250" width="108" height="26" rx="13"/><text x="378" y="268">l'existant</text></g>
+            <rect class="card" x="260" y="300" width="236" height="260" rx="16"/>
+            <rect class="ill" x="308" y="322" width="140" height="94" rx="10"/><rect x="308" y="322" width="140" height="26" rx="10" class="tk-h"/><text class="tk" x="378" y="340">CT-202</text>
+            <rect class="bar1" x="322" y="360" width="112" height="8" rx="4"/><rect class="bar1" x="322" y="378" width="90" height="8" rx="4"/><rect class="bar1" x="322" y="396" width="100" height="8" rx="4"/>
+            <text class="ct" x="280" y="456">Besoin</text>
+            <text class="cd" x="280" y="484">Le PO écrit le ticket</text><text class="cd" x="280" y="506">Besoin dans Jira</text>
+            <g class="tool"><rect x="280" y="522" width="96" height="26" rx="7"/><text x="328" y="540">/gate g1</text></g>
+            <line class="ln" x1="498" y1="430" x2="512" y2="430"/>
+            <polygon class="gate g1" points="541,402 569,430 541,458 513,430"/><text class="gt" x="541" y="436">G1</text>
+            <text class="gd" x="541" y="482">PM</text><text class="gd2" x="541" y="500">Jira</text>
+          </g>
+
+          <!-- Étape 3 : Spec, G2 -->
+          <g class="st" data-s="3">
+            <line class="ln" x1="570" y1="430" x2="584" y2="430" marker-end="url(#ah)"/>
+            <line class="cn" x1="704" y1="228" x2="704" y2="296" marker-end="url(#ah)"/><g class="pill"><rect x="656" y="250" width="96" height="26" rx="13"/><text x="704" y="268">règles</text></g>
+            <rect class="card" x="586" y="300" width="236" height="260" rx="16"/>
+            <rect class="ill" x="620" y="322" width="84" height="94" rx="8"/><rect class="bar1" x="632" y="340" width="60" height="7" rx="3"/><rect class="bar1" x="632" y="356" width="48" height="7" rx="3"/><rect class="bar1" x="632" y="372" width="56" height="7" rx="3"/><rect class="bar1" x="632" y="388" width="40" height="7" rx="3"/>
+            <rect class="frm" x="712" y="336" width="80" height="80" rx="8"/><circle class="frm-s" cx="734" cy="358" r="9"/><rect class="frm-s" x="726" y="378" width="54" height="10" rx="4"/><rect class="frm-s" x="726" y="394" width="38" height="10" rx="4"/>
+            <text class="ct" x="606" y="456">Spec</text>
+            <text class="cd" x="606" y="484">Assertions, maquettes</text><text class="cd" x="606" y="506">épinglées, contrat d'API</text>
+            <g class="tool"><rect x="606" y="522" width="110" height="26" rx="7"/><text x="661" y="540">MR de spec</text></g>
+            <line class="ln" x1="824" y1="430" x2="838" y2="430"/>
+            <polygon class="gate g2" points="867,402 895,430 867,458 839,430"/><text class="gt" x="867" y="436">G2</text>
+            <text class="gd" x="867" y="482">PO · UX</text><text class="gd2" x="867" y="500">Tech Lead</text>
+          </g>
+
+          <!-- Étape 4 : Code, G3 -->
+          <g class="st" data-s="4">
+            <line class="ln" x1="896" y1="430" x2="910" y2="430" marker-end="url(#ah)"/>
+            <line class="cn" x1="1030" y1="228" x2="1030" y2="296" marker-end="url(#ah)"/><g class="pill"><rect x="982" y="250" width="96" height="26" rx="13"/><text x="1030" y="268">brief</text></g>
+            <rect class="card" x="912" y="300" width="236" height="260" rx="16"/>
+            <rect class="term-bg" x="940" y="322" width="180" height="94" rx="10"/>
+            <text class="tm" x="954" y="350">› /ticket CT-202</text><text class="tm" x="954" y="374">› /implement</text><text class="tm" x="954" y="398">› /deliver</text>
+            <text class="ct" x="932" y="456">Code</text>
+            <text class="cd" x="932" y="484">Claude Code implémente</text><text class="cd" x="932" y="506">et livre la MR</text>
+            <g class="tool"><rect x="932" y="522" width="104" height="26" rx="7"/><text x="984" y="540">MR + CI</text></g>
+            <line class="ln" x1="1150" y1="430" x2="1164" y2="430"/>
+            <polygon class="gate g3" points="1193,402 1221,430 1193,458 1165,430"/><text class="gt" x="1193" y="436">G3</text>
+            <text class="gd" x="1193" y="482">QA</text><text class="gd2" x="1193" y="500">Tech Lead</text>
+          </g>
+
+          <!-- Étape 5 : En ligne, G4 -->
+          <g class="st" data-s="5">
+            <line class="ln" x1="1222" y1="430" x2="1236" y2="430" marker-end="url(#ah)"/>
+            <line class="cn" x1="1356" y1="296" x2="1356" y2="230" marker-end="url(#ah)"/><g class="pill"><rect x="1290" y="250" width="132" height="26" rx="13"/><text x="1356" y="268">décisions lues</text></g>
+            <rect class="card" x="1238" y="300" width="236" height="260" rx="16"/>
+            <rect class="tog" x="1268" y="330" width="58" height="30" rx="15"/><circle cx="1310" cy="345" r="11" fill="#fff"/><text class="cd" x="1338" y="351">flag allumé</text>
+            <polyline class="spark" points="1268,408 1298,402 1328,404 1358,390 1388,384 1418,374 1446,364"/>
+            <text class="ct" x="1258" y="456">En ligne</text>
+            <text class="cd" x="1258" y="484">Flags, traces, métriques,</text><text class="cd" x="1258" y="506">indicateur de G1</text>
+            <g class="tool"><rect x="1258" y="522" width="112" height="26" rx="7"/><text x="1314" y="540">dossier G4</text></g>
+            <line class="ln" x1="1476" y1="430" x2="1490" y2="430"/>
+            <polygon class="gate g4" points="1519,402 1547,430 1519,458 1491,430"/><text class="gt" x="1519" y="436">G4</text>
+            <text class="gd" x="1519" y="482">QA</text><text class="gd2" x="1519" y="500">Tech Lead</text>
+          </g>
+
+          <!-- Rôles (posés par le script) -->
+          <g id="roleChips"></g>
+
+          <!-- Étape 6 : le tempo et la boucle -->
+          <g class="st" data-s="6">
+            <rect class="smbar" x="260" y="772" width="1304" height="40" rx="20"/>
+            <text class="smt" x="912" y="798">Scrum Master · tempo, obstacles, Definition of Ready (G2) et Definition of Done (G3)</text>
+            <path class="loop" d="M1519 514 V 858 H 240 V 430 H 254" marker-end="url(#ah)"/>
+            <g class="pill soft"><rect x="652" y="844" width="520" height="28" rx="14"/><text x="912" y="863">Les indicateurs observés ouvrent le besoin suivant</text></g>
+          </g>
+        </svg>
+      </div>
+      <div class="caption" id="cap360" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<section id="missions" style="background:var(--surface);border-block:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Les quatre missions</p>
+      <h2>Quatre gates, quatre missions</h2>
+      <p>Chaque lot passe les quatre missions. Chacune finit par une décision humaine en 10 minutes au plus. Un NO-GO qui nomme son critère vaut mieux qu'un GO par gentillesse.</p>
+    </div>
+    <div class="missions" id="missionList"></div>
+  </div>
+</section>
+
+</div>
+</div>
+<div class="onglet" role="tabpanel" id="o-capot" aria-labelledby="t-capot" hidden>
+<section id="capot">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">10 h 15 – 12 h · la matinée des profils techniques</span>
+      <h2>Sous le capot <span class="wip">WIP</span></h2>
+      <p>En cours de définition.</p>
+    </div>
+  </div>
+</section>
+</div>
+<div class="onglet" role="tabpanel" id="o-lots" aria-labelledby="t-lots" hidden>
+<section id="lots" class="alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">10 h 15 – 12 h 30 · découpés le matin, approuvés en G2 commune</span>
+      <h2>Quatre lots, tous partis du code existant</h2>
+      <p>Chaque lot reprend un ticket du backlog CourtLoop qui ne dépend ni du paiement ni de CT-203 et CT-204. Chaque lot passe G1 à G4 pour son compte.</p>
+    </div>
+    <div class="lots">
+      <article class="lot c3">
+        <div class="lot-h"><span class="L">C</span><div><small>CT-210 · Bug · en premier, à 14 h</small><h3>L'heure du club</h3></div></div>
+        <div class="lot-b">
+          <p class="who3"><b>Pour le responsable du club :</b> un créneau ne doit jamais glisser d'une heure en mars ou en octobre.</p>
+          <div class="ba"><div><em>Avant</em><code>"2026-11-22 18:00"</code>, sans fuseau</div><span class="arrow">→</span><div><em>Après</em>heure du club <code>Europe/Paris</code> et instant UTC unique</div></div>
+          <dl class="facts"><dt>Code</dt><dd><code>clock.py</code> (nouveau, <code>zoneinfo</code>), clés de créneau dans <code>server.py</code></dd><dt>Tests</dt><dd>28 mars 2027 02:30 n'existe pas, 31 octobre 2027 02:30 existe deux fois : refus explicite</dd><dt>Activation</dt><dd>Sans flag, motif : correctif</dd><dt>Qui</dt><dd>Tech Lead et QA, 14 h – 14 h 45</dd></dl>
+          <p class="q3"><b>Pourquoi d'abord ?</b> Le lot change la forme d'un créneau : les autres lots s'y rebasent dès sa fusion, à 14 h 45.</p>
+        </div>
+      </article>
+      <article class="lot a">
+        <div class="lot-h"><span class="L">A</span><div><small>CT-202 · Story · l'après-midi</small><h3>Choisir sa durée</h3></div></div>
+        <div class="lot-b">
+          <p class="who3"><b>Pour une joueuse pressée :</b> réserver 90 minutes après le travail, au prix juste.</p>
+          <div class="ba"><div><em>Avant</em>1 créneau = 1 heure, 18 €</div><span class="arrow">→</span><div><em>Après</em><code>/api/slots?duration=90</code>, libre seulement si toute la durée l'est, prix au prorata</div></div>
+          <dl class="facts"><dt>Code</dt><dd><code>BookingStore</code> retient plusieurs créneaux sous un même verrou ; <code>Booking.slots()</code> et <code>book()</code> ; sélecteur dans la page</dd><dt>Tests</dt><dd>Les 4 tests de CT-208 restent verts ; collision partielle 18:00–19:30 contre 19:00</dd><dt>Activation</dt><dd>Flag <code>COURTLOOP_DUREES</code> (éteint : une heure, comme aujourd'hui)</dd><dt>Qui</dt><dd>Dev 1</dd></dl>
+          <p class="q3"><b>À trancher en G2 :</b> grille de 30 minutes, ou 60 et 120 seulement pour cette version ?</p>
+        </div>
+      </article>
+      <article class="lot b">
+        <div class="lot-h"><span class="L">B</span><div><small>CT-108 · Story · l'après-midi</small><h3>Un calendrier pour tous</h3></div></div>
+        <div class="lot-b">
+          <p class="who3"><b>Pour une joueuse à une main, texte agrandi :</b> choisir un jour et un créneau sans souris et sans dépendre de la couleur.</p>
+          <div class="ba"><div><em>Avant</em>5 boutons, états portés par la couleur, couleurs en dur</div><span class="arrow">→</span><div><em>Après</em>flèches entre les jours, date annoncée, icône et texte par état, jetons du design system</div></div>
+          <dl class="facts"><dt>Code</dt><dd><code>static/index.html</code>, <code>static/styles.css</code></dd><dt>Tests</dt><dd>Parcours au clavier, lecteur d'écran, contraste ; <code>design-tokens</code> sans avertissement</dd><dt>Activation</dt><dd>Sans flag, motif : accessibilité, aucune règle métier ne change</dd><dt>Qui</dt><dd>Dev 2, QA pour le clavier ; l'UX revoit l'écran en G3</dd></dl>
+          <p class="q3"><b>À trancher en G2 :</b> la maquette épinglée dans la spec fait foi, écran par écran.</p>
+        </div>
+      </article>
+      <article class="lot d">
+        <div class="lot-h"><span class="L">D</span><div><small>CT-209 · Story · l'après-midi</small><h3>Une réservation qu'on peut suivre</h3></div></div>
+        <div class="lot-b">
+          <p class="who3"><b>Pour la squad, en G4 :</b> savoir si la v0.2 se porte bien, sans exposer un seul joueur.</p>
+          <div class="ba"><div><em>Avant</em>une ligne <code>print()</code> par requête</div><span class="arrow">→</span><div><em>Après</em>journal JSON avec <code>correlation_id</code>, <code>booking_id</code> pseudonyme, <code>GET /api/metrics</code></div></div>
+          <dl class="facts"><dt>Code</dt><dd><code>observability.py</code> (nouveau), enveloppe du <code>Handler</code></dd><dt>Mesures</dt><dd>Latence p95, taux de conflit (409 sur tentatives)</dd><dt>Tests</dt><dd>Aucun nom de joueur dans le journal ; en-tête <code>X-Correlation-Id</code> repris</dd><dt>Activation</dt><dd>Flag <code>COURTLOOP_METRIQUES</code></dd><dt>Qui</dt><dd>Tech Lead et QA</dd></dl>
+          <p class="q3"><b>Sert G4 :</b> ce sont ces deux chiffres que la squad lit à 16 h 30 pour déclarer la v0.2 observable.</p>
+        </div>
+      </article>
+    </div>
+    <div class="extra">
+      <div class="ex">
+        <span class="chip3" style="justify-self:start;color:var(--g1);border-color:var(--g1)">Exercice G1 · 14 h, profils non techniques</span>
+        <h3>Le besoin du responsable de club : fermer un court pour entretien</h3>
+        <p>CT-206, la synchronisation avec le logiciel du club, est bloqué. Le PO découpe une version manuelle et l'écrit avec <code>/formuler-business-intent</code>, puis la passe en <code>/gate g1</code>. Un binôme qui finit tôt la réalise : le court D fermé en dur devient une fermeture que le club pose.</p>
+        <p>Échauffement : CT-112, dont le seul critère est « Ça doit être rapide ». La squad lit son NO-GO et le réécrit.</p>
+      </div>
+      <div class="ex out">
+        <span class="chip3" style="justify-self:start">Pas aujourd'hui</span>
+        <h3>Ce qui attend le paiement</h3>
+        <ul>
+          <li>CT-203 et CT-204 : retenue de 8 minutes et confirmation après paiement, l'objet de l'autre trame.</li>
+          <li>Tout ce qui en dépend : CT-105, CT-106, CT-107 et CT-205, CT-207, CT-211.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+<div class="onglet" role="tabpanel" id="o-role" aria-labelledby="t-role" hidden>
+<section id="roles">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Fiches de rôle</p>
+      <h2>Ma journée, créneau par créneau</h2>
+      <p>La ligne de votre rôle dans le planning, avec ce que vous décidez. Cliquez un rôle dans le planning, ou choisissez-le ici.</p>
+    </div>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div class="role-card" role="tabpanel" id="rolePanel"></div>
+  </div>
+</section>
+</div>
+</main>
+<footer><div class="wrap">Programme de formations IA Accor, avec Zenika. CourtLoop est un scénario fictif de Context Nexus : personnes, clubs et tickets sont synthétiques.</div></footer>
+</body>
+</html>

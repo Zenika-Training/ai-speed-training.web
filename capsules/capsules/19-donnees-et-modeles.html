@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Données et modèles · Capsule IA 19</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Red+Hat+Display:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="../engine/capsule.css">
+</head>
+<body>
+<script>
+window.CAPSULE = {
+  numero: 19,
+  theme: "Gouvernance et Responsabilité",
+  titre: "Données et modèles",
+  duree: "2 min",
+  accroche: "Ce que vous pouvez confier à l'IA dépend d'abord de la sensibilité de vos données. Quatre classes fixent les modèles permis et qui approuve.",
+  pages: [
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // Quatre classes emboîtées : la plus sensible (or) au cœur, la publique à l'extérieur.
+        const k = i % 4, R = [.6, 1.1, 1.6, 2.1][k], u = o.rand() * 2 - 1, a = o.rand() * o.TAU, s = Math.sqrt(1 - u * u);
+        const r = k === 0 ? R * Math.cbrt(o.rand()) : R + o.gauss() * .025;
+        const [y, z] = o.tiltX(r * u, r * s * Math.sin(a) * .5, .35);
+        return [r * s * Math.cos(a) * 1.3, y, z, k === 0 ? 1 : 0];
+      } },
+      kicker: "Le principe", chiffre: "4",
+      titre: "classes de données fixent ce que l'on confie à l'IA",
+      texte: "Réglementée, confidentielle, interne, publique : Accor classe déjà ses données. Pour chaque classe, la gouvernance précise les modèles permis, leur hébergement et qui approuve. Au cœur, la plus sensible."
+    },
+    {
+      forme: { type: "entonnoir", niveaux: [100, 70, 40, 15], accent: [3] },
+      kicker: "La règle",
+      titre: "Plus la donnée est sensible, plus la liste des modèles est courte",
+      texte: "Publique : tout modèle admis. Interne : seulement ceux qui n'apprennent pas de vos envois. Confidentielle : une liste restreinte, en région UE ou en environnement dédié. Réglementée : une liste restreinte et auditée. Largeurs illustratives."
+    },
+    {
+      forme: { type: "pictos", icones: ["cadenas", "engrenage", "personne"], accent: [0, 2] },
+      kicker: "Le réglementé",
+      titre: "Paiement et données personnelles : une personne approuve, pas un agent",
+      texte: "PCI désigne la norme qui protège les données de carte bancaire. Pour ces données, l'hébergement est encadré par contrat, et l'approbation revient toujours à une personne authentifiée, jamais à un agent IA."
+    },
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // La passerelle : des appels venus de partout (lavande) passent par un seul point (or), puis partent vers 4 voies.
+        const q = i % 10, t = o.rand(), g = () => o.gauss() * .035;
+        if (q < 4) { const y0 = Math.sin(i * 12.9898) * 2.1; return [-3 + t * 2.75 + g(), y0 * (1 - t) + g(), g(), 0]; }
+        if (q < 6) { const u = o.rand() * 2 - 1, a = o.rand() * o.TAU, s = Math.sqrt(1 - u * u), k = .38 * Math.cbrt(o.rand()); return [k * s * Math.cos(a), k * u, k * s * Math.sin(a), 1]; }
+        const yl = -1.5 + (q - 6); return [.3 + t * 2.8 + g(), yl * (1 - Math.pow(1 - t, 3)) + g(), g(), 0];
+      } },
+      kicker: "Le contrôle",
+      titre: "La passerelle fait respecter le routage, pas la bonne volonté",
+      texte: "Tout appel à un modèle passe par la passerelle IA, qui l'oriente vers un modèle permis pour sa classe de données. Une règle qui dépend du bon choix de chaque développeur reste une convention, pas un contrôle."
+    },
+    {
+      forme: { type: "dessin", vue: [80, 56], accent: [1], trait: 0, chemins: [
+        "M4 20 h72 v32 h-72 z",
+        "M8 4 h28 v12 h-28 z M44 4 h28 v12 h-28 z"
+      ] },
+      kicker: "L'appel",
+      titre: "Un appel nomme une tâche et une classe, jamais un fournisseur",
+      texte: "Le code demande « résumer, donnée interne », pas tel modèle de tel éditeur : ce sont les deux étiquettes ci-contre. Changer de fournisseur ou de pays d'hébergement se fait alors sans toucher aux applications."
+    },
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // La zone de résidence (cadre et données, lavande) ; un mince filet (or) s'en échappe : les journaux.
+        const q = i % 10, t = o.rand(), g = (w) => o.gauss() * w;
+        if (q < 4) { const e = Math.floor(o.rand() * 4), X = [-2.8, .6], Y = [-1.7, 1.7];
+          if (e < 2) return [X[0] + t * (X[1] - X[0]), Y[e], g(.15), 0];
+          return [X[e - 2], Y[0] + t * (Y[1] - Y[0]), g(.15), 0]; }
+        if (q < 8) return [-1.1 + g(.55), g(.55), g(.3), 0];
+        return [.6 + t * 2.4 + g(.03 + .05 * t), .9 + 1.2 * t * t + g(.03 + .05 * t), g(.03), 1];
+      } },
+      kicker: "Le piège",
+      titre: "Ce sont souvent les journaux qui sortent de la zone autorisée",
+      texte: "Prompts et réponses conservés pour le débogage quittent plus souvent la zone de résidence des données que les appels eux-mêmes. Un nouveau fournisseur peut aussi, sans bruit, réutiliser vos données pour entraîner ses modèles."
+    },
+    {
+      forme: { type: "frise", jalons: 4, accent: [3] },
+      kicker: "L'exception",
+      titre: "Un modèle hors de sa classe se demande, et la dérogation expire",
+      texte: "Une équipe qui en a besoin dépose une demande motivée. Une personne nommée décide, la dérogation est tracée avec un responsable, une raison et une date de fin. À l'échéance, la règle normale reprend."
+    },
+    {
+      forme: { type: "texte", segments: ["UE", "≠", "CN"], accent: [2] },
+      kicker: "La limite",
+      titre: "Ce cadre couvre l'Europe ; la Chine aura son propre équivalent",
+      texte: "La Chine a ses propres modèles, ses propres règles et un cycle produit déployé sur place : elle ne se pilote pas depuis la France. Elle a besoin de son propre cadre, pas d'une exception à celui-ci."
+    }
+  ],
+  aRetenir: {
+    titre: "Quatre réflexes",
+    points: [
+      "<b>Classez avant de coller.</b> Vérifiez la classe de vos données avant de les confier à un assistant IA.",
+      "<b>Passez par la passerelle.</b> Un usage hors passerelle échappe au routage et au contrôle.",
+      "<b>Gardez la main sur le réglementé.</b> Paiement ou données personnelles : une personne authentifiée approuve.",
+      "<b>Demandez une dérogation.</b> Un modèle hors de sa classe se demande, se trace et expire."
+    ]
+  }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../engine/capsule.js"></script>
+</body>
+</html>

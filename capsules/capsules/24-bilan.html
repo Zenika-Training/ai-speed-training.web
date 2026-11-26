@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Le bilan · Capsule IA 24</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Red+Hat+Display:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="../engine/capsule.css">
+</head>
+<body>
+<script>
+window.CAPSULE = {
+  numero: 24,
+  theme: "Bilan",
+  titre: "Le bilan",
+  duree: "3 min",
+  accroche: "Vingt-trois capsules, un même fil : l'IA propose, vous décidez. Voici ce que vous emportez, en douze pages.",
+  pages: [
+    {
+      forme: { type: "frise", jalons: 3, accent: [2] },
+      kicker: "Le chemin", chiffre: "24",
+      titre: "portes, des bases jusqu'à la gouvernance",
+      texte: "Vous avez parcouru les bases (token, prompt, contexte), les usages (spec, agent, MCP) puis la gouvernance (données, délégation, responsabilités). Chaque étape s'appuyait sur la précédente."
+    },
+    {
+      forme: { type: "texte", segments: ["CONTEXTE"], accent: "tout" },
+      kicker: "Le fil rouge",
+      titre: "L'IA ne sait que ce que vous lui montrez",
+      texte: "Prompt, fenêtre de contexte, Nexus, skills : tout revient à ce que l'agent a sous les yeux au moment de répondre. Une règle non écrite n'existe pas pour lui."
+    },
+    {
+      forme: { type: "barres", valeurs: [1, 5], accent: [1] },
+      kicker: "La facture", chiffre: "× 5",
+      titre: "la réponse coûte plus cher que la question",
+      texte: "Un token de sortie coûte environ cinq fois un token d'entrée. Demander court, repartir d'une conversation neuve et choisir le plus petit modèle qui suffit réduisent la note."
+    },
+    {
+      forme: { type: "reseau", noeuds: 6, accent: [0, 3], centre: true },
+      kicker: "L'agent",
+      titre: "Ce que l'agent lit peut lui donner des ordres cachés",
+      texte: "Un agent agit avec des outils (MCP). Chaque outil branché consomme du contexte, et un e-mail ou une page lus peuvent cacher des consignes : branchez peu et validez aux étapes qui comptent."
+    },
+    {
+      forme: { type: "texte", segments: ["VITE", "→", "2 s"], accent: [2] },
+      kicker: "La spec",
+      titre: "Remplacez chaque adjectif par un seuil que l'on peut contrôler",
+      texte: "L'IA ne devine pas ce que « rapide » veut dire. Un critère chiffré (« réponse en moins de 2 secondes ») se vérifie, un adjectif non. Exemple illustratif."
+    },
+    {
+      forme: { type: "frise", jalons: 5, accent: [2] },
+      kicker: "La chaîne", chiffre: "G2",
+      titre: "avant de coder : critères testables et contrat d'API",
+      texte: "Chaque phase livre ce que la suivante peut vérifier. On ne code pas avant d'avoir des critères testables, un contrat d'API publié et des exigences chiffrées."
+    },
+    {
+      forme: { type: "texte", segments: ["SÛR", "≠", "VRAI"], accent: [1] },
+      kicker: "Le piège",
+      titre: "Une réponse sûre d'elle n'est pas une réponse vraie",
+      texte: "L'IA invente avec aplomb, vous donne raison et se fait approuver sans lecture. Les parades : vérifier à la source, demander la contradiction, relire un échantillon."
+    },
+    {
+      forme: { type: "pictos", icones: ["document", "loupe"], accent: [1] },
+      kicker: "La relecture",
+      titre: "Un test vert qui ne vérifie rien ne protège de rien",
+      texte: "L'IA peut inventer une dépendance ou un champ qui n'existe pas, et écrire des tests qui passent sans rien prouver. Relisez la règle métier à sa source, par petits changements."
+    },
+    {
+      forme: { type: "texte", segments: ["× 10-20"], accent: "tout" },
+      kicker: "L'autonomie",
+      titre: "de tokens en autonomie complète, face à un agent accompagné",
+      texte: "Laisser l'IA travailler seule coûte 10 à 20 fois plus de tokens qu'un agent accompagné. L'autonomie se mérite sur des preuves décidées à l'avance, pas sur une impression."
+    },
+    {
+      forme: { type: "pictos", icones: ["cadenas", "base", "engrenage"], accent: [0] },
+      kicker: "Les garde-fous",
+      titre: "Données, secrets, outils : rien ne sort sans contrôle",
+      texte: "Classer ses données, ne jamais coller un secret, ne brancher que des outils validés, garder une alternative au modèle. Ces garde-fous ne dépendent pas de l'IA."
+    },
+    {
+      forme: { type: "reseau", noeuds: 5, accent: [0], centre: true },
+      kicker: "La règle",
+      titre: "Derrière chaque décision, il y a un nom de personne",
+      texte: "L'IA prépare, propose et exécute. L'équipe fixe l'intention, valide et signe : une mise en production porte le nom d'un garant, jamais celui d'un agent."
+    },
+    {
+      forme: { type: "texte", segments: ["JOYEUX", "NOËL"], accent: "tout" },
+      feuDArtifice: true,
+      kicker: "Le mot de la fin",
+      titre: "Merci d'avoir ouvert toutes les portes",
+      texte: "Joyeux Noël à vous et à vos équipes. Gardez un geste de ce calendrier pour l'année qui vient : l'IA vous aidera d'autant mieux que vous garderez la main."
+    }
+  ],
+  aRetenir: {
+    titre: "Trois réflexes",
+    points: [
+      "<b>Donnez le contexte.</b> Ce que l'IA ne voit pas, elle l'invente ou l'ignore.",
+      "<b>Relisez avant de valider.</b> L'aplomb et la complaisance se corrigent par la lecture et la contradiction.",
+      "<b>Nommez le garant.</b> L'IA prépare, une personne tranche et signe."
+    ]
+  }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../engine/capsule.js"></script>
+</body>
+</html>

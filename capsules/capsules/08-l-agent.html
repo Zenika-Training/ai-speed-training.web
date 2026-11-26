@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>L'agent · Capsule IA 08</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Red+Hat+Display:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="../engine/capsule.css">
+</head>
+<body>
+<script>
+window.CAPSULE = {
+  numero: 8,
+  theme: "Les bases",
+  titre: "L'agent",
+  duree: "2 min",
+  accroche: "Un assistant répond, un agent agit. Il enchaîne seul les actions avec vos outils : plus puissant, plus coûteux, et à encadrer.",
+  pages: [
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // La boucle : le modèle au centre, des outils sur l'orbite, un flux (or) qui tourne : agir, observer, ajuster.
+        const q = i % 10, ball = (cx, cy, r) => { const u = o.rand() * 2 - 1, a = o.rand() * o.TAU, s = Math.sqrt(1 - u * u), k = r * Math.cbrt(o.rand()); return [cx + k * s * Math.cos(a), cy + k * u, k * s * Math.sin(a)]; };
+        let p, acc = 0;
+        if (q < 3) p = ball(0, 0, .6);
+        else if (q < 5) { const a = (Math.floor(i / 10) % 4) * o.TAU / 4 + .4; p = ball(2.3 * Math.cos(a), 2.3 * Math.sin(a), .28); }
+        else { const a = o.rand() * o.TAU, w = .06 + .12 * ((a / o.TAU * 4) % 1); p = [2.3 * Math.cos(a) + o.gauss() * w, 2.3 * Math.sin(a) + o.gauss() * w, o.gauss() * w]; acc = 1; }
+        const [y, z] = o.tiltX(p[1], p[2], .5);
+        return [p[0], y, z, acc];
+      } },
+      kicker: "Le principe",
+      titre: "Un agent, c'est une IA qui agit en boucle avec des outils",
+      texte: "Un assistant répond à une question. Un agent choisit lui-même sa prochaine action : il appelle un outil, lit le résultat, ajuste, recommence jusqu'au but. Un « workflow », lui, suit un chemin fixé d'avance.",
+      source: { label: "Anthropic · Building effective agents", url: "https://www.anthropic.com/engineering/building-effective-agents" }
+    },
+    {
+      forme: { type: "texte", segments: ["12", "h"], accent: [0] },
+      kicker: "Ordre de grandeur", chiffre: "≈ 12 h",
+      titre: "de travail d'expert, réussi une fois sur deux par un agent",
+      texte: "Au suivi de METR, Claude Opus 4.6 (février 2026) réussit la moitié des tâches qui prennent environ 12 heures à un spécialiste. Cette durée double en quelques mois. Mais une fois sur deux, c'est l'échec : la supervision reste indispensable.",
+      source: { label: "METR · Time horizons of frontier AI models", url: "https://metr.org/time-horizons/" }
+    },
+    {
+      forme: { type: "barres", valeurs: [1, 4, 15], accent: [2] },
+      kicker: "La facture", chiffre: "× 15",
+      titre: "plus de tokens pour plusieurs agents que pour un simple chat",
+      texte: "Un agent consomme environ 4 fois plus de tokens qu'une conversation ; plusieurs agents qui coopèrent, environ 15 fois plus. À réserver aux tâches dont la valeur justifie ce coût.",
+      source: { label: "Anthropic · Our multi-agent research system", url: "https://www.anthropic.com/engineering/multi-agent-research-system" }
+    },
+    {
+      forme: { type: "frise", jalons: 8, accent: [0, 1, 2, 3, 4, 5, 6, 7] },
+      kicker: "La fiabilité", chiffre: "< 25 %",
+      titre: "de chances de réussir 8 fois de suite la même tâche",
+      texte: "En 2024, même GPT-4o réussissait moins d'une tâche sur deux d'un service client simulé, et rarement de façon régulière. Sur une longue chaîne d'actions, chaque petite erreur s'additionne.",
+      source: { label: "Sierra · τ-bench", url: "https://arxiv.org/abs/2406.12045" }
+    },
+    {
+      forme: { type: "dessin", vue: [80, 60], accent: [2], trait: 4, chemins: [
+        "M4 6 H76 V54 H4 Z",
+        "M4 6 L40 32 L76 6",
+        "M20 44 H60"
+      ] },
+      kicker: "Le risque", chiffre: "11,2 %",
+      titre: "d'attaques réussies par consigne cachée, même avec protections",
+      texte: "Une consigne cachée dans un e-mail ou une page peut détourner l'agent : un faux e-mail de sécurité lui a fait vider une boîte de réception. Sites limités, confirmation avant d'acheter ou de partager, consignes renforcées : le taux passe de 23,6 % à 11,2 %.",
+      source: { label: "Anthropic · Piloting Claude for Chrome", url: "https://claude.com/blog/claude-for-chrome" }
+    },
+    {
+      forme: { type: "grille", cols: 10, rows: 10, accent: 40 },
+      kicker: "Le piège", chiffre: "> 40 %",
+      titre: "des projets d'agents IA abandonnés d'ici fin 2027, prévoit Gartner",
+      texte: "Coûts qui dérapent, valeur floue, risques mal maîtrisés. Gartner dénonce aussi l'« agent washing » : des assistants classiques rebaptisés agents. Sur des milliers de fournisseurs, environ 130 en proposeraient de vrais.",
+      source: { label: "Gartner · 40 % des projets d'IA agentique annulés", url: "https://www.gartner.com/en/newsroom/press-releases/2025-06-25-gartner-predicts-over-40-percent-of-agentic-ai-projects-will-be-canceled-by-end-of-2027" }
+    },
+    {
+      forme: { type: "pictos", icones: ["engrenage", "personne"], accent: [1] },
+      kicker: "En pratique",
+      titre: "Commencez simple et gardez des points de contrôle humains",
+      texte: "Anthropic conseille la solution la plus simple possible, et d'ajouter de l'autonomie seulement quand elle apporte quelque chose. Un bon agent s'arrête pour demander un avis aux étapes clés ou quand il bloque.",
+      source: { label: "Anthropic · Building effective agents", url: "https://www.anthropic.com/engineering/building-effective-agents" }
+    }
+  ],
+  aRetenir: {
+    titre: "Quatre réflexes",
+    points: [
+      "<b>Choisissez le plus simple.</b> Un assistant ou un workflow suffit souvent ; l'agent, quand la tâche l'exige.",
+      "<b>Comptez le coût.</b> Un agent consomme bien plus de tokens qu'une conversation.",
+      "<b>Méfiez-vous des contenus lus.</b> Un e-mail ou une page peuvent cacher des consignes.",
+      "<b>Gardez la main.</b> Prévoyez des validations humaines aux étapes qui comptent."
+    ]
+  }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../engine/capsule.js"></script>
+</body>
+</html>

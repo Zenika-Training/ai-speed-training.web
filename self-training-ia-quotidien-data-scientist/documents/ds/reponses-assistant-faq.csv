@@ -1,0 +1,9 @@
+id;question_du_membre;reponse_de_l_assistant;source_citee;verdict_juge_ia
+Q1;Combien de points je gagne pour une nuit à 150 € ?;Vous gagnez 1 500 points (10 points par euro dépensé pour la chambre).;F1;correct
+Q2;Le petit-déjeuner rapporte-t-il des points ?;Oui, le petit-déjeuner rapporte 5 points par euro.;F1;correct
+Q3;Combien de séjours pour passer argent ?;Il faut 8 séjours sur 12 mois glissants.;F3;correct
+Q4;Mes points expirent-ils ?;Vos points sont valables 24 mois après votre dernier séjour ; chaque séjour prolonge la validité de tous vos points.;F2;correct
+Q5;Le niveau or donne-t-il accès au spa ?;Oui, le niveau or donne un accès gratuit au spa de l'hôtel.;F6;correct
+Q6;Je peux faire le départ express ?;Je ne trouve pas cette information, je vous mets en relation avec un conseiller.;—;correct
+Q7;Comment fermer mon compte ?;Depuis l'application, rubrique « Mon compte », ou en écrivant à la relation client. Vos points seront alors perdus.;F8;correct
+Q8;Quel est le départ tardif en argent ?;Départ tardif garanti jusqu'à 14 h.;F5;correct

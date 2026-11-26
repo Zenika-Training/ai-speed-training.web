@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Le prompt · Capsule IA 02</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Red+Hat+Display:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="../engine/capsule.css">
+</head>
+<body>
+<script>
+window.CAPSULE = {
+  numero: 2,
+  theme: "Usages et Méthodologie",
+  titre: "Le prompt",
+  duree: "2 min",
+  accroche: "Le prompt, c'est la consigne que vous donnez à l'IA. Son contexte, ses exemples et son ordre changent nettement la qualité de la réponse.",
+  pages: [
+    {
+      forme: { type: "pictos", icones: ["document", "personne"], accent: [0] },
+      kicker: "Le principe",
+      titre: "Écrivez pour un collègue brillant, mais arrivé ce matin",
+      texte: "Le modèle ignore vos habitudes, vos clients et vos règles. Le test proposé par Anthropic : faites lire votre prompt à un collègue peu informé. S'il est perdu, le modèle le sera aussi.",
+      source: { label: "Anthropic · Prompting best practices", url: "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices" }
+    },
+    {
+      forme: { type: "barres", valeurs: [17.7, 78.7], accent: [1] },
+      kicker: "Le déclic", chiffre: "× 4,4",
+      titre: "de bonnes réponses avec « réfléchissons étape par étape »",
+      texte: "En 2022, cette seule phrase a fait passer un modèle de 17,7 % à 78,7 % de réussite sur des problèmes d'arithmétique. Le modèle détaille ses étapes avant de conclure, et se trompe moins.",
+      source: { label: "Kojima et al. · Zero-Shot Reasoners (2022)", url: "https://arxiv.org/abs/2205.11916" }
+    },
+    {
+      forme: { type: "dessin", vue: [64, 64], accent: [1], trait: 0, chemins: [
+        "M32.0 6.0 L38.5 23.1 L56.7 24.0 L42.5 35.4 L47.3 53.0 L32.0 43.0 L16.7 53.0 L21.5 35.4 L7.3 24.0 L25.5 23.1 z",
+        "M8.1 60.1 L60.1 8.1 L55.9 3.9 L3.9 55.9 z"
+      ] },
+      kicker: "La nuance",
+      titre: "Les modèles qui raisonnent n'ont plus besoin de formules magiques",
+      texte: "Les modèles dits « de raisonnement » réfléchissent déjà avant de répondre : OpenAI juge inutile de leur demander d'avancer étape par étape. Décrivez plutôt clairement l'objectif et le résultat attendu.",
+      source: { label: "OpenAI · Reasoning best practices", url: "https://developers.openai.com/api/docs/guides/reasoning-best-practices" }
+    },
+    {
+      forme: { type: "pictos", icones: ["document", "document", "document"], accent: "tout" },
+      kicker: "Les exemples", chiffre: "3 à 5",
+      titre: "exemples suffisent à cadrer le format et le ton",
+      texte: "Montrer vaut mieux qu'expliquer. Quelques exemples variés, bien séparés des consignes, indiquent au modèle le résultat attendu. Trop semblables, ils seraient copiés jusque dans leurs détails.",
+      source: { label: "Anthropic · Prompting best practices", url: "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices" }
+    },
+    {
+      forme: { type: "grille", cols: 10, rows: 10, accent: 76 },
+      kicker: "Le piège", chiffre: "76 pts",
+      titre: "d'écart pour une simple mise en forme différente",
+      texte: "Séparateurs, espaces, majuscules : sans rien changer au sens, la mise en forme d'un prompt a fait varier la précision d'un modèle jusqu'à 76 points sur 100. Testez vos variantes avant d'en adopter une.",
+      source: { label: "Sclar et al. · Prompt formatting (2023)", url: "https://arxiv.org/abs/2310.11324" }
+    },
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // Performance selon la position de l'information : une courbe en U, le creux du milieu en or.
+        const q = i % 10, g = () => o.gauss() * .035;
+        if (q < 6) {
+          const x = -2.9 + o.rand() * 5.8, y = -1 + 2.4 * Math.pow(x / 2.9, 2), m = Math.abs(x) < 1;
+          return [x + g(), y + g(), g(), m ? 1 : 0];
+        }
+        const k = Math.floor(i / 10) % 15, cx = -2.8 + k * .4, u = o.rand() * 2 - 1, a = o.rand() * o.TAU, s = Math.sqrt(1 - u * u), r = .1 * Math.cbrt(o.rand());
+        return [cx + r * s * Math.cos(a), -1.9 + r * u, r * s * Math.sin(a), Math.abs(cx) < 1 ? 1 : 0];
+      } },
+      kicker: "La position", chiffre: "> 20 %",
+      titre: "de bonnes réponses en moins quand l'info est au milieu",
+      texte: "Les modèles exploitent mieux le début et la fin d'un long texte. Placée au milieu de 20 documents, la bonne information a fait perdre plus de 20 % de bonnes réponses. Mettez l'essentiel en évidence.",
+      source: { label: "Liu et al. · Lost in the Middle (2023)", url: "https://arxiv.org/abs/2307.03172" }
+    },
+    {
+      forme: { type: "frise", jalons: 5, accent: [4] },
+      kicker: "En pratique", chiffre: "+ 30 %",
+      titre: "de qualité au mieux : documents d'abord, question à la fin",
+      texte: "Avec de longs documents, placez-les en haut du prompt et posez votre question en dernier. Dans les tests d'Anthropic, la qualité des réponses a progressé jusqu'à 30 %, surtout avec plusieurs documents.",
+      source: { label: "Anthropic · Prompting best practices", url: "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices" }
+    }
+  ],
+  aRetenir: {
+    titre: "Quatre réflexes",
+    points: [
+      "<b>Donnez le contexte.</b> Écrivez comme pour un nouveau collègue : pour qui, pourquoi, quel résultat.",
+      "<b>Montrez des exemples.</b> Trois à cinq, variés, bien séparés des consignes.",
+      "<b>Posez la question à la fin.</b> Les longs documents en haut, l'essentiel en évidence.",
+      "<b>Testez vos variantes.</b> Une autre mise en forme peut changer le résultat : comparez avant d'adopter."
+    ]
+  }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../engine/capsule.js"></script>
+</body>
+</html>

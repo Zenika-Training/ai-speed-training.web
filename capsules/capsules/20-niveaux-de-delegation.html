@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La délégation · Capsule IA 20</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Red+Hat+Display:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="../engine/capsule.css">
+</head>
+<body>
+<script>
+window.CAPSULE = {
+  numero: 20,
+  theme: "Gouvernance et Responsabilité",
+  titre: "La délégation",
+  duree: "2 min",
+  accroche: "Confier une tâche à l'IA ne dit pas qui en répond. Quatre niveaux le précisent, activité par activité, de Human à AI-autonomous.",
+  pages: [
+    {
+      forme: { type: "dessin", vue: [60, 60], accent: [1], trait: 4, chemins: [
+        "M30 4 A26 26 0 1 1 29.9 4",
+        "M17 31 L26 40 L44 21"
+      ] },
+      kicker: "Le principe",
+      titre: "Le niveau dit qui rend le verdict, pas combien l'IA travaille",
+      texte: "Un développeur qui fait écrire presque tout son code par un agent, mais garde la décision de fusion, reste en AI-assisted. Un pipeline qui bloque une fusion de sa propre autorité est en AI-executed."
+    },
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // Quatre colonnes : Human, AI-assisted, AI-executed, AI-autonomous. L'or = ce que l'humain voit encore.
+        const c = i % 4, p = [1, 1, .12, .03][c];
+        return [-2.4 + c * 1.6 + (o.rand() - .5) * .9, -2 + o.rand() * 3.8, (o.rand() - .5) * .5, o.rand() < p ? 1 : 0];
+      } },
+      kicker: "L'échelle", chiffre: "4",
+      titre: "niveaux, selon ce que l'humain voit encore",
+      texte: "De gauche à droite. Human : l'humain voit tout. AI-assisted : chaque sortie, avant qu'elle compte. AI-executed : un échantillon et chaque échec. AI-autonomous : les exceptions seulement. Les proportions sont illustratives."
+    },
+    {
+      forme: { type: "dessin", vue: [130, 88], accent: [1], trait: 0, chemins: [
+        "M67 7 h14 v14 h-14 z M88 7 h14 v14 h-14 z M4 7 h14 v14 h-14 z M25 7 h14 v14 h-14 z M109 7 h14 v14 h-14 z M67 49 h14 v14 h-14 z",
+        "M4 70 h14 v14 h-14 z M4 49 h14 v14 h-14 z M4 28 h14 v14 h-14 z M25 70 h14 v14 h-14 z M25 49 h14 v14 h-14 z M25 28 h14 v14 h-14 z M46 70 h14 v14 h-14 z M46 49 h14 v14 h-14 z M46 28 h14 v14 h-14 z M46 7 h14 v14 h-14 z M67 70 h14 v14 h-14 z M67 28 h14 v14 h-14 z M88 70 h14 v14 h-14 z M88 49 h14 v14 h-14 z M88 28 h14 v14 h-14 z M109 70 h14 v14 h-14 z M109 49 h14 v14 h-14 z M109 28 h14 v14 h-14 z"
+      ] },
+      kicker: "La règle",
+      titre: "Un niveau se fixe par activité, pas par équipe ni par outil",
+      texte: "En colonnes, les six phases de Discover à Drop ; de bas en haut, les quatre niveaux. Chaque phase en mêle plusieurs, Develop et Deepen les quatre. Une même équipe n'a donc jamais un seul niveau."
+    },
+    {
+      forme: { type: "pictos", icones: ["document", "base", "engrenage", "loupe"], accent: "tout" },
+      kicker: "La limite", chiffre: "4",
+      titre: "activités seulement vont jusqu'à AI-autonomous",
+      texte: "Tracer les déploiements, journaliser les tests, lancer les contrôles automatiques, observer la production : des actions déterministes et réversibles. AI-autonomous ne fixe jamais une intention et ne décide jamais."
+    },
+    {
+      forme: { type: "grille", cols: 10, rows: 10, accent: 97 },
+      kicker: "La montée", chiffre: "97 %",
+      titre: "de passage au premier essai, 3 mois durant, pour alléger le contrôle",
+      texte: "Exemple : une étape dont la gate automatique valide environ 97 % du travail du premier coup pendant trois mois peut réduire sa vérification humaine. Le seuil est fixé avant la mesure. Les 3 % restants gardent un contrôle."
+    },
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // Un escalier de 4 niveaux ; l'or descend d'une marche : le retour automatique au niveau inférieur.
+        const q = i % 10, g = () => o.gauss() * .03;
+        if (q < 7) {
+          const k = Math.floor(i / 10) % 4, x0 = -3 + k * 1.5, top = -1.9 + (k + 1) * .95, z = (o.rand() - .5) * 1.2;
+          if (o.rand() < .6) return [x0 + o.rand() * 1.5, top, z, 0];
+          return [x0, top - o.rand() * .95, z, 0];
+        }
+        if (q < 9) { const t = o.rand() * .92; return [.75 - 1.5 * t + g(), 1.25 - 1.1 * t + Math.sin(Math.PI * t) * .6 + g(), g(), 1]; }
+        // Pointe de flèche orientée vers la marche du dessous.
+        let a = o.rand(), b = o.rand(); if (a + b > 1) { a = 1 - a; b = 1 - b; }
+        const A = [-.8, .05], B = [-1.08, .55], C = [-.5, .5];
+        return [A[0] + a * (B[0] - A[0]) + b * (C[0] - A[0]), A[1] + a * (B[1] - A[1]) + b * (C[1] - A[1]), g(), 1];
+      } },
+      kicker: "La descente",
+      titre: "Redescendre d'un niveau est automatique, sans décision",
+      texte: "Si davantage de défauts passent les contrôles et sont repérés plus tard, l'activité revient d'elle-même au niveau inférieur. Seule la montée demande une décision : la descente est un filet de sécurité."
+    },
+    {
+      forme: { type: "dessin", vue: [100, 70], accent: [0, 1, 2], trait: 0, chemins: [
+        "M4 4 h92 v6 h-92 z",
+        "M14 18 h72 v6 h-72 z",
+        "M24 32 h52 v6 h-52 z",
+        "M44 68 v-14 h-8 l14 -10 l14 10 h-8 v14 z"
+      ] },
+      kicker: "Les plafonds", chiffre: "3",
+      titre: "plafonds tiennent, quelles que soient les preuves",
+      texte: "Les six décisions jamais déléguées ne bougent pas. En périmètre CAB ou PCI, rien au-dessus d'AI-assisted. Et sans trace, identité et coût rattachés à chaque action, aucune activité ne dépasse AI-assisted."
+    },
+    {
+      forme: { type: "barres", valeurs: [1, 10, 20], accent: [1, 2] },
+      kicker: "La facture", chiffre: "× 10–20",
+      titre: "de tokens pour des équipes d'agents en autonomie",
+      texte: "Des équipes d'agents autonomes consomment 10 à 20 fois plus de tokens qu'un agent accompagné par une personne. Retirer l'humain de la boucle n'est d'ailleurs pas l'objectif du programme."
+    },
+    {
+      forme: { type: "frise", jalons: 3, accent: [1] },
+      kicker: "En pratique",
+      titre: "Pendant le pilote, AI-assisted partout : une personne valide tout",
+      texte: "Phase 1 : mesure de départ, sans délégation. Phase 2, le pilote : une gate humaine sur chaque tâche, pour produire les preuves. Phase 3 : AI-executed étape par étape, sur résultats mesurés."
+    }
+  ],
+  aRetenir: {
+    titre: "Quatre réflexes",
+    points: [
+      "<b>Demandez qui rend le verdict.</b> C'est lui, et non la part de travail de l'IA, qui fixe le niveau d'une activité.",
+      "<b>Fixez le seuil avant de mesurer.</b> Une montée de niveau se mérite sur des preuves décidées à l'avance.",
+      "<b>Validez chaque tâche pendant le pilote.</b> Tout reste en AI-assisted : une personne de l'équipe tranche.",
+      "<b>Comptez les tokens.</b> L'autonomie complète coûte 10 à 20 fois plus qu'un agent accompagné."
+    ]
+  }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../engine/capsule.js"></script>
+</body>
+</html>

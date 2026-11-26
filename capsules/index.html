@@ -1,0 +1,838 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Avent IA4D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Red+Hat+Display:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="engine/tokens.css">
+<style>
+/* Calendrier de l'avent : 24 portes mélangées (ordre fixe), chacune cache une capsule.
+   Même langage visuel qu'avant : fond nuit + particules, cartes voilées, chiffres en contour or.
+   Toutes les portes sont ouvrables quel que soit le jour. ?debug : rien n'est mémorisé. */
+html, body { background: var(--ink); color: var(--paper); }
+body { margin: 0; font-family: var(--body); font-size: 16px; -webkit-font-smoothing: antialiased; }
+#field {
+  position: fixed; inset: 0; z-index: 0; width: 100%; height: 100%; display: block;
+  background: radial-gradient(ellipse 80% 70% at 75% 10%, var(--navy), var(--ink) 70%);
+}
+#fx { position: fixed; inset: 0; z-index: 20; width: 100%; height: 100%; pointer-events: none; }
+.wrap {
+  position: relative; z-index: 1; max-width: 1180px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: calc(40px + env(safe-area-inset-top, 0px)) 64px;
+  display: flex; flex-direction: column; gap: 48px;
+}
+.kicker { font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); }
+
+header.hero { display: flex; flex-direction: column; gap: 20px; padding-top: 4vh; }
+header.hero h1 {
+  margin: 0 0 .08em; font-family: var(--display); font-weight: 900; letter-spacing: -.045em; line-height: .9;
+  font-size: clamp(52px, 10.5vw, 148px);
+}
+header.hero h1 span { color: var(--accent); }
+.lead { margin: 0; max-width: 44ch; font-size: 18px; line-height: 1.55; color: var(--muted); }
+.stats { display: flex; flex-wrap: wrap; gap: 12px 40px; padding-top: 8px; }
+.stat { display: flex; flex-direction: column; gap: 2px; }
+.stat b { font-family: var(--display); font-weight: 900; font-size: 40px; line-height: 1; color: var(--paper); font-variant-numeric: tabular-nums; }
+.stat span { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); }
+
+.status { border-top: 1px solid var(--line); padding-top: 24px; display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between; min-height: 20px; }
+.status p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+.status p b { color: var(--accent); font-weight: 600; }
+.debug { display: none; gap: 8px; align-items: center; }
+.debug.on { display: flex; }
+.debug em { font-style: normal; font: 600 11px/1 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--ink); background: var(--accent); padding: 6px 8px; border-radius: 2px; }
+.debug button {
+  font: 500 12px/1 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+  background: transparent; border: 1px solid var(--line); border-radius: 2px; padding: 10px 14px; cursor: pointer;
+}
+.debug button:hover { color: var(--paper); border-color: var(--muted); }
+
+/* ---------- Portes ---------- */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 20px; }
+.door { position: relative; perspective: 900px; display: grid; min-width: 0; }
+.door.shake { animation: nope .45s cubic-bezier(.36, .07, .19, .97); }
+@keyframes nope { 15%, 85% { transform: translateX(-3px); } 30%, 70% { transform: translateX(6px); } 50% { transform: translateX(-6px); } }
+
+/* Derrière la porte : la capsule */
+.inside {
+  position: relative; min-height: 320px; display: flex; flex-direction: column; gap: 12px; padding: 22px 22px 18px;
+  border: 1px solid var(--line); border-radius: 2px; overflow: hidden;
+  background: radial-gradient(ellipse 90% 70% at 50% 0%, rgba(209, 173, 120, .18), transparent 70%), var(--veil);
+  color: inherit; text-decoration: none; transition: border-color .3s, transform .4s cubic-bezier(.2, .8, .2, 1);
+}
+.inside .n { font-family: var(--display); font-weight: 900; font-size: 56px; line-height: .8; letter-spacing: -.05em; color: transparent; -webkit-text-stroke: 1.2px var(--accent); transition: color .3s; font-variant-numeric: tabular-nums; }
+.inside h2 { margin: 0; font-family: var(--display); font-weight: 700; font-size: 25px; line-height: 1.05; letter-spacing: -.02em; text-wrap: balance; }
+.inside p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--muted); }
+.inside .meta { margin-top: auto; padding-top: 10px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); }
+.inside .arrow { font-family: var(--display); font-weight: 700; font-size: 18px; color: var(--accent); transition: transform .3s; }
+a.inside:hover { border-color: var(--accent); transform: translateY(-3px); }
+a.inside:hover .n { color: var(--accent); }
+a.inside:hover .arrow { transform: translateX(4px); }
+.inside.soon { align-items: center; justify-content: center; text-align: center; }
+.inside.soon .n { font-size: 72px; }
+
+/* Le battant */
+.panel {
+  position: absolute; inset: 0; margin: 0; padding: 0; cursor: pointer; color: inherit; font: inherit;
+  display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px;
+  border: 1px solid var(--line); border-radius: 2px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, .05), transparent 45%),
+    linear-gradient(var(--surface), var(--surface));
+  transform-origin: left center; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  transition: border-color .3s, box-shadow .3s;
+}
+.panel::before { /* filet intérieur façon cadre de porte */
+  content: ""; position: absolute; inset: 8px; border: 1px solid var(--line); border-radius: 1px; pointer-events: none;
+}
+.panel::after { /* poignée */
+  content: ""; position: absolute; right: 14px; top: 50%; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent); opacity: .5; transform: translateY(-50%);
+}
+.panel .num {
+  font-family: var(--display); font-weight: 900; font-size: clamp(64px, 9vw, 96px); line-height: .8; letter-spacing: -.05em;
+  color: transparent; -webkit-text-stroke: 1.5px var(--accent); font-variant-numeric: tabular-nums; transition: color .3s;
+}
+.panel .tag { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--faint); }
+.door.ready .panel { border-color: rgba(209, 173, 120, .55); animation: pulse 2.6s ease-in-out infinite; }
+.door.ready .panel:hover { border-color: var(--accent); }
+.door.ready .panel:hover .num { color: var(--accent); }
+.door.locked .panel { cursor: not-allowed; }
+.door.locked .num { -webkit-text-stroke-color: rgba(209, 173, 120, .4); }
+@keyframes pulse { 50% { box-shadow: 0 0 0 1px rgba(209, 173, 120, .25), 0 0 26px rgba(209, 173, 120, .22); } }
+.panel:focus-visible, a.inside:focus-visible, footer a:focus-visible, .debug button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* Porte ouverte : la carte a disparu, la capsule est visible */
+.door.open .panel { opacity: 0; visibility: hidden; pointer-events: none; animation: none; box-shadow: none; }
+/* Ouverture : la carte tremble de plus en plus fort, puis explose */
+.door.open.opening .panel { opacity: 1; visibility: visible; animation: tremble 1.5s linear forwards; }
+@keyframes tremble {
+  0% { transform: none; }
+  4.0% { transform: translate(0.6px, -0.2px) rotate(-0.11deg) scale(1.002); box-shadow: 0 0 2px rgba(209, 173, 120, 0.03); border-color: var(--accent); }
+  8.0% { transform: translate(-0.7px, 0.2px) rotate(0.12deg) scale(1.004); box-shadow: 0 0 3px rgba(209, 173, 120, 0.05); border-color: var(--accent); }
+  12.0% { transform: translate(0.8px, 0.3px) rotate(-0.15deg) scale(1.005); box-shadow: 0 0 5px rgba(209, 173, 120, 0.07); border-color: var(--accent); }
+  16.0% { transform: translate(-1.0px, -0.3px) rotate(0.19deg) scale(1.007); box-shadow: 0 0 7px rgba(209, 173, 120, 0.10); border-color: var(--accent); }
+  20.0% { transform: translate(1.2px, 0.4px) rotate(-0.23deg) scale(1.009); box-shadow: 0 0 9px rgba(209, 173, 120, 0.12); border-color: var(--accent); }
+  24.0% { transform: translate(-1.4px, 0.5px) rotate(0.29deg) scale(1.011); box-shadow: 0 0 10px rgba(209, 173, 120, 0.15); border-color: var(--accent); }
+  28.0% { transform: translate(1.7px, -0.6px) rotate(-0.36deg) scale(1.013); box-shadow: 0 0 12px rgba(209, 173, 120, 0.18); border-color: var(--accent); }
+  32.0% { transform: translate(-2.1px, 0.7px) rotate(0.44deg) scale(1.015); box-shadow: 0 0 14px rgba(209, 173, 120, 0.20); border-color: var(--accent); }
+  36.0% { transform: translate(2.4px, 0.9px) rotate(-0.54deg) scale(1.016); box-shadow: 0 0 16px rgba(209, 173, 120, 0.23); border-color: var(--accent); }
+  40.0% { transform: translate(-2.9px, -1.0px) rotate(0.64deg) scale(1.018); box-shadow: 0 0 17px rgba(209, 173, 120, 0.25); border-color: var(--accent); }
+  44.0% { transform: translate(3.4px, 1.2px) rotate(-0.75deg) scale(1.020); box-shadow: 0 0 19px rgba(209, 173, 120, 0.28); border-color: var(--accent); }
+  48.0% { transform: translate(-3.9px, 1.4px) rotate(0.87deg) scale(1.022); box-shadow: 0 0 21px rgba(209, 173, 120, 0.30); border-color: var(--accent); }
+  52.0% { transform: translate(4.4px, -1.6px) rotate(-1.01deg) scale(1.024); box-shadow: 0 0 22px rgba(209, 173, 120, 0.33); border-color: var(--accent); }
+  56.0% { transform: translate(-5.1px, 1.8px) rotate(1.15deg) scale(1.025); box-shadow: 0 0 24px rgba(209, 173, 120, 0.35); border-color: var(--accent); }
+  60.0% { transform: translate(5.7px, 2.0px) rotate(-1.31deg) scale(1.027); box-shadow: 0 0 26px rgba(209, 173, 120, 0.38); border-color: var(--accent); }
+  64.0% { transform: translate(-6.4px, -2.2px) rotate(1.48deg) scale(1.029); box-shadow: 0 0 28px rgba(209, 173, 120, 0.40); border-color: var(--accent); }
+  68.0% { transform: translate(7.2px, 2.5px) rotate(-1.65deg) scale(1.031); box-shadow: 0 0 29px rgba(209, 173, 120, 0.43); border-color: var(--accent); }
+  72.0% { transform: translate(-8.0px, 2.8px) rotate(1.84deg) scale(1.033); box-shadow: 0 0 31px rgba(209, 173, 120, 0.45); border-color: var(--accent); }
+  76.0% { transform: translate(8.8px, -3.1px) rotate(-2.04deg) scale(1.035); box-shadow: 0 0 33px rgba(209, 173, 120, 0.48); border-color: var(--accent); }
+  80.0% { transform: translate(-9.7px, 3.4px) rotate(2.25deg) scale(1.036); box-shadow: 0 0 35px rgba(209, 173, 120, 0.50); border-color: var(--accent); }
+  84.0% { transform: translate(10.6px, 3.7px) rotate(-2.47deg) scale(1.038); box-shadow: 0 0 36px rgba(209, 173, 120, 0.53); border-color: var(--accent); }
+  88.0% { transform: translate(-11.6px, -4.1px) rotate(2.70deg) scale(1.040); box-shadow: 0 0 38px rgba(209, 173, 120, 0.55); border-color: var(--accent); }
+  94% { transform: scale(1.07); box-shadow: 0 0 60px rgba(255, 240, 200, .9); border-color: var(--accent-hi); filter: brightness(1.6); }
+  100% { transform: scale(1.4); opacity: 0; filter: brightness(3); }
+}
+.door .flash {
+  position: absolute; inset: -30%; pointer-events: none; opacity: 0; z-index: 2;
+  background: radial-gradient(circle, rgba(255, 240, 200, .95) 0%, rgba(209, 173, 120, .55) 25%, transparent 60%);
+}
+.door.opening .flash { animation: flash 1s ease-out 1.4s both; }
+@keyframes flash { 0% { opacity: 0; transform: scale(.3); } 18% { opacity: 1; } 100% { opacity: 0; transform: scale(1.4); } }
+.door.opening .inside { animation: surge 2.2s cubic-bezier(.2, .9, .2, 1.2) both; }
+@keyframes surge { 0%, 67% { opacity: 0; transform: scale(.96); filter: brightness(.7); } 68% { opacity: 1; transform: scale(.96); filter: brightness(1.2); } 74% { transform: scale(1.07); filter: brightness(1.8); } 100% { transform: scale(1); filter: none; } }
+.door.opening { z-index: 3; }
+body.boom .wrap { animation: boom .5s cubic-bezier(.36, .07, .19, .97); }
+@keyframes boom { 20% { transform: translate(2px, -2px); } 40% { transform: translate(-3px, 1px); } 60% { transform: translate(2px, 2px); } 80% { transform: translate(-1px, -1px); } }
+
+footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 12px; color: var(--faint); }
+footer a { color: var(--muted); text-underline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .panel, .inside, .inside .n, .inside .arrow { transition: none; }
+  .door.ready .panel, .door.shake, .door.opening .flash, .door.opening .inside, body.boom .wrap { animation: none; }
+}
+</style>
+</head>
+<body>
+<canvas id="field" aria-hidden="true"></canvas>
+<canvas id="fx" aria-hidden="true"></canvas>
+<div class="wrap">
+  <header class="hero">
+    <div class="kicker">24 portes · 1 capsule par jour · décembre</div>
+    <h1>Avent <span>IA4D</span></h1>
+    <p class="lead">Avent IA4D : un calendrier de l'avent pour comprendre l'IA. Chaque jour de décembre, une porte s'ouvre sur une capsule : un concept, quelques faits sourcés, deux minutes.</p>
+    <div class="stats" id="stats"></div>
+  </header>
+  <div class="status">
+    <p id="msg" aria-live="polite"></p>
+    <div class="debug" id="debug"><em>Debug</em><button type="button" id="openAll">Tout ouvrir</button><button type="button" id="closeAll">Tout refermer</button></div>
+  </div>
+  <main class="grid" id="grid"></main>
+  <footer>
+    <span>Capsules IA · parcours de formation</span>
+    <a href="engine/catalogue.html">Catalogue des formes</a>
+  </footer>
+</div>
+
+<script>
+// Généré par tools/manifest.mjs : ne pas modifier à la main.
+window.CAPSULES = [
+  {
+    "fichier": "capsules/01-le-token.html",
+    "numero": 1,
+    "theme": "Les bases",
+    "titre": "Le token",
+    "accroche": "L'unité que l'IA lit, compte et facture. Ce que vous écrivez, ce qu'elle répond et ce que vous payez se mesure en tokens.",
+    "duree": "2 min",
+    "pages": 6,
+    "formes": [
+      "texte",
+      "texte",
+      "grille",
+      "texte",
+      "pile",
+      "barres"
+    ],
+    "sources": 4
+  },
+  {
+    "fichier": "capsules/02-le-prompt.html",
+    "numero": 2,
+    "theme": "Usages et Méthodologie",
+    "titre": "Le prompt",
+    "accroche": "Le prompt, c'est la consigne que vous donnez à l'IA. Son contexte, ses exemples et son ordre changent nettement la qualité de la réponse.",
+    "duree": "2 min",
+    "pages": 7,
+    "formes": [
+      "pictos",
+      "barres",
+      "dessin",
+      "pictos",
+      "grille",
+      "libre",
+      "frise"
+    ],
+    "sources": 7
+  },
+  {
+    "fichier": "capsules/03-le-contexte.html",
+    "numero": 3,
+    "theme": "Les bases",
+    "titre": "Le contexte",
+    "accroche": "Tout ce que l'IA voit au moment de répondre tient dans sa fenêtre de contexte. Ce qui y entre, et ce qui s'y perd, décide de la qualité de la réponse.",
+    "duree": "2 min",
+    "pages": 7,
+    "formes": [
+      "texte",
+      "reseau",
+      "barres",
+      "pile",
+      "frise",
+      "grille",
+      "entonnoir"
+    ],
+    "sources": 7
+  },
+  {
+    "fichier": "capsules/04-hallucination.html",
+    "numero": 4,
+    "theme": "Les bases",
+    "titre": "L'hallucination",
+    "accroche": "Une IA peut inventer une réponse fausse avec le plus grand aplomb. Comprendre pourquoi aide à repérer le piège et à s'en protéger.",
+    "duree": "2 min",
+    "pages": 8,
+    "formes": [
+      "texte",
+      "grille",
+      "barres",
+      "dessin",
+      "grille",
+      "libre",
+      "barres",
+      "pictos"
+    ],
+    "sources": 8
+  },
+  {
+    "fichier": "capsules/05-la-complaisance.html",
+    "numero": 5,
+    "theme": "Les bases",
+    "titre": "La complaisance",
+    "accroche": "L'IA a tendance à aller dans votre sens, même quand vous avez tort. Savoir pourquoi permet de lui demander la contradiction, pas l'applaudissement.",
+    "duree": "2 min",
+    "pages": 8,
+    "formes": [
+      "texte",
+      "reseau",
+      "barres",
+      "pictos",
+      "frise",
+      "texte",
+      "texte",
+      "pictos"
+    ],
+    "sources": 5
+  },
+  {
+    "fichier": "capsules/06-registres-nexus.html",
+    "numero": 6,
+    "theme": "Usages et Méthodologie",
+    "titre": "Le Nexus",
+    "accroche": "L'IA ne connaît que ce que vous lui montrez. Le Context Nexus est la mémoire commune de l'équipe : un seul endroit où ranger ce qu'elle sait, veut, exige et fait.",
+    "duree": "2 min",
+    "pages": 7,
+    "formes": [
+      "reseau",
+      "entonnoir",
+      "pile",
+      "texte",
+      "pile",
+      "libre",
+      "barres"
+    ],
+    "sources": 0
+  },
+  {
+    "fichier": "capsules/07-discover-to-drop.html",
+    "numero": 7,
+    "theme": "Usages et Méthodologie",
+    "titre": "Discover to Drop",
+    "accroche": "La livraison n'est plus une ligne droite mais une roue en six phases. Chaque passage est un contrat, vérifié sur preuves par une Quality Gate.",
+    "duree": "2 min",
+    "pages": 7,
+    "formes": [
+      "libre",
+      "dessin",
+      "pictos",
+      "dessin",
+      "libre",
+      "dessin",
+      "libre"
+    ],
+    "sources": 0
+  },
+  {
+    "fichier": "capsules/08-l-agent.html",
+    "numero": 8,
+    "theme": "Les bases",
+    "titre": "L'agent",
+    "accroche": "Un assistant répond, un agent agit. Il enchaîne seul les actions avec vos outils : plus puissant, plus coûteux, et à encadrer.",
+    "duree": "2 min",
+    "pages": 7,
+    "formes": [
+      "libre",
+      "texte",
+      "barres",
+      "frise",
+      "dessin",
+      "grille",
+      "pictos"
+    ],
+    "sources": 7
+  },
+  {
+    "fichier": "capsules/09-cout-des-tokens.html",
+    "numero": 9,
+    "theme": "Les bases",
+    "titre": "Coût des tokens",
+    "accroche": "Chaque requête à une IA se paie en tokens. Savoir où part l'argent permet de réduire la facture sans perdre en qualité.",
+    "duree": "2 min",
+    "pages": 8,
+    "formes": [
+      "barres",
+      "pile",
+      "texte",
+      "texte",
+      "barres",
+      "grille",
+      "barres",
+      "frise"
+    ],
+    "sources": 8
+  },
+  {
+    "fichier": "capsules/10-choisir-son-modele.html",
+    "numero": 10,
+    "theme": "Les bases",
+    "titre": "Choisir son modèle",
+    "accroche": "Le modèle le moins cher au token n'est pas forcément le moins cher à l'usage. Il se choisit sur vos cas, tâche par tâche, et en continu.",
+    "duree": "2 min",
+    "pages": 8,
+    "formes": [
+      "libre",
+      "entonnoir",
+      "barres",
+      "pictos",
+      "libre",
+      "barres",
+      "frise",
+      "dessin"
+    ],
+    "sources": 3
+  },
+  {
+    "fichier": "capsules/11-le-mcp.html",
+    "numero": 11,
+    "theme": "Les bases",
+    "titre": "Le MCP",
+    "accroche": "Le MCP est la prise standard qui branche une IA sur vos outils et vos données. Un connecteur écrit une fois sert à tous les assistants.",
+    "duree": "2 min",
+    "pages": 8,
+    "formes": [
+      "texte",
+      "barres",
+      "reseau",
+      "pictos",
+      "frise",
+      "pile",
+      "texte",
+      "frise"
+    ],
+    "sources": 7
+  },
+  {
+    "fichier": "capsules/12-spec-driven-development.html",
+    "numero": 12,
+    "theme": "Usages et Méthodologie",
+    "titre": "Spec-Driven",
+    "accroche": "Avec le Spec-Driven Development, l'effort passe du code à des spécifications claires, pour que l'IA livre le résultat attendu sans mauvaise surprise.",
+    "duree": "2 min",
+    "pages": 6,
+    "formes": [
+      "texte",
+      "grille",
+      "reseau",
+      "frise",
+      "texte",
+      "texte"
+    ],
+    "sources": 0
+  },
+  {
+    "fichier": "capsules/13-comment-un-agent-lit.html",
+    "numero": 13,
+    "theme": "Usages et Méthodologie",
+    "titre": "Comment l'agent lit",
+    "accroche": "Un agent ne lit pas tout de la même façon. Consignes permanentes, spec du jour, recherche, procédures : chaque voie impose sa manière d'écrire.",
+    "duree": "2 min",
+    "pages": 7,
+    "formes": [
+      "libre",
+      "texte",
+      "dessin",
+      "pictos",
+      "libre",
+      "reseau",
+      "libre"
+    ],
+    "sources": 1
+  },
+  {
+    "fichier": "capsules/14-grille-de-spec.html",
+    "numero": 14,
+    "theme": "Usages et Méthodologie",
+    "titre": "La grille de spec",
+    "accroche": "Avant le moindre code, des sous-agents IA passent la spec au crible, discipline par discipline. Aucune question ne reste sans réponse ni sans responsable.",
+    "duree": "2 min",
+    "pages": 7,
+    "formes": [
+      "libre",
+      "pictos",
+      "texte",
+      "dessin",
+      "frise",
+      "libre",
+      "texte"
+    ],
+    "sources": 0
+  },
+  {
+    "fichier": "capsules/15-secrets-et-prompts.html",
+    "numero": 15,
+    "theme": "Usages et Méthodologie",
+    "titre": "Secrets et prompts",
+    "accroche": "Une clé d'API collée dans un prompt, un .env lu par l'agent : un secret quitte votre poste sans bruit. Où il fuit, et comment l'en empêcher.",
+    "duree": "2 min",
+    "pages": 8,
+    "formes": [
+      "libre",
+      "pile",
+      "barres",
+      "frise",
+      "dessin",
+      "grille",
+      "texte",
+      "barres"
+    ],
+    "sources": 7
+  },
+  {
+    "fichier": "capsules/16-relire-ce-que-l-ia-produit.html",
+    "numero": 16,
+    "theme": "Usages et Méthodologie",
+    "titre": "Relire l'IA",
+    "accroche": "Ce que l'IA produit a l'air juste, c'est son talent. Code, spec ou compte rendu : voici quoi vérifier avant de dire « OK ».",
+    "duree": "3 min",
+    "pages": 9,
+    "formes": [
+      "texte",
+      "grille",
+      "texte",
+      "barres",
+      "grille",
+      "pictos",
+      "texte",
+      "frise",
+      "pictos"
+    ],
+    "sources": 4
+  },
+  {
+    "fichier": "capsules/17-biais-d-approbation.html",
+    "numero": 17,
+    "theme": "Gouvernance et Responsabilité",
+    "titre": "Le biais d'approbation",
+    "accroche": "Quand l'IA a presque toujours raison, on finit par valider sans lire. Une relecture humaine devient alors, en silence, un simple tampon.",
+    "duree": "2 min",
+    "pages": 8,
+    "formes": [
+      "libre",
+      "barres",
+      "dessin",
+      "pile",
+      "pictos",
+      "libre",
+      "grille",
+      "dessin"
+    ],
+    "sources": 1
+  },
+  {
+    "fichier": "capsules/18-cycle-de-vie-des-actifs-ia.html",
+    "numero": 18,
+    "theme": "Usages et Méthodologie",
+    "titre": "Vie d'un skill",
+    "accroche": "Prompts, skills, agents : une fois partagés, ils deviennent des actifs. Comme du code, ils naissent, servent, vieillissent et se retirent.",
+    "duree": "2 min",
+    "pages": 8,
+    "formes": [
+      "pictos",
+      "libre",
+      "dessin",
+      "libre",
+      "dessin",
+      "libre",
+      "texte",
+      "dessin"
+    ],
+    "sources": 0
+  },
+  {
+    "fichier": "capsules/19-donnees-et-modeles.html",
+    "numero": 19,
+    "theme": "Gouvernance et Responsabilité",
+    "titre": "Données et modèles",
+    "accroche": "Ce que vous pouvez confier à l'IA dépend d'abord de la sensibilité de vos données. Quatre classes fixent les modèles permis et qui approuve.",
+    "duree": "2 min",
+    "pages": 8,
+    "formes": [
+      "libre",
+      "entonnoir",
+      "pictos",
+      "libre",
+      "dessin",
+      "libre",
+      "frise",
+      "texte"
+    ],
+    "sources": 0
+  },
+  {
+    "fichier": "capsules/20-niveaux-de-delegation.html",
+    "numero": 20,
+    "theme": "Gouvernance et Responsabilité",
+    "titre": "La délégation",
+    "accroche": "Confier une tâche à l'IA ne dit pas qui en répond. Quatre niveaux le précisent, activité par activité, de Human à AI-autonomous.",
+    "duree": "2 min",
+    "pages": 9,
+    "formes": [
+      "dessin",
+      "libre",
+      "dessin",
+      "pictos",
+      "grille",
+      "libre",
+      "dessin",
+      "barres",
+      "frise"
+    ],
+    "sources": 0
+  },
+  {
+    "fichier": "capsules/21-reversibilite.html",
+    "numero": 21,
+    "theme": "Gouvernance et Responsabilité",
+    "titre": "La réversibilité",
+    "accroche": "Et si l'accès aux modèles américains était coupé demain ? Être réversible, c'est pouvoir basculer chaque tâche vers une alternative déjà testée.",
+    "duree": "2 min",
+    "pages": 7,
+    "formes": [
+      "libre",
+      "texte",
+      "libre",
+      "pictos",
+      "dessin",
+      "libre",
+      "texte"
+    ],
+    "sources": 0
+  },
+  {
+    "fichier": "capsules/22-invariants-humains.html",
+    "numero": 22,
+    "theme": "Gouvernance et Responsabilité",
+    "titre": "Les invariants humains",
+    "accroche": "Les agents IA gagnent en autonomie, mais ne portent jamais la responsabilité d'une erreur. Six décisions restent pour toujours entre les mains des équipes.",
+    "duree": "2 min",
+    "pages": 9,
+    "formes": [
+      "libre",
+      "entonnoir",
+      "libre",
+      "pictos",
+      "dessin",
+      "libre",
+      "texte",
+      "libre",
+      "dessin"
+    ],
+    "sources": 0
+  },
+  {
+    "fichier": "capsules/23-nouvelles-responsabilites.html",
+    "numero": 23,
+    "theme": "Gouvernance et Responsabilité",
+    "titre": "Nouvelles responsabilités",
+    "accroche": "L'IA ne crée pas de nouvelles équipes, mais de nouvelles responsabilités : onze rôles, portés à temps partiel par des profils qui existent déjà.",
+    "duree": "2 min",
+    "pages": 9,
+    "formes": [
+      "libre",
+      "barres",
+      "libre",
+      "pile",
+      "libre",
+      "reseau",
+      "libre",
+      "pictos",
+      "frise"
+    ],
+    "sources": 0
+  },
+  {
+    "fichier": "capsules/24-bilan.html",
+    "numero": 24,
+    "theme": "Bilan",
+    "titre": "Le bilan",
+    "accroche": "Vingt-trois capsules, un même fil : l'IA propose, vous décidez. Voici ce que vous emportez, en douze pages.",
+    "duree": "3 min",
+    "pages": 12,
+    "formes": [
+      "frise",
+      "texte",
+      "barres",
+      "reseau",
+      "texte",
+      "frise",
+      "texte",
+      "pictos",
+      "texte",
+      "pictos",
+      "reseau",
+      "texte"
+    ],
+    "sources": 0
+  }
+];
+
+</script>
+<script>
+(function () {
+  const DOORS = 24;
+  const DEBUG = new URLSearchParams(location.search).has("debug");
+  const list = (window.CAPSULES || []).slice();
+  const byNum = new Map(list.map(c => [c.numero, c]));
+  const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const pad = n => String(n).padStart(2, "0");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const grid = document.getElementById("grid"), msg = document.getElementById("msg");
+
+  // Date du jour : une porte n'est ouvrable qu'en décembre, à partir de son jour.
+  // Pour tester en conditions réelles avant décembre : ?mois=11 décale le calendrier sur novembre
+  // (les portes s'ouvrent jour par jour selon la vraie date). Sans paramètre : décembre.
+  const now = new Date();
+  const mParam = parseInt(new URLSearchParams(location.search).get("mois"), 10);
+  const M = mParam >= 1 && mParam <= 12 ? mParam - 1 : 11;           // index du mois (11 = décembre)
+  const TEST = M !== 11;
+  const NOMS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+  const ABR = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."];
+  const MOIS = NOMS[M], MOIS_ABR = ABR[M];
+  const KEY = "capsules-avent-" + now.getFullYear() + (TEST ? "-test-" + (M + 1) : "");   // mémoire séparée : ne pollue pas décembre
+  const isOpenable = () => true;   // toutes les portes s'ouvrent, quel que soit le jour
+  if (TEST) {
+    document.querySelector(".hero .kicker").textContent = `24 portes · 1 capsule par jour · ${MOIS} (test)`;
+    document.querySelector(".hero .lead").textContent = document.querySelector(".hero .lead").textContent.replace("décembre", MOIS);
+  }
+
+  // Mémoire des portes ouvertes (ignorée en debug : tout est refermé à chaque rafraîchissement).
+  let opened = new Set();
+  if (!DEBUG) { try { opened = new Set(JSON.parse(localStorage.getItem(KEY) || "[]")); } catch (e) {} }
+  const save = () => { if (!DEBUG) { try { localStorage.setItem(KEY, JSON.stringify([...opened])); } catch (e) {} } };
+
+  // Ordre mélangé mais stable (graine fixe) : chaque visiteur voit le même calendrier.
+  function mulberry(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  const rnd = mulberry(2412);
+  const order = Array.from({ length: DOORS }, (_, i) => i + 1);
+  for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; }
+
+  function inside(n) {
+    const c = byNum.get(n);
+    if (!c) return `<div class="inside soon" inert><div class="n">${pad(n)}</div><div class="kicker">Surprise</div><p>Une prochaine capsule se cache ici.</p></div>`;
+    return `<a class="inside" href="${esc(c.fichier)}" tabindex="-1">
+      <div class="n">${pad(n)}</div>
+      <div class="kicker">${esc(c.theme)}</div>
+      <h2>${esc(c.titre)}</h2>
+      <p>${esc(c.accroche)}</p>
+      <div class="meta"><span>${c.pages} pages · ${esc(c.duree)}</span><span class="arrow" aria-hidden="true">→</span></div>
+    </a>`;
+  }
+
+  grid.innerHTML = order.map(n => `
+    <div class="door" data-n="${n}">
+      ${inside(n)}
+      <span class="flash"></span>
+      <button class="panel" type="button" aria-label="Porte ${n}">
+        <span class="num">${pad(n)}</span><span class="tag"></span>
+      </button>
+    </div>`).join("");
+
+  function label(door) {
+    const n = +door.dataset.n, isOpen = opened.has(n), ok = isOpenable(n);
+    door.classList.toggle("open", isOpen);
+    door.classList.toggle("locked", !ok && !isOpen);
+    door.classList.toggle("ready", ok && !isOpen);
+    const panel = door.querySelector(".panel"), inner = door.querySelector(".inside");
+    panel.setAttribute("aria-hidden", isOpen);
+    panel.tabIndex = isOpen ? -1 : 0;
+    panel.setAttribute("aria-label", isOpen ? `Porte ${n} ouverte` : ok ? `Ouvrir la porte ${n}` : `Porte ${n} verrouillée, ouverture le ${n} ${MOIS}`);
+    panel.querySelector(".tag").textContent = isOpen ? "" : ok ? "Ouvrir" : `${n} ${MOIS_ABR}`;
+    if (inner.tagName === "A") inner.tabIndex = isOpen ? 0 : -1;
+    if (isOpen) inner.removeAttribute("aria-hidden"); else inner.setAttribute("aria-hidden", "true");
+  }
+  function refresh() {
+    grid.querySelectorAll(".door").forEach(label);
+    const stats = [[opened.size, "portes ouvertes"], [DOORS - opened.size, "à ouvrir"], [list.length, list.length > 1 ? "capsules" : "capsule"]];
+    document.getElementById("stats").innerHTML = stats.map(([n, l]) => `<div class="stat"><b>${n}</b><span>${l}</span></div>`).join("");
+    if (DEBUG) msg.innerHTML = "Mode test : toutes les portes s'ouvrent, rien n'est mémorisé.";
+    else msg.innerHTML = "Toutes les portes sont ouvrables : ouvrez-les dans l'ordre de votre choix.";
+  }
+
+  // ---------- Effet d'ouverture : explosion de particules or + onde de choc ----------
+  const fx = document.getElementById("fx"), fctx = fx.getContext("2d");
+  const css = getComputedStyle(document.documentElement);
+  const base = css.getPropertyValue("--particle").trim(), gold = css.getPropertyValue("--accent").trim(), hi = css.getPropertyValue("--accent-hi").trim(), paper = css.getPropertyValue("--paper").trim();
+  let FW, FH, sparks = [], rings = [], fxOn = false;
+  function fxSize() { const d = Math.min(devicePixelRatio, 2); FW = innerWidth; FH = innerHeight; fx.width = FW * d; fx.height = FH * d; fctx.setTransform(d, 0, 0, d, 0, 0); }
+  function burst(x, y) {
+    const cols = [gold, hi, paper, base];
+    for (let i = 0; i < 160; i++) {
+      const a = Math.random() * 6.283, v = 3 + Math.random() * 11;
+      sparks.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 2, r: .8 + Math.random() * 2.6, life: 1, d: .012 + Math.random() * .016, c: cols[(Math.random() * cols.length) | 0], star: Math.random() < .25 });
+    }
+    rings.push({ x, y, r: 10, a: 1 }, { x, y, r: 4, a: .7 });
+    if (!fxOn) { fxOn = true; requestAnimationFrame(fxLoop); }
+  }
+  function fxLoop() {
+    fctx.clearRect(0, 0, FW, FH);
+    for (const g of rings) {
+      g.r += 11; g.a *= .93;
+      fctx.globalAlpha = g.a; fctx.strokeStyle = gold; fctx.lineWidth = 2;
+      fctx.beginPath(); fctx.arc(g.x, g.y, g.r, 0, 6.283); fctx.stroke();
+    }
+    rings = rings.filter(g => g.a > .03);
+    for (const p of sparks) {
+      p.vx *= .97; p.vy = p.vy * .97 + .18; p.x += p.vx; p.y += p.vy; p.life -= p.d;
+      fctx.globalAlpha = Math.max(p.life, 0); fctx.fillStyle = p.c;
+      if (p.star) { fctx.fillRect(p.x - p.r * 2, p.y - .5, p.r * 4, 1); fctx.fillRect(p.x - .5, p.y - p.r * 2, 1, p.r * 4); }
+      else { fctx.beginPath(); fctx.arc(p.x, p.y, p.r, 0, 6.283); fctx.fill(); }
+    }
+    sparks = sparks.filter(p => p.life > 0);
+    if (sparks.length || rings.length) requestAnimationFrame(fxLoop); else { fxOn = false; fctx.clearRect(0, 0, FW, FH); }
+  }
+  fxSize(); addEventListener("resize", fxSize);
+
+  function openDoor(door) {
+    const n = +door.dataset.n;
+    if (opened.has(n)) return;
+    if (!isOpenable(n)) {
+      door.classList.remove("shake"); void door.offsetWidth; door.classList.add("shake");
+      msg.innerHTML = `Patience : la porte <b>${n}</b> s'ouvrira le <b>${n} ${MOIS}</b>.`;
+      return;
+    }
+    opened.add(n); save();
+    if (!reduce) {
+      door.classList.add("opening");
+      const r = door.getBoundingClientRect();
+      setTimeout(() => burst(r.left + r.width / 2, r.top + r.height / 2), 1500);
+      setTimeout(() => document.body.classList.add("boom"), 1500);
+      setTimeout(() => document.body.classList.remove("boom"), 2020);
+      setTimeout(() => door.classList.remove("opening"), 2300);
+    }
+    label(door); refresh();
+  }
+  grid.addEventListener("click", e => { const p = e.target.closest(".panel"); if (p) openDoor(p.closest(".door")); });
+  grid.querySelectorAll(".door.open").forEach(d => d.classList.add("instant"));
+  requestAnimationFrame(() => requestAnimationFrame(() => grid.querySelectorAll(".instant").forEach(d => d.classList.remove("instant"))));
+
+  if (DEBUG) {
+    document.getElementById("debug").classList.add("on");
+    document.getElementById("openAll").onclick = () => { grid.querySelectorAll(".door:not(.open)").forEach((d, i) => setTimeout(() => openDoor(d), i * 90)); };
+    document.getElementById("closeAll").onclick = () => { opened.clear(); refresh(); };
+  }
+  refresh();
+
+  // ---------- Champ de particules en fond ----------
+  const cv = document.getElementById("field"), ctx = cv.getContext("2d");
+  let W, H, P = [], mx = .5, my = .5;
+  function size() {
+    const dpr = Math.min(devicePixelRatio, 2);
+    W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const n = Math.round(W * H / 5200);
+    P = Array.from({ length: n }, () => ({ x: Math.random() * W, y: Math.random() * H, z: .3 + Math.random() * .7, s: Math.random() * 6.28, g: Math.random() < .08 }));
+  }
+  addEventListener("pointermove", e => { mx = e.clientX / W; my = e.clientY / H; }, { passive: true });
+  function draw(t) {
+    ctx.clearRect(0, 0, W, H);
+    const sy = scrollY * .15;
+    for (const p of P) {
+      const x = (p.x + Math.sin(t * .0004 + p.s) * 14 * p.z + (mx - .5) * 30 * p.z + W) % W;
+      const fall = reduce ? 0 : t * .025 * p.z; // chute lente, plus rapide pour les flocons proches
+      const y = ((p.y + fall - sy * p.z) % H + H) % H;
+      ctx.globalAlpha = p.g ? .9 : .25 + p.z * .35;
+      ctx.fillStyle = p.g ? gold : base;
+      ctx.beginPath(); ctx.arc(x, y, p.g ? 1.6 : .6 + p.z * .9, 0, 6.283); ctx.fill();
+    }
+    if (!reduce) requestAnimationFrame(draw);
+  }
+  size(); addEventListener("resize", () => { size(); if (reduce) draw(0); });
+  requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>

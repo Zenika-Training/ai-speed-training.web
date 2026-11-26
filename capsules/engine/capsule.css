@@ -1,0 +1,85 @@
+@import url("tokens.css");
+
+/* Capsules IA · feuille de style commune à toutes les capsules.
+   Layout : scrollytelling à crans. Une scène WebGL fixe (particules) se recompose à chaque page
+   et se fige nette pendant le cran ; le texte en colonne gauche (bas sur mobile).
+   Couleurs et polices : tokens.css. */
+html, body { background: var(--ink); color: var(--paper); }
+body { margin: 0; padding-top: env(safe-area-inset-top, 0px); }
+body { font-family: var(--body); font-size: 16px; -webkit-font-smoothing: antialiased; }
+#stage {
+  position: fixed; inset: 0; z-index: 0; display: block; width: 100%; height: 100%;
+  background: radial-gradient(ellipse 70% 80% at 68% 45%, var(--navy), var(--ink) 72%);
+}
+@media (max-width: 760px) { #stage { background: radial-gradient(ellipse 110% 60% at 50% 30%, var(--navy), var(--ink) 75%); } }
+
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 5;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding-top: calc(16px + env(safe-area-inset-top, 0px)); padding-bottom: 16px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--muted);
+  background: linear-gradient(var(--ink), rgba(5, 0, 38, 0));
+}
+.topbar b { color: var(--paper); font-weight: 600; }
+.topbar a { color: var(--muted); text-decoration: none; }
+.topbar a:hover, .topbar a:focus-visible { color: var(--paper); }
+.topbar .count { font-variant-numeric: tabular-nums; color: var(--accent); }
+.progress { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; height: 3px; background: var(--line); }
+.progress i { display: block; height: 100%; width: 0; background: var(--accent); }
+
+main {
+  position: relative; z-index: 2;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+/* Cran : chaque page est épinglée (sticky) pendant --hold px de scroll, puis repart. */
+.step { --hold: 70vh; position: relative; height: calc(100vh + var(--hold)); height: calc(100svh + var(--hold)); }
+.pin { position: sticky; top: 0; height: 100vh; height: 100svh; display: flex; align-items: center; }
+.card {
+  max-width: 30rem; min-width: 0; display: flex; flex-direction: column; gap: 16px;
+  padding-inline: clamp(0px, 4vw, 72px);
+  transition: opacity .6s ease, transform .6s cubic-bezier(.2, .8, .2, 1);
+}
+.step.hero .card { max-width: 37rem; }
+.step:not(.is-active) .card { opacity: .3; transform: translateY(10px); }
+@media (prefers-reduced-motion: reduce) { .card { transition: opacity .2s; } .step:not(.is-active) .card { transform: none; } }
+.kicker { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+h1 {
+  margin: 0; font-family: var(--display); font-weight: 900;
+  font-size: clamp(60px, 11vw, 156px); line-height: .9; letter-spacing: -.04em;
+}
+h2 {
+  margin: 0; font-family: var(--display); font-weight: 700;
+  font-size: clamp(26px, 3.4vw, 44px); line-height: 1.08; letter-spacing: -.02em; text-wrap: balance;
+}
+.big {
+  font-family: var(--display); font-weight: 900; color: var(--accent);
+  font-size: clamp(56px, 9vw, 120px); line-height: .86; letter-spacing: -.045em;
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.body { margin: 0; font-size: 17px; line-height: 1.55; color: var(--paper); opacity: .86; max-width: 36ch; }
+.src { font-family: var(--mono); font-size: 11px; letter-spacing: .02em; color: var(--faint); }
+.src a { color: var(--faint); text-underline-offset: 3px; }
+.src a:hover, .src a:focus-visible { color: var(--paper); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.hint { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.takeaways { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px; counter-reset: t; }
+.takeaways li { display: grid; grid-template-columns: 28px 1fr; gap: 10px; font-size: 17px; line-height: 1.45; counter-increment: t; }
+.takeaways li::before { content: counter(t); font-family: var(--mono); font-weight: 600; color: var(--accent); }
+.takeaways b { font-weight: 500; color: var(--paper); }
+.sources { display: flex; flex-direction: column; gap: 6px; padding-top: 12px; border-top: 1px solid var(--line); }
+
+@media (max-width: 760px) {
+  .pin { align-items: flex-end; padding-bottom: 10vh; }
+  .card {
+    padding: 20px; border-radius: 2px; border: 1px solid var(--line);
+    background: var(--veil);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  }
+  .step.hero .card { background: none; border: 0; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 0 0 4vh; }
+  .topbar .serie { display: none; }
+  .body { font-size: 16px; }
+}

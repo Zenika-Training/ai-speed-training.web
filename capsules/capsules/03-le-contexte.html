@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Le contexte · Capsule IA 03</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Red+Hat+Display:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="../engine/capsule.css">
+</head>
+<body>
+<script>
+window.CAPSULE = {
+  numero: 3,
+  theme: "Les bases",
+  titre: "Le contexte",
+  duree: "2 min",
+  accroche: "Tout ce que l'IA voit au moment de répondre tient dans sa fenêtre de contexte. Ce qui y entre, et ce qui s'y perd, décide de la qualité de la réponse.",
+  pages: [
+    {
+      forme: { type: "texte", segments: ["CONTEXTE"], accent: "tout" },
+      kicker: "Le principe",
+      titre: "Le modèle ne voit que ce qui est dans sa fenêtre de contexte",
+      texte: "La fenêtre de contexte est la mémoire de travail du modèle : tout le texte qu'il consulte pour répondre, réponse comprise. Elle est distincte de ce qu'il a appris à l'entraînement. Ce qui n'y figure pas n'existe pas pour lui.",
+      source: { label: "Anthropic · Context windows", url: "https://platform.claude.com/docs/en/build-with-claude/context-windows" }
+    },
+    {
+      forme: { type: "reseau", noeuds: 5, accent: [0, 1, 2, 3, 4, 5], centre: true },
+      kicker: "La composition",
+      titre: "Consignes, historique, documents, outils : tout compte",
+      texte: "Les consignes système, chaque message échangé, les documents et images joints, les résultats d'outils et leurs définitions occupent la fenêtre. La réponse du modèle et son raisonnement s'y ajoutent aussi.",
+      source: { label: "Anthropic · Context windows", url: "https://platform.claude.com/docs/en/build-with-claude/context-windows" }
+    },
+    {
+      forme: { type: "barres", valeurs: [200, 1000], accent: [1] },
+      kicker: "Ordre de grandeur", chiffre: "1 M",
+      titre: "de tokens : la fenêtre des modèles Claude actuels",
+      texte: "Un token est un morceau de mot. Les modèles Claude récents lisent jusqu'à un million de tokens par requête, cinq fois les 200 000 de Claude Sonnet 4.5. La place manque rarement ; la qualité de lecture, si.",
+      source: { label: "Anthropic · Context windows", url: "https://platform.claude.com/docs/en/build-with-claude/context-windows" }
+    },
+    {
+      forme: { type: "pile", feuilles: 24, accent: "dessus" },
+      kicker: "L'accumulation",
+      titre: "Chaque tour renvoie tout l'historique au modèle",
+      texte: "À chaque message, le modèle relit toute la conversation précédente plus votre nouvelle demande, et sa réponse s'y ajoute pour le tour suivant. Une longue discussion remplit la fenêtre, et chaque tour coûte plus cher.",
+      source: { label: "Anthropic · Context windows", url: "https://platform.claude.com/docs/en/build-with-claude/context-windows" }
+    },
+    {
+      forme: { type: "frise", jalons: 7, accent: [0, 6] },
+      kicker: "Le piège", chiffre: "> 20 %",
+      titre: "de bonnes réponses en moins quand l'info est au milieu",
+      texte: "Des chercheurs ont déplacé la bonne information dans un long contexte. Les modèles la trouvent mieux au début ou à la fin. Placée au milieu, GPT-3.5 répondait parfois moins bien que sans aucun document.",
+      source: { label: "Liu et al. · Lost in the Middle (2023)", url: "https://arxiv.org/abs/2307.03172" }
+    },
+    {
+      forme: { type: "grille", cols: 6, rows: 3, accent: 18 },
+      kicker: "La limite", chiffre: "18",
+      titre: "modèles testés, tous moins fiables quand l'entrée s'allonge",
+      texte: "Chroma a mesuré ce « context rot » sur GPT-4.1, Claude 4, Gemini 2.5 et Qwen3. Tous répondent nettement mieux avec un extrait ciblé d'environ 300 tokens qu'avec un historique complet de 113 000 tokens.",
+      source: { label: "Chroma · Context Rot (2025)", url: "https://www.trychroma.com/research/context-rot" }
+    },
+    {
+      forme: { type: "entonnoir", niveaux: [100, 55, 25], accent: [2] },
+      kicker: "En pratique",
+      titre: "Un contexte trié vaut mieux qu'un contexte rempli",
+      texte: "Anthropic conseille de traiter le contexte comme une ressource finie : ne donner que l'utile, résumer les longs échanges, effacer les vieux résultats d'outils. Le tri ci-contre est illustratif.",
+      source: { label: "Anthropic · Effective context engineering", url: "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" }
+    }
+  ],
+  aRetenir: {
+    titre: "Trois réflexes",
+    points: [
+      "<b>Donnez le contexte utile.</b> L'IA ne sait que ce qui est dans sa fenêtre : joignez les documents et les règles dont elle a besoin.",
+      "<b>Placez l'essentiel au début ou à la fin.</b> Une consigne noyée au milieu d'un long texte risque d'être négligée.",
+      "<b>Repartez d'une conversation neuve.</b> Quand l'échange s'allonge, résumez-le et recommencez plutôt que d'empiler."
+    ]
+  }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../engine/capsule.js"></script>
+</body>
+</html>

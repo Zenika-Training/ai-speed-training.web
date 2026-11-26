@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Le biais d'approbation · Capsule IA 17</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Red+Hat+Display:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="../engine/capsule.css">
+</head>
+<body>
+<script>
+window.CAPSULE = {
+  numero: 17,
+  theme: "Gouvernance et Responsabilité",
+  titre: "Le biais d'approbation",
+  duree: "2 min",
+  accroche: "Quand l'IA a presque toujours raison, on finit par valider sans lire. Une relecture humaine devient alors, en silence, un simple tampon.",
+  pages: [
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // Le taux d'approbation monte (lavande) ; l'attention des relecteurs (or) baisse.
+        const q = i % 2, t = o.rand(), e = 1 - Math.exp(-3 * t), y = q ? 1.7 - 3.4 * e : -1.7 + 3.4 * e;
+        return [-3 + 6 * t + o.gauss() * .04, y + o.gauss() * .04, o.gauss() * .05, q];
+      } },
+      kicker: "Le principe",
+      titre: "Plus l'IA a raison, moins on relit ce qu'elle produit",
+      texte: "Quand le code écrit par un agent est presque toujours approuvé, les relecteurs cessent de le lire. L'attention (en or) baisse là où l'on se fie le plus à l'IA. Les courbes ci-contre sont illustratives."
+    },
+    {
+      forme: { type: "barres", valeurs: [7, 36], accent: [1] },
+      kicker: "La preuve", chiffre: "36 %",
+      titre: "des développeurs aidés par une IA ont laissé passer une faille",
+      texte: "Dans une étude de Stanford (47 participants), 36 % de ceux qui avaient un assistant IA ont écrit une requête vulnérable à l'injection SQL, contre 7 % sans IA. Ils se croyaient pourtant plus souvent en sécurité.",
+      source: { label: "Perry et al. · Insecure Code with AI Assistants (2023)", url: "https://arxiv.org/abs/2211.03622" }
+    },
+    {
+      forme: { type: "dessin", vue: [110, 60], accent: [1], trait: 0, chemins: [
+        "M4 14 L4 56 L106 56 z",
+        "M57 16 a9 9 0 1 0 0.01 0 z"
+      ] },
+      kicker: "Le glissement",
+      titre: "Un AI-assisted glisse vers AI-executed sans que personne le décide",
+      texte: "En AI-assisted, une personne valide chaque sortie de l'IA. Si elle approuve sans lire, c'est l'IA qui tranche de fait : l'activité a changé de niveau sans décision et sans mesure."
+    },
+    {
+      forme: { type: "pile", feuilles: 24, accent: [0, 1, 2, 3, 4, 5] },
+      kicker: "La limite",
+      titre: "Aucun critère ne fixe ce qu'une personne peut relire avec attention",
+      texte: "La relecture humaine tient jusqu'à un certain volume, pas au-delà. Plus les agents produisent, plus la pile grossit, et personne n'a encore fixé où elle cesse d'être lue. La pile ci-contre est illustrative."
+    },
+    {
+      forme: { type: "pictos", icones: ["engrenage", "document", "personne"], accent: [2] },
+      kicker: "La trace",
+      titre: "Un agent qui agit sous votre compte signe à votre place",
+      texte: "Sans identité propre, l'agent utilise le compte de la personne qui l'a lancé. S'il approuve une merge request, le journal indique « approuvé par vous », même sans relecture. En cas d'incident, impossible de savoir qui a vraiment décidé."
+    },
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // Un flux arrive de la gauche ; la gate (or) est le seul filtre avant la droite.
+        const q = i % 10, g = () => o.gauss() * .03;
+        if (q < 3) { let y = -2.1 + o.rand() * 4.2; if (Math.abs(y) < .35) y = y < 0 ? -.35 - o.rand() * .2 : .35 + o.rand() * .2; return [g() * 2, y, g() * 3, 1]; }
+        if (q < 7) return [-3.1 + o.rand() * 2.9, -1.8 + o.rand() * 3.6, (o.rand() - .5) * .8, 0];
+        const t = o.rand(); return [.2 + t * 2.9, (o.rand() - .5) * (.5 + t * 1.2), (o.rand() - .5) * .6, 0];
+      } },
+      kicker: "La règle",
+      titre: "À AI-executed, la gate n'aide plus le contrôle : elle est le contrôle",
+      texte: "En AI-assisted, une gate mal réglée se rattrape : une personne lit encore chaque sortie. En AI-executed, elle ne voit qu'un échantillon et les échecs. Une gate faible laisse alors passer l'erreur sans filet."
+    },
+    {
+      forme: { type: "grille", cols: 10, rows: 10, accent: 10 },
+      kicker: "La parade",
+      titre: "Contrôlez un échantillon, même quand tout passe",
+      texte: "Relisez au hasard une part des sorties approuvées, et comptez les défauts repérés plus tard. S'ils augmentent, l'activité redescend d'un niveau. L'échantillon de 10 % ci-contre est illustratif."
+    },
+    {
+      forme: { type: "dessin", vue: [80, 76], accent: [3], trait: 0, chemins: [
+        "M40 2 a11 11 0 1 0 0.01 0 z",
+        "M34 23 h12 v17 h-12 z",
+        "M14 40 h52 v12 h-52 z",
+        "M8 62 h64 v10 h-64 z"
+      ] },
+      kicker: "Le chantier",
+      titre: "Repérer une validation devenue simple tampon reste à construire",
+      texte: "Aucun outil ne signale encore qu'une personne valide sans lire. D'ici là, questionnez un taux d'approbation qui frôle les 100 % : c'est un signal d'alerte, pas une preuve de qualité."
+    }
+  ],
+  aRetenir: {
+    titre: "Quatre réflexes",
+    points: [
+      "<b>Lisez avant de valider.</b> Une approbation sans lecture laisse l'IA décider à votre place.",
+      "<b>Méfiez-vous des taux parfaits.</b> Un taux d'approbation proche de 100 % doit alerter, pas rassurer.",
+      "<b>Vérifiez un échantillon.</b> Même quand tout passe, relisez au hasard et comptez ce qui s'échappe.",
+      "<b>Exigez une identité d'agent.</b> La trace doit nommer qui a vraiment tranché."
+    ]
+  }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../engine/capsule.js"></script>
+</body>
+</html>

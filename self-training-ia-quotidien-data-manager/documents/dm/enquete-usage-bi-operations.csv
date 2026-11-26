@@ -1,0 +1,25 @@
+id;hotel;role;frequence_usage;tableau_le_plus_utilise;ce_qui_bloque;ce_qui_aiderait
+R01;LYS-03;direction d'hôtel;chaque semaine;Occupation;Le CA du tableau n'est jamais celui de la compta, je ne sais pas lequel donner au siège;Un seul chiffre qui fait foi
+R02;LIL-07;réception;jamais;—;Je ne sais pas où sont les tableaux, le lien du mail de lancement ne marche plus;Un lien dans l'intranet
+R03;NTE-02;direction d'hôtel;chaque mois;CA mensuel;Les chiffres changent d'une semaine à l'autre sans qu'on sache pourquoi;Savoir quand les chiffres sont définitifs
+R04;BDX-01;étages;jamais;—;Pas le temps, mes journées sont sur le terrain;Un résumé envoyé le lundi
+R05;LYS-03;réception;rarement;Départ express;Il me faut les chiffres dans Excel pour mon planning;Un bouton d'export
+R06;MRS-04;direction d'hôtel;chaque semaine;Occupation;Le taux d'occupation n'est pas le même que dans le PMS;Une formation Power BI
+R07;LIL-07;direction d'hôtel;rarement;CA mensuel;Je trouve pas le tableau du CA par canal, il y en a trois qui se ressemblent;Moins de tableaux, mieux rangés
+R08;TLS-02;réception;jamais;—;Accès refusé quand je clique;Avoir les droits
+R09;NTE-02;étages;rarement;Occupation;Trop de tableaux, je ne sais pas lequel regarder pour mon métier;Un tableau pour les étages
+R10;PAR-11;direction d'hôtel;chaque semaine;CA mensuel;Le chiffre du lundi ne correspond pas à celui du comité, j'ai arrêté de le citer;Une définition écrite du CA
+R11;LYS-03;étages;jamais;—;Je ne savais pas que ça existait;Qu'on me montre où c'est
+R12;BDX-01;direction d'hôtel;chaque mois;Occupation;Quand je compare avec mon PMS j'ai 3 points d'écart, je refais mes calculs à la main;Une formation Power BI
+R13;MRS-04;réception;rarement;Départ express;Je recopie les chiffres dans mon fichier, c'est long;Un export Excel
+R14;PAR-11;réception;jamais;—;Je ne trouve pas le tableau du départ express depuis le changement de menu;Un favori
+R15;TLS-02;direction d'hôtel;chaque mois;CA mensuel;Je n'ai pas confiance : en septembre le CA était faux et personne ne nous l'a dit;Être prévenu quand un chiffre est faux
+R16;LIL-07;étages;jamais;—;Pas le temps de chercher dans tous ces tableaux;Une seule page pour moi
+R17;NTE-02;réception;rarement;Départ express;J'ai besoin de travailler les données dans Excel;Pouvoir exporter
+R18;BDX-01;réception;jamais;—;Je ne sais pas où aller, il n'y a pas de lien dans l'intranet;Un lien dans l'intranet
+R19;PAR-11;direction d'hôtel;chaque semaine;Occupation;Les chiffres de la finance et les nôtres ne sont jamais les mêmes;Une formation Power BI
+R20;MRS-04;étages;jamais;—;On m'a dit que je n'avais pas accès;Avoir les droits
+R21;TLS-02;direction d'hôtel;rarement;CA mensuel;Je ne sais pas ce qui est compté dans le CA : avec ou sans taxe de séjour ?;Une définition
+R22;LYS-03;direction d'hôtel;chaque semaine;CA mensuel;Le CA du tableau et celui de l'export PMS diffèrent, je ne sais pas qui a raison;Un seul chiffre
+R23;BDX-01;étages;rarement;Occupation;Trop d'onglets, trop d'indicateurs, je m'y perds;Moins d'indicateurs
+R24;NTE-02;direction d'hôtel;chaque mois;CA mensuel;Il y a deux tableaux du CA et ils ne disent pas la même chose;Savoir lequel est le bon

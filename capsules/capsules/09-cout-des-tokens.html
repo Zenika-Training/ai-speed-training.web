@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Coût des tokens · Capsule IA 09</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Red+Hat+Display:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="../engine/capsule.css">
+</head>
+<body>
+<script>
+window.CAPSULE = {
+  numero: 9,
+  theme: "Les bases",
+  titre: "Coût des tokens",
+  duree: "2 min",
+  accroche: "Chaque requête à une IA se paie en tokens. Savoir où part l'argent permet de réduire la facture sans perdre en qualité.",
+  pages: [
+    {
+      forme: { type: "barres", valeurs: [1, 5], accent: [1] },
+      kicker: "Le principe", chiffre: "× 5",
+      titre: "La réponse coûte cinq fois plus cher que la question",
+      texte: "Les API facturent au million de tokens, en séparant l'entrée (ce que vous envoyez) et la sortie (ce que l'IA écrit). Sur Claude Opus 5.5 : 4 $ contre 20 $. Une réponse bavarde pèse plus lourd qu'un long document joint.",
+      source: { label: "Anthropic · Pricing", url: "https://platform.claude.com/docs/en/about-claude/pricing" }
+    },
+    {
+      forme: { type: "pile", feuilles: 20, accent: "dessus" },
+      kicker: "L'accumulation",
+      titre: "À chaque message, toute la conversation est refacturée",
+      texte: "Le modèle ne garde rien d'un tour à l'autre : il relit tout l'historique, puis votre nouvelle question. Au 20e échange, votre premier message a été payé 20 fois. La pile ci-contre est illustrative.",
+      source: { label: "Anthropic · Context windows", url: "https://platform.claude.com/docs/en/build-with-claude/context-windows" }
+    },
+    {
+      forme: { type: "texte", segments: ["réflexion"], accent: "tout" },
+      kicker: "Le coût caché",
+      titre: "La réflexion du modèle se paie au prix de la sortie",
+      texte: "Avant de répondre, les modèles récents réfléchissent en interne. Ces tokens de réflexion ne s'affichent pas toujours, mais ils sont facturés comme des tokens de sortie, les plus chers.",
+      source: { label: "Anthropic · Extended thinking", url: "https://platform.claude.com/docs/en/build-with-claude/extended-thinking" }
+    },
+    {
+      forme: { type: "texte", segments: ["100", "→", "130"], accent: [2] },
+      kicker: "Le piège", chiffre: "+ 30 %",
+      titre: "de tokens pour le même texte sur les modèles récents",
+      texte: "Depuis Claude Opus 4.7, un nouveau découpeur produit environ 30 % de tokens en plus pour un même texte. Comparez les coûts sur votre texte réel, pas sur le seul prix affiché au million.",
+      source: { label: "Anthropic · Pricing", url: "https://platform.claude.com/docs/en/about-claude/pricing" }
+    },
+    {
+      forme: { type: "barres", valeurs: [1, 20, 40], accent: [0] },
+      kicker: "Le bon modèle", chiffre: "÷ 40",
+      titre: "Haiku coûte 40 fois moins cher qu'Opus en entrée",
+      texte: "Au million de tokens d'entrée : 0,10 $ pour Claude Haiku 5.5 (jusqu'à 100 000 tokens par requête), 2 $ pour Sonnet 5.5, 4 $ pour Opus 5.5. Tri, extraction, résumé simple : gardez le grand modèle pour les tâches qui le justifient.",
+      source: { label: "Anthropic · Pricing", url: "https://platform.claude.com/docs/en/about-claude/pricing" }
+    },
+    {
+      forme: { type: "grille", cols: 10, rows: 10, accent: 5 },
+      kicker: "Le cache", chiffre: "– 95 %",
+      titre: "sur les tokens relus depuis le cache",
+      texte: "Un début de requête identique (consignes, document de référence) peut être mis en cache. Relu dans les 5 minutes, il coûte 5 % du prix normal sur Opus 5.5 et Sonnet 5.5. Gardez ce qui ne change pas en tête de requête.",
+      source: { label: "Anthropic · Prompt caching", url: "https://platform.claude.com/docs/en/build-with-claude/prompt-caching" }
+    },
+    {
+      forme: { type: "barres", valeurs: [2, 1], accent: [1] },
+      kicker: "Le différé", chiffre: "– 50 %",
+      titre: "avec le traitement par lots, quand rien ne presse",
+      texte: "L'API Batch traite vos requêtes en arrière-plan, la plupart en moins d'une heure, à moitié prix en entrée comme en sortie. Elle se cumule avec le cache : idéale pour les analyses en masse ou les rapports de nuit.",
+      source: { label: "Anthropic · Batch processing", url: "https://platform.claude.com/docs/en/build-with-claude/batch-processing" }
+    },
+    {
+      forme: { type: "frise", jalons: 5, accent: [0] },
+      kicker: "Le réglage",
+      titre: "Le niveau d'effort dose la dépense de chaque réponse",
+      texte: "Cinq niveaux, de low à max, règlent la réflexion, la longueur et le nombre d'appels d'outils. Low économise nettement sur les tâches simples ; max coûte cher pour un gain souvent faible.",
+      source: { label: "Anthropic · Effort", url: "https://platform.claude.com/docs/en/build-with-claude/effort" }
+    }
+  ],
+  aRetenir: {
+    titre: "Quatre réflexes",
+    points: [
+      "<b>Demandez court.</b> La sortie coûte cinq fois l'entrée : précisez la longueur et le format attendus.",
+      "<b>Repartez d'une conversation neuve.</b> Un long échange refacture tout son historique à chaque message.",
+      "<b>Choisissez le plus petit modèle qui suffit.</b> Baissez aussi l'effort pour les tâches simples.",
+      "<b>Figez le début de vos requêtes.</b> Des consignes stables en tête profitent du cache ; ce qui peut attendre passe en lots."
+    ]
+  }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../engine/capsule.js"></script>
+</body>
+</html>

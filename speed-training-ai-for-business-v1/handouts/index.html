@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Context Engineering · Handouts</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="sidebar__header">
+          <p class="eyebrow">speed training Zenika</p>
+          <h1>Handouts</h1>
+        </div>
+        <div class="sidebar__search">
+          <label class="search-label" for="handout-search">Recherche globale</label>
+          <input id="handout-search" class="search-input" type="search" placeholder="Titre, extrait, contenu..." />
+        </div>
+        <nav id="handout-menu" class="menu" aria-label="Handouts"></nav>
+      </aside>
+
+      <main class="content">
+        <header class="content__header">
+          <p id="handout-file" class="eyebrow"></p>
+          <h2 id="handout-title"></h2>
+          <p id="handout-excerpt" class="subtitle"></p>
+        </header>
+        <article id="handout-content" class="content__body prose"></article>
+      </main>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+  </html>

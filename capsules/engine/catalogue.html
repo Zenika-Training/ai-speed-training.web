@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Catalogue des formes · Capsules IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Red+Hat+Display:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="capsule.css">
+</head>
+<body>
+<!-- Page de démonstration de chaque forme du moteur. Pas une capsule : absente de l'index.
+     Vérification : node tools/check.mjs engine/catalogue.html -->
+<script>
+window.CAPSULE = {
+  numero: 0, theme: "Moteur", titre: "Les formes", duree: "démo",
+  index: "../index.html",
+  accroche: "Chaque page d'une capsule choisit une forme. Ouverture : nuage. Fin : anneau, un arc par point à retenir.",
+  pages: [
+    { forme: { type: "texte", segments: ["RAG", "+", "LLM"], accent: [0] }, kicker: "texte", chiffre: "≤ 10 car.", titre: "Mots ou chiffres en particules", texte: "segments: [\"RAG\", \"+\", \"LLM\"], accent: [0]. Accent : \"alterne\", \"tout\" ou liste d'indices." },
+    { forme: { type: "grille", cols: 10, rows: 10, accent: 42 }, kicker: "grille", chiffre: "42 %", titre: "Une proportion sur 100", texte: "cols: 10, rows: 10, accent: 42. Les cases allumées sont les premières, ligne par ligne." },
+    { forme: { type: "barres", valeurs: [3, 8, 21], accent: [2] }, kicker: "barres", chiffre: "× 7", titre: "Comparer des grandeurs à l'échelle", texte: "valeurs: [3, 8, 21], accent: [2]. Les hauteurs sont proportionnelles, de 1 à 6 barres." },
+    { forme: { type: "entonnoir", niveaux: [100, 60, 25, 8], accent: [3] }, kicker: "entonnoir", titre: "Ce qui reste après chaque filtre", texte: "niveaux: [100, 60, 25, 8], accent: [3]. Largeurs proportionnelles, de haut en bas." },
+    { forme: { type: "frise", jalons: 5, accent: [4] }, kicker: "frise", titre: "Une chronologie ou un processus", texte: "jalons: 5, accent: [4]. Jalons régulièrement espacés de gauche à droite." },
+    { forme: { type: "reseau", noeuds: 6, accent: [0, 2, 4] }, kicker: "reseau", titre: "Un système d'acteurs reliés", texte: "noeuds: 6, accent: [0, 2, 4]. Le nœud 0 est le centre ; les liens entre nœuds allumés s'allument aussi." },
+    { forme: { type: "pictos", icones: ["engrenage", "document", "bulle"], accent: [0] }, kicker: "pictos", titre: "Des objets reconnaissables côte à côte", texte: "icones: [\"engrenage\", \"document\", \"bulle\"], accent: [0]. Pictos : engrenage, document, bulle, base, loupe, cadenas, personne." },
+    { forme: { type: "pictos", icones: ["base", "loupe", "cadenas", "personne"], accent: [3] }, kicker: "pictos (suite)", titre: "Les quatre autres pictogrammes", texte: "icones: [\"base\", \"loupe\", \"cadenas\", \"personne\"], accent: [3]. De 1 à 4 pictos." },
+    { forme: { type: "pile", feuilles: 24, accent: "dessus" }, kicker: "pile", titre: "Un volume de documents", texte: "feuilles: 24, accent: \"dessus\" | \"tous-les-6\" | liste d'indices." },
+    { forme: { type: "dessin", vue: [110, 62], accent: [1], chemins: [
+        "M8 2 h52 a8 8 0 0 1 8 8 v28 a8 8 0 0 1 -8 8 h-34 l-14 12 v-12 h-4 a8 8 0 0 1 -8 -8 v-28 a8 8 0 0 1 8 -8 z",
+        "M80 12 l14 -8 l14 8 v18 l-14 8 l-14 -8 z"
+      ] }, kicker: "dessin (inventé)", titre: "Une illustration sur mesure en SVG", texte: "chemins: [d1, d2], vue: [110, 62], accent: [1]. Formes fermées remplies, ou tracées avec trait: 3. 6 chemins au plus." },
+    { forme: { type: "libre", fn: (i, n, o) => {
+        // Double hélice : deux brins, des barreaux tous les 12 points.
+        const t = (i % 2000) / 2000, a = t * o.TAU * 3, y = (t - .5) * 4.6, brin = i % 2;
+        if (i % 12 === 0) { const s = o.rand() * 2 - 1; return [Math.cos(a) * 1.1 * s, y, Math.sin(a) * 1.1 * s, 0]; }
+        const ph = brin ? Math.PI : 0;
+        return [Math.cos(a + ph) * 1.1 + o.gauss() * .04, y + o.gauss() * .04, Math.sin(a + ph) * 1.1, brin];
+      } }, kicker: "libre (inventé)", titre: "Une forme calculée en JavaScript", texte: "fn: (i, n, outils) => [x, y, z, accent]. Ici une double hélice, un brin en or." }
+  ],
+  aRetenir: { titre: "Anneau de fin", points: ["<b>Un arc</b> par point.", "<b>Trois points</b> donnent trois arcs.", "<b>Or et lavande</b> alternent."] }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="capsule.js"></script>
+</body>
+</html>

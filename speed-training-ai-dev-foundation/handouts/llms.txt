@@ -1,0 +1,18 @@
+# Développeur IA — Foundation
+
+> Du vibe coding au développement piloté : comprendre ce que fait un agent de code, le cadrer avant qu'il code, vérifier ce qu'il produit et capitaliser, quel que soit l'outil.
+
+## Table of Contents
+
+### Handouts
+
+- [Handout — Comprendre la machine](/ai-speed-training.web/speed-training-ai-dev-foundation/handouts/handout-01-comprendre-la-machine.md)
+- [Handout — Cadrer avant de coder](/ai-speed-training.web/speed-training-ai-dev-foundation/handouts/handout-02-cadrer-avant-de-coder.md)
+- [Handout — Produire et vérifier](/ai-speed-training.web/speed-training-ai-dev-foundation/handouts/handout-03-produire-et-verifier.md)
+- [Handout — Étendre l'agent](/ai-speed-training.web/speed-training-ai-dev-foundation/handouts/handout-04-etendre-l-agent.md)
+- [Handout — Garder la main](/ai-speed-training.web/speed-training-ai-dev-foundation/handouts/handout-05-garder-la-main.md)
+- [Handout — Les exercices](/ai-speed-training.web/speed-training-ai-dev-foundation/handouts/handout-06-exercices.md)
+- [Handout — Les démos](/ai-speed-training.web/speed-training-ai-dev-foundation/handouts/handout-07-demos.md)
+- [Handout — Où ça se règle dans mon outil](/ai-speed-training.web/speed-training-ai-dev-foundation/handouts/handout-08-ou-ca-se-regle.md)
+- [Handout — Glossaire des mots-clés IA](/ai-speed-training.web/speed-training-ai-dev-foundation/handouts/handout-09-glossaire.md)
+

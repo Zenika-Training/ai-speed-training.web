@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Le Nexus · Capsule IA 06</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Red+Hat+Display:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="../engine/capsule.css">
+</head>
+<body>
+<script>
+window.CAPSULE = {
+  numero: 6,
+  theme: "Usages et Méthodologie",
+  titre: "Le Nexus",
+  duree: "2 min",
+  accroche: "L'IA ne connaît que ce que vous lui montrez. Le Context Nexus est la mémoire commune de l'équipe : un seul endroit où ranger ce qu'elle sait, veut, exige et fait.",
+  pages: [
+    {
+      forme: { type: "reseau", noeuds: 4, accent: [0, 1, 2, 3, 4], centre: true },
+      kicker: "Le principe", chiffre: "4",
+      titre: "registres : ce qu'on sait, veut, exige et fait",
+      texte: "Knowledge, Purpose, Contracts et Process : chaque règle d'équipe a sa place au lieu de s'éparpiller entre wikis, messages et tickets. Vous cessez de réexpliquer le métier à chaque nouvel arrivant, humain ou IA."
+    },
+    {
+      forme: { type: "entonnoir", niveaux: [100, 65, 35], accent: [2] },
+      kicker: "La structure", chiffre: "3",
+      titre: "niveaux hérités : organisation, programme, équipe",
+      texte: "Votre équipe hérite des règles de sécurité de l'entreprise et des standards de sa direction, puis ajoute les siennes. Chaque niveau complète celui du dessus sans le remplacer, et l'équipe ne lit que son niveau et ce dont elle hérite."
+    },
+    {
+      forme: { type: "pile", feuilles: 24, accent: "dessus" },
+      kicker: "Le basculement",
+      titre: "La documentation est lue par l'agent avant qu'il ne produise",
+      texte: "Hier, on rédigeait après livraison un texte vite archivé et rarement relu. Aujourd'hui, l'équipe alimente le Nexus en amont : l'IA le consulte avant chaque tâche et livre du premier coup un travail conforme."
+    },
+    {
+      forme: { type: "texte", segments: ["IMPLICITE"], accent: "tout" },
+      kicker: "Le piège",
+      titre: "Une règle non écrite n'existe pas pour l'agent",
+      texte: "S'il n'a pas lu « l'heure qui fait foi est l'heure locale de l'hôtel », l'agent invente sa propre logique. Et une équipe ne peut pas contredire en silence une règle commune : l'écart est bloqué tant qu'il n'est pas déclaré et approuvé."
+    },
+    {
+      forme: { type: "pile", feuilles: 20, accent: "tous-les-6" },
+      kicker: "La comparaison",
+      titre: "Du wiki oublié au contexte relu avant chaque action",
+      texte: "Un wiki à part s'endort vite. Rangé avec le travail de l'équipe, le contexte est relu en continu par les agents IA : il reste vivant, partagé et traçable."
+    },
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // Une ADR (lavande) se sépare en deux : une mémoire volumineuse (boule or) et une règle d'une ligne (trait or).
+        const q = i % 10, t = o.rand(), g = () => o.gauss() * .035;
+        const ball = (cx, cy, r, acc) => { const u = o.rand() * 2 - 1, a = o.rand() * o.TAU, s = Math.sqrt(1 - u * u), m = r * Math.cbrt(o.rand()); return [cx + m * s * Math.cos(a), cy + m * u, m * s * Math.sin(a), acc]; };
+        if (q < 3) return ball(-2.3, 0, .62, 0);
+        if (q < 5) { const b = q % 2 ? 1 : -1; return [-1.65 + 3 * t + g(), b * 1.15 * t * t + g(), g(), 0]; }
+        if (q < 8) return ball(2.1, 1.2, .62, 1);
+        return [1.4 + o.rand() * 1.5, -1.2 + g() * 1.6, g(), 1];
+      } },
+      kicker: "La décision", chiffre: "1 → 2",
+      titre: "Une décision donne deux écrits : le pourquoi et la consigne",
+      texte: "Le débat reste dans Knowledge, pour l'équipe. L'agent reçoit dans Purpose une seule règle applicable, par exemple : « Tous les échanges passent par la solution retenue. » Exemple illustratif."
+    },
+    {
+      forme: { type: "barres", valeurs: [1, 1, 1, 1], accent: [1, 2] },
+      kicker: "Les rôles", chiffre: "2 sur 4",
+      titre: "registres restent aux humains : l'intention et l'exigence",
+      texte: "Vous fixez ce que l'on veut (Purpose) et ce que l'on exige (Contracts). L'agent observe, se corrige et exécute dans Process, sans jamais écrire les règles. Votre regard garantit qu'il résout le vrai problème."
+    }
+  ],
+  aRetenir: {
+    titre: "Trois réflexes",
+    points: [
+      "<b>Écrivez vos conventions.</b> Tout ce qui reste implicite ou oral est ignoré par les assistants.",
+      "<b>Séparez le pourquoi de la consigne.</b> À chaque décision, la mémoire va à vos collègues, la règle courte à l'IA.",
+      "<b>Gardez la main sur Purpose et Contracts.</b> L'IA applique, l'équipe fixe l'intention et l'exigence."
+    ]
+  }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../engine/capsule.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+/* Capsules IA · jetons de design partagés par les capsules et l'index.
+   Palette : thème sombre du parcours Zenika x Accor (ai-speed-training) + nuit / navy Accor ALL.
+   Polices : Red Hat Display (titres), Montserrat (texte et libellés). */
+:root {
+  --ink: #050026;          /* fond : nuit du parcours (Accor #050033) */
+  --navy: #1E1852;         /* navy Accor : halo derrière la forme */
+  --surface: #0D0B33;      /* carte mobile */
+  --veil: rgba(13, 11, 51, .82);
+  --paper: #F4F1EA;        /* texte principal */
+  --muted: #B9B5CC;        /* texte secondaire */
+  --faint: #8682A3;        /* légendes, sources */
+  --particle: #8E8BC1;     /* particules au repos : lavande Accor */
+  --accent: #D1AD78;       /* or du parcours : le fait qui compte */
+  --accent-hi: #E0C294;
+  --line: rgba(255, 255, 255, .1);
+  --display: "Red Hat Display", "Montserrat", system-ui, sans-serif;
+  --body: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+  --mono: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: dark;
+}

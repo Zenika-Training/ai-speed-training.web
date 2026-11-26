@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nouvelles responsabilités · Capsule IA 23</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Red+Hat+Display:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="../engine/capsule.css">
+</head>
+<body>
+<script>
+window.CAPSULE = {
+  numero: 23,
+  theme: "Gouvernance et Responsabilité",
+  titre: "Nouvelles responsabilités",
+  duree: "2 min",
+  accroche: "L'IA ne crée pas de nouvelles équipes, mais de nouvelles responsabilités : onze rôles, portés à temps partiel par des profils qui existent déjà.",
+  pages: [
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // L'équipe au centre (lavande), entourée des 11 responsabilités (or).
+        const q = i % 10, ball = (cx, cy, r) => { const u = o.rand() * 2 - 1, a = o.rand() * o.TAU, s = Math.sqrt(1 - u * u), k = r * Math.cbrt(o.rand()); return [cx + k * s * Math.cos(a), cy + k * u, k * s * Math.sin(a)]; };
+        let p, acc = 0;
+        if (q < 4) p = ball(0, 0, .75);
+        else { const k = Math.floor(i / 10) % 11, a = k * o.TAU / 11 + Math.PI / 2; p = ball(2.1 * Math.cos(a), 2.1 * Math.sin(a), .24); acc = 1; }
+        const [y, z] = o.tiltX(p[1], p[2], .4);
+        return [p[0], y, z, acc];
+      } },
+      kicker: "Le principe", chiffre: "11",
+      titre: "responsabilités nouvelles, sans créer de nouvelle équipe",
+      texte: "Contexte, spécifications, orchestration des agents, évaluation, coûts, traces, risques fournisseurs : l'IA déplace le travail. Ces responsabilités s'ajoutent à des profils existants : BA, Tech Lead, architecte, QA, SRE."
+    },
+    {
+      forme: { type: "barres", valeurs: [25, 35, 30, 15], accent: [0, 1, 2, 3] },
+      kicker: "La charge", chiffre: "≤ 2 j",
+      titre: "par semaine et par rôle : une casquette en plus, pas un nouveau poste",
+      texte: "Le Context Engineer y consacre environ un jour par semaine, le Specification Engineer près de deux, l'orchestrateur des agents un jour et demi, le Decision Guarantor moins d'un jour. Des estimations, à confirmer pendant le pilote."
+    },
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // En bas, 5 équipes (or) ; au milieu, le pool partagé ; en haut, la gouvernance.
+        const q = i % 10, g = () => o.gauss() * .02;
+        const ball = (cx, cy, r, acc) => { const u = o.rand() * 2 - 1, a = o.rand() * o.TAU, s = Math.sqrt(1 - u * u), k = r * Math.cbrt(o.rand()); return [cx + k * s * Math.cos(a), cy + k * u, k * s * Math.sin(a), acc]; };
+        if (q < 4) return ball(-2.4 + (Math.floor(i / 10) % 5) * 1.2, -1.6, .32, 1);
+        if (q < 6) return ball(0, .1, .45, 0);
+        if (q < 7) return ball(0, 1.8, .4, 0);
+        const j = Math.floor(i / 10) % 6, t = o.rand();
+        const [a, b] = j < 5 ? [[-2.4 + j * 1.2, -1.6], [0, .1]] : [[0, .1], [0, 1.8]];
+        return [a[0] + (b[0] - a[0]) * t + g(), a[1] + (b[1] - a[1]) * t + g(), g(), 0];
+      } },
+      kicker: "L'organisation", chiffre: "3",
+      titre: "niveaux : dans l'équipe, partagé entre équipes, ou central",
+      texte: "Context Engineer, Specification Engineer, Decision Guarantor : un par équipe (en or). Evaluation Engineer et AgentOps : mutualisés entre équipes. FinOps IA, traces et audit, risque fournisseur : au niveau central."
+    },
+    {
+      forme: { type: "pile", feuilles: 24, accent: "tous-les-6" },
+      kicker: "Le contexte",
+      titre: "Le Context Engineer rend une demande exécutable sans tout réexpliquer",
+      texte: "Souvent un BA senior ou un Tech Lead. Il tient le glossaire, les décisions d'architecture, les règles métier et les contrats d'interface, et refuse les sources non datées ou non sourcées."
+    },
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // Une orbite et trois personnes ; une seule (or) tient le rôle à cet instant.
+        const q = i % 10;
+        let p, acc = 0;
+        if (q < 4) { const a = o.rand() * o.TAU; p = [1.9 * Math.cos(a) + o.gauss() * .04, 1.9 * Math.sin(a) + o.gauss() * .04, o.gauss() * .04]; }
+        else {
+          const k = Math.floor(i / 10) % 3, a = k * o.TAU / 3 + .5, u = o.rand() * 2 - 1, b = o.rand() * o.TAU, s = Math.sqrt(1 - u * u), r = .4 * Math.cbrt(o.rand());
+          p = [1.9 * Math.cos(a) + r * s * Math.cos(b), 1.9 * Math.sin(a) + r * u, r * s * Math.sin(b)]; acc = k === 0 ? 1 : 0;
+        }
+        const [y, z] = o.tiltX(p[1], p[2], .5);
+        return [p[0], y, z, acc];
+      } },
+      kicker: "Le rôle tournant",
+      titre: "L'orchestration des agents tourne entre 2 à 3 membres de l'équipe",
+      texte: "L'Agentic Workflow Orchestrator conçoit les chaînes d'agents, leurs points de revue et leurs budgets d'itération. Sans lui, chacun bricole son propre workflow et le modèle le plus cher devient le choix par défaut."
+    },
+    {
+      forme: { type: "reseau", noeuds: 5, accent: [0], centre: true },
+      kicker: "Le mutualisé", chiffre: "1 à 2",
+      titre: "personnes à temps plein pour cinq équipes : c'est AgentOps",
+      texte: "Serveurs MCP, passerelle et quotas, secrets, versions des modèles et des prompts, retour arrière : AgentOps les tient pour toutes les équipes. Sans lui, un changement de modèle modifie la production en silence."
+    },
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // Six pistes divergentes (lavande) convergent vers une seule solution (or).
+        const q = i % 10, g = () => o.gauss() * .03;
+        if (q >= 8) { const u = o.rand() * 2 - 1, a = o.rand() * o.TAU, s = Math.sqrt(1 - u * u), r = .38 * Math.cbrt(o.rand()); return [2.3 + r * s * Math.cos(a), r * u, r * s * Math.sin(a), 1]; }
+        const j = Math.floor(i / 10) % 6, y0 = -2 + j * .8, t = o.rand();
+        return [-3 + 5.1 * t + g(), y0 * Math.pow(1 - t, 1.4) + g(), g(), 0];
+      } },
+      kicker: "La convergence", chiffre: "2 h",
+      titre: "par semaine : un board de 4 à 6 architectes contre les doublons",
+      texte: "Avec l'IA, produire des options ne coûte presque rien ; le risque est que chaque équipe construise sa version du même service. Le Convergence Arbitrator décide ce qu'on mutualise, industrialise ou arrête."
+    },
+    {
+      forme: { type: "pictos", icones: ["personne", "bulle", "personne"], accent: [0] },
+      kicker: "Les relais",
+      titre: "Les AI Champions font vivre l'adoption dans les équipes",
+      texte: "La formation seule ne suffit pas. Un champion aide ses collègues, partage prompts et pratiques, remonte les blocages du terrain, puis reprend l'animation de la communauté à la fin du programme."
+    },
+    {
+      forme: { type: "frise", jalons: 3, accent: [0] },
+      kicker: "En pratique", chiffre: "3",
+      titre: "vagues pour installer les rôles, des obligatoires aux plus avancés",
+      texte: "Tous les rôles n'arrivent pas en même temps : une première vague obligatoire, puis la montée en charge et l'industrialisation. Les charges restent des estimations, ajustées pendant le pilote."
+    }
+  ],
+  aRetenir: {
+    titre: "Quatre réflexes",
+    points: [
+      "<b>Repérez qui porte quoi.</b> Contexte, spécifications, orchestration : chaque responsabilité a un nom dans l'équipe.",
+      "<b>Comptez-les dans la charge.</b> Même à temps partiel, ces rôles prennent du temps sur un poste existant.",
+      "<b>Appuyez-vous sur les champions.</b> Ils diffusent les pratiques et remontent vos blocages.",
+      "<b>Cherchez avant de construire.</b> Ce qui existe ailleurs passe par l'arbitrage de convergence."
+    ]
+  }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../engine/capsule.js"></script>
+</body>
+</html>

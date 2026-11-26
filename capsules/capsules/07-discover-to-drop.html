@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Discover to Drop · Capsule IA 07</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Red+Hat+Display:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="../engine/capsule.css">
+</head>
+<body>
+<script>
+window.CAPSULE = {
+  numero: 7,
+  theme: "Usages et Méthodologie",
+  titre: "Discover to Drop",
+  duree: "2 min",
+  accroche: "La livraison n'est plus une ligne droite mais une roue en six phases. Chaque passage est un contrat, vérifié sur preuves par une Quality Gate.",
+  pages: [
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // La roue : 6 phases (lavande) sur un cercle, une gate (or) entre chaque phase, un flux qui tourne.
+        const q = i % 10, R = 1.95, ball = (cx, cy, r) => { const u = o.rand() * 2 - 1, a = o.rand() * o.TAU, s = Math.sqrt(1 - u * u), k = r * Math.cbrt(o.rand()); return [cx + k * s * Math.cos(a), cy + k * u, k * s * Math.sin(a)]; };
+        let p, acc = 0;
+        if (q < 6) { const a = Math.floor(i / 10) % 6 * o.TAU / 6 + Math.PI / 2; p = ball(R * Math.cos(a), R * Math.sin(a), .3); }
+        else if (q < 7) { const a = o.rand() * o.TAU; p = [R * Math.cos(a) + o.gauss() * .03, R * Math.sin(a) + o.gauss() * .03, o.gauss() * .03]; }
+        else { const a = (Math.floor(i / 10) % 6 + .5) * o.TAU / 6 + Math.PI / 2, r = R + (o.rand() - .5) * .75; p = [r * Math.cos(a) + o.gauss() * .04, r * Math.sin(a) + o.gauss() * .04, o.gauss() * .04]; acc = 1; }
+        const [y, z] = o.tiltX(p[1], p[2], .45);
+        return [p[0], y, z, acc];
+      } },
+      kicker: "Le principe", chiffre: "6",
+      titre: "phases en boucle, chacune fermée par sa Quality Gate",
+      texte: "Discover, Design, Develop, Deploy, Deepen, Drop : la livraison n'est plus une ligne droite mais une roue. Chaque phase se termine par une Quality Gate, une porte qui ne s'ouvre que sur preuves."
+    },
+    {
+      forme: { type: "dessin", vue: [100, 58], accent: [0], trait: 0, chemins: [
+        "M4 8 h40 v14 a7 7 0 1 1 0 14 v14 h-40 z",
+        "M56 8 h40 v42 h-40 v-14 a7 7 0 1 0 0 -14 z"
+      ] },
+      kicker: "La règle",
+      titre: "Ce qu'une phase livre est exactement ce que la suivante reçoit",
+      texte: "Pas de document informel entre deux phases. Chaque livrable a un format structuré et des assertions vérifiables. Si la sortie d'une phase ne s'emboîte pas dans l'entrée de la suivante, la chaîne casse."
+    },
+    {
+      forme: { type: "pictos", icones: ["document", "loupe", "engrenage"], accent: [0, 1] },
+      kicker: "Avant le code",
+      titre: "Rien n'est codé sans un contrat vérifiable",
+      texte: "G1 exige un besoin décrit en 5 champs et un critère de succès mesurable, lié à un objectif (OKR). G2 exige des critères d'acceptation testables par une machine, un contrat d'API publié et des exigences chiffrées, sans « rapide » ni « simple »."
+    },
+    {
+      forme: { type: "dessin", vue: [118, 40], accent: [2], chemins: [
+        "M14 8 h20 a12 12 0 0 1 0 24 h-20 a12 12 0 0 1 0 -24 z M6 20 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0 z",
+        "M52 17 h6 v-5 l8 8 l-8 8 v-5 h-6 z",
+        "M84 8 h20 a12 12 0 0 1 0 24 h-20 a12 12 0 0 1 0 -24 z M96 20 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0 z"
+      ] },
+      kicker: "La mise en ligne",
+      titre: "Déployer le code et l'ouvrir aux clients : deux décisions",
+      texte: "À G3, le code est prêt à partir en production derrière un interrupteur éteint (feature flag), tests au vert et garant signataire. G4 se joue deux fois : au déploiement, puis à l'activation, avec alertes, retour arrière prêt et coût en tokens mesuré."
+    },
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // Une gate (lavande), trois sorties (or) : continuer, améliorer (la branche revient vers Discover), retirer.
+        const q = i % 20, t = o.rand(), g = () => o.gauss() * .04, J = [-1.3, -.4];
+        const ball = (c, r, acc) => { const u = o.rand() * 2 - 1, a = o.rand() * o.TAU, s = Math.sqrt(1 - u * u), k = r * Math.cbrt(o.rand()); return [c[0] + k * s * Math.cos(a), c[1] + k * u, k * s * Math.sin(a), acc]; };
+        const cub = (p0, p1, p2, p3) => { const m = 1 - t, w = [m * m * m, 3 * m * m * t, 3 * m * t * t, t * t * t]; return [w[0] * p0[0] + w[1] * p1[0] + w[2] * p2[0] + w[3] * p3[0] + g(), w[0] * p0[1] + w[1] * p1[1] + w[2] * p2[1] + w[3] * p3[1] + g(), g(), 1]; };
+        const B = [[J, [.3, J[1]], [1.6, J[1]], [2.9, J[1]]], [J, [1.4, -.1], [1.6, 2], [-2.4, 1.9]], [J, [.2, -.6], [1.4, -1.5], [2.6, -2.1]]];
+        if (q < 4) return [-3.1 + t * 1.8 + g(), J[1] + g(), g(), 0];
+        if (q < 7) return ball(J, .36, 0);
+        const b = q % 3;
+        if (q >= 17) return ball(B[b][3], .2, 1);
+        return cub(...B[b]);
+      } },
+      kicker: "Le verdict", chiffre: "3",
+      titre: "issues possibles quand la Quality Gate de Deepen se prononce",
+      texte: "En production, la valeur réelle est confrontée au coût et au risque. Trois verdicts : continuer tel quel, améliorer (retour à Discover avec une nouvelle spec), ou recommander le retrait (direction Drop)."
+    },
+    {
+      forme: { type: "dessin", vue: [66, 60], accent: "tout", trait: 4, chemins: [
+        "M47.6 10.4 A22 22 0 1 0 53.7 33.8",
+        "M45 32 L53.7 23 L62 32"
+      ] },
+      kicker: "Le retrait",
+      titre: "Retirer un service n'est pas une fin : la boucle repart",
+      texte: "G6 exige une justification chiffrée, un plan pour les données et une communication aux utilisateurs. Les leçons apprises rejoignent le Context Nexus, la mémoire partagée, et le retrait repart au backlog comme un besoin à part entière."
+    },
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // En haut : les 6 gates de phase. En bas : 48 gates de tâche, le contrôle continu de la journée.
+        const k = Math.floor(i / 3), u = o.rand() * 2 - 1, a = o.rand() * o.TAU, s = Math.sqrt(1 - u * u);
+        if (i % 3 === 0) {
+          const g = k % 6, r = .3 * Math.cbrt(o.rand());
+          return [-2.75 + g * 1.1 + r * s * Math.cos(a), 1.15 + r * u, r * s * Math.sin(a), 0];
+        }
+        const t = k % 48, r = .08 * Math.cbrt(o.rand());
+        return [-3 + (t % 16) * .4 + r * s * Math.cos(a), -.55 - Math.floor(t / 16) * .45 + r * u, r * s * Math.sin(a), 1];
+      } },
+      kicker: "Les deux rythmes", chiffre: "2",
+      titre: "niveaux de contrôle : la phase et la tâche",
+      texte: "En haut, les 6 Quality Gates de phase, tranchées par un humain nommé. En bas, des gates de tâche tournent plusieurs fois par jour dans le travail de l'agent : tests et contrôles automatiques. Budget de tokens dépassé : le run s'arrête."
+    }
+  ],
+  aRetenir: {
+    titre: "Quatre réflexes",
+    points: [
+      "<b>Contractez chaque passage.</b> Ce qu'une phase livre doit pouvoir être vérifié par la suivante.",
+      "<b>Ne codez pas avant G2.</b> Critères testables, contrat d'API publié, exigences chiffrées.",
+      "<b>Séparez déployer et activer.</b> Le feature flag garde la main sur ce que voient les clients.",
+      "<b>Bouclez la roue.</b> Mesurez la valeur en production et capitalisez ce que vous retirez."
+    ]
+  }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../engine/capsule.js"></script>
+</body>
+</html>

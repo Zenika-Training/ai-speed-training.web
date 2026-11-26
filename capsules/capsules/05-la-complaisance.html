@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La complaisance · Capsule IA 05</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Red+Hat+Display:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="../engine/capsule.css">
+</head>
+<body>
+<script>
+window.CAPSULE = {
+  numero: 5,
+  theme: "Les bases",
+  titre: "La complaisance",
+  duree: "2 min",
+  accroche: "L'IA a tendance à aller dans votre sens, même quand vous avez tort. Savoir pourquoi permet de lui demander la contradiction, pas l'applaudissement.",
+  pages: [
+    {
+      forme: { type: "texte", segments: ["oui"], accent: "tout" },
+      kicker: "Le principe",
+      titre: "L'IA a appris que dire oui plaît",
+      texte: "Les modèles sont affinés avec des notes humaines, et nous notons mieux les réponses qui confirment nos idées. Le modèle apprend donc à acquiescer, au détriment du vrai.",
+      source: { label: "arXiv · Towards Understanding Sycophancy in Language Models", url: "https://arxiv.org/abs/2310.13548" }
+    },
+    {
+      forme: { type: "reseau", noeuds: 5, accent: [0, 1, 2, 3, 4, 5], centre: true },
+      kicker: "Ordre de grandeur", chiffre: "5",
+      titre: "assistants IA de pointe testés : tous complaisants",
+      texte: "Des chercheurs d'Anthropic ont testé cinq assistants sur quatre tâches de rédaction. Tous montrent le même travers : ce n'est pas un défaut d'un seul éditeur.",
+      source: { label: "arXiv · Towards Understanding Sycophancy in Language Models", url: "https://arxiv.org/abs/2310.13548" }
+    },
+    {
+      forme: { type: "barres", valeurs: [100, 150], accent: [1] },
+      kicker: "La comparaison", chiffre: "+ 50 %",
+      titre: "d'approbation en plus qu'un humain, sur 11 modèles testés",
+      texte: "Face à une même situation personnelle, les modèles valident l'action de l'utilisateur environ 50 % plus souvent que ne le font des humains. Un « vous avez raison » de l'IA ne vaut donc pas un avis extérieur.",
+      source: { label: "arXiv · Sycophantic AI Decreases Prosocial Intentions", url: "https://arxiv.org/abs/2510.01395" }
+    },
+    {
+      forme: { type: "pictos", icones: ["personne", "bulle"], accent: [1] },
+      kicker: "Le piège",
+      titre: "La réponse flatteuse inspire davantage confiance",
+      texte: "Dans les expériences, les participants faisaient plus confiance à l'IA complaisante et se sentaient plus sûrs d'avoir raison. On ne se méfie pas d'une réponse qui nous fait plaisir.",
+      source: { label: "arXiv · Sycophantic AI Decreases Prosocial Intentions", url: "https://arxiv.org/abs/2510.01395" }
+    },
+    {
+      forme: { type: "frise", jalons: 3, accent: [2] },
+      kicker: "Le cas réel",
+      titre: "En 2025, OpenAI a retiré une mise à jour de ChatGPT trop flatteuse",
+      texte: "La mise à jour de GPT-4o accordait trop de poids aux retours à court terme des utilisateurs. Le modèle est devenu excessivement flatteur et agréable : OpenAI est revenu à la version précédente.",
+      source: { label: "TechCrunch · Why ChatGPT became too sycophantic", url: "https://techcrunch.com/2025/04/29/openai-explains-why-chatgpt-became-too-sycophantic" }
+    },
+    {
+      forme: { type: "texte", segments: ["OK", "?"], accent: [1] },
+      kicker: "Au quotidien",
+      titre: "« C'est bon ? » obtient presque toujours « oui »",
+      texte: "Vous demandez si votre règle d'annulation couvre tous les cas, ou si votre plan de test est complet. La réponse la plus probable est « oui, c'est complet », pas la plus vraie. L'exemple est illustratif."
+    },
+    {
+      forme: { type: "texte", segments: ["A", "ou", "B"], accent: [0, 2] },
+      kicker: "La parade",
+      titre: "Posez la question sans dévoiler votre préférence",
+      texte: "Plus votre message annonce ce que vous pensez, plus l'IA a de quoi s'y ranger. Soumettez deux options à égalité, ou demandez-lui d'abord de défendre l'option que vous n'avez pas choisie."
+    },
+    {
+      forme: { type: "pictos", icones: ["loupe"], accent: "tout" },
+      kicker: "En pratique",
+      titre: "Demandez-lui de chercher ce qui cloche",
+      texte: "« Cherche trois failles dans cette spec », « joue l'avocat du diable », « qu'est-ce qui me fait échouer ? ». Une consigne explicite de contradiction change nettement le ton de la réponse."
+    }
+  ],
+  aRetenir: {
+    titre: "Quatre réflexes",
+    points: [
+      "<b>Méfiez-vous du « oui » facile.</b> Une validation de l'IA n'est pas un avis indépendant.",
+      "<b>Cachez votre préférence.</b> Présentez deux options à égalité plutôt que votre idée favorite.",
+      "<b>Demandez la contradiction.</b> « Cherche trois failles », « joue l'avocat du diable ».",
+      "<b>Faites relire par une personne.</b> Pour un arbitrage qui compte, un collègue vaut mieux qu'une IA qui approuve."
+    ]
+  }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../engine/capsule.js"></script>
+</body>
+</html>

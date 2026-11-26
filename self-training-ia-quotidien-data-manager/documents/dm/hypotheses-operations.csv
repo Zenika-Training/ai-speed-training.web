@@ -1,0 +1,10 @@
+hypothese;valeur;unite;source;commentaire
+heures_menage_economisees_par_jour_et_par_hotel;2;h;estimation de Karim;jamais mesurée ; Karim l'a déduite de deux semaines difficiles à LYS-03 en juillet
+hotels_avec_connecteur_pms_v2;12;hôtels;équipe Amarre, 15/11/2026;les 28 autres hôtels n'ont pas de date de déploiement
+hotels_du_portefeuille;40;hôtels;référentiel des hôtels;
+jours_par_an;365;jours;;les hôtels du portefeuille sont ouverts toute l'année
+cout_horaire_charge_menage;22;€/h;direction financière, budget 2026;
+cout_journalier_interne_phare;650;€/j;direction financière, budget 2026;
+effort_construction;30;j;estimation équipe Phare;
+cout_cloud_prevision;1500;€/mois;estimation équipe Phare;calcul des modèles chaque nuit, stockage de l'historique
+maintenance_du_modele;0,2;ETP;estimation équipe Phare;surveillance, ré-entraînement, incidents ; 0,2 ETP = 44 j par an

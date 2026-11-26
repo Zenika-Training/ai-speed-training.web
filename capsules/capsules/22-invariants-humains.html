@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Les invariants humains · Capsule IA 22</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Red+Hat+Display:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="../engine/capsule.css">
+</head>
+<body>
+<script>
+window.CAPSULE = {
+  numero: 22,
+  theme: "Gouvernance et Responsabilité",
+  titre: "Les invariants humains",
+  duree: "2 min",
+  accroche: "Les agents IA gagnent en autonomie, mais ne portent jamais la responsabilité d'une erreur. Six décisions restent pour toujours entre les mains des équipes.",
+  pages: [
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // La rampe de délégation monte vers l'autonomie ; les 6 décisions (or) restent au sol, hors de la rampe.
+        if (i % 10 < 7) {
+          const k = Math.floor(i / 10) % 5, x0 = -3.1 + k * .72, top = -1.9 + (k + 1) * .68, z = (o.rand() - .5) * 1.2;
+          if (o.rand() < .6) return [x0 + o.rand() * .72, top, z, 0];
+          return [x0, top - o.rand() * .68, z, 0];
+        }
+        const j = Math.floor(i / 10) % 6, u = o.rand() * 2 - 1, a = o.rand() * o.TAU, s = Math.sqrt(1 - u * u), r = .3 * Math.cbrt(o.rand());
+        return [1.15 + (j % 3) * .8 + r * s * Math.cos(a), -1.55 + Math.floor(j / 3) * .8 + r * u, r * s * Math.sin(a), 1];
+      } },
+      kicker: "Le principe", chiffre: "6",
+      titre: "décisions restent humaines, quel que soit le niveau de l'IA",
+      texte: "Sur le reste du cycle de vie d'un produit, l'IA gagne de l'autonomie pas à pas. Ces six décisions restent hors de cette rampe : quatre relèvent du jugement métier, deux de la réglementation."
+    },
+    {
+      forme: { type: "entonnoir", niveaux: [100, 55, 25, 8], accent: [3] },
+      kicker: "1 · Discover",
+      titre: "Décider si le sujet vaut la peine, et à quel rang de priorité",
+      texte: "Jugement. L'IA synthétise le marché et vérifie ce qui existe déjà. Mais investir ou non, face à une incertitude qu'aucune donnée ne lève, revient au Product Manager."
+    },
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // Un éventail de brouillons proposés par l'IA (lavande) ; une seule carte retenue par l'humain (or).
+        const c = i % 10, edge = o.rand() < .4, e = Math.floor(o.rand() * 4);
+        let u = o.rand() - .5, v = o.rand();
+        if (edge) { if (e === 0) u = -.5; else if (e === 1) u = .5; else if (e === 2) v = 0; else v = 1; }
+        if (c >= 7) return [2.1 + u * 1.5, -1.3 + v * 2.6, o.gauss() * .02, 1];
+        const th = (c - 3) * .2, lx = u * 1.1, ly = v * 2.4;
+        return [-1.3 + lx * Math.cos(th) - ly * Math.sin(th), -1.9 + lx * Math.sin(th) + ly * Math.cos(th), (c - 3) * .06, 0];
+      } },
+      kicker: "2 · Design",
+      titre: "Choisir l'architecture et sceller les critères d'acceptation",
+      texte: "Jugement. L'IA peut proposer plusieurs pistes ; l'architecte et le Tech Lead retiennent la solution, le PO fixe les critères d'acceptation. Ce choix devient le contrat de référence : le code et les tests seront mesurés contre lui."
+    },
+    {
+      forme: { type: "pictos", icones: ["cadenas", "document", "personne"], accent: [0, 2] },
+      kicker: "3 · Develop",
+      titre: "Approuver un changement en comité CAB ou en périmètre PCI",
+      texte: "Réglementaire. Le CAB (le comité qui valide les changements en production) et la norme de paiement PCI-DSS exigent la signature d'une personne nommée. L'accord d'un agent ou d'un pipeline n'y est pas recevable."
+    },
+    {
+      forme: { type: "dessin", vue: [60, 62], accent: [1], trait: 5, chemins: [
+        "M42.6 19 A22 22 0 1 1 17.4 19",
+        "M30 4 V32"
+      ] },
+      kicker: "4 · Deploy",
+      titre: "Activer une fonctionnalité critique ou un flux de paiement",
+      texte: "Réglementaire. Allumer un feature flag (l'interrupteur qui ouvre une fonctionnalité aux clients) sur un périmètre critique a des effets directs, impossibles à annuler, sur les clients et les paiements."
+    },
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // Une balance : la valeur (or) d'un côté, le coût et le risque (lavande) de l'autre.
+        const q = i % 20, t = o.rand(), g = () => o.gauss() * .03;
+        const L = [-2.1, .75], R = [2.1, .45];
+        const seg = (a, b, c, d) => [a + (c - a) * t + g(), b + (d - b) * t + g(), g(), 0];
+        const ball = (cx, cy, r, acc) => { const u = o.rand() * 2 - 1, a = o.rand() * o.TAU, s = Math.sqrt(1 - u * u), k = r * Math.cbrt(o.rand()); return [cx + k * s * Math.cos(a), cy + k * u, k * s * Math.sin(a), acc]; };
+        if (q < 4) return seg(L[0], L[1], R[0], R[1]);
+        if (q < 6) return q === 4 ? seg(0, -1.95, 0, .6) : seg(-.9, -1.95, .9, -1.95);
+        if (q < 10) {
+          const P = q < 8 ? L : R, side = q % 2 ? 1 : -1;
+          if (o.rand() < .5) return seg(P[0], P[1], P[0] + side * .65, P[1] - 1.3);
+          const a = Math.PI * t; return [P[0] - Math.cos(a) * .7 + g(), P[1] - 1.3 - Math.sin(a) * .3 + g(), g(), 0];
+        }
+        if (q < 15) return ball(L[0], L[1] - 1.05, .42, 1);
+        return ball(R[0] + (q % 2 ? .3 : -.3), R[1] - 1.15, .27, 0);
+      } },
+      kicker: "5 · Deepen",
+      titre: "Peser la valeur créée face au coût et aux risques",
+      texte: "Jugement. D'un côté la valeur réelle ; de l'autre le coût d'exploitation, tokens IA compris, et les risques constatés. Continuer, faire évoluer ou préparer le retrait : la réponse s'appuie sur les retours du terrain."
+    },
+    {
+      forme: { type: "texte", segments: ["OFF"], accent: "tout" },
+      kicker: "6 · Drop",
+      titre: "Éteindre et retirer un service, officiellement",
+      texte: "Jugement. Ce geste est irréversible. Il engage l'entreprise auprès des utilisateurs et des hôteliers concernés, avec un impact commercial et relationnel que l'IA ne sait pas mesurer."
+    },
+    {
+      forme: { type: "libre", fn: (i, n, o) => {
+        // La fiabilité de l'agent monte vers 99 %, mais bute sur un plafond (or) : la décision reste humaine.
+        const q = i % 20;
+        if (q < 7) return [-3 + o.rand() * 5.9, 1.4 + (o.rand() - .5) * .35, (o.rand() - .5) * 1.1, 1];
+        const t = o.rand(), x = -3 + t * 5.9, y = -2 + 3.05 * (1 - Math.exp(-3.5 * t));
+        if (q < 15) return [x + o.gauss() * .03, y + o.gauss() * .03, o.gauss() * .03, 0];
+        return [x, -2 + o.rand() * (y + 2), o.gauss() * .05, 0];
+      } },
+      kicker: "Le piège",
+      titre: "Un agent fiable ne gagne pas le droit de décider",
+      texte: "Exemple : un agent a raison 99 fois sur 100 depuis six mois. La tentation est de le laisser trancher. Pour ces six décisions, c'est non : il peut préparer encore plus, mais la décision et la signature restent humaines."
+    },
+    {
+      forme: { type: "dessin", vue: [120, 52], accent: [0], trait: 3.5, chemins: [
+        "M6 34 C14 8 24 8 20 30 C17 46 30 42 36 22 C40 8 48 14 44 32 C42 42 54 38 58 24 C62 14 70 18 66 32 C64 40 76 36 82 26 C88 16 94 20 98 28 C102 36 110 30 115 20",
+        "M4 47 H116"
+      ] },
+      kicker: "Le garant", chiffre: "1",
+      titre: "nom, celui d'un humain, signe chaque mise en production",
+      texte: "Ce garant, Tech Lead ou expert métier, est toujours le même et jamais tournant. Il ne refait pas le travail : il vérifie les preuves, peut dire « non » et engage sa responsabilité. « C'est l'agent qui l'a fait » n'est jamais une excuse."
+    }
+  ],
+  aRetenir: {
+    titre: "Quatre réflexes",
+    points: [
+      "<b>Laissez l'IA proposer.</b> Synthèses, brouillons, exécution : elle prépare, l'équipe valide et tranche.",
+      "<b>Gardez la main en amont.</b> Ce qu'on construit et comment, c'est l'équipe qui le décide.",
+      "<b>Nommez un garant.</b> Chaque mise en production porte le nom d'une personne, jamais celui d'un agent.",
+      "<b>Restez vigilant.</b> Un agent qui ne se trompe plus ne décide pas davantage pour autant."
+    ]
+  }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../engine/capsule.js"></script>
+</body>
+</html>

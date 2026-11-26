@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Le MCP · Capsule IA 11</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Red+Hat+Display:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="../engine/capsule.css">
+</head>
+<body>
+<script>
+window.CAPSULE = {
+  numero: 11,
+  theme: "Les bases",
+  titre: "Le MCP",
+  duree: "2 min",
+  accroche: "Le MCP est la prise standard qui branche une IA sur vos outils et vos données. Un connecteur écrit une fois sert à tous les assistants.",
+  pages: [
+    {
+      forme: { type: "texte", segments: ["M", "C", "P"], accent: "tout" },
+      kicker: "Le principe",
+      titre: "Une prise standard entre l'IA et vos outils",
+      texte: "Le Model Context Protocol, publié en open source par Anthropic en novembre 2024, fixe une seule façon de relier un assistant IA à des données et à des outils. Comme une prise USB-C : peu importe la marque, ça se branche.",
+      source: { label: "Anthropic · Introducing the Model Context Protocol", url: "https://www.anthropic.com/news/model-context-protocol" }
+    },
+    {
+      forme: { type: "barres", valeurs: [50, 15], accent: [1] },
+      kicker: "Le problème", chiffre: "50 → 15",
+      titre: "connecteurs pour relier 5 assistants à 10 outils",
+      texte: "Sans standard, chaque assistant a besoin d'un connecteur sur mesure par outil : 5 × 10 = 50. Avec MCP, chacun parle le protocole une fois : 5 + 10 = 15. L'exemple est illustratif, mais le calcul vaut à toute échelle."
+    },
+    {
+      forme: { type: "reseau", noeuds: 5, accent: [0, 1, 3] },
+      kicker: "L'architecture",
+      titre: "L'application ouvre une ligne dédiée vers chaque serveur",
+      texte: "L'hôte est l'application IA (Claude, VS Code…). Pour chaque serveur MCP, local ou distant, il crée un client qui garde sa propre connexion. Ajouter un outil revient à brancher un serveur de plus.",
+      source: { label: "MCP · Architecture overview", url: "https://modelcontextprotocol.io/docs/learn/architecture" }
+    },
+    {
+      forme: { type: "pictos", icones: ["engrenage", "document", "bulle"], accent: [0] },
+      kicker: "Les briques",
+      titre: "Un serveur offre des outils, des ressources et des prompts",
+      texte: "Les ressources donnent à lire (fichiers, fiches), les prompts proposent des modèles d'échange. Seuls les outils agissent : requête, envoi, écriture. Ce sont eux qui demandent le plus de vigilance.",
+      source: { label: "MCP · Architecture overview", url: "https://modelcontextprotocol.io/docs/learn/architecture" }
+    },
+    {
+      forme: { type: "frise", jalons: 3, accent: [2] },
+      kicker: "La trajectoire",
+      titre: "D'un projet Anthropic à un standard de la Linux Foundation",
+      texte: "Lancé en novembre 2024, adopté ensuite par ChatGPT, Gemini, Microsoft Copilot et VS Code, MCP a été confié en décembre 2025 à l'Agentic AI Foundation. Il n'appartient plus à un seul éditeur.",
+      source: { label: "Anthropic · Donating MCP to the Agentic AI Foundation", url: "https://www.anthropic.com/news/donating-the-model-context-protocol-and-establishing-of-the-agentic-ai-foundation" }
+    },
+    {
+      forme: { type: "pile", feuilles: 24, accent: "tous-les-6" },
+      kicker: "Ordre de grandeur", chiffre: "10 000+",
+      titre: "serveurs MCP publics actifs fin 2025",
+      texte: "S'y ajoutent plus de 97 millions de téléchargements mensuels des kits de développement. Avant d'écrire un connecteur, cherchez : celui de votre outil existe sans doute déjà.",
+      source: { label: "Anthropic · Donating MCP to the Agentic AI Foundation", url: "https://www.anthropic.com/news/donating-the-model-context-protocol-and-establishing-of-the-agentic-ai-foundation" }
+    },
+    {
+      forme: { type: "texte", segments: ["150k", "→", "2k"], accent: [2] },
+      kicker: "Le piège", chiffre: "− 98,7 %",
+      titre: "de tokens quand l'agent pilote ses outils par du code",
+      texte: "Chaque outil branché décrit son mode d'emploi dans le contexte de l'IA, avant même votre question. Dans un exemple d'Anthropic, passer par du code fait tomber la facture de 150 000 à 2 000 tokens. Branchez peu, branchez utile.",
+      source: { label: "Anthropic · Code execution with MCP", url: "https://www.anthropic.com/engineering/code-execution-with-mcp" }
+    },
+    {
+      forme: { type: "frise", jalons: 3, accent: [1] },
+      kicker: "La limite",
+      titre: "Un outil MCP exécute du code : votre accord passe avant",
+      texte: "La spécification exige un consentement explicite avant chaque appel d'outil et tient pour non fiables les descriptions d'un serveur inconnu. Préférez les serveurs validés par votre entreprise et lisez ce que vous autorisez.",
+      source: { label: "MCP · Specification, Security and Trust & Safety", url: "https://modelcontextprotocol.io/specification/latest" }
+    }
+  ],
+  aRetenir: {
+    titre: "Trois réflexes",
+    points: [
+      "<b>Cherchez avant de coder.</b> Un serveur MCP existe sans doute déjà pour l'outil que vous voulez brancher.",
+      "<b>Branchez peu.</b> Chaque outil connecté consomme du contexte avant même votre première question.",
+      "<b>Passez par les serveurs validés.</b> Utilisez ceux que votre entreprise met à disposition et lisez chaque action avant de l'autoriser."
+    ]
+  }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../engine/capsule.js"></script>
+</body>
+</html>
